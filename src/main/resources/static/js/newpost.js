@@ -2,85 +2,58 @@ $(document).ready(function () {
     getCategoryTable();
 })
 
-function getCategoryTable3(categoryName, simpleName) {
-    console.log("table3 " + categoryName);
-    $.ajax({
-        type: "GET",
-        url: '/api/category',
-        dataType: "json",
-        async: true,
-        success: function (result) {
-            let array = result.data;
-            $("#cascade-table-3").css("display", "block");
-            document.getElementById("cascade-table-3").innerHTML =
-                `<div class="category-table-title">
+async function getCategoryTable3(categoryName, simpleName) {
+    let categories = await getCategories();
+    $("#cascade-table-3").css("display", "block");
+    document.getElementById("cascade-table-3").innerHTML =
+        `<div class="category-table-title">
                     ${simpleName}
                  </div>`;
-            for (let i = 0; i < array.length; i++) {
-                let x = array[i];
-                let arr = x.name.split(":");
-                let simpleName = arr[arr.length - 1]
-                if (x.parentName == categoryName) {
-                    document.getElementById("cascade-table-3").innerHTML +=
-                        `<div class="category-table-button-3 unactive-category-table-button-3" id="category-table-button-3"
+    for (let i = 0; i < categories.length; i++) {
+        let x = categories[i];
+        if (x.parentName === categoryName) {
+            let simpleName = x.name.substring(x.parentName.length + 1);
+            document.getElementById("cascade-table-3").innerHTML +=
+                `<div class="category-table-button-3 unactive-category-table-button-3" id="category-table-button-3"
                             onclick="clickOnCategoryButton3(this)" onmouseover="hoverOnCategoryButton3()">
                         ${simpleName}
                     </div>`
-                }
-            }
         }
-    });
+    }
 }
 
-function getCategoryTable() {
-    $.ajax({
-        type: "GET",
-        url: '/api/category',
-        dataType: "json",
-        async: true,
-        success: function (result) {
-            let array = result.data;
-            for (let i = 0; i < array.length; i++) {
-                let x = array[i];
-                if (x.layer === 1) {
-                    document.getElementById("cascade-table").innerHTML +=
-                        `<div class="category-table-button inactive-category-table-button" id="category-table-button" 
+async function getCategoryTable() {
+    let categories = await getCategories();
+    for (let i = 0; i < categories.length; i++) {
+        let x = categories[i];
+        if (x.layer === 1) {
+            document.getElementById("cascade-table").innerHTML +=
+                `<div class="category-table-button inactive-category-table-button" id="category-table-button" 
                             onclick="clickOnCategoryButton(this,'${x.name}')" onmouseover="hoverOnCategoryButton()">
                         ${x.name}
                     </div>`
-                }
-            }
         }
-    })
+    }
 }
 
-function getCategoryTable2(categoryName) {
-    $.ajax({
-        type: "GET",
-        url: "/api/category",
-        dataType: "json",
-        async: true,
-        success: function (result) {
-            let array = result.data;
-            $("#cascade-table-2").css("display", "block");
-            document.getElementById("cascade-table-2").innerHTML =
-                `<div class="category-table-title">
+async function getCategoryTable2(categoryName) {
+    let categories = await getCategories();
+    $("#cascade-table-2").css("display", "block");
+    document.getElementById("cascade-table-2").innerHTML =
+        `<div class="category-table-title">
                     ${categoryName}
                  </div>`;
-            for (let i = 0; i < array.length; i++) {
-                let x = array[i];
-                if (x.parentName == categoryName) {
-                    let arr = x.name.split(":");
-                    let simpleName = arr[arr.length - 1]
-                    document.getElementById("cascade-table-2").innerHTML +=
-                        `<div class="category-table-button-2 unactive-category-table-button-2" id="category-table-button-2" 
+    for (let i = 0; i < categories.length; i++) {
+        let x = categories[i];
+        if (x.parentName === categoryName) {
+            let simpleName = x.name.substring(x.parentName.length + 1);
+            document.getElementById("cascade-table-2").innerHTML +=
+                `<div class="category-table-button-2 unactive-category-table-button-2" id="category-table-button-2" 
                             onclick="clickOnCategoryButton2(this, '${x.name}', '${simpleName}')"  onmouseover="hoverOnCategoryButton2()">
                         ${simpleName}
                     </div>`
-                }
-            }
         }
-    })
+    }
 }
 
 function clickOnCategoryButton(o, category) {
@@ -93,7 +66,6 @@ function clickOnCategoryButton(o, category) {
 }
 
 function clickOnCategoryButton2(o, category, simpleName) {
-    console.log(category);
     $(".category-table-button-2").removeClass("active-category-table-button-2")
         .addClass("inactive-category-table-button-2").css("background-color", "#fff");
     $(o).removeClass("inactive-category-table-button-2")
@@ -146,4 +118,15 @@ function hoverOnCategoryButton3() {
                 $(this).css("background-color", "#fff");
             }
         });
+}
+
+async function getCategories() {
+    let response = await fetch("/api/category", {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+    });
+    return (await response.json()).data;
 }
