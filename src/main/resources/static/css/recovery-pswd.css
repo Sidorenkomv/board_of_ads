@@ -19,3 +19,15 @@
 .margin-button {
     margin-top: 15px;
 }
+
+.modal-settings-email-confirm {
+    height: 300px;
+    width: 500px;
+    margin-top: 300px;
+}
+
+.modal-email-confirm-close {
+    position: relative;
+    left: 35px;
+    bottom: 125px;
+}
