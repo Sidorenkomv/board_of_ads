@@ -62,7 +62,9 @@
 }
 
 .addToWish, .deleteWish {
-    margin-top: 4px;
-    margin-left: 115px;
+    margin-top: 8px;
+    margin-left: 185px;
     width: 15px;
+    position: absolute;
+    z-index: 999;
 }

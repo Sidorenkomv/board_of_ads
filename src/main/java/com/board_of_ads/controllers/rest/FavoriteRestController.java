@@ -16,7 +16,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/wish")
+@RequestMapping("/api/favorite")
 @AllArgsConstructor
 public class FavoriteRestController {
 
@@ -28,7 +28,7 @@ public class FavoriteRestController {
         List<Favorite> favoriteList = favoriteService.findAll();
         return (favoriteList.size() > 0)
                 ? Response.ok(favoriteList)
-                : new ErrorResponse<>(new Error(204, "No wishes in table"));
+                : new ErrorResponse<>(new Error(204, "No favorite in table"));
     }
 
     @PostMapping(value = "/add")
@@ -40,6 +40,12 @@ public class FavoriteRestController {
             return new SuccessResponse<>(favoriteService.addFavorite(favorite));
         }
         return new ErrorResponse<>(new Error(204, "Incorrect Data"));
+    }
+
+    @GetMapping("/addregid/{id}")
+    public Response<Void> getFavoriteByIpUpdateId(@PathVariable(name = "id") String id) throws UnknownHostException {
+        favoriteService.updateFavoriteSetUseridForIp(id, InetAddress.getLocalHost().getHostAddress());
+        return new Response<>();
     }
 
     @DeleteMapping("/delete/{id}")

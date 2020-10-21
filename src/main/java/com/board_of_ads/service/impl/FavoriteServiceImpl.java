@@ -3,6 +3,7 @@ package com.board_of_ads.service.impl;
 import com.board_of_ads.models.Favorite;
 import com.board_of_ads.repository.FavoriteRepository;
 import com.board_of_ads.service.interfaces.FavoriteService;
+import com.board_of_ads.util.Response;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +19,7 @@ public class FavoriteServiceImpl implements FavoriteService {
 
     @Override
     public List<Favorite> findAll() {
-        return (List<Favorite>) favoriteRepository.findAll();
+        return favoriteRepository.findAll();
     }
 
     @Override
@@ -32,4 +33,8 @@ public class FavoriteServiceImpl implements FavoriteService {
         favoriteRepository.deleteById(id);
     }
 
+    @Override
+    public void updateFavoriteSetUseridForIp(String userid, String ip) {
+        favoriteRepository.updateFavoriteSetUseridForIp(userid, ip);
+    }
 }

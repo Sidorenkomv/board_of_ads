@@ -18,7 +18,7 @@ public class Favorite {
     private Long posting;
 
     @Column
-    private Long userid;
+    private String userid;
 
     @Column
     private String ip;

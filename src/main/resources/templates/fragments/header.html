@@ -35,12 +35,12 @@
                             <div th:if="${user.getAvatar()}">
                                 <img class="user-info-avatar" id="avatar" th:src="${user.getAvatar().getPathURL()}">
                                 <div class="user-info-name" id="name" th:text="${user.getFirsName() + ' ' + user.getLastName()}">%username%</div>
-                                <input type="hidden" id="clientid" th:value="${user.getId()}">
+                                <input type="hidden" id="reguserid" th:value="${user.getId()}">
                             </div>
                             <div th:if="${user.getAvatar() == null}">
                                 <div class="user-info-avatar" id="avatar"></div>
                                 <div class="user-info-name" id="name" th:text="${user.getFirsName() + ' ' + user.getLastName()}">%username%</div>
-                                <input type="hidden" id="clientid" th:value="${user.getId()}">
+                                <input type="hidden" id="reguserid" th:value="${user.getId()}">
                             </div>
                         </a>
                         <ul class="dropdown-menu " id="dropdownUserInfo" aria-labelledby="dropdownButton">
