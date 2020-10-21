@@ -17,7 +17,7 @@
         <file>${LOG_HOME}/board_of_ads-${today}.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!-- rollover daily -->
-            <fileNamePattern>${LOG_HOME}/board_of_ads-log_%d{yyyy-MM-dd}.%i.txt</fileNamePattern>
+            <fileNamePattern>${LOG_HOME}/archive/board_of_ads-log_%d{yyyy-MM-dd}.%i.txt</fileNamePattern>
             <!-- each file should be at most 20MB, keep 30 days worth of history, but at most 1GB -->
             <maxFileSize>20MB</maxFileSize>
             <maxHistory>30</maxHistory>
@@ -32,7 +32,7 @@
 
     <appender name="MainPageController-Audit"
               class="ch.qos.logback.core.FileAppender">
-        <file>${SIMPLE_CONTROLLER_HOME}/mainpagecontroller/MainPageController-log_${today}.log</file>
+        <file>${SIMPLE_CONTROLLER_HOME}/main-page-controller/MainPageController-log_${today}.log</file>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>
                 %d{DEFAULT} %level - %msg%n
@@ -42,7 +42,7 @@
 
     <appender name="AuthController-Audit"
               class="ch.qos.logback.core.FileAppender">
-        <file>${SIMPLE_CONTROLLER_HOME}/authcontroller/AuthController-log_${today}.log</file>
+        <file>${SIMPLE_CONTROLLER_HOME}/auth-controller/AuthController-log_${today}.log</file>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>
                 %d{DEFAULT} %level - %msg%n
@@ -52,7 +52,7 @@
 
     <appender name="AdminRestController-Audit"
               class="ch.qos.logback.core.FileAppender">
-        <file>${REST_CONTROLLER_HOME}/adminrestcontroller/AdminRestController-log_${today}.log</file>
+        <file>${REST_CONTROLLER_HOME}/admin-rest-controller/AdminRestController-log_${today}.log</file>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>
                 %d{DEFAULT} %level - %msg%n
@@ -62,7 +62,7 @@
 
     <appender name="AuthRestController-Audit"
               class="ch.qos.logback.core.FileAppender">
-        <file>${REST_CONTROLLER_HOME}/authrestcontroller/AuthRestController-log_${today}.log</file>
+        <file>${REST_CONTROLLER_HOME}/auth-rest-controller/AuthRestController-log_${today}.log</file>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>
                 %d{DEFAULT} %level - %msg%n
@@ -72,7 +72,7 @@
 
     <appender name="CityRestController-Audit"
               class="ch.qos.logback.core.FileAppender">
-        <file>${REST_CONTROLLER_HOME}/cityrestcontroller/CityRestController-log_${today}.log</file>
+        <file>${REST_CONTROLLER_HOME}/city-rest-controller/CityRestController-log_${today}.log</file>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>
                 %d{DEFAULT} %level - %msg%n
@@ -82,7 +82,7 @@
 
     <appender name="MailRestController-Audit"
               class="ch.qos.logback.core.FileAppender">
-        <file>${REST_CONTROLLER_HOME}/mailrestcontroller/MailRestController-log_${today}.log</file>
+        <file>${REST_CONTROLLER_HOME}/mail-rest-controller/MailRestController-log_${today}.log</file>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>
                 %d{DEFAULT} %level - %msg%n
@@ -92,7 +92,7 @@
 
     <appender name="CategoryRestController-Audit"
               class="ch.qos.logback.core.FileAppender">
-        <file>${REST_CONTROLLER_HOME}/categoryrestcontroller/CategoryRestController-log_${today}.log</file>
+        <file>${REST_CONTROLLER_HOME}/category-rest-controller/CategoryRestController-log_${today}.log</file>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>
                 %d{DEFAULT} %level - %msg%n
@@ -102,7 +102,7 @@
 
     <appender name="PostingRestController-Audit"
               class="ch.qos.logback.core.FileAppender">
-        <file>${REST_CONTROLLER_HOME}/postingrestcontroller/PostingRestController-log_${today}.log</file>
+        <file>${REST_CONTROLLER_HOME}/posting-rest-controller/PostingRestController-log_${today}.log</file>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>
                 %d{DEFAULT} %level - %msg%n
@@ -112,7 +112,7 @@
 
     <appender name="SearchPostingRestController-Audit"
               class="ch.qos.logback.core.FileAppender">
-        <file>${REST_CONTROLLER_HOME}/searchpostingrestcontroller/SearchPostingRestController-log_${today}.log</file>
+        <file>${REST_CONTROLLER_HOME}/search-posting-rest-controller/SearchPostingRestController-log_${today}.log</file>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>
                 %d{DEFAULT} %level - %msg%n
@@ -122,7 +122,7 @@
 
     <appender name="UserRestController-Audit"
               class="ch.qos.logback.core.FileAppender">
-        <file>${REST_CONTROLLER_HOME}/userrestcontroller/UserRestController-log_${today}.log</file>
+        <file>${REST_CONTROLLER_HOME}/user-rest-controller/UserRestController-log_${today}.log</file>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>
                 %d{DEFAULT} %level - %msg%n
