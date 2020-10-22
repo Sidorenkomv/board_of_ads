@@ -55,7 +55,7 @@ public class User implements UserDetails {
     private String password;
 
     @Column
-    private String firsName;
+    private String firstName;
 
     @Column
     private String lastName;

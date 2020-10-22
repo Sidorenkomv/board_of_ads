@@ -115,7 +115,7 @@ function showAllUsersTable() {
                     //присоединяем к полям таблицы данными из JSON
                     tdId.appendChild(document.createTextNode(user.id));
                     tdEmail.appendChild(document.createTextNode(user.email));
-                    tdUserName.appendChild(document.createTextNode(user.firsName));
+                    tdUserName.appendChild(document.createTextNode(user.firstName));
                     tdLastName.appendChild(document.createTextNode(user.lastName));
                     tdPhone.appendChild(document.createTextNode(user.phone));
                     tdDataReg.appendChild(document.createTextNode(usrDataRegistration));
@@ -174,7 +174,7 @@ async function newUser() {
 
         email: $('#AdminPanelUserEmail').val(),
         password: $('#AdminPanelUserPassword').val(),
-        firsName: $('#AdminPanelUserFirstName').val(),
+        firstName: $('#AdminPanelUserFirstName').val(),
         lastName: $('#AdminPanelUserLastName').val(),
 
         roles: roleArray
@@ -254,7 +254,7 @@ async function updateUsers(value) {
     let data = {
 
         id: $('#updUserID').val(),
-        firsName: $('#updUserName').val(),
+        firstName: $('#updUserName').val(),
         lastName: $('#updUserLastName').val(),
         email: $('#updUserEmail').val(),
         password: $('#updUserPassword').val(),
@@ -357,7 +357,7 @@ function fillingModalFormDelete(id) {
                 + ':' + data.data.dataRegistration[4];
 
             $('#delUserID').val(id);
-            $('#delUserName').val(data.data.firsName);
+            $('#delUserName').val(data.data.firstName);
             $('#delUserDataReg').val(usrDataRegistration);
             $('#delUserEmail').val(data.data.email);
             $('#delUserRoles').val(userRoles);
@@ -411,7 +411,7 @@ function fillingModalFormUpdate(id) {
                 + ':' + data.data.dataRegistration[4];
 
             $('#updUserID').val(id);
-            $('#updUserName').val(data.data.firsName);
+            $('#updUserName').val(data.data.firstName);
             $('#updUserLastName').val(data.data.lastName);
             $('#updUserEmail').val(data.data.email);
             $('#updUserDataReg').val(usrDataRegistration);
