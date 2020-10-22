@@ -3,6 +3,7 @@ let getUserById = 'http://localhost:5556/api/admin/user';
 let deleteUserById = 'http://localhost:5556/api/admin/user';
 let createNewUser = 'http://localhost:5556/api/admin/newUser';
 let updateUser = 'http://localhost:5556/api/admin/newUserData';
+let allRoles = 'http://localhost:5556/api/admin/allRoles';
 
 let adminUsersTable = $('#userTableJs tbody');
 let deleteButtonInModalForm = $('#deleteButtonInModal div');
@@ -21,6 +22,7 @@ let elementUserTable = document.getElementById('userTableAtAdminPanel');
 
 $(document).ready(function () {
     showAllUsersTable();
+    createRoleSelector();
 });
 
 $(document).mouseup(function (e) {
@@ -41,6 +43,38 @@ $(document).mouseup(function (e) {
 });
 
 //ОСНОВНЫЕ ФУНКЦИИ
+
+//Функция формирующая селекты
+
+function createRoleSelector() {
+    fetch(allRoles)
+        .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            if (data.success) {
+                data.data.map(roles => {
+                    //селект в update
+                    let select = document.getElementById('userUpdRoles');
+                    let optionOfSelect = document.createElement('option');
+                    let nameOfRole = document.createTextNode(roles.name);
+                    optionOfSelect.setAttribute('id', roles.id);
+                    optionOfSelect.setAttribute('value', roles.name);
+                    optionOfSelect.append(nameOfRole);
+                    select.appendChild(optionOfSelect);
+
+                    //селект в new user
+                    let newUserSelect = document.getElementById('roleSelect');
+                    let optionOfSelect1 = document.createElement('option');
+                    let nameOfRole1 = document.createTextNode(roles.name);
+                    optionOfSelect1.setAttribute('id', roles.id);
+                    optionOfSelect1.setAttribute('value', roles.name);
+                    optionOfSelect1.append(nameOfRole1);
+                    newUserSelect.appendChild(optionOfSelect1);
+                });
+            }
+        });
+}
 
 //Функция заполняющая таблицу пользователей
 function showAllUsersTable() {
@@ -168,7 +202,8 @@ function showAllUsersTable() {
 async function newUser() {
 
     let roleSelectedValues = Array.from(elementCreateUserRoles.selectedOptions).map(el => el.value);
-    let roleArray = convertToRoleSet(roleSelectedValues);
+    let roleSelectedId = Array.from(elementCreateUserRoles.selectedOptions).map(el => el.id);
+    let roleArray = convertToRoleSet(roleSelectedId, roleSelectedValues);
 
     let data = {
 
@@ -249,7 +284,9 @@ async function updateUsers(value) {
     let elementUpdateUserRoles = document.getElementById('userUpdRoles');
 
     let roleSelectedValues = Array.from(elementUpdateUserRoles.selectedOptions).map(el => el.value);
-    let roleArray = convertToRoleSet(roleSelectedValues);
+    let roleSelectedId = Array.from(elementUpdateUserRoles.selectedOptions).map(el => el.id);
+
+    let roleArray = convertToRoleSet(roleSelectedId, roleSelectedValues);
 
     let data = {
 
@@ -259,10 +296,10 @@ async function updateUsers(value) {
         email: $('#updUserEmail').val(),
         password: $('#updUserPassword').val(),
 
-
         roles: roleArray
 
     };
+
 
     let userEmailFormData = document.forms["userUpdateFormCP"]["email"].value;
     let userPasswordFormData = document.forms["userUpdateFormCP"]["password"].value;
@@ -350,6 +387,10 @@ function fillingModalFormDelete(id) {
                 return role.name;
             }).join(", ");
 
+            if (data.data.dataRegistration[4].toString().length === 1) {
+                data.data.dataRegistration[4] = '0' + data.data.dataRegistration[4];
+            }
+
             let usrDataRegistration = data.data.dataRegistration[2]
                 + '/' + data.data.dataRegistration[1]
                 + '/' + data.data.dataRegistration[0]
@@ -404,6 +445,10 @@ function fillingModalFormUpdate(id) {
     fetch(getUserById + "/" + id).then(function (response) {
         response.json().then(function (data) {
 
+            if (data.data.dataRegistration[4].toString().length === 1) {
+                data.data.dataRegistration[4] = '0' + data.data.dataRegistration[4];
+            }
+
             let usrDataRegistration = data.data.dataRegistration[2]
                 + '/' + data.data.dataRegistration[1]
                 + '/' + data.data.dataRegistration[0]
@@ -441,15 +486,13 @@ elementUserTable.onclick = function () {
 };
 
 /*создаем массив из значений полученных с селектора при создании нового пользователя*/
-function convertToRoleSet(Array) {
-    let roleArray = [];
+function convertToRoleSet(roleId, roleName) {
+let roleArray = [];
 
-    if (Array.indexOf("USER") !== -1) {
-        roleArray.unshift({id: 2, name: "USER"});
+    for(let index = 0; index < roleId.length; ++index) {
+        roleArray.unshift({id: roleId[index], name: roleName[index]})
     }
-    if (Array.indexOf("ADMIN") !== -1) {
-        roleArray.unshift({id: 1, name: "ADMIN"});
-    }
+
     return roleArray;
 }
 

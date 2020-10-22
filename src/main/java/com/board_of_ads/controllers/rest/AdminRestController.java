@@ -1,6 +1,8 @@
 package com.board_of_ads.controllers.rest;
 
+import com.board_of_ads.models.Role;
 import com.board_of_ads.models.User;
+import com.board_of_ads.service.interfaces.RoleService;
 import com.board_of_ads.service.interfaces.UserService;
 import com.board_of_ads.util.BindingResultLogs;
 import com.board_of_ads.util.Error;
@@ -31,6 +33,7 @@ public class AdminRestController {
 
     private final UserService userService;
     private final BindingResultLogs bindingResultLogs;
+    private final RoleService roleService;
 
     @PostMapping(value = "/newUser")
     public Response<User> createUser(@RequestBody @Valid User user, BindingResult bindingResult) {
@@ -70,6 +73,14 @@ public class AdminRestController {
     public Response<Void> deleteUserById(@PathVariable(name = "id") Long id) {
         userService.deleteUser(id);
         return new Response<>();
+    }
+
+    @GetMapping("/allRoles")
+    public Response<List<Role>> getAllRolesFromDB() {
+        List<Role> roleList = roleService.allRolesFromDb();
+        return (roleList.size() != 0)
+                ? Response.ok(roleList)
+                : new ErrorResponse<>(new Error(204, "No roles in DB"));
     }
 
 }
