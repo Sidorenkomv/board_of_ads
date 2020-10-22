@@ -130,6 +130,16 @@
         </encoder>
     </appender>
 
+    <appender name="NotificationRestController-Audit"
+              class="ch.qos.logback.core.FileAppender">
+        <file>${REST_CONTROLLER_HOME}/notification-rest-controller/NotificationRestController-log_${today}.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>
+                %d{DEFAULT} %level - %msg%n
+            </Pattern>
+        </encoder>
+    </appender>
+
     <root level="INFO">
         <appender-ref ref="FILE-AUDIT"/>
         <appender-ref ref="STDOUT"/>
@@ -173,5 +183,9 @@
     </logger>
     <logger name="com.board_of_ads.controllers.rest.UserRestController" level="INFO" additivity="true">
         <appender-ref ref="UserRestController-Audit"/>
+    </logger>
+    <logger name="com.board_of_ads.controllers.rest.NotificationRestController" level="DEBUG" additivity="true">
+        <appender-ref ref="NotificationRestController-Audit"/>
+        <appender-ref ref="STDOUT"/>
     </logger>
 </configuration>

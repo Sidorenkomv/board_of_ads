@@ -2,28 +2,34 @@ package com.board_of_ads.configs;
 
 import com.board_of_ads.models.Category;
 import com.board_of_ads.models.Image;
+import com.board_of_ads.models.Notification;
 import com.board_of_ads.models.Role;
 import com.board_of_ads.models.User;
+import com.board_of_ads.models.UserNotification;
 import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.service.interfaces.CityService;
 import com.board_of_ads.service.interfaces.ImageService;
 import com.board_of_ads.service.interfaces.KladrService;
+import com.board_of_ads.service.interfaces.NotificationService;
 import com.board_of_ads.service.interfaces.PostingService;
 import com.board_of_ads.service.interfaces.RoleService;
 import com.board_of_ads.service.interfaces.UserService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Component
 @AllArgsConstructor
+@Slf4j
 public class DataInitializer {
 
     private final UserService userService;
@@ -33,13 +39,17 @@ public class DataInitializer {
     private final PostingService postingService;
     private final CityService cityService;
     private final ImageService imageService;
+    private final NotificationService notificationService;
 
     @PostConstruct
     private void init() throws IOException {
         initUsers();
+        initMoreUsers();
         initKladr();
+        initUsers();
         initCategories();
         initPosting();
+        initNotifications();
     }
 
     private void initUsers() {
@@ -56,10 +66,12 @@ public class DataInitializer {
             admin.setPassword("1234567");
             admin.setFirsName("Admin");
             admin.setLastName("Admin");
+            admin.setPhone("8-922-0123456");
             admin.setAvatar(new Image(null, "images/admin.jpg"));
             Set<Role> roleAdmin = new HashSet<>();
             roleAdmin.add(roleService.getRoleByName("ADMIN"));
             admin.setRoles(roleAdmin);
+          //  admin.setCity(cityService.findCityByName("Екатеринбург").get());
             userService.saveUser(admin);
         }
         if (userService.getUserByEmail("user@mail.ru") == null) {
@@ -68,10 +80,12 @@ public class DataInitializer {
             user.setPassword("1234567");
             user.setFirsName("User");
             user.setLastName("User");
+            user.setPhone("8-922-1234567");
             user.setAvatar(new Image(null, "images/user.jpg"));
             Set<Role> roleAdmin = new HashSet<>();
             roleAdmin.add(roleService.getRoleByName("USER"));
             user.setRoles(roleAdmin);
+       //     user.setCity(cityService.findCityByName("Рязань").get());
             userService.saveUser(user);
         }
     }
@@ -592,6 +606,129 @@ public class DataInitializer {
                 posting.setImages(imageList);
                 postingService.save(posting);
             }
+        }
+    }
+
+    private void initMoreUsers() {
+
+        if (userService.getUserByEmail("super@mail.ru") == null) {
+            User admin = new User();
+            admin.setEmail("super@mail.ru");
+            admin.setPassword("super");
+            admin.setFirsName("Super");
+            admin.setLastName("Mario");
+            admin.setAvatar(new Image(null, "images/admin.jpg"));
+            Set<Role> roles = new HashSet<>();
+            roles.add(roleService.getRoleByName("ADMIN"));
+            admin.setRoles(roles);
+            userService.saveUser(admin);
+        }
+
+        if (userService.getUserByEmail("simple@mail.ru") == null) {
+            User user = new User();
+            user.setEmail("simple@mail.ru");
+            user.setPassword("1111111");
+            user.setFirsName("Simply");
+            user.setLastName("Red");
+            user.setAvatar(new Image(null, "images/user.jpg"));
+            Set<Role> roles = new HashSet<>();
+            roles.add(roleService.getRoleByName("ADMIN"));
+            user.setRoles(roles);
+            userService.saveUser(user);
+        }
+
+        if (userService.getUserByEmail("hero@mail.ru") == null) {
+            User user = new User();
+            user.setEmail("hero@mail.ru");
+            user.setPassword("222222");
+            user.setFirsName("Hero");
+            user.setLastName("Sensei");
+            user.setAvatar(new Image(null, "images/user.jpg"));
+            Set<Role> roles = new HashSet<>();
+            roles.add(roleService.getRoleByName("USER"));
+            user.setRoles(roles);
+            userService.saveUser(user);
+        }
+    }
+
+    private void initNotifications() {
+        List<User> groupOfAllUsers = userService.getAllUsers();
+        for (User oneUser: groupOfAllUsers ) {
+            log.info(oneUser.getUsername());
+        }
+        List<User> singleUser = Collections.singletonList(userService.getUserById(3L));
+        List<User> singleUser2 = Collections.singletonList(userService.getUserById(5L));
+
+        Notification notification1 = new Notification("Это вообще первое уведомление",
+                "Привет! Раз ты читаешь это уведомление, наверное ты в команде проекта board of ads. Ты находишься в разделе уведомлений");
+        Notification notification2 = new Notification("Как устроены запросы",
+                "Тестируешь раздел уведомлений? Запросы отправляются в Rest-контроллер NotificationRestController");
+        Notification notification3 = new Notification("Какой javascript задействован в разделе уведомления?",
+                "Логика управления уведомлениями зашита в скрипте profile_notes.js");
+        Notification notification4 = new Notification("Что получаем в response?",
+                "При fetch запросе получаем DTO сущность NotificationDTO с полями notificationId, " +
+                        "messageTitle, messageBody, clickAction, sentTime, status, urgentLevel");
+        Notification notification5 = new Notification("Что мы делаем?",
+                "Делаем клон Avito. Проект полу-настоящий, венчурная внутренняя разработка JM силами " +
+                        "студентов на проекте. Задача – самостоятельно взаимодействовать в командной работе с " +
+                        "минимальным участием ментора");
+        notification2.setClickAction("https://www.google.com");
+        notification2.setClickAction("смотри ..resources/static/js/profile_notes.js");
+        notification4.setClickAction("https://learn.javascript.ru/fetch");
+
+        notificationService.createNotification(notification1);
+        notificationService.createNotification(notification2);
+        notificationService.createNotification(notification3);
+        notificationService.createNotification(notification4);
+        notificationService.createNotification(notification5);
+
+        notificationService.sendNotificationToUsers(notification1,singleUser);
+        notificationService.sendNotificationToUsers(notification2,singleUser);
+        notificationService.sendNotificationToUsers(notification3,singleUser);
+        notificationService.sendNotificationToUsers(notification3,singleUser2);
+
+        notificationService.sendNotificationToUsers(notification4,singleUser);
+        notificationService.sendNotificationToUsers(notification5,groupOfAllUsers);
+        notificationService.sendNotificationToUsers(notification3,singleUser2);
+
+        System.out.println(" ------- Get all -----");
+        List<UserNotification> nnn = notificationService.getAllNotifications();
+        for (UserNotification userN: nnn) {
+            System.out.print(userN.getAcceptNumber() + "  " + userN.getNotification().getMessageTitle());
+            System.out.println(" notification Id: " + userN.getId().getNotificationId() + "  user Id: " + userN.getId().getUserId());
+        }
+        System.out.println("==============");
+        System.out.println("To find UserNotification By NoteId and UserId");
+        UserNotification un = notificationService.findByNoteIdAndUserId(1696L, 3L);
+        if (un != null) {
+            System.out.println("Status was: " + un.getStatus());
+            un.setStatus("read");
+        }
+        assert un != null;
+        System.out.println("Message title: " + un.getNotification().getMessageTitle());
+        System.out.println("Note Id " + un.getNotification().getId());
+        System.out.println("User Id " + un.getUser().getId());
+        System.out.println("Notification status " + un.getStatus());
+        System.out.println("==============");
+        un.getNotification().setMessageTitle("---Changed title ----");
+        notificationService.updateUserNotificationFields(un);
+        UserNotification un1 = notificationService.findByNoteIdAndUserId(1696L, 3L);
+//        if (un1 != null) {
+//            System.out.println("Status was" + un1.getStatus());
+//          //  un.setStatus("read");
+//        }
+        assert un1 != null;
+        System.out.println("Message title: " + un1.getNotification().getMessageTitle());
+        System.out.println("Note Id " + un1.getNotification().getId());
+        System.out.println("User Id " + un1.getUser().getId());
+        System.out.println("Notification status " + un1.getStatus());
+
+        System.out.println("==============");
+
+        System.out.println(" ------- Get all for 3 notifications  -----");
+        List<UserNotification> nn = notificationService.getUsersAllNotifications(userService.getUserById(3L));
+        for (UserNotification userN: nn) {
+            System.out.println(userN.getNotification().getMessageTitle());
         }
     }
 }

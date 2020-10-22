@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Slf4j
 public class MainPageController {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
     @GetMapping("/")
     public String getMainPage(@AuthenticationPrincipal() User user, Model model) {
         log.info("Use this default logger");
@@ -43,6 +41,12 @@ public class MainPageController {
     public String profilePage(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute(user);
         return "profile";
+    }
+
+    @GetMapping("/notifications")
+    public String profileNotificationPage(@AuthenticationPrincipal User user, Model model) {
+        model.addAttribute(user);
+        return "profile-notifications";
     }
 
     @GetMapping("/{id}")
