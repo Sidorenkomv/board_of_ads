@@ -6,8 +6,8 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/board_of_ads
-    username: root
-    password: root
+    username: postgres
+    password: 2
     initialization-mode: always
 
   jpa:
