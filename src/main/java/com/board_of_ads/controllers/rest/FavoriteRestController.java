@@ -23,9 +23,17 @@ public class FavoriteRestController {
     private final FavoriteService favoriteService;
     private final BindingResultLogs bindingResultLogs;
 
-    @GetMapping("/all")
-    public Response<List<Favorite>> getAllUsersList() {
-        List<Favorite> favoriteList = favoriteService.findAll();
+    @GetMapping("/userid/{id}")
+    public Response<List<Favorite>> getAllUsersListById(@PathVariable(name = "id") String id) {
+        List<Favorite> favoriteList = favoriteService.findParentLikeId(id);
+        return (favoriteList.size() > 0)
+                ? Response.ok(favoriteList)
+                : new ErrorResponse<>(new Error(204, "No favorite in table"));
+    }
+
+    @GetMapping("/userip")
+    public Response<List<Favorite>> getAllUsersListByIp() throws UnknownHostException {
+        List<Favorite> favoriteList = favoriteService.findParentLikeIp(InetAddress.getLocalHost().getHostAddress());
         return (favoriteList.size() > 0)
                 ? Response.ok(favoriteList)
                 : new ErrorResponse<>(new Error(204, "No favorite in table"));
@@ -45,6 +53,12 @@ public class FavoriteRestController {
     @GetMapping("/addregid/{id}")
     public Response<Void> getFavoriteByIpUpdateId(@PathVariable(name = "id") String id) throws UnknownHostException {
         favoriteService.updateFavoriteSetUseridForIp(id, InetAddress.getLocalHost().getHostAddress());
+        return new Response<>();
+    }
+
+    @GetMapping("/addregipafter/{id}")
+    public Response<Void> getFavoriteByIpUpdateIpAfter(@PathVariable(name = "id") String id) throws UnknownHostException {
+        favoriteService.updateFavoriteSetUseridForIpAfter(id, InetAddress.getLocalHost().getHostAddress());
         return new Response<>();
     }
 

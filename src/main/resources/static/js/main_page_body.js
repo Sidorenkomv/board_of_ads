@@ -127,6 +127,7 @@ function getPostingsTable(posts) {
 
         if ($("#reguserid").val()) {
             fetch(`/api/favorite/addregid/` + $("#reguserid").val())
+            fetch(`/api/favorite/addregipafter/` + $("#reguserid").val())
         }
 
 

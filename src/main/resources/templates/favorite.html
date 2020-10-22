@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Favorite</title>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/header-fragment-style.css" th:href="@{/css/header-fragment-style.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/fragment-navigate-panel-style.css" th:href="@{/css/fragment-navigate-panel-style.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/auth-style.css" th:href="@{/css/auth-style.css}"/>
+
+    <!-- script -->
+    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<style>
+    .container {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .wrap, .inner-wrap {
+        width: 92%;
+        height: 800px;
+    }
+
+    .h1 {
+        margin-top: 30px;
+        margin-left: 48px;
+    }
+
+    .ul {
+        width: 40%;
+        margin-left: 10px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    li {
+        list-style-type: none;
+    }
+
+    .delete {
+        border-radius: 10%;
+        border-color: #cccccc;
+        background: white;
+        margin-left: 60px;
+        color: #a1a1a1;
+    }
+
+    .favorite-container {
+        border: 1px solid gray;
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        height: 26%;
+        width: 65%;
+    }
+
+    .photo, .desc, .buttons {
+        border: 1px solid gray;
+        display: flex;
+        justify-content: center;
+        height: 86%;
+        width: 33%;
+        margin-top: 2%;
+        margin-left: 2%;
+    }
+
+    .buttons {
+        width: 28%;
+    }
+
+    .addToWish, .deleteWish {
+        margin-top: 8px;
+        margin-left: 77px;
+        width: 15px;
+        position: absolute;
+        z-index: 999;
+    }
+
+    .top {
+        margin-top: -15px;
+    }
+
+    .text-size {
+        font-size: 14px;
+    }
+
+</style>
+<body>
+<!--header-->
+<header th:insert="fragments/header::main-header"></header>
+<div th:insert="fragments/authorization-button::authorization-button"></div>
+
+<div class="container">
+    <div class="wrap">
+        <div th:insert="fragments/navigate-panel::navigate-header"></div>
+        <div class="inner-wrap" id="render">
+            <h1 class="h1">Избранное</h1>
+            <ul class="ul">
+                <li><h5>Объявления</h5></li>
+                <li><a href="#">Поиски</a></li>
+                <li><a href="#">Продавцы</a></li>
+            </ul>
+            <button class="delete">Удалить</button>
+        </div>
+    </div>
+</div>
+
+<script src="../static/js/favorite_page.js" th:src="@{/js/favorite_page.js}"></script>
+</body>
+</html>
