@@ -39,7 +39,7 @@ function getPostingsTable(posts) {
                                     <div id="price">${postingDTO.price} ₽</div>
                                 </strong>
                                 <div class="card-text text-muted">
-                                    <div id="meetingPlace">${postingDTO.meetingAddress}</div>
+                                    <div id="meetingPlace">${postingDTO.city}</div>
                                     <div id="timeOfPosting">${date}</div>
                                 </div>
                             </div>
