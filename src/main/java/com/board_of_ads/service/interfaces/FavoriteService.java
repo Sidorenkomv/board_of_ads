@@ -6,11 +6,15 @@ import java.util.List;
 
 public interface FavoriteService {
 
-    List<Favorite> findAll();
-
     Favorite addFavorite(Favorite favorite);
 
     void deleteFavorite(Long id);
 
     void updateFavoriteSetUseridForIp(String userid, String ip);
+
+    void updateFavoriteSetUseridForIpAfter(String ip, String userid);
+
+    List<Favorite> findParentLikeIp(String ip);
+
+    List<Favorite> findParentLikeId(String id);
 }

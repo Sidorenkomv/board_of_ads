@@ -14,7 +14,7 @@
             </div>
 
             <div style="padding-top: 5px" class="header-favorite-button">
-                <a href="#">
+                <a href="/favorite">
                     <svg width="25" height="21" xmlns="http://www.w3.org/2000/svg">
                         <path style="padding-top: 5px" class="fill-favorite-icon"
                               d="M10.918 5.085a5.256 5.256 0 0 1 7.524 0c2.077 2.114 2.077 5.541 0 7.655l-7.405 7.534a.75.75 0 0 1-1.074 0L2.558 12.74c-2.077-2.114-2.077-5.54 0-7.655a5.256 5.256 0 0 1 7.524 0c.15.152.289.312.418.479.13-.167.269-.327.418-.479z"></path>
@@ -32,8 +32,8 @@
                         <a class="btn btn-light " type="button" data-toggle="dropdown"
                            data-target="#dropdownUserInfo" id="dropdownButton" style="padding: 1px" href="#">
                             <!--/*@thymesVar id="user" type="com.board_of_ads.models.User"*/-->
-                            <div th:if="${user.getAvatar()}">
-                                <img class="user-info-avatar" id="avatar" th:src="${user.getAvatar().getPathURL()}">
+                            <div style="display: flex;" th:if="${user.getAvatar()}">
+                                <img style="height: 30px; width: 30px; border-radius: 100%; margin-right: 10px;" class="user-info-avatar" id="avatar" th:src="${user.getAvatar().getPathURL()}">
                                 <div class="user-info-name" id="name" th:text="${user.getFirsName() + ' ' + user.getLastName()}">%username%</div>
                                 <input type="hidden" id="reguserid" th:value="${user.getId()}">
                             </div>
