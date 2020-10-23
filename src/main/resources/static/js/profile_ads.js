@@ -32,7 +32,7 @@ function getAllUserPosts() {
 
                 let title = document.createTextNode(post.title);
                 let price = document.createTextNode(post.price + ' ₽');
-                let meeting = document.createTextNode(post.meetingAddress);
+                let meeting = document.createTextNode(post.city);
 
                 divSlider.setAttribute('id', 'userImageSlider' + activeCounter);
                 divSlider.setAttribute('class', 'carousel slide');
