@@ -12,7 +12,7 @@ elementCreateUser.onclick = function () {
 async function regNewUser() {
     let data = {
 
-        firsName: $('#userNameReg').val(),
+        firstName: $('#userNameReg').val(),
         password: $('#userPasswordReg').val(),
         email: $('#userEmailReg').val(),
 

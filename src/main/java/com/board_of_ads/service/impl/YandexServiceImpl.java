@@ -159,7 +159,7 @@ public class YandexServiceImpl implements YandexService {
         user.setEnable(true);
         user.setDataRegistration(LocalDateTime.now());
         user.setEmail(userData.get("email"));
-        user.setFirsName(userData.get("first_name"));
+        user.setFirstName(userData.get("first_name"));
         user.setLastName(userData.get("last_name"));
         user.setAvatar(new Image(null, userData.get("avatar_link")));
         user.setPassword(userData.get("email")); //todo create set password page (and phone)

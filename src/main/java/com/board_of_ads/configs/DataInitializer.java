@@ -54,7 +54,7 @@ public class DataInitializer {
             User admin = new User();
             admin.setEmail("admin@mail.ru");
             admin.setPassword("1234567");
-            admin.setFirsName("Admin");
+            admin.setFirstName("Admin");
             admin.setLastName("Admin");
             admin.setPhone("8-922-0123456");
             admin.setAvatar(new Image(null, "images/admin.jpg"));
@@ -68,7 +68,7 @@ public class DataInitializer {
             User user = new User();
             user.setEmail("user@mail.ru");
             user.setPassword("1234567");
-            user.setFirsName("User");
+            user.setFirstName("User");
             user.setLastName("User");
             user.setPhone("8-922-1234567");
             user.setAvatar(new Image(null, "images/user.jpg"));
