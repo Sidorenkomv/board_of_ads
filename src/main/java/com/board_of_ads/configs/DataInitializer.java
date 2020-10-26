@@ -640,7 +640,7 @@ public class DataInitializer {
         if (userService.getUserByEmail("hero@mail.ru") == null) {
             User user = new User();
             user.setEmail("hero@mail.ru");
-            user.setPassword("222222");
+            user.setPassword("1111111");
             user.setFirsName("Hero");
             user.setLastName("Sensei");
             user.setAvatar(new Image(null, "images/user.jpg"));
@@ -698,16 +698,10 @@ public class DataInitializer {
             notificationService.updateUserNotificationFields(un);
         }
 
-        UserNotification un2 = notificationService.findByNoteIdAndUserId(1695L, adminId);
+        UserNotification un2 = notificationService.findByNoteIdAndUserId(1694L, adminId);
         if (un2 != null) {
             un2.setUrgentLevel(2);
             notificationService.updateUserNotificationFields(un2);
-        }
-
-        UserNotification un3 = notificationService.findByNoteIdAndUserId(1693L, adminId);
-        if (un3 != null) {
-            un3.setUrgentLevel(2);
-            notificationService.updateUserNotificationFields(un3);
         }
     }
 }
