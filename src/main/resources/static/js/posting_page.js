@@ -104,7 +104,7 @@ async function getPostingInfo(id) {
     $("#timeOfPosting").append(date);
     $("#price").append(`${postingDto.price} ₽`);
     $("#contactNumber").append(`<br>${postingDto.contact}`);
-    $("#address").append(`${postingDto.meetingAddress}`);
+    $("#address").append(`${postingDto.city}`);
     $("#description").append(`${postingDto.description}`);
 
 }
