@@ -37,18 +37,6 @@ public class MainPageController {
         return "newpost-page";
     }
 
-    @GetMapping("/profile")
-    public String profilePage(@AuthenticationPrincipal User user, Model model) {
-        model.addAttribute(user);
-        return "profile";
-    }
-
-    @GetMapping("/notifications")
-    public String profileNotificationPage(@AuthenticationPrincipal User user, Model model) {
-        model.addAttribute(user);
-        return "profile-notifications";
-    }
-
     @GetMapping("/{id}")
     public String postingPage(@AuthenticationPrincipal User user, Model model, @PathVariable Long id) {
         model.addAttribute("user", user != null ? user : new User());

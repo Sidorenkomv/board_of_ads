@@ -6,7 +6,7 @@ import com.board_of_ads.models.UserNotification;
 import com.board_of_ads.repository.NotificationRepository;
 import com.board_of_ads.repository.UserNotificationRepository;
 import com.board_of_ads.service.interfaces.NotificationService;
-import com.board_of_ads.service.interfaces.UserService;
+
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -28,8 +26,6 @@ public class NotificationServiceImpl implements NotificationService {
     private final UserNotificationRepository userNotificationRepository;
     @Autowired
     private final NotificationRepository notificationRepository;
-    @Autowired
-    private final UserService userService;
 
     @Override
     public void createNotification(Notification notification) {
@@ -76,7 +72,6 @@ public class NotificationServiceImpl implements NotificationService {
             log.error("Exception occur while fetch Notification by User ", e);
             return null;
         }
-
     }
 
     @Override
@@ -106,5 +101,21 @@ public class NotificationServiceImpl implements NotificationService {
             log.error("Exception occur while trying to update UserNotification ", e);
             return false;
         }
+    }
+
+    @Override
+    public int[] getUsersNotificationsCountMap(User user){
+        int[] countMap = new int[3];
+        List<UserNotification> userNotifications = getUsersAllNotifications(user);
+        if ( userNotifications.size() > 0 ) {
+            countMap[0] = userNotifications.size();
+            for (UserNotification un : userNotifications) {
+                if (un.getStatus().equals("newSent")) {
+                    countMap[1]++;
+                }
+            }
+            countMap[2] = countMap[0] - countMap[1];
+        }
+        return countMap;
     }
 }

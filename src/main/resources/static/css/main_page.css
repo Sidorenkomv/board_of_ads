@@ -5,3 +5,21 @@
 }
 
 .redborder { border: 1px solid red; }
+
+.bell_icons {
+    type: text/css;
+    enable-background: new 0 0 32 32;
+}
+
+.note_bell {
+    fill: none;
+    stroke: red;
+    stroke-width: 3;
+    stroke-linejoin: round;
+    stroke-miterlimit: 10;
+}
+
+.note_bell_count {
+    font-weight: bold;
+}
+

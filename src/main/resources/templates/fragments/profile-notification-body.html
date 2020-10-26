@@ -1,5 +1,5 @@
-<div th:fragment="profile-body" xmlns:th="https://www.thymeleaf.org">
-    <div class="profile-body">
+<div th:fragment="profile-notification-body" xmlns:th="https://www.thymeleaf.org">
+    <div class="profile-notification-body">
         <li class="dropdown-divider"></li>
         <div class="row">
             <div class="col-md-3">
@@ -17,9 +17,9 @@
                         %username%
                     </div>
                 </div>
-                <div id="userpostid" class="userpostid" th:text="${user.getId()}"></div>
+                <div id="profile-user-id" class="profile-user-id" th:text="${user.getId()}"></div>
                 <a href="#">
-                    <span style="color: black"><strong>0,0</strong></span>
+                    <span style="color: black"><strong>3,0</strong></span>
                     <div class="rating-mini-profile">
                         <span class="active"></span>
                         <span class="active"></span>
@@ -31,13 +31,13 @@
                 </a>
                 <li class="dropdown-divider"></li>
                 <div class="profile-menu-font">
-                    <strong th:text="#{myAds}">Мои объявления</strong><br>
+                    <a th:text="#{myAds}" href="/ads" id="noteCallLeft">Мои объявления</a><br>
                     <a th:text="#{myOrders}" href="#">Заказы</a><br>
                     <a th:text="#{MyReviews}" href="#">Мои отзывы</a><br>
                     <a th:text="#{Favourites}" href="#">Избранное</a><br>
                     <li class="dropdown-divider"></li>
-                    <a th:text="#{messages}" href="#">Сообщения</a><br>
-                    <a th:text="#{Notifications}" href="#">Уведомления</a><br>
+                    <a th:text="#{messages}" href="#" >Сообщения</a><br>
+                    <strong th:text="#{Notifications}">Уведомления</strong><br>
                     <li class="dropdown-divider"></li>
                     <a th:text="#{Wallet}" href="#">Кошелек</a><br>
                     <a th:text="#{PaidService}" href="#">Платные услуги</a><br>
@@ -46,39 +46,10 @@
                 </div>
             </div>
 
-            <div class="col-md-9">
-                <h1>Мои уведомления</h1>
-                <li class="dropdown-divider"></li>
-                <ul class="nav nav-pills mb-2" id="pills-tab" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link active" id="active-ads-tab" data-toggle="pill" href="#active-ads" role="tab"
-                           aria-controls="active-ads" aria-selected="true">Новые</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="archive-ads-tab" data-toggle="pill" href="#archive-ads" role="tab"
-                           aria-controls="archive-ads" aria-selected="false">Прочитанные</a>
-                    </li>
-                </ul>
-                <li class="dropdown-divider"></li>
-                <div class="tab-content" id="pills-tabContent">
-                    <div class="tab-pane fade show active" id="active-ads" role="tabpanel"
-                         aria-labelledby="active-ads-tab">
-                        <table class="table table-borderless" id="userPo">
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="tab-pane fade" id="archive-ads" role="tabpanel" aria-labelledby="archive-ads-tab">
-                        <table class="table table-borderless" id="userPoArch">
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+            <div class="col-md-9" id="posts_block">
+                <div id="profile-notes-content"  th:insert="fragments/posts_block_fragments::profile-notifications-block"></div>
 
             </div>
-
-        </div>
     </div>
 </div>
 </div>

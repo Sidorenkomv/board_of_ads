@@ -15,9 +15,7 @@ public interface UserNotificationRepository extends JpaRepository<UserNotificati
 
     List<UserNotification> getUserNotificationsByUser (User user);
 
-  //  @Query("select n from UserNotification n  ORDER BY n.sentTime DESC")
     @Query("select n from UserNotification n ")
-
     List<UserNotification> getAll();
 
     UserNotification findById_NotificationIdAndId_UserId(Long notificationId, Long userId);

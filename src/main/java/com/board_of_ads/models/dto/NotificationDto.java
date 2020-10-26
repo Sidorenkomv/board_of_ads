@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Data
@@ -20,7 +21,7 @@ public class NotificationDto {
     private String messageTitle;
     private String messageBody;
     private String clickAction;
-    private LocalDateTime sentTime;
+    private String sentTime;
     private String status;
     private int urgentLevel;
 
@@ -31,9 +32,10 @@ public class NotificationDto {
         messageTitle = userNote.getNotification().getMessageTitle();
         messageBody = userNote.getNotification().getMessageBody();
         clickAction = userNote.getNotification().getClickAction();
-        sentTime = userNote.getSentTime();
         status = userNote.getStatus();
         urgentLevel = userNote.getUrgentLevel();
+        sentTime = convertTime(userNote.getSentTime());
+
     }
 
     public NotificationDto(UserNotification userNote, Notification notification) {
@@ -41,9 +43,13 @@ public class NotificationDto {
         messageTitle = notification.getMessageTitle();
         messageBody = notification.getMessageBody();
         clickAction = notification.getClickAction();
-        sentTime = userNote.getSentTime();
+        sentTime = convertTime(userNote.getSentTime());
         status = userNote.getStatus();
         urgentLevel = userNote.getUrgentLevel();
+    }
+
+    private String convertTime(LocalDateTime dateObj) {
+        return dateObj.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"));
     }
 
 }

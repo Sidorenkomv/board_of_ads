@@ -27,8 +27,6 @@ public class UserNotificationId  implements Serializable {
         this.userId = userId;
     }
 
-    //Getters omitted for brevity
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -5,22 +5,16 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Setter
@@ -60,23 +54,5 @@ public class Notification {
         users.add(userNote);
         user.getNotifications().add(userNote);
     }
-
-    public void removeUser(User user) {
-        for (Iterator<UserNotification> iterator = users.iterator();
-             iterator.hasNext(); ) {
-            UserNotification userNote = iterator.next();
-
-            if (userNote.getNotification().equals(this) &&
-                    userNote.getUser().equals(user)) {
-                iterator.remove();
-                userNote.getUser().getNotifications().remove(userNote);
-                userNote.setNotification(null);
-                userNote.setUser(null);
-            }
-        }
-    }
-
-
-
 }
 

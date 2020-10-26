@@ -71,7 +71,7 @@ public class DataInitializer {
             Set<Role> roleAdmin = new HashSet<>();
             roleAdmin.add(roleService.getRoleByName("ADMIN"));
             admin.setRoles(roleAdmin);
-          //  admin.setCity(cityService.findCityByName("Екатеринбург").get());
+           // admin.setCity(cityService.findCityByName("Екатеринбург").get());
             userService.saveUser(admin);
         }
         if (userService.getUserByEmail("user@mail.ru") == null) {
@@ -85,7 +85,7 @@ public class DataInitializer {
             Set<Role> roleAdmin = new HashSet<>();
             roleAdmin.add(roleService.getRoleByName("USER"));
             user.setRoles(roleAdmin);
-       //     user.setCity(cityService.findCityByName("Рязань").get());
+           // user.setCity(cityService.findCityByName("Рязань").get());
             userService.saveUser(user);
         }
     }
@@ -656,24 +656,25 @@ public class DataInitializer {
         for (User oneUser: groupOfAllUsers ) {
             log.info(oneUser.getUsername());
         }
-        List<User> singleUser = Collections.singletonList(userService.getUserById(3L));
-        List<User> singleUser2 = Collections.singletonList(userService.getUserById(5L));
-
+        Long adminId = userService.getUserByEmail("admin@mail.ru").getId();
+        Long simplyUserId = userService.getUserByEmail("user@mail.ru").getId();
+        List<User> singleUser = Collections.singletonList(userService.getUserById(adminId));
+        List<User> singleUser2 = Collections.singletonList(userService.getUserById(simplyUserId));
         Notification notification1 = new Notification("Это вообще первое уведомление",
                 "Привет! Раз ты читаешь это уведомление, наверное ты в команде проекта board of ads. Ты находишься в разделе уведомлений");
-        Notification notification2 = new Notification("Как устроены запросы",
-                "Тестируешь раздел уведомлений? Запросы отправляются в Rest-контроллер NotificationRestController");
-        Notification notification3 = new Notification("Какой javascript задействован в разделе уведомления?",
-                "Логика управления уведомлениями зашита в скрипте profile_notes.js");
-        Notification notification4 = new Notification("Что получаем в response?",
-                "При fetch запросе получаем DTO сущность NotificationDTO с полями notificationId, " +
-                        "messageTitle, messageBody, clickAction, sentTime, status, urgentLevel");
-        Notification notification5 = new Notification("Что мы делаем?",
+        Notification notification2 = new Notification("Что мы делаем?",
                 "Делаем клон Avito. Проект полу-настоящий, венчурная внутренняя разработка JM силами " +
                         "студентов на проекте. Задача – самостоятельно взаимодействовать в командной работе с " +
                         "минимальным участием ментора");
+        Notification notification3 = new Notification("Какой javascript задействован в разделе уведомления?",
+                "Логика управления уведомлениями зашита в скрипте profile_notes.js." +
+                        " Смотри resources/static/js");
+        Notification notification4 = new Notification("Что получаем в response?",
+                "При fetch запросе получаем DTO сущность NotificationDTO с полями notificationId, " +
+                        "messageTitle, messageBody, clickAction, sentTime, status, urgentLevel");
+        Notification notification5 = new Notification("Как устроены Rest-запросы на уведомления?",
+                "Тестируешь раздел уведомлений? Запросы отправляются в Rest-контроллер NotificationRestController");
         notification2.setClickAction("https://www.google.com");
-        notification2.setClickAction("смотри ..resources/static/js/profile_notes.js");
         notification4.setClickAction("https://learn.javascript.ru/fetch");
 
         notificationService.createNotification(notification1);
@@ -691,44 +692,22 @@ public class DataInitializer {
         notificationService.sendNotificationToUsers(notification5,groupOfAllUsers);
         notificationService.sendNotificationToUsers(notification3,singleUser2);
 
-        System.out.println(" ------- Get all -----");
-        List<UserNotification> nnn = notificationService.getAllNotifications();
-        for (UserNotification userN: nnn) {
-            System.out.print(userN.getAcceptNumber() + "  " + userN.getNotification().getMessageTitle());
-            System.out.println(" notification Id: " + userN.getId().getNotificationId() + "  user Id: " + userN.getId().getUserId());
-        }
-        System.out.println("==============");
-        System.out.println("To find UserNotification By NoteId and UserId");
-        UserNotification un = notificationService.findByNoteIdAndUserId(1696L, 3L);
+        UserNotification un = notificationService.findByNoteIdAndUserId(1696L, adminId);
         if (un != null) {
-            System.out.println("Status was: " + un.getStatus());
             un.setStatus("read");
+            notificationService.updateUserNotificationFields(un);
         }
-        assert un != null;
-        System.out.println("Message title: " + un.getNotification().getMessageTitle());
-        System.out.println("Note Id " + un.getNotification().getId());
-        System.out.println("User Id " + un.getUser().getId());
-        System.out.println("Notification status " + un.getStatus());
-        System.out.println("==============");
-        un.getNotification().setMessageTitle("---Changed title ----");
-        notificationService.updateUserNotificationFields(un);
-        UserNotification un1 = notificationService.findByNoteIdAndUserId(1696L, 3L);
-//        if (un1 != null) {
-//            System.out.println("Status was" + un1.getStatus());
-//          //  un.setStatus("read");
-//        }
-        assert un1 != null;
-        System.out.println("Message title: " + un1.getNotification().getMessageTitle());
-        System.out.println("Note Id " + un1.getNotification().getId());
-        System.out.println("User Id " + un1.getUser().getId());
-        System.out.println("Notification status " + un1.getStatus());
 
-        System.out.println("==============");
+        UserNotification un2 = notificationService.findByNoteIdAndUserId(1695L, adminId);
+        if (un2 != null) {
+            un2.setUrgentLevel(2);
+            notificationService.updateUserNotificationFields(un2);
+        }
 
-        System.out.println(" ------- Get all for 3 notifications  -----");
-        List<UserNotification> nn = notificationService.getUsersAllNotifications(userService.getUserById(3L));
-        for (UserNotification userN: nn) {
-            System.out.println(userN.getNotification().getMessageTitle());
+        UserNotification un3 = notificationService.findByNoteIdAndUserId(1693L, adminId);
+        if (un3 != null) {
+            un3.setUrgentLevel(2);
+            notificationService.updateUserNotificationFields(un3);
         }
     }
 }

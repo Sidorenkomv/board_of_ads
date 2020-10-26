@@ -10,9 +10,6 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
@@ -42,7 +39,7 @@ public class UserNotification {
 
     @Size(max = 50)
     @Column
-    private String status = "newSent";		// ( newSent / read / deletedByUser)
+    private String status = "newSent";		// ( newSent / read / deletedByUser / ..)
 
     @Column
     private int urgentLevel = 1;
