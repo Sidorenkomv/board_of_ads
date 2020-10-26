@@ -23,6 +23,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.w3c.dom.html.HTMLBodyElement;
+import org.w3c.dom.html.HTMLDocument;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -76,16 +78,11 @@ public class InstagramServiceImpl implements InstagramService {
      */
     @Override
     public String getRequestBody(String code) {
-        return "client_id=649495255959244" +
-                "&client_secret=1dfd28b75b9f50202f2ca3e577952af8" +
-                "&grant_type=authorization_code" +
-                "&redirect_uri=https://localhost:5556/social/auth_instagram" +
-                "&code=" + code;
-        /*"client_id=" + clientId
+        return "client_id=" + clientId
                 + "&client_secret=" + clientSecret
                 + "&grant_type=authorization_code"
                 + "&redirect_uri=" + redirectURI
-                + "&code=" + code;*/
+                + "&code=" + code;
     }
 
     /**
@@ -120,6 +117,7 @@ public class InstagramServiceImpl implements InstagramService {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> httpEntity = new HttpEntity<>(headers);
         RestTemplate restTemplate = new RestTemplate();
+
         String url = userInfoURL + "?fields=id,username&access_token=" + token;
         ResponseEntity<String> responseEntity = restTemplate.exchange(url , HttpMethod.GET, httpEntity, String.class);
         Object obj = null;
@@ -132,6 +130,19 @@ public class InstagramServiceImpl implements InstagramService {
         Map<String, String> userData = new HashMap<>();
         userData.put("instagram_id", (String) jsonObject.get("id"));
         userData.put("username", (String) jsonObject.get("username"));
+
+        url = "https://api.instagram.com/" + jsonObject.get("username");
+        responseEntity = restTemplate.exchange(url , HttpMethod.GET, httpEntity, String.class);
+        String html = responseEntity.getBody();
+        html.replaceAll("\n", "");
+        String[] data = html.split("<title>")[1].split("</title>");
+        String photoLink = data[1].split("<meta property=\"og:image\" content=\"")[1].split("\" />")[0];
+        userData.put("photoLink", photoLink);
+        System.out.println(photoLink);
+        String[] fullName = data[0].split(" ");
+        userData.put("firstName", fullName[0]);
+        userData.put("lastName", fullName[1]);
+
         return userData;
     }
 
@@ -153,7 +164,7 @@ public class InstagramServiceImpl implements InstagramService {
      */
     @Override
     public User init(Map<String, String> userData) {
-        User user = userService.getUserByEmail(userData.get("username"));
+        User user = userService.getUserByEmail("https://instagram.com/" + userData.get("username"));
         if (user != null) {
             return user;
         }
@@ -163,9 +174,10 @@ public class InstagramServiceImpl implements InstagramService {
         user.setRoles(roles);
         user.setEnable(true);
         user.setDataRegistration(LocalDateTime.now());
-        user.setAvatar(new Image(null, "/images/instagram-logo.jpg"));
-        user.setEmail(userData.get("username") + "@instagram.com");
-        user.setFirsName(userData.get("username"));
+        user.setAvatar(new Image(null, userData.get("photoLink")));
+        user.setEmail("https://instagram.com/" + userData.get("username"));
+        user.setFirsName(userData.get("firstName"));
+        user.setLastName(userData.get("lastName"));
         user.setPassword(userData.get("instagram_id")); //todo create set password page (and phone)
         userService.saveUser(user);
         return user;

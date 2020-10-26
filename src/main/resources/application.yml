@@ -1,10 +1,15 @@
 server:
-  port: 5556
+  port: 5555
+
   ssl:
+    enable: true
     key-store-type: PKCS12
     key-store: classpath:keystore.p12
     key-store-password: rootroot
     key-alias: tomcat
+
+http:
+  port: 5556
 
 spring:
 
@@ -37,6 +42,8 @@ spring:
     debug: true
 
   security:
+    require-ssl: true
+
     oauth2:
       client:
         registration:
@@ -68,7 +75,7 @@ spring:
       client_id: 649495255959244
       client_secret: 1dfd28b75b9f50202f2ca3e577952af8
       auth_url: https://api.instagram.com/oauth/authorize
-      redirect_uri: https://localhost:5556/social/auth_instagram
+      redirect_uri: https://localhost:5555/social/auth_instagram
       token_url: https://api.instagram.com/oauth/access_token
       user_info_url: https://graph.instagram.com/me
 
