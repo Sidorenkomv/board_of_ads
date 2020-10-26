@@ -60,3 +60,11 @@
 .carousel-indicators li:active {
     border-bottom-color: blue;
 }
+
+.addToWish, .deleteWish {
+    margin-top: 8px;
+    margin-left: 185px;
+    width: 15px;
+    position: absolute;
+    z-index: 999;
+}

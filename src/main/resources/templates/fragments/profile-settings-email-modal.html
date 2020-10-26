@@ -1,0 +1,32 @@
+<div th:fragment="email-edit" xmlns:th="http://www.w3.org/1999/xhtml">
+    <div class="modal"
+         id="emailEditModal"
+         tabindex="-1"
+         role="dialog">
+        <div class="modal-dialog"
+             role="document">
+            <div class="modal-content modal-pswd center-block">
+                <div class="modal-body" id="emailBlock">
+                    <div class="h3 font-weight-bold ml-5">
+                      Укажите новую почту
+                    </div>
+                    <button class="close modal-pswd-close"
+                            data-dismiss="modal"
+                            data-marker="popup-location/close-button">X</button>
+                    <div class="form-group recovery-form-padding" id="emailModBlock">
+                        <input class="form-control"
+                               id="emailInput"
+                               type="text"
+                               placeholder="Адрес"/>
+                        <div class="">
+                            <button type="button"
+                                    id="editEmailButton"
+                                    class="btn btn-primary margin-button"
+                            >Готово</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

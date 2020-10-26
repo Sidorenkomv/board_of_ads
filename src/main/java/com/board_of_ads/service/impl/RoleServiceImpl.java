@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -33,6 +34,11 @@ public class RoleServiceImpl implements RoleService {
         Set<Role> roles = new HashSet<>();
         roles.add(getRoleByName("USER"));
         return roles;
+    }
+
+    @Override
+    public List<Role> allRolesFromDb() {
+        return roleRepository.findAll();
     }
 
 

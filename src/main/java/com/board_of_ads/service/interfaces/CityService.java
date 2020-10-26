@@ -1,6 +1,5 @@
 package com.board_of_ads.service.interfaces;
 
-
 import com.board_of_ads.models.City;
 
 import java.util.Optional;
@@ -11,4 +10,6 @@ public interface CityService {
     Set<City> getCitiesList();
 
     Optional<City> findCityByName(String name);
+
+    Optional<City> findCityById(Long id);
 }

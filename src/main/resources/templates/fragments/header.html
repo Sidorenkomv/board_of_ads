@@ -35,10 +35,12 @@
                             <div th:if="${user.getAvatar()}">
                                 <img class="user-info-avatar" id="avatar" th:src="${user.getAvatar().getPathURL()}">
                                 <div class="user-info-name" id="name" th:text="${user.getFirsName() + ' ' + user.getLastName()}">%username%</div>
+                                <input type="hidden" id="reguserid" th:value="${user.getId()}">
                             </div>
                             <div th:if="${user.getAvatar() == null}">
                                 <div class="user-info-avatar" id="avatar"></div>
                                 <div class="user-info-name" id="name" th:text="${user.getFirsName() + ' ' + user.getLastName()}">%username%</div>
+                                <input type="hidden" id="reguserid" th:value="${user.getId()}">
                             </div>
                         </a>
                         <ul class="dropdown-menu " id="dropdownUserInfo" aria-labelledby="dropdownButton">
@@ -70,7 +72,7 @@
                             <li class="dropdown-item "><a th:text="#{PaidService}" href="/profile">Платные услуги</a></li>
                             <li class="dropdown-item "><a th:text="#{AvitoPro}" href="/profile">Авито Pro</a></li>
                             <li class="dropdown-divider"></li>
-                            <li class="dropdown-item "><a th:text="#{settings}" href="/profile">Настройки</a></li>
+                            <li class="dropdown-item "><a th:text="#{settings}" href="/profile" id="profile-settings-from-header">Настройки</a></li>
                             <li class="dropdown-divider"></li>
                             <li class="dropdown-item"><a th:text="#{exit}" style="color: gray;" href="/logout">Выйти</a></li>
                         </ul>
