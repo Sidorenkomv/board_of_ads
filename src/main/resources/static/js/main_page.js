@@ -94,6 +94,7 @@ async function onClickOpt(id) {
     regionPosts = (await posts).data;
 }
 
+
 $(document).ready(function () {
     viewCities();
     addCategories();
@@ -101,8 +102,23 @@ $(document).ready(function () {
         $('#emailAuth').addClass("redborder");
         authorization();
     });
-});
 
+    const button = document.getElementById('buttonAuth');
+
+    $('#emailAuth').keyup(function(e) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if (code == 13) { //Enter keycode
+            button.click();
+        }
+    });
+
+    $('#passwordAuth').keyup(function(e) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if (code == 13) { //Enter keycode
+            button.click();
+        }
+    });
+});
 
 async function authorization() {
     $('#emailAuth').removeClass("redborder");
