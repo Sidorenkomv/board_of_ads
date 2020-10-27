@@ -50,6 +50,16 @@
         </encoder>
     </appender>
 
+    <appender name="ProfileController-Audit"
+              class="ch.qos.logback.core.FileAppender">
+        <file>${SIMPLE_CONTROLLER_HOME}/profile-controller/ProfileController-log_${today}.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>
+                %d{DEFAULT} %level - %msg%n
+            </Pattern>
+        </encoder>
+    </appender>
+
     <appender name="AdminRestController-Audit"
               class="ch.qos.logback.core.FileAppender">
         <file>${REST_CONTROLLER_HOME}/admin-rest-controller/AdminRestController-log_${today}.log</file>
@@ -162,6 +172,9 @@
     </logger>
     <logger name="com.board_of_ads.controllers.simple.AuthController" level="INFO" additivity="true">
         <appender-ref ref="AuthController-Audit"/>
+    </logger>
+    <logger name="com.board_of_ads.controllers.simple.ProfileController" level="INFO" additivity="true">
+        <appender-ref ref="ProfileController-Audit"/>
     </logger>
     <logger name="com.board_of_ads.controllers.rest.AdminRestController" level="INFO" additivity="true">
         <appender-ref ref="AdminRestController-Audit"/>
