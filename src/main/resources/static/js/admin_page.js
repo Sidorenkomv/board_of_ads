@@ -211,6 +211,7 @@ async function newUser() {
         password: $('#AdminPanelUserPassword').val(),
         firsName: $('#AdminPanelUserFirstName').val(),
         lastName: $('#AdminPanelUserLastName').val(),
+        phone: $('#AdminPanelUserPhoneCP').val(),
 
         roles: roleArray
 
@@ -242,6 +243,7 @@ async function newUser() {
 
         clearTheValidateCreate();
         document.getElementById("createUserResult").innerText = "Successful Creation";
+        console.log(data);
         clearTable();
         showAllUsersTable();
     } else {
@@ -295,6 +297,7 @@ async function updateUsers(value) {
         lastName: $('#updUserLastName').val(),
         email: $('#updUserEmail').val(),
         password: $('#updUserPassword').val(),
+        phone: $('#updUserPhone').val(),
 
         roles: roleArray
 
@@ -459,6 +462,7 @@ function fillingModalFormUpdate(id) {
             $('#updUserName').val(data.data.firsName);
             $('#updUserLastName').val(data.data.lastName);
             $('#updUserEmail').val(data.data.email);
+            $('#updUserPhone').val(data.data.phone);
             $('#updUserDataReg').val(usrDataRegistration);
 
         });
@@ -477,6 +481,7 @@ elementCreateNewUserHref.onclick = function () {
     document.getElementById('AdminPanelUserPassword').value = '';
     document.getElementById('AdminPanelUserFirstName').value = '';
     document.getElementById('AdminPanelUserLastName').value = '';
+    document.getElementById('adminPanelUserPhone').value = '';
 };
 
 //Сокрытие информации о создании нового пользователя
@@ -552,14 +557,27 @@ function clearTheValidateCreate() {
 
 $('#categoryPanel span').on('click', function () {
     document.getElementById('nav-userlist').style.display = "none";
+    document.getElementById('nav-analytics').style.display = "none";
     document.getElementById('nav-category').style.display = "block";
     document.getElementById('nav-userlist').className = "tab-pane fade";
+    document.getElementById('nav-analytics').className = "tab-pane fade";
     document.getElementById('nav-category').className = "tab-pane fade active show";
-})
+});
 
 $('#userTableAtAdminPanel span').on('click', function () {
     document.getElementById('nav-userlist').style.display = "block";
     document.getElementById('nav-category').style.display = "none";
+    document.getElementById('nav-analytics').style.display = "none";
     document.getElementById('nav-category').className = "tab-pane fade";
+    document.getElementById('nav-analytics').className = "tab-pane fade";
     document.getElementById('nav-userlist').className = "tab-pane fade active show";
-})
+});
+
+$('#statisticPanel span').on('click', function () {
+    document.getElementById('nav-userlist').style.display = "none";
+    document.getElementById('nav-category').style.display = "none";
+    document.getElementById('nav-analytics').style.display = "block";
+    document.getElementById('nav-category').className = "tab-pane fade";
+    document.getElementById('nav-analytics').className = "tab-pane fade active show";
+    document.getElementById('nav-userlist').className = "tab-pane fade";
+});
