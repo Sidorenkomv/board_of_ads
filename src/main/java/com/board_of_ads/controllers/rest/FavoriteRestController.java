@@ -39,12 +39,22 @@ public class FavoriteRestController {
                 : new ErrorResponse<>(new Error(204, "No favorite in table"));
     }
 
-    @PostMapping(value = "/add")
+    @PostMapping(value = "/add/none/authentication")
     public Response<Favorite> add(@RequestBody @Valid Favorite favorite, BindingResult bindingResult) throws UnknownHostException {
         log.info("Wish this default logger");
 
         if (bindingResultLogs.checkUserFields(bindingResult, log)) {
             favorite.setIp(InetAddress.getLocalHost().getHostAddress());
+            return new SuccessResponse<>(favoriteService.addFavorite(favorite));
+        }
+        return new ErrorResponse<>(new Error(204, "Incorrect Data"));
+    }
+
+    @PostMapping(value = "/add/authentication")
+    public Response<Favorite> addAfterAuthentication(@RequestBody @Valid Favorite favorite, BindingResult bindingResult) {
+        log.info("Favorite  this default logger");
+
+        if (bindingResultLogs.checkUserFields(bindingResult, log)) {
             return new SuccessResponse<>(favoriteService.addFavorite(favorite));
         }
         return new ErrorResponse<>(new Error(204, "Incorrect Data"));
