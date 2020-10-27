@@ -28,20 +28,20 @@ public class MainPageController {
     @GetMapping("/admin_page")
     public String adminPage(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute(user);
-        return "admin_page";
+        return "admin-page";
     }
 
     @GetMapping("/new_post")
     public String addNewPost(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("user", user != null ? user : new User());
-        return "newpost-page";
+        return "new-post-page";
     }
 
     @GetMapping("/{id}")
     public String postingPage(@AuthenticationPrincipal User user, Model model, @PathVariable Long id) {
         model.addAttribute("user", user != null ? user : new User());
         model.addAttribute("DtoId",id);
-        return "posting_page";
+        return "posting-page";
     }
 
     @GetMapping("/confirm/")
