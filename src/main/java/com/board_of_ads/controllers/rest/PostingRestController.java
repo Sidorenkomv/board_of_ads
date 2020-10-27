@@ -1,6 +1,7 @@
 package com.board_of_ads.controllers.rest;
 
 import com.board_of_ads.models.dto.PostingDto;
+import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.service.interfaces.CityService;
 import com.board_of_ads.service.interfaces.PostingService;
 import com.board_of_ads.util.Error;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/posting")
@@ -73,6 +75,14 @@ public class PostingRestController {
         log.info("Use this default logger");
         var postings = postingService
                 .searchPostings(categorySelect, citySelect, searchText, photoOption);
+        return (postings != null)
+                ? Response.ok(postings)
+                : new ErrorResponse<>(new Error(204, "No found postings"));
+    }
+
+    @GetMapping("/date")
+    public Response<Map<Integer, String>> findByDate() {
+        var postings = postingService.getPostBetweenDates();
         return (postings != null)
                 ? Response.ok(postings)
                 : new ErrorResponse<>(new Error(204, "No found postings"));

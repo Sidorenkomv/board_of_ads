@@ -6,6 +6,7 @@ import com.board_of_ads.models.posting.Posting;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface PostingService {
@@ -27,4 +28,6 @@ public interface PostingService {
     List<PostingDto> getAllUserPostings(Long user_id);
 
     List<PostingDto> searchPostings(String categorySelect, String citySelect, String searchText, String photoOption);
+
+    Map<Integer, String> getPostBetweenDates();
 }

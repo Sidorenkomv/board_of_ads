@@ -13,8 +13,12 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -68,8 +72,6 @@ public class PostingServiceImpl implements PostingService {
         cities.forEach(city -> result.addAll(postingRepository.findPostingByCity(city)));
         return getPostingDtos(result);
     }
-
-
 
     @Override
     public List<PostingDto> getAllPostings() {
@@ -156,5 +158,30 @@ public class PostingServiceImpl implements PostingService {
         }
 
         return resultList;
+    }
+
+    @Override
+    public Map<Integer, String> getPostBetweenDates() {
+        LocalDateTime localDateTime = LocalDateTime.of(2020, 10, 27, 0, 0);
+        LocalDateTime localDateTime2 = LocalDateTime.of(2020, 10, 27, 23, 59);
+
+        List<PostingDto> dtoList = postingRepository.findAllByDatePostingBetween(localDateTime, localDateTime2);
+        Map<Integer, String> result = new HashMap<>();
+
+        String tempEmail = dtoList.get(0).getUserEmail();
+        int counter = 0;
+
+        for (PostingDto postingDto : dtoList) {
+            if (postingDto.getUserEmail().equals(tempEmail)) {
+                counter++;
+            } else {
+                result.put(counter, tempEmail);
+                counter = 1;
+                tempEmail = postingDto.getUserEmail();
+            }
+        }
+        result.put(counter,tempEmail);
+
+        return result;
     }
 }
