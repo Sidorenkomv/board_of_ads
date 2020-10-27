@@ -18,10 +18,14 @@ public class FavoriteServiceImpl implements FavoriteService {
     private final FavoriteRepository favoriteRepository;
 
     @Override
-    public List<Favorite> findAll() {
-        return favoriteRepository.findAll();
+    public List<Favorite> findParentLikeIp(String ip) {
+        return favoriteRepository.findParentLikeIp(ip);
     }
 
+    @Override
+    public List<Favorite> findParentLikeId(String id) {
+        return favoriteRepository.findParentLikeId(id);
+    }
     @Override
     public Favorite addFavorite(Favorite favorite) {
         favoriteRepository.save(favorite);
@@ -36,5 +40,10 @@ public class FavoriteServiceImpl implements FavoriteService {
     @Override
     public void updateFavoriteSetUseridForIp(String userid, String ip) {
         favoriteRepository.updateFavoriteSetUseridForIp(userid, ip);
+    }
+
+    @Override
+    public void updateFavoriteSetUseridForIpAfter(String ip, String userid) {
+        favoriteRepository.updateFavoriteSetUseridForIpAfter(ip, userid);
     }
 }

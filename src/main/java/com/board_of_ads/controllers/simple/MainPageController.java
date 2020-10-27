@@ -48,4 +48,10 @@ public class MainPageController {
     public String confirmPassword() {
         return "main-page";
     }
+
+    @GetMapping("/favorite")
+    public String myFavoritePage(@AuthenticationPrincipal() User user, Model model) {
+        model.addAttribute("user", user != null ? user : new User());
+        return "favorite";
+    }
 }

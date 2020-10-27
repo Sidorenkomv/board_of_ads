@@ -23,15 +23,23 @@ public class FavoriteRestController {
     private final FavoriteService favoriteService;
     private final BindingResultLogs bindingResultLogs;
 
-    @GetMapping("/all")
-    public Response<List<Favorite>> getAllUsersList() {
-        List<Favorite> favoriteList = favoriteService.findAll();
+    @GetMapping("/userid/{id}")
+    public Response<List<Favorite>> getAllUsersListById(@PathVariable(name = "id") String id) {
+        List<Favorite> favoriteList = favoriteService.findParentLikeId(id);
         return (favoriteList.size() > 0)
                 ? Response.ok(favoriteList)
                 : new ErrorResponse<>(new Error(204, "No favorite in table"));
     }
 
-    @PostMapping(value = "/add")
+    @GetMapping("/userip")
+    public Response<List<Favorite>> getAllUsersListByIp() throws UnknownHostException {
+        List<Favorite> favoriteList = favoriteService.findParentLikeIp(InetAddress.getLocalHost().getHostAddress());
+        return (favoriteList.size() > 0)
+                ? Response.ok(favoriteList)
+                : new ErrorResponse<>(new Error(204, "No favorite in table"));
+    }
+
+    @PostMapping(value = "/add/none/authentication")
     public Response<Favorite> add(@RequestBody @Valid Favorite favorite, BindingResult bindingResult) throws UnknownHostException {
         log.info("Wish this default logger");
 
@@ -42,9 +50,25 @@ public class FavoriteRestController {
         return new ErrorResponse<>(new Error(204, "Incorrect Data"));
     }
 
+    @PostMapping(value = "/add/authentication")
+    public Response<Favorite> addAfterAuthentication(@RequestBody @Valid Favorite favorite, BindingResult bindingResult) {
+        log.info("Favorite  this default logger");
+
+        if (bindingResultLogs.checkUserFields(bindingResult, log)) {
+            return new SuccessResponse<>(favoriteService.addFavorite(favorite));
+        }
+        return new ErrorResponse<>(new Error(204, "Incorrect Data"));
+    }
+
     @GetMapping("/addregid/{id}")
     public Response<Void> getFavoriteByIpUpdateId(@PathVariable(name = "id") String id) throws UnknownHostException {
         favoriteService.updateFavoriteSetUseridForIp(id, InetAddress.getLocalHost().getHostAddress());
+        return new Response<>();
+    }
+
+    @GetMapping("/addregipafter/{id}")
+    public Response<Void> getFavoriteByIpUpdateIpAfter(@PathVariable(name = "id") String id) throws UnknownHostException {
+        favoriteService.updateFavoriteSetUseridForIpAfter(id, InetAddress.getLocalHost().getHostAddress());
         return new Response<>();
     }
 
