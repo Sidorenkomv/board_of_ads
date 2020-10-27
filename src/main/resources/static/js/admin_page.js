@@ -557,14 +557,27 @@ function clearTheValidateCreate() {
 
 $('#categoryPanel span').on('click', function () {
     document.getElementById('nav-userlist').style.display = "none";
+    document.getElementById('nav-analytics').style.display = "none";
     document.getElementById('nav-category').style.display = "block";
     document.getElementById('nav-userlist').className = "tab-pane fade";
+    document.getElementById('nav-analytics').className = "tab-pane fade";
     document.getElementById('nav-category').className = "tab-pane fade active show";
-})
+});
 
 $('#userTableAtAdminPanel span').on('click', function () {
     document.getElementById('nav-userlist').style.display = "block";
     document.getElementById('nav-category').style.display = "none";
+    document.getElementById('nav-analytics').style.display = "none";
     document.getElementById('nav-category').className = "tab-pane fade";
+    document.getElementById('nav-analytics').className = "tab-pane fade";
     document.getElementById('nav-userlist').className = "tab-pane fade active show";
-})
+});
+
+$('#statisticPanel span').on('click', function () {
+    document.getElementById('nav-userlist').style.display = "none";
+    document.getElementById('nav-category').style.display = "none";
+    document.getElementById('nav-analytics').style.display = "block";
+    document.getElementById('nav-category').className = "tab-pane fade";
+    document.getElementById('nav-analytics').className = "tab-pane fade active show";
+    document.getElementById('nav-userlist').className = "tab-pane fade";
+});

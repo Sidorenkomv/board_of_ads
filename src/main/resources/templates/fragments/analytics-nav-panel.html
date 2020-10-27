@@ -1,0 +1,30 @@
+<div th:fragment="anal-nav-panel" xmlns:th="https://www.thymeleaf.org">
+
+    <div id="hideAnalPanel">
+        <div class="tab-pane fade" id="nav-analytics">
+            <main class="container-fluid">
+                <div class="row">
+                    <div class="container">
+                        <ul class="nav nav-pills">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                                   aria-haspopup="true" aria-expanded="false" th:text="#{ads}">
+                                </a>
+                                <div class="dropdown-menu">
+                                    <h6 class="dropdown-header">Варианты отчетов</h6>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" data-toggle="modal" data-target="#anal-by-user-modal" href="#" th:text="#{adminPanelUsers}"></a>
+                                    <a class="dropdown-item" href="#">Другие отчеты</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#">Something else here</a>
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="dropdown-divider"></div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <div th:insert="fragments/analytics-ads-by-user::ads-by-user-seach"></div>
+</div>
