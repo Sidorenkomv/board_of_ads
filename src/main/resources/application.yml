@@ -48,8 +48,10 @@ spring:
       client:
         registration:
           google:
-            client-id: 214656904193-mpsfq89h2c8101ubel635dsjpvtah5gp.apps.googleusercontent.com
-            client-secret: o7AD6q5zqftfLiVBbU2bI3d9
+            client-id: 71097759200-4uvk2r27d0dpl6r6hmtvn2ildq1pk229.apps.googleusercontent.com
+            client-secret: rf303CdsMzSGtiOMIc3y8w_C
+            username: BoardOfAdsProject@gmail.com
+            password: Of@ds.2020
           facebook:
             clientId: 3623063611061740
             clientSecret: e9bd600c53c31c81447ab85e7de650e5
