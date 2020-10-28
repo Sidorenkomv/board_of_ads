@@ -30,6 +30,6 @@ public interface PostingRepository extends JpaRepository<Posting, Long> {
     @Query("select new com.board_of_ads.models.dto.PostingDto(p.id, p.title, p.description, p.price, p.contact, p.datePosting,p.city.name, p.isActive) from Posting p where p.user.id = :user_id")
     List<PostingDto> findAllUserPostings(@Param("user_id") Long id);
 
-    @Query("select new map (p.user.email, count (p.user.email)) from Posting p where p.datePosting BETWEEN :datePosting and :datePosting2 GROUP BY p.user.email")
-    List<Map> findAllByDatePostingBetween(LocalDateTime datePosting, LocalDateTime datePosting2);
+    @Query("select new map (p.user.email, count (p.user.email)) from Posting p where p.datePosting BETWEEN :startDate and :endDate GROUP BY p.user.email")
+    List<Map> findAllByDatePostingBetween(LocalDateTime startDate, LocalDateTime endDate);
 }

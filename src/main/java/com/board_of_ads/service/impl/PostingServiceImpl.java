@@ -168,10 +168,7 @@ public class PostingServiceImpl implements PostingService {
     @Override
     public List<Map> getPostBetweenDates(String date) {
         List<LocalDateTime> localDateTimes = dateConvertation(date);
-
-        List<Map> result = postingRepository.findAllByDatePostingBetween(localDateTimes.get(0), localDateTimes.get(1));
-
-        return result;
+        return postingRepository.findAllByDatePostingBetween(localDateTimes.get(0), localDateTimes.get(1));
     }
 
     private List<LocalDateTime> dateConvertation(String date) {
