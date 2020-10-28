@@ -27,12 +27,6 @@
     max-width: 1230px;
 }
 
-.profile-notification-body {
-    margin: 0 auto;
-    min-width: 800px;
-    max-width: 1230px;
-}
-
 .rating-mini-profile {
     display: inline-block;
     font-size: 0;
@@ -53,12 +47,8 @@
     color: gold;
 }
 
-.profile-user-id {
-    display: none;
-}
 
 .table td {
     padding: 0;
     margin: 0;
 }
-
