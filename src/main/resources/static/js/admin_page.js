@@ -1,9 +1,9 @@
-let viewAllUsersUrl = 'http://localhost:5556/api/admin/allUsers';
-let getUserById = 'http://localhost:5556/api/admin/user';
-let deleteUserById = 'http://localhost:5556/api/admin/user';
-let createNewUser = 'http://localhost:5556/api/admin/newUser';
-let updateUser = 'http://localhost:5556/api/admin/newUserData';
-let allRoles = 'http://localhost:5556/api/admin/allRoles';
+let viewAllUsersUrl = '/api/admin/allUsers';
+let getUserById = '/api/admin/user';
+let deleteUserById = '/api/admin/user';
+let createNewUser = '/api/admin/newUser';
+let updateUser = '/api/admin/newUserData';
+let allRoles = '/api/admin/allRoles';
 
 let adminUsersTable = $('#userTableJs tbody');
 let deleteButtonInModalForm = $('#deleteButtonInModal div');
