@@ -3,7 +3,6 @@ package com.board_of_ads.service.impl;
 import com.board_of_ads.models.City;
 import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.posting.Posting;
-import com.board_of_ads.repository.CategoryRepository;
 import com.board_of_ads.repository.CityRepository;
 import com.board_of_ads.repository.PostingRepository;
 import com.board_of_ads.service.interfaces.CategoryService;
@@ -15,15 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @AllArgsConstructor

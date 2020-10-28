@@ -1,25 +1,16 @@
 package com.board_of_ads.controllers.rest;
 
 import com.board_of_ads.models.User;
-import com.board_of_ads.models.dto.CategoryDto;
 import com.board_of_ads.models.dto.UserDto;
 import com.board_of_ads.service.interfaces.AuthorizationService;
 import com.board_of_ads.service.interfaces.UserService;
-import com.board_of_ads.util.Error;
-import com.board_of_ads.util.ErrorResponse;
 import com.board_of_ads.util.Response;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
