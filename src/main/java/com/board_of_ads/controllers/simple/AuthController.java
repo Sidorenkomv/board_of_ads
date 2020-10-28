@@ -1,5 +1,6 @@
 package com.board_of_ads.controllers.simple;
 
+import com.board_of_ads.service.interfaces.InstagramService;
 import com.board_of_ads.service.interfaces.MailService;
 import com.board_of_ads.service.interfaces.OAuth2Service;
 import com.board_of_ads.service.interfaces.OkService;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class AuthController {
 
     private final YandexService yandexService;
+    private final InstagramService instagramService;
     private final VkService vkService;
     private final OAuth2Service OAuth2Service;
     private final MailService mailService;
@@ -57,6 +59,15 @@ public class AuthController {
             return "redirect:" + yandexService.getAuthURL();
         }
         yandexService.auth(code);
+        return "redirect:/";
+    }
+
+    @GetMapping("/auth_instagram")
+    public String instagramAuth(@RequestParam(value = "code", required = false) String code, Model model) {
+        if (code == null) {
+            return "redirect:" + instagramService.getAuthURL();
+        }
+        instagramService.auth(code);
         return "redirect:/";
     }
 
