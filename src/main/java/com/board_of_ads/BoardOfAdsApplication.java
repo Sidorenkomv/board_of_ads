@@ -19,12 +19,6 @@ import org.springframework.context.event.EventListener;
 @Slf4j
 public class BoardOfAdsApplication {
 
-    @Value("${http.port}")
-    private int serverPortHttp;
-
-    @Value("${server.port}")
-    private int serverPortHttps;
-
     public static void main(String[] args) {
         SpringApplication.run(BoardOfAdsApplication.class, args);
     }
@@ -32,34 +26,5 @@ public class BoardOfAdsApplication {
     @EventListener(ApplicationReadyEvent.class)
     public void onStart() {
         log.info("Successful application launch");
-    }
-
-    // redirect all request to https://localhost:5555/*
-    @Bean
-    public ServletWebServerFactory servletContainer() {
-        TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {
-
-                    @Override
-                    protected void postProcessContext(Context context) {
-                        SecurityConstraint securityConstraint = new SecurityConstraint();
-                        securityConstraint.setUserConstraint("CONFIDENTIAL");
-                        SecurityCollection collection = new SecurityCollection();
-                        collection.addPattern("/*");
-                        securityConstraint.addCollection(collection);
-                        context.addConstraint(securityConstraint);
-                    }
-                };
-        tomcat.addAdditionalTomcatConnectors(createHttpConnector());
-        return tomcat;
-    }
-
-    private Connector createHttpConnector() {
-        Connector connector =
-                new Connector("org.apache.coyote.http11.Http11NioProtocol");
-        connector.setScheme("http");
-        connector.setSecure(false);
-        connector.setPort(serverPortHttp);
-        connector.setRedirectPort(serverPortHttps);
-        return connector;
     }
 }
