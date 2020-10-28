@@ -26,6 +26,7 @@ let elementAnalyticLink = document.getElementById('statisticPanel');
 $(document).ready(function () {
     showAllUsersTable();
     createRoleSelector();
+    calendar();
 });
 
 $(document).mouseup(function (e) {
@@ -45,17 +46,48 @@ $(document).mouseup(function (e) {
     }
 });
 
-//ОСНОВНЫЕ ФУНКЦИИ
+//Дата + календарь
 
+function calendar() {
+    var start = moment().subtract(29, 'days');
+    var end = moment();
+
+    function cb(start, end) {
+        $('#reportrange span').html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
+    }
+
+    $('#reportrange').daterangepicker({
+        startDate: start,
+        endDate: end,
+        ranges: {
+            'Today': [moment(), moment()],
+            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            'This Month': [moment().startOf('month'), moment().endOf('month')],
+            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        }
+    }, cb);
+
+    cb(start, end);
+}
+
+//ОСНОВНЫЕ ФУНКЦИИ
 function analyzePostCount() {
     $("#analyzeTBody").empty();
 
-    fetch(countPosts)
+    let date = $('#reportrange > span').text();
+
+    fetch(countPosts, {
+        method: 'POST',
+        body: JSON.stringify(date)
+        })
         .then((response) => {
             return response.json();
         })
         .then((data) => {
-            if (data.success) {
+
+            if (data.success && Object.keys(data.data).length !== 0) {
                 let counter = 0;
 
                 let tr = document.createElement('tr');
@@ -68,8 +100,8 @@ function analyzePostCount() {
                 tdCount.appendChild(document.createTextNode("Количество постов"));
 
                 tr.appendChild(tdPos);
-                    tr.appendChild(tdEmail);
-                        tr.appendChild(tdCount);
+                tr.appendChild(tdEmail);
+                tr.appendChild(tdCount);
                 usersPostAnalyzing.append(tr);
 
                 for (let o in data.data) {
@@ -89,6 +121,11 @@ function analyzePostCount() {
                     usersPostAnalyzing.append(tr);
                     console.log(counter);
                 }
+            } else {
+                let span = document.createElement('span');
+                let empty = document.createTextNode("За указанные даты посты отсутствуют");
+                span.appendChild(empty);
+                usersPostAnalyzing.append(span);
             }
         })
 }
@@ -548,9 +585,9 @@ elementUserTable.onclick = function () {
 
 /*создаем массив из значений полученных с селектора при создании нового пользователя*/
 function convertToRoleSet(roleId, roleName) {
-let roleArray = [];
+    let roleArray = [];
 
-    for(let index = 0; index < roleId.length; ++index) {
+    for (let index = 0; index < roleId.length; ++index) {
         roleArray.unshift({id: roleId[index], name: roleName[index]})
     }
 

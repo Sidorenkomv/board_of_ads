@@ -29,5 +29,5 @@ public interface PostingService {
 
     List<PostingDto> searchPostings(String categorySelect, String citySelect, String searchText, String photoOption);
 
-    Map<Integer, String> getPostBetweenDates();
+    Map<Integer, String> getPostBetweenDates(String date);
 }

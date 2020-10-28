@@ -10,11 +10,13 @@ import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.service.interfaces.PostingService;
 import com.board_of_ads.service.interfaces.RegionService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -24,6 +26,7 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 @Transactional
+@Slf4j
 public class PostingServiceImpl implements PostingService {
 
     private final PostingRepository postingRepository;
@@ -161,27 +164,46 @@ public class PostingServiceImpl implements PostingService {
     }
 
     @Override
-    public Map<Integer, String> getPostBetweenDates() {
-        LocalDateTime localDateTime = LocalDateTime.of(2020, 10, 27, 0, 0);
-        LocalDateTime localDateTime2 = LocalDateTime.of(2020, 10, 27, 23, 59);
+    public Map<Integer, String> getPostBetweenDates(String date) {
+        List<LocalDateTime> localDateTimes = dateConvertation(date);
 
-        List<PostingDto> dtoList = postingRepository.findAllByDatePostingBetween(localDateTime, localDateTime2);
+        List<PostingDto> dtoList = postingRepository.findAllByDatePostingBetween(localDateTimes.get(0), localDateTimes.get(1));
         Map<Integer, String> result = new HashMap<>();
+        try {
+            String tempEmail = dtoList.get(0).getUserEmail();
+            int counter = 0;
 
-        String tempEmail = dtoList.get(0).getUserEmail();
-        int counter = 0;
-
-        for (PostingDto postingDto : dtoList) {
-            if (postingDto.getUserEmail().equals(tempEmail)) {
-                counter++;
-            } else {
-                result.put(counter, tempEmail);
-                counter = 1;
-                tempEmail = postingDto.getUserEmail();
+            for (PostingDto postingDto : dtoList) {
+                if (postingDto.getUserEmail().equals(tempEmail)) {
+                    counter++;
+                } else {
+                    result.put(counter, tempEmail);
+                    counter = 1;
+                    tempEmail = postingDto.getUserEmail();
+                }
             }
+            result.put(counter, tempEmail);
+        } catch (IndexOutOfBoundsException e) {
+            log.warn("Ошибка формирования отчета, за выбранную дату нет созданных постов");
         }
-        result.put(counter,tempEmail);
-
         return result;
     }
+
+    private List<LocalDateTime> dateConvertation(String date) {
+
+        String[] arr = date.split("\\D+");
+
+        List<Integer> dateValues = new ArrayList<>();
+
+        Arrays.stream(arr).filter(a -> !a.equals("")).forEach(a -> dateValues.add(Integer.parseInt(a)));
+
+        LocalDateTime startDateTime = LocalDateTime.of(dateValues.get(2), dateValues.get(1), dateValues.get(0), 0, 0);
+        LocalDateTime endDateTime = LocalDateTime.of(dateValues.get(5), dateValues.get(4), dateValues.get(3), 23, 59);
+        List<LocalDateTime> localDateTimeList = new ArrayList<>();
+        localDateTimeList.add(startDateTime);
+        localDateTimeList.add(endDateTime);
+
+        return localDateTimeList;
+    }
+
 }
