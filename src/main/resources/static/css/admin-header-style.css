@@ -8,6 +8,10 @@ body {
     height: 40px;
     border-bottom: 1px solid #d8d8d8;
     background-color: #f7f7f7;
+
+
+
+
 }
 
 .header-container {
@@ -15,6 +19,8 @@ body {
     min-width: 800px;
     max-width: 1230px;
     display: flex;
+
+
 }
 
 .header-menu-left ul {
