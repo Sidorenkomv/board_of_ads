@@ -22,6 +22,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @AllArgsConstructor
@@ -193,12 +195,11 @@ public class PostingServiceImpl implements PostingService {
 
         String[] arr = date.split("\\D+");
 
-        List<Integer> dateValues = new ArrayList<>();
-
-        Arrays.stream(arr).filter(a -> !a.equals("")).forEach(a -> dateValues.add(Integer.parseInt(a)));
+        List<Integer> dateValues = Arrays.stream(arr).filter(a -> !a.equals("")).map(Integer::parseInt).collect(Collectors.toList());
 
         LocalDateTime startDateTime = LocalDateTime.of(dateValues.get(2), dateValues.get(1), dateValues.get(0), 0, 0);
         LocalDateTime endDateTime = LocalDateTime.of(dateValues.get(5), dateValues.get(4), dateValues.get(3), 23, 59);
+
         List<LocalDateTime> localDateTimeList = new ArrayList<>();
         localDateTimeList.add(startDateTime);
         localDateTimeList.add(endDateTime);
