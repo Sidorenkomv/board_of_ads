@@ -653,9 +653,6 @@ public class DataInitializer {
 
     private void initNotifications() {
         List<User> groupOfAllUsers = userService.getAllUsers();
-        for (User oneUser: groupOfAllUsers ) {
-            log.info(oneUser.getUsername());
-        }
         Long adminId = userService.getUserByEmail("admin@mail.ru").getId();
         Long simplyUserId = userService.getUserByEmail("user@mail.ru").getId();
         List<User> singleUser = Collections.singletonList(userService.getUserById(adminId));

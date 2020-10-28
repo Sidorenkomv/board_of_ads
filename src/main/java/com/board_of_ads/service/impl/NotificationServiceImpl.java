@@ -29,10 +29,9 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public void createNotification(Notification notification) {
-        log.info("In Method createNotification");
+        log.debug("In Method createNotification");
         try {
             notificationRepository.save(notification);
-            log.info("a {} notification created!", notification.getMessageTitle());
         } catch (Exception e) {
             log.error("Exception occur while save Notification ", e);
         }
@@ -40,7 +39,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public boolean sendNotificationToUsers(Notification notification, List<User> users) {
-        log.info("In Method send Notification To User");
+        log.debug("In Method send Notification To User");
         for (User thisUser : users) {
             try {
                 userNotificationRepository.save(new UserNotification(notification, thisUser));
@@ -54,7 +53,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public List<UserNotification> getUsersAllNotifications(User user) {
-        log.info("Get all notifications of {} - user, user.id = {} ", user.getFirsName(), user.getId());
+        log.debug("Get all notifications of {} - user, user.id = {} ", user.getFirsName(), user.getId());
         try {
             return userNotificationRepository.getUserNotificationsByUser(user);
         } catch (Exception e) {
@@ -65,7 +64,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public List<UserNotification> getAllNotifications() {
-        log.info("Get all notifications in Data base ");
+        log.debug("Get all notifications in Data base ");
         try {
             return userNotificationRepository.getAll();
         } catch (Exception e) {
@@ -76,7 +75,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public UserNotification findByNoteIdAndUserId(Long noteId, Long userId){
-        log.info(" in findByNoteIdAndUserId(Long noteId, Long userId) ...");
+        log.debug(" in findByNoteIdAndUserId(Long noteId, Long userId) ...");
         return userNotificationRepository.findById_NotificationIdAndId_UserId(noteId, userId);
     }
 
