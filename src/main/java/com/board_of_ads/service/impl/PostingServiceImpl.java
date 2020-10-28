@@ -166,28 +166,11 @@ public class PostingServiceImpl implements PostingService {
     }
 
     @Override
-    public Map<Integer, String> getPostBetweenDates(String date) {
+    public List<Map> getPostBetweenDates(String date) {
         List<LocalDateTime> localDateTimes = dateConvertation(date);
 
-        List<PostingDto> dtoList = postingRepository.findAllByDatePostingBetween(localDateTimes.get(0), localDateTimes.get(1));
-        Map<Integer, String> result = new HashMap<>();
-        try {
-            String tempEmail = dtoList.get(0).getUserEmail();
-            int counter = 0;
+        List<Map> result = postingRepository.findAllByDatePostingBetween(localDateTimes.get(0), localDateTimes.get(1));
 
-            for (PostingDto postingDto : dtoList) {
-                if (postingDto.getUserEmail().equals(tempEmail)) {
-                    counter++;
-                } else {
-                    result.put(counter, tempEmail);
-                    counter = 1;
-                    tempEmail = postingDto.getUserEmail();
-                }
-            }
-            result.put(counter, tempEmail);
-        } catch (IndexOutOfBoundsException e) {
-            log.warn("Ошибка формирования отчета, за выбранную дату нет созданных постов");
-        }
         return result;
     }
 
@@ -195,7 +178,10 @@ public class PostingServiceImpl implements PostingService {
 
         String[] arr = date.split("\\D+");
 
-        List<Integer> dateValues = Arrays.stream(arr).filter(a -> !a.equals("")).map(Integer::parseInt).collect(Collectors.toList());
+        List<Integer> dateValues = Arrays.stream(arr)
+                .filter(a -> !a.equals(""))
+                .map(Integer::parseInt)
+                .collect(Collectors.toList());
 
         LocalDateTime startDateTime = LocalDateTime.of(dateValues.get(2), dateValues.get(1), dateValues.get(0), 0, 0);
         LocalDateTime endDateTime = LocalDateTime.of(dateValues.get(5), dateValues.get(4), dateValues.get(3), 23, 59);

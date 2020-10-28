@@ -81,15 +81,14 @@ function analyzePostCount() {
     fetch(countPosts, {
         method: 'POST',
         body: JSON.stringify(date)
-        })
+    })
         .then((response) => {
             return response.json();
         })
         .then((data) => {
-
             if (data.success && Object.keys(data.data).length !== 0) {
-                let counter = 0;
 
+                let counter = 0;
                 let tr = document.createElement('tr');
                 let tdPos = document.createElement('td');
                 let tdEmail = document.createElement('td');
@@ -102,24 +101,28 @@ function analyzePostCount() {
                 tr.appendChild(tdPos);
                 tr.appendChild(tdEmail);
                 tr.appendChild(tdCount);
+
                 usersPostAnalyzing.append(tr);
 
                 for (let o in data.data) {
+
                     counter++;
                     let tr = document.createElement('tr');
                     let tdPosition = document.createElement('td');
                     let tdUser = document.createElement('td');
                     let tdCount = document.createElement('td');
-                    let userInfo = document.createTextNode(data.data[o]);
-                    let countInfo = document.createTextNode(o);
+                    let userInfo = document.createTextNode(data.data[o][0]);
+                    let countInfo = document.createTextNode(data.data[o][1]);
+
                     tdPosition.appendChild(document.createTextNode(counter));
                     tdUser.appendChild(userInfo);
                     tdCount.appendChild(countInfo);
+
                     tr.appendChild(tdPosition);
                     tr.appendChild(tdUser);
                     tr.appendChild(tdCount);
+
                     usersPostAnalyzing.append(tr);
-                    console.log(counter);
                 }
             } else {
                 let span = document.createElement('span');
