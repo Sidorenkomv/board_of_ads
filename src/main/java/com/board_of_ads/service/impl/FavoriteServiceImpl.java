@@ -3,7 +3,6 @@ package com.board_of_ads.service.impl;
 import com.board_of_ads.models.Favorite;
 import com.board_of_ads.repository.FavoriteRepository;
 import com.board_of_ads.service.interfaces.FavoriteService;
-import com.board_of_ads.util.Response;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
