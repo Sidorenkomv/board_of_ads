@@ -1,6 +1,7 @@
 package com.board_of_ads.controllers.rest;
 
 import com.board_of_ads.models.dto.PostingDto;
+import com.board_of_ads.models.dto.ReportUserPostingDto;
 import com.board_of_ads.service.interfaces.CityService;
 import com.board_of_ads.service.interfaces.PostingService;
 import com.board_of_ads.util.Error;
@@ -82,7 +83,7 @@ public class PostingRestController {
     }
 
     @PostMapping("/date")
-    public Response<List<Map>> findByDate(@RequestBody String date) {
+    public Response<List<ReportUserPostingDto>> findByDate(@RequestBody String date) {
         var postings = postingService.getPostBetweenDates(date);
         return (postings != null)
                 ? Response.ok(postings)

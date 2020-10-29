@@ -86,6 +86,7 @@ function analyzePostCount() {
             return response.json();
         })
         .then((data) => {
+
             if (data.success && Object.keys(data.data).length !== 0) {
 
                 let counter = 0;
@@ -93,14 +94,20 @@ function analyzePostCount() {
                 let tdPos = document.createElement('td');
                 let tdEmail = document.createElement('td');
                 let tdCount = document.createElement('td');
+                let tdActivePost = document.createElement('td');
+                let tdArchivePost = document.createElement('td');
 
                 tdPos.appendChild(document.createTextNode("№"));
                 tdEmail.appendChild(document.createTextNode("Почта"));
                 tdCount.appendChild(document.createTextNode("Количество постов"));
+                tdActivePost.appendChild(document.createTextNode("Активные посты"));
+                tdArchivePost.appendChild(document.createTextNode("Архивные посты"));
 
                 tr.appendChild(tdPos);
                 tr.appendChild(tdEmail);
                 tr.appendChild(tdCount);
+                tr.appendChild(tdActivePost);
+                tr.appendChild(tdArchivePost);
 
                 usersPostAnalyzing.append(tr);
 
@@ -111,16 +118,25 @@ function analyzePostCount() {
                     let tdPosition = document.createElement('td');
                     let tdUser = document.createElement('td');
                     let tdCount = document.createElement('td');
-                    let userInfo = document.createTextNode(data.data[o][0]);
-                    let countInfo = document.createTextNode(data.data[o][1]);
+                    let tdActive = document.createElement('td');
+                    let tdArchive = document.createElement('td');
+
+                    let userInfo = document.createTextNode(data.data[o].userEmail);
+                    let countInfo = document.createTextNode(data.data[o].allUserPosts);
+                    let activePosts = document.createTextNode(data.data[o].activeUserPosts);
+                    let archivePosts = document.createTextNode(data.data[o].archiveUserPosts);
 
                     tdPosition.appendChild(document.createTextNode(counter));
                     tdUser.appendChild(userInfo);
                     tdCount.appendChild(countInfo);
+                    tdActive.appendChild(activePosts);
+                    tdArchive.appendChild(archivePosts);
 
                     tr.appendChild(tdPosition);
                     tr.appendChild(tdUser);
                     tr.appendChild(tdCount);
+                    tr.appendChild(tdActive);
+                    tr.appendChild(tdArchive);
 
                     usersPostAnalyzing.append(tr);
                 }
