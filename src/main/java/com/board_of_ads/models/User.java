@@ -92,6 +92,12 @@ public class User implements UserDetails {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Posting> postings;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "users_favorites",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "posting_id", referencedColumnName = "id"))
+    private Set<Posting> favorites;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true  )
     private List<UserNotification> notifications = new ArrayList<>();
 
