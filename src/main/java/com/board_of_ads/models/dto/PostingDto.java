@@ -21,6 +21,7 @@ public class PostingDto {
     private String city;
     private String meetingAddress;
     private Boolean isActive;
+    private String userEmail;
 
     public PostingDto(Long id, String title, String description, Long price, String contact, LocalDateTime datePosting, String city) {
         this.id = id;

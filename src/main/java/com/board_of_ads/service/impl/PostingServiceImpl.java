@@ -3,23 +3,28 @@ package com.board_of_ads.service.impl;
 import com.board_of_ads.models.City;
 import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.posting.Posting;
-import com.board_of_ads.repository.CategoryRepository;
 import com.board_of_ads.repository.CityRepository;
 import com.board_of_ads.repository.PostingRepository;
 import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.service.interfaces.PostingService;
 import com.board_of_ads.service.interfaces.RegionService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 @Transactional
+@Slf4j
 public class PostingServiceImpl implements PostingService {
 
     private final PostingRepository postingRepository;
@@ -68,8 +73,6 @@ public class PostingServiceImpl implements PostingService {
         cities.forEach(city -> result.addAll(postingRepository.findPostingByCity(city)));
         return getPostingDtos(result);
     }
-
-
 
     @Override
     public List<PostingDto> getAllPostings() {
@@ -157,4 +160,30 @@ public class PostingServiceImpl implements PostingService {
 
         return resultList;
     }
+
+    @Override
+    public List<Map> getPostBetweenDates(String date) {
+        List<LocalDateTime> localDateTimes = dateConvertation(date);
+        return postingRepository.findAllByDatePostingBetween(localDateTimes.get(0), localDateTimes.get(1));
+    }
+
+    private List<LocalDateTime> dateConvertation(String date) {
+
+        String[] arr = date.split("\\D+");
+
+        List<Integer> dateValues = Arrays.stream(arr)
+                .filter(a -> !a.equals(""))
+                .map(Integer::parseInt)
+                .collect(Collectors.toList());
+
+        LocalDateTime startDateTime = LocalDateTime.of(dateValues.get(2), dateValues.get(1), dateValues.get(0), 0, 0);
+        LocalDateTime endDateTime = LocalDateTime.of(dateValues.get(5), dateValues.get(4), dateValues.get(3), 23, 59);
+
+        List<LocalDateTime> localDateTimeList = new ArrayList<>();
+        localDateTimeList.add(startDateTime);
+        localDateTimeList.add(endDateTime);
+
+        return localDateTimeList;
+    }
+
 }

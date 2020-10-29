@@ -11,13 +11,16 @@
                 </div>
                 <form name="anal-create-blank" align="center" id="new-anal-by-user">
                 <div class="modal-body">
-
+                    <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                        <i class="fa fa-calendar"></i>&nbsp;
+                        <span id="calendarTimeData"></span> <i class="fa fa-caret-down"></i>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary"
                             data-dismiss="modal" th:text="#{adminPanelCloseButton}">
                     </button>
-                    <button type="button" class="btn btn-success" id="createUser">Сформировать</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal" id="createAnalByUser">Сформировать</button>
                 </div>
                 </form>
             </div>
