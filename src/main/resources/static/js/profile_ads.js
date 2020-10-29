@@ -1,13 +1,15 @@
 let usersProfilePostings = $('#userPo tbody');
 let usersProfileArchivePostings = $('#userPoArch tbody');
+let usersProfilePostsBlock = $('#posts_block');
+let usersProfilePostsContent = $('#profile-posts-content');
+const userId = document.getElementById('profile-user-id').textContent;
 
 $(document).ready(function () {
  getAllUserPosts();
 });
 
 function getAllUserPosts() {
-    let user_id = document.getElementById('userpostid').textContent;
-    profileService.findPostingByUserId(user_id).then((response => {
+    profileService.findPostingByUserId(userId).then((response => {
 
         let activeCounter = 0;
         let archiveCounter = 0;
@@ -32,7 +34,7 @@ function getAllUserPosts() {
 
                 let title = document.createTextNode(post.title);
                 let price = document.createTextNode(post.price + ' ₽');
-                let meeting = document.createTextNode(post.meetingAddress);
+                let meeting = document.createTextNode(post.city);
 
                 divSlider.setAttribute('id', 'userImageSlider' + activeCounter);
                 divSlider.setAttribute('class', 'carousel slide');
@@ -150,3 +152,4 @@ const profileService = {
         return await httpHeader.fetch('api/posting/userpost/' + id);
     }
 };
+

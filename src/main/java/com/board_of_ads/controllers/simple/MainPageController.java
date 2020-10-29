@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Slf4j
 public class MainPageController {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
     @GetMapping("/")
     public String getMainPage(@AuthenticationPrincipal() User user, Model model) {
         log.info("Use this default logger");
@@ -30,26 +28,20 @@ public class MainPageController {
     @GetMapping("/admin_page")
     public String adminPage(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute(user);
-        return "admin_page";
+        return "admin-page";
     }
 
     @GetMapping("/new_post")
     public String addNewPost(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("user", user != null ? user : new User());
-        return "newpost-page";
-    }
-
-    @GetMapping("/profile")
-    public String profilePage(@AuthenticationPrincipal User user, Model model) {
-        model.addAttribute(user);
-        return "profile";
+        return "new-post-page";
     }
 
     @GetMapping("/{id}")
     public String postingPage(@AuthenticationPrincipal User user, Model model, @PathVariable Long id) {
         model.addAttribute("user", user != null ? user : new User());
         model.addAttribute("DtoId",id);
-        return "posting_page";
+        return "posting-page";
     }
 
     @GetMapping("/confirm/")

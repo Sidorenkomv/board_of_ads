@@ -1,5 +1,5 @@
-<div th:fragment="profile-body" xmlns:th="https://www.thymeleaf.org">
-    <div class="profile-body">
+<div th:fragment="profile-notification-body" xmlns:th="https://www.thymeleaf.org">
+    <div class="profile-notification-body">
         <li class="dropdown-divider"></li>
         <div class="row">
             <div class="col-md-3">
@@ -17,7 +17,7 @@
                         %username%
                     </div>
                 </div>
-
+                <div id="profile-user-id" class="profile-user-id" th:text="${user.getId()}"></div>
                 <a href="#">
                     <span style="color: black"><strong>3,0</strong></span>
                     <div class="rating-mini-profile">
@@ -31,13 +31,13 @@
                 </a>
                 <li class="dropdown-divider"></li>
                 <div class="profile-menu-font">
-                    <strong th:text="#{myAds}">Мои объявления</strong><br>
+                    <a th:text="#{myAds}" href="/ads" id="noteCallLeft">Мои объявления</a><br>
                     <a th:text="#{myOrders}" href="#">Заказы</a><br>
                     <a th:text="#{MyReviews}" href="#">Мои отзывы</a><br>
                     <a th:text="#{Favourites}" href="#">Избранное</a><br>
                     <li class="dropdown-divider"></li>
                     <a th:text="#{messages}" href="#" >Сообщения</a><br>
-                    <a th:text="#{Notifications}" href="/notifications" id="noteCallLeft">Уведомления</a><br>
+                    <strong th:text="#{Notifications}">Уведомления</strong><br>
                     <li class="dropdown-divider"></li>
                     <a th:text="#{Wallet}" href="#">Кошелек</a><br>
                     <a th:text="#{PaidService}" href="#">Платные услуги</a><br>
@@ -47,7 +47,8 @@
             </div>
 
             <div class="col-md-9" id="posts_block">
-                <div id="profile-posts-content" th:insert="fragments/posts_block_fragments::profile-posts-block"></div>
+                <div id="profile-notes-content"  th:insert="fragments/posts_block_fragments::profile-notifications-block"></div>
+
             </div>
     </div>
 </div>

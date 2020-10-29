@@ -1,0 +1,26 @@
+<div th:fragment="ads-by-user-seach" xmlns:th="https://www.thymeleaf.org">
+    <div id="anal-by-user-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content  col-md-8">
+                <div class="modal-header">
+                    <h4 class="modal-title">Отчет по пользователям</h4>
+                    <button id="closeNewUserModal" type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form name="anal-create-blank" align="center" id="new-anal-by-user">
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-dismiss="modal" th:text="#{adminPanelCloseButton}">
+                    </button>
+                    <button type="button" class="btn btn-success" id="createUser">Сформировать</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

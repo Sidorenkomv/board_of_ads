@@ -22,23 +22,23 @@ public class PostingDto {
     private String meetingAddress;
     private Boolean isActive;
 
-    public PostingDto(Long id, String title, String description, Long price, String contact, LocalDateTime datePosting, String meetingAddress) {
+    public PostingDto(Long id, String title, String description, Long price, String contact, LocalDateTime datePosting, String city) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.price = price;
         this.contact = contact;
         this.datePosting = datePosting;
-        this.meetingAddress = meetingAddress;
+        this.city = city;
     }
-    public PostingDto(Long id, String title, String description, Long price, String contact, LocalDateTime datePosting, String meetingAddress, Boolean isActive) {
+    public PostingDto(Long id, String title, String description, Long price, String contact, LocalDateTime datePosting, String city, Boolean isActive) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.price = price;
         this.contact = contact;
         this.datePosting = datePosting;
-        this.meetingAddress = meetingAddress;
+        this.city = city;
         this.isActive = isActive;
     }
 }

@@ -98,7 +98,7 @@ $('#changePasswordButton').on('click', function() {
         .then(userResponse => userResponse.json())
         .then(userResponse => {
             if (userResponse.success !== true) {
-                $('#errorPassMessage').append(userResponse.error.text);
+                $('#errorPassMessage').text(userResponse.error.text);
             } else {
                 $('#SuccessMessage').removeClass("d-none");
                 $('#SuccessMessage').addClass("bg-success text-dark py-2 d-block");

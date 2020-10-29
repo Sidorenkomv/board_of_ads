@@ -39,7 +39,7 @@ function getPostingsTable(posts) {
                                     <div id="price">${postingDTO.price} ₽</div>
                                 </strong>
                                 <div class="card-text text-muted">
-                                    <div id="meetingPlace">${postingDTO.meetingAddress}</div>
+                                    <div id="meetingPlace">${postingDTO.city}</div>
                                     <div id="timeOfPosting">${date}</div>
                                 </div>
                             </div>
@@ -49,28 +49,57 @@ function getPostingsTable(posts) {
             $("#add" + postingDTO.id).show()
             $("#delete" + postingDTO.id).hide()
 
-            $(".addToWish").on('click', function (event) {
-                event.preventDefault();
+            if ($("#reguserid").val()) {
 
-                let userid = $("#reguserid").val();
+                $(".addToWish").on('click', function (event) {
+                    event.preventDefault();
 
-                let postingId = this.dataset.id;
+                    let userid = $("#reguserid").val();
 
-                $("#add" + postingId).hide()
-                $("#delete" + postingId).show()
+                    let postingId = this.dataset.id;
 
-                fetch(`/api/favorite/add/`, {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json, text/plain, */*',
-                        'Content-type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        posting: postingId,
-                        userid: userid
+                    $("#add" + postingId).hide()
+                    $("#delete" + postingId).show()
+
+                    fetch(`/api/favorite/add/authentication`, {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json, text/plain, */*',
+                            'Content-type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            ip: $("#reguserid").val(),
+                            posting: postingId,
+                            userid: userid
+                        })
                     })
-                })
-            });
+                });
+
+            } else {
+
+                $(".addToWish").on('click', function (event) {
+                    event.preventDefault();
+
+                    let userid = $("#reguserid").val();
+
+                    let postingId = this.dataset.id;
+
+                    $("#add" + postingId).hide()
+                    $("#delete" + postingId).show()
+
+                    fetch(`/api/favorite/add/none/authentication`, {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json, text/plain, */*',
+                            'Content-type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            posting: postingId,
+                            userid: userid
+                        })
+                    })
+                });
+            }
 
 
             $('.deleteWish').on('click', function (event) {

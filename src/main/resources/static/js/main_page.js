@@ -94,6 +94,7 @@ async function onClickOpt(id) {
     regionPosts = (await posts).data;
 }
 
+
 $(document).ready(function () {
     viewCities();
     addCategories();
@@ -101,8 +102,23 @@ $(document).ready(function () {
         $('#emailAuth').addClass("redborder");
         authorization();
     });
-});
 
+    const button = document.getElementById('buttonAuth');
+
+    $('#emailAuth').keyup(function(e) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if (code == 13) { //Enter keycode
+            button.click();
+        }
+    });
+
+    $('#passwordAuth').keyup(function(e) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if (code == 13) { //Enter keycode
+            button.click();
+        }
+    });
+});
 
 async function authorization() {
     $('#emailAuth').removeClass("redborder");
@@ -112,7 +128,7 @@ async function authorization() {
         password: $("#passwordAuth").val()
     };
     try {
-        const authResponse = await fetch('http://localhost:5556/api/auth', {
+        const authResponse = await fetch('/api/auth', {
             method: "POST",
             credentials: 'same-origin',
             body: JSON.stringify(userAuth),
@@ -219,15 +235,15 @@ const userService = {
         return await httpHeaders.fetch('/api/city');
     },
     findPostingByCityName: async (name) => {
-        return await httpHeaders.fetch('api/posting/city/' + name);
+        return await httpHeaders.fetch('/api/posting/city/' + name);
     },
     findPostingByRegionName: async (name) => {
-        return await httpHeaders.fetch('api/posting/region/' + name);
+        return await httpHeaders.fetch('/api/posting/region/' + name);
     },
     findAllPostings: async () => {
-        return await httpHeaders.fetch('api/posting/');
+        return await httpHeaders.fetch('/api/posting/');
     },
     findAllCategories: async () => {
-        return await httpHeaders.fetch("api/category")
+        return await httpHeaders.fetch("/api/category")
     }
 }
