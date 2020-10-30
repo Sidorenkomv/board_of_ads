@@ -1,0 +1,210 @@
+<!--LEFT PANEL-->
+<div class="col-md-3" th:fragment="profile-left-panel" xmlns:th="https://www.thymeleaf.org">
+    <div th:if="${user.getAvatar()}">
+        <img class="user-profile-avatar" id="avatar" th:src="${'/' + user.getAvatar().getPathURL()}"><br>
+        <div class="user-profile-name" id="name" th:text="${user.getFirsName() + ' ' + user.getLastName()}">
+            %username%
+        </div>
+    </div>
+    <div th:if="${user.getAvatar() == null}">
+        <div class="user-profile-avatar" id="avatar"></div>
+        <br>
+        <div class="user-profile-name" id="name" th:text="${user.getFirsName() + ' ' + user.getLastName()}">
+            %username%
+        </div>
+    </div>
+    <a href="#">
+        <span style="color: black"><strong>0,0</strong></span>
+        <div class="rating-mini-profile">
+            <span class="active"></span>
+            <span class="active"></span>
+            <span class="active"></span>
+            <span></span>
+            <span></span>
+        </div>
+        <span>Нет отзывов</span>
+    </a>
+    <li class="dropdown-divider"></li>
+    <div class="profile-menu-font">
+        <strong th:text="#{myAds}">Мои объявления</strong><br>
+        <a th:text="#{myOrders}" th:href="@{/orders/sales}">Заказы</a>
+        <span th:text="${unchecked_orders}" class="new-orders"></span>
+        <br>
+        <a th:text="#{MyReviews}" th:href="@{/profile/reviews}">Мои отзывы</a><br>
+        <a th:text="#{Favourites}" href="#">Избранное</a><br>
+        <li class="dropdown-divider"></li>
+        <a th:text="#{messages}" href="#">Сообщения</a><br>
+        <a th:text="#{Notifications}" href="#">Уведомления</a><br>
+        <li class="dropdown-divider"></li>
+        <a th:text="#{Wallet}" href="#">Кошелек</a><br>
+        <a th:text="#{PaidService}" href="#">Платные услуги</a><br>
+        <li class="dropdown-divider"></li>
+        <a th:text="#{settings}" href="#">Настройки</a><br>
+    </div>
+</div>
+
+<!--EMPTY CONTENT FRAGMENTS-->
+<!--ORDERS AND SALES-->
+<div th:fragment="empty-orders" class="empty-order-list" xmlns:th="https://www.thymeleaf.org">
+    <img th:src="@{/images/orders-auto.svg}" alt="Board of ads truck" width="131" height="80">
+    <div class="empty-order-header">Пока пусто</div>
+    <div class="empty-header-text">Здесь появятся заказы, оформленные через BoardOfAds Доставку</div>
+</div>
+<!--REVIEWS-->
+<div th:fragment="empty-reviews" class="empty-order-list" xmlns:th="https://www.thymeleaf.org">
+    <div class="empty-order-header">Здесь ещё ничего нет</div>
+    <div class="empty-header-text">Оставить отзыв можно в профиле продавца.</div>
+</div>
+<!--CONTACTS-->
+<div th:fragment="empty-contacts" class="empty-order-list" xmlns:th="https://www.thymeleaf.org">
+    <div class="empty-order-header">Список пуст</div>
+    <div class="empty-header-text">Здесь вы найдёте продавцов, с которыми общались в последние две недели. Если прошло больше времени, оставить отзыв можно в профиле пользователя.</div>
+</div>
+
+<!--TABS-->
+<!--ORDERS AND SALES-->
+<ul class="tabs-root-wrapper" th:fragment="orders-tab" xmlns:th="https://www.thymeleaf.org">
+    <li th:class="'tab-root-element ' + ${page.equals('sales') ? 'tab-root-active' : ''}">
+        <a th:href="@{/orders/sales}">
+            Продаю
+            <span th:text="${sales}"></span>
+        </a>
+    </li>
+    <li th:class="'tab-root-element ' + ${page.equals('purchases') ? 'tab-root-active' : ''}">
+        <a th:href="@{/orders/purchases}">
+            Покупаю
+            <span th:text="${purchases}"></span>
+        </a>
+    </li>
+</ul>
+<!--REVIEWS AND CONTACTS-->
+<ul class="tabs-root-wrapper" th:fragment="reviews-tab" xmlns:th="https://www.thymeleaf.org">
+    <li th:class="'tab-root-element ' + ${page.equals('contacts') ? 'tab-root-active' : ''}">
+        <a th:href="@{/profile/contacts}">
+            Ждут оценки
+        </a>
+    </li>
+    <li th:class="'tab-root-element ' + ${page.equals('reviews') ? 'tab-root-active' : ''}">
+        <a th:href="@{/profile/reviews}">
+            Оставленные
+        </a>
+    </li>
+</ul>
+
+<!--CONTENT OUPTUP-->
+<!--ORDERS AND SALES-->
+<div class="col-md-9" th:fragment="orders-content" xmlns:th="https://www.thymeleaf.org">
+    <span class="profile-content-header">Заказы</span>
+    <div th:replace="profile_pages/profile_fragments::orders-tab"></div>
+    <div th:switch="${content.size()}">
+        <th:block th:case="0">
+            <div th:replace="profile_pages/profile_fragments::empty-orders"></div>
+        </th:block>
+        <table th:case="*" class="table table-borderless">
+            <thead>
+            <tr>
+                <th>Создан</th>
+                <th>Заказ</th>
+                <th>Сумма</th>
+                <th>Доставка</th>
+                <th>Статус</th>
+                <td>
+            </thead>
+            <tbody>
+            <tr th:each="order : ${content}">
+                <td>
+                    <div th:text="${order.getDateTime().getDayOfMonth() + '-' + order.getDateTime().getMonthValue()}"></div>
+                    <div th:text="${order.getDateTime().getHour() + ':' + order.getDateTime().getMinute()}"></div>
+                </td>
+                <td>
+                    <div th:text="${order.getId()}"></div>
+                    <div th:text="${order.getPosting().getTitle()}"></div>
+                </td>
+                <td th:text="${order.getPosting().getPrice()}+'Р'"></td>
+                <td th:text="${order.getDeliveryService()}"></td>
+
+                <td th:switch="${order.getStatus().toString()}">
+                    <p th:case="'CANCELED'" class="text-secondary">Отменен</p>
+                    <p th:case="'WAITING'" class="text-warning">Ожидает отправки</p>
+                    <p th:case="'IN_PROCESS'">В пути</p>
+                    <p th:case="'DONE'" class="text-success">Завершен</p>
+                    <p th:case="*" class="text-warning">ОШИБКА</p>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!--REVIEWS-->
+<div class="col-md-9" th:fragment="reviews-content" xmlns:th="https://www.thymeleaf.org">
+    <span class="profile-content-header">Заказы</span>
+    <div th:replace="profile_pages/profile_fragments::reviews-tab"></div>
+    <div th:switch="${content.size()}">
+        <th:block th:case="0" class="empty-order-list">
+            <div th:replace="profile_pages/profile_fragments::empty-reviews"></div>
+        </th:block>
+        <ul th:case="*" class="list-group">
+            <li class="list-group-item" th:each="review: ${content}">
+                <div>
+                    <img class="user-profile-avatar review-avatar" th:src="${'/' + review.getUser().getAvatar().getPathURL()}">
+                    <h4 th:text="${review.getUser().getFirsName() + ' ' + review.getUser().getLastName()}" class="font-weight-bold d-inline"></h4>
+                </div>
+                <div>
+
+                    <th:block th:with="rating = ${review.getRating()}">
+                        <div class="rating-mini-profile">
+                            <span th:class="${rating >= 1 ? 'active' : ''}"></span>
+                            <span th:class="${rating >= 2 ? 'active' : ''}"></span>
+                            <span th:class="${rating >= 3 ? 'active' : ''}"></span>
+                            <span th:class="${rating >= 4 ? 'active' : ''}"></span>
+                            <span th:class="${rating == 5 ? 'active' : ''}"></span>
+                        </div>
+                    </th:block>
+                    <span th:text="'Сделка по: «' + ${review.getPosting().getTitle()} + '»'" class="text-secondary"></span>
+                </div>
+                <div th:text="${review.getComment()}"></div>
+                <div>
+                    <span th:text="${review.getDateTime().getDayOfMonth() + '-' + review.getDateTime().getMonthValue() + '-' + review.getDateTime().getYear()}"></span>
+                    <span th:text="${review.getPosting().getUser().getFirstName()}"></span>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<!--CONTACTS TODO-->
+<div class="col-md-9" th:fragment="contacts-content" xmlns:th="https://www.thymeleaf.org">
+    <span class="profile-content-header">Заказы</span>
+    <div th:replace="profile_pages/profile_fragments::reviews-tab"></div>
+    <div th:switch="${content.size()}">
+        <th:block th:case="0" class="empty-order-list">
+            <div th:replace="profile_pages/profile_fragments::empty-contacts"></div>
+        </th:block>
+        <ul th:case="*" class="list-group">
+            <li class="list-group-item" th:each="review: ${content}">
+                <div>
+                    <img class="user-profile-avatar review-avatar" th:src="${'/' + review.getUser().getAvatar().getPathURL()}">
+                    <h4 th:text="${review.getUser().getFirsName() + ' ' + review.getUser().getLastName()}" class="font-weight-bold d-inline"></h4>
+                </div>
+                <div>
+
+                    <th:block th:with="rating = ${review.getRating()}">
+                        <div class="rating-mini-profile">
+                            <span th:class="${rating >= 1 ? 'active' : ''}"></span>
+                            <span th:class="${rating >= 2 ? 'active' : ''}"></span>
+                            <span th:class="${rating >= 3 ? 'active' : ''}"></span>
+                            <span th:class="${rating >= 4 ? 'active' : ''}"></span>
+                            <span th:class="${rating == 5 ? 'active' : ''}"></span>
+                        </div>
+                    </th:block>
+                    <span th:text="'Сделка по: «' + ${review.getPosting().getTitle()} + '»'" class="text-secondary"></span>
+                </div>
+                <div th:text="${review.getComment()}"></div>
+                <div>
+                    <span th:text="${review.getDateTime().getDayOfMonth() + '-' + review.getDateTime().getMonthValue()}"></span>
+                    <span th:text="${review.getPosting().getUser().getFirstName()}"></span>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

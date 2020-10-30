@@ -33,7 +33,7 @@
                            data-target="#dropdownUserInfo" id="dropdownButton" style="padding: 1px" href="#">
                             <!--/*@thymesVar id="user" type="com.board_of_ads.models.User"*/-->
                             <div th:if="${user.getAvatar()}">
-                                <img class="user-info-avatar" id="avatar" th:src="${user.getAvatar().getPathURL()}">
+                                <img class="user-info-avatar" id="avatar" th:src="${'/' + user.getAvatar().getPathURL()}">
                                 <div class="user-info-name" id="name" th:text="${user.getFirsName() + ' ' + user.getLastName()}">%username%</div>
                             </div>
                             <div th:if="${user.getAvatar() == null}">
@@ -57,7 +57,7 @@
                             </li>
                             <li class="dropdown-divider"></li>
                             <li class="dropdown-item"><a th:text="#{myAds}" href="/profile">Мои объявления</a></li>
-                            <li class="dropdown-item "><a th:text="#{MyReviews}" href="/profile">Мои отзывы</a></li>
+                            <li class="dropdown-item "><a th:text="#{MyReviews}" href="/profile/reviews">Мои отзывы</a></li>
                             <li class="dropdown-item "><a th:text="#{Favourites}" href="/profile">Избранное</a></li>
                             <li class="dropdown-divider"></li>
                             <li class="dropdown-item "><a th:text="#{messages}" href="/profile">Сообщения</a></li>

@@ -4,11 +4,16 @@ import com.board_of_ads.models.Category;
 import com.board_of_ads.models.Image;
 import com.board_of_ads.models.Role;
 import com.board_of_ads.models.User;
+import com.board_of_ads.models.dto.order.Order;
+import com.board_of_ads.models.dto.order.DeliveryStatus;
+import com.board_of_ads.models.dto.review.Review;
 import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.service.interfaces.CityService;
 import com.board_of_ads.service.interfaces.KladrService;
+import com.board_of_ads.service.interfaces.OrderService;
 import com.board_of_ads.service.interfaces.PostingService;
+import com.board_of_ads.service.interfaces.ReviewService;
 import com.board_of_ads.service.interfaces.RoleService;
 import com.board_of_ads.service.interfaces.UserService;
 import lombok.AllArgsConstructor;
@@ -31,6 +36,8 @@ public class DataInitializer {
     private final CategoryService categoryService;
     private final PostingService postingService;
     private final CityService cityService;
+    private final OrderService orderService;
+    private final ReviewService reviewService;
 
     @PostConstruct
     private void init() throws IOException {
@@ -38,6 +45,8 @@ public class DataInitializer {
         initKladr();
         initCategories();
         initPosting();
+        initOrders();
+        initReviews();
     }
 
     private void initUsers() {
@@ -570,6 +579,26 @@ public class DataInitializer {
             if (postingService.getPostingByTitle(posting.getTitle()).isEmpty()) {
                 postingService.save(posting);
             }
+        }
+    }
+
+    private void initOrders(){
+        List<Order> orderList = new ArrayList<>();
+
+        orderList.add(new Order(userService.getUserByEmail("user@mail.ru"), postingService.getPostingByTitle("Сыграю в лото").get(), "Почта России", DeliveryStatus.IN_PROCESS));
+
+        for (Order order: orderList){
+            orderService.save(order);
+        }
+    }
+
+    private void initReviews(){
+        List<Review> reviewList = new ArrayList<>();
+
+        reviewList.add(new Review(userService.getUserByEmail("admin@mail.ru"), postingService.getPostingByTitle("Сыграю в лото").get(), (byte) 1, "Проиграл"));
+
+        for (Review review: reviewList){
+            reviewService.save(review);
         }
     }
 }
