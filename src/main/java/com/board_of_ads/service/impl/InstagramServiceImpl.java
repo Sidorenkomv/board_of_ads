@@ -174,7 +174,7 @@ public class InstagramServiceImpl implements InstagramService {
         user.setDataRegistration(LocalDateTime.now());
         user.setAvatar(new Image(null, userData.get("photoLink")));
         user.setEmail("https://instagram.com/" + userData.get("username"));
-        user.setFirsName(userData.get("firstName"));
+        user.setFirstName(userData.get("firstName"));
         user.setLastName(userData.get("lastName"));
         user.setPassword(userData.get("instagram_id")); //todo create set password page (and phone)
         userService.saveUser(user);

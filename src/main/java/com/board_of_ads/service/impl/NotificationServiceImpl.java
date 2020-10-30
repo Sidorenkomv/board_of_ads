@@ -52,7 +52,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public List<UserNotification> getUsersAllNotifications(User user) {
-        log.debug("Get all notifications of {} - user, user.id = {} ", user.getFirsName(), user.getId());
+        log.debug("Get all notifications of {} - user, user.id = {} ", user.getFirstName(), user.getId());
         try {
             return userNotificationRepository.getUserNotificationsByUser(user);
         } catch (Exception e) {

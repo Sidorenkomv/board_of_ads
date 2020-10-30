@@ -109,8 +109,8 @@ public class UserServiceImpl implements UserService {
         log.info("change name or city for user with id : {}", principal.getId());
         try {
             var userFromDB = userRepository.findByEmail(principal.getEmail());
-            if (!userFromDB.getFirsName().equals(user.getFirstName())) {
-                userFromDB.setFirsName(user.getFirstName());
+            if (!userFromDB.getFirstName().equals(user.getFirstName())) {
+                userFromDB.setFirstName(user.getFirstName());
             }
             if (user.getCityId() > 0) {
                 var city = cityService.findCityById(user.getCityId());
