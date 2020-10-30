@@ -45,9 +45,10 @@ public class CategoryRestController {
                 : new ErrorResponse<>(new Error(204, "No found category"));
     }
 
-    @PutMapping
-    public Response<Category> setCategory(@RequestBody CategoryDto category) {
-        var result = categoryService.updateCategory(category);
+   @PutMapping("/{old}")
+    public Response<Category> setCategory(@PathVariable(name = "old") String old, @RequestBody CategoryDto category) {
+        var result = categoryService.updateCategory(old, category);
+        log.info("Updated category is : {}", result);
         return result != null
                 ? Response.ok(result)
                 : new Response.ErrorBuilderImpl().code(204).text("No update category").build();

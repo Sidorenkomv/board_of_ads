@@ -87,3 +87,7 @@ button:active,
 button:focus {
     outline: none;
 }
+
+.z-index {
+    z-index: 999999;
+}

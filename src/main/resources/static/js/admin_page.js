@@ -1,12 +1,15 @@
-let viewAllUsersUrl = 'http://localhost:5556/api/admin/allUsers';
-let getUserById = 'http://localhost:5556/api/admin/user';
-let deleteUserById = 'http://localhost:5556/api/admin/user';
-let createNewUser = 'http://localhost:5556/api/admin/newUser';
-let updateUser = 'http://localhost:5556/api/admin/newUserData';
+let viewAllUsersUrl = '/api/admin/allUsers';
+let getUserById = '/api/admin/user';
+let deleteUserById = '/api/admin/user';
+let createNewUser = '/api/admin/newUser';
+let updateUser = '/api/admin/newUserData';
+let allRoles = '/api/admin/allRoles';
+let countPosts = '/api/posting/date';
 
 let adminUsersTable = $('#userTableJs tbody');
 let deleteButtonInModalForm = $('#deleteButtonInModal div');
 let saveButtonInModalForm = $('#updateButtonInModal div');
+let usersPostAnalyzing = $('#userAnalPost tbody');
 
 let elementCloseDeleteModal1 = document.getElementById('closeDeleteModal');
 let elementCloseDeleteModal2 = document.getElementById('closeDeleteModal2');
@@ -16,11 +19,14 @@ let elementCloseUpdateModal1 = document.getElementById('closeUpdateModal');
 let elementCloseUpdateModal2 = document.getElementById('closeUpdateModal2');
 let elementCloseCreateNewUserModal = document.getElementById('closeNewUserModal');
 let elementCreateNewUserHref = document.getElementById('addUser');
-
+let elementCreateAnalPosts = document.getElementById('createAnalByUser');
 let elementUserTable = document.getElementById('userTableAtAdminPanel');
+let elementAnalyticLink = document.getElementById('statisticPanel');
 
 $(document).ready(function () {
     showAllUsersTable();
+    createRoleSelector();
+    calendar();
 });
 
 $(document).mouseup(function (e) {
@@ -40,12 +46,144 @@ $(document).mouseup(function (e) {
     }
 });
 
+//Дата + календарь
+
+function calendar() {
+    var start = moment().subtract(29, 'days');
+    var end = moment();
+
+    function cb(start, end) {
+        $('#reportrange span').html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
+    }
+
+    $('#reportrange').daterangepicker({
+        startDate: start,
+        endDate: end,
+        ranges: {
+            'Today': [moment(), moment()],
+            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            'This Month': [moment().startOf('month'), moment().endOf('month')],
+            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        }
+    }, cb);
+
+    cb(start, end);
+}
+
 //ОСНОВНЫЕ ФУНКЦИИ
+function analyzePostCount() {
+    $("#analyzeTBody").empty();
+
+    let date = $('#reportrange > span').text();
+
+    fetch(countPosts, {
+        method: 'POST',
+        body: JSON.stringify(date)
+    })
+        .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            if (data.success && Object.keys(data.data).length !== 0) {
+
+                let counter = 0;
+                let tr = document.createElement('tr');
+                let tdPos = document.createElement('td');
+                let tdEmail = document.createElement('td');
+                let tdCount = document.createElement('td');
+
+                tdPos.appendChild(document.createTextNode("№"));
+                tdEmail.appendChild(document.createTextNode("Почта"));
+                tdCount.appendChild(document.createTextNode("Количество постов"));
+
+                tr.appendChild(tdPos);
+                tr.appendChild(tdEmail);
+                tr.appendChild(tdCount);
+
+                usersPostAnalyzing.append(tr);
+
+                for (let o in data.data) {
+
+                    counter++;
+                    let tr = document.createElement('tr');
+                    let tdPosition = document.createElement('td');
+                    let tdUser = document.createElement('td');
+                    let tdCount = document.createElement('td');
+                    let userInfo = document.createTextNode(data.data[o][0]);
+                    let countInfo = document.createTextNode(data.data[o][1]);
+
+                    tdPosition.appendChild(document.createTextNode(counter));
+                    tdUser.appendChild(userInfo);
+                    tdCount.appendChild(countInfo);
+
+                    tr.appendChild(tdPosition);
+                    tr.appendChild(tdUser);
+                    tr.appendChild(tdCount);
+
+                    usersPostAnalyzing.append(tr);
+                }
+            } else {
+                let span = document.createElement('span');
+                let empty = document.createTextNode("За указанные даты посты отсутствуют");
+                span.appendChild(empty);
+                usersPostAnalyzing.append(span);
+            }
+        })
+}
+
+//Функция формирующая селекты
+
+function createRoleSelector() {
+    fetch(allRoles)
+        .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            if (data.success) {
+                data.data.map(roles => {
+                    //селект в update
+                    let select = document.getElementById('userUpdRoles');
+                    let optionOfSelect = document.createElement('option');
+                    let nameOfRole = document.createTextNode(roles.name);
+                    optionOfSelect.setAttribute('id', roles.id);
+                    optionOfSelect.setAttribute('value', roles.name);
+                    optionOfSelect.append(nameOfRole);
+                    select.appendChild(optionOfSelect);
+
+                    //селект в new user
+                    let newUserSelect = document.getElementById('roleSelect');
+                    let optionOfSelect1 = document.createElement('option');
+                    let nameOfRole1 = document.createTextNode(roles.name);
+                    optionOfSelect1.setAttribute('id', roles.id);
+                    optionOfSelect1.setAttribute('value', roles.name);
+                    optionOfSelect1.append(nameOfRole1);
+                    newUserSelect.appendChild(optionOfSelect1);
+                });
+            }
+        });
+}
 
 //Функция заполняющая таблицу пользователей
 function showAllUsersTable() {
-
-    // document.getElementById('hideTheCat').hidden = true;
+    $.i18n().load({
+        en: {
+            'button-edit': 'Edit',
+            'button-delete': 'Delete',
+            'button-save': 'Save'
+        },
+        ru: {
+            'button-edit': 'Редактировать',
+            'button-delete': 'Удалить',
+            'button-save': 'Сохранить'
+        }
+    });
+    const urlParams = new URLSearchParams(window.location.search);
+    const myParam = urlParams.get('locale');
+    if (myParam === 'en') {
+        $.i18n().locale = 'en';
+    }
 
     let userIdForDelete = 0;
     let userIdForUpdate = 0;
@@ -63,7 +201,6 @@ function showAllUsersTable() {
                     let tdEdit = document.createElement('td');
                     let tdDelete = document.createElement('td');
                     let tr = document.createElement('tr');
-                    let counter = 0;
 
                     tr.setAttribute('id', "userDataTable");
 
@@ -71,30 +208,55 @@ function showAllUsersTable() {
                         return role.name;
                     }).join(", ");
 
+                    //создаем поля таблицы
+                    let tdId = document.createElement('td');
+                    let tdEmail = document.createElement('td');
+                    let tdUserName = document.createElement('td');
+                    let tdLastName = document.createElement('td');
+                    let tdPhone = document.createElement('td');
+                    let tdDataReg = document.createElement('td');
+                    let tdEnabled = document.createElement('td');
+                    let tdRoles = document.createElement('td');
+
+                    // если есть null поля - то меняем на No Data
                     for (let o in user) {
-
-                        let td = document.createElement('td');
-                        let text = document.createTextNode(user[o]);
-
                         if (user[o] === null) {
-                            text = document.createTextNode("No Data");
+                            user[o] = "No Data";
                         }
-
-                        if (counter === 0) {
-                            userIdForDelete = "fillingModalFormDelete" + "(" + user[o] + ")";
-                            userIdForUpdate = "fillingModalFormUpdate" + "(" + user[o] + ")";
-                        }
-                        if (counter !== 6 && counter !== 7 && counter !== 2 && counter !== 10) {
-                            td.appendChild(text);
-                            tr.appendChild(td);
-                        }
-                        if (counter === 10) {
-                            td.appendChild(document.createTextNode(userRoles));
-                            tr.appendChild(td);
-                            break;
-                        }
-                        counter++;
                     }
+
+                    if (user.dataRegistration[4].toString().length === 1) {
+                        user.dataRegistration[4] = '0' + user.dataRegistration[4];
+                    }
+
+                    let usrDataRegistration = user.dataRegistration[2]
+                        + '/' + user.dataRegistration[1]
+                        + '/' + user.dataRegistration[0]
+                        + ' ' + user.dataRegistration[3]
+                        + ':' + user.dataRegistration[4];
+
+                    //присоединяем к полям таблицы данными из JSON
+                    tdId.appendChild(document.createTextNode(user.id));
+                    tdEmail.appendChild(document.createTextNode(user.email));
+                    tdUserName.appendChild(document.createTextNode(user.firsName));
+                    tdLastName.appendChild(document.createTextNode(user.lastName));
+                    tdPhone.appendChild(document.createTextNode(user.phone));
+                    tdDataReg.appendChild(document.createTextNode(usrDataRegistration));
+                    tdEnabled.appendChild(document.createTextNode(user.enabled));
+                    tdRoles.appendChild(document.createTextNode(userRoles));
+
+                    // присоединяем поля к строчке
+                    tr.appendChild(tdId);
+                    tr.appendChild(tdEmail);
+                    tr.appendChild(tdUserName);
+                    tr.appendChild(tdLastName);
+                    tr.appendChild(tdPhone);
+                    tr.appendChild(tdDataReg);
+                    tr.appendChild(tdEnabled);
+                    tr.appendChild(tdRoles);
+
+                    userIdForDelete = "fillingModalFormDelete" + "(" + user.id + ")";
+                    userIdForUpdate = "fillingModalFormUpdate" + "(" + user.id + ")";
 
                     buttonEdit.setAttribute('id', "updateButton");
                     buttonEdit.setAttribute('class', "btn btn-info");
@@ -102,7 +264,7 @@ function showAllUsersTable() {
                     buttonEdit.setAttribute('data-toggle', "modal");
                     buttonEdit.setAttribute('data-target', "#updateModal");
                     buttonEdit.setAttribute('onclick', `${userIdForUpdate}`);
-                    buttonEdit.appendChild(document.createTextNode("Update"));
+                    buttonEdit.appendChild(document.createTextNode($.i18n('button-edit')));
 
                     buttonDelete.setAttribute('id', "deleteButton");
                     buttonDelete.setAttribute('class', "btn btn-danger");
@@ -110,7 +272,7 @@ function showAllUsersTable() {
                     buttonDelete.setAttribute('data-toggle', "modal");
                     buttonDelete.setAttribute('data-target', "#deleteModal");
                     buttonDelete.setAttribute('onclick', `${userIdForDelete}`);
-                    buttonDelete.appendChild(document.createTextNode("Delete"));
+                    buttonDelete.appendChild(document.createTextNode($.i18n('button-delete')));
 
                     tdEdit.appendChild(buttonEdit);
                     tdDelete.appendChild(buttonDelete);
@@ -129,7 +291,8 @@ function showAllUsersTable() {
 async function newUser() {
 
     let roleSelectedValues = Array.from(elementCreateUserRoles.selectedOptions).map(el => el.value);
-    let roleArray = convertToRoleSet(roleSelectedValues);
+    let roleSelectedId = Array.from(elementCreateUserRoles.selectedOptions).map(el => el.id);
+    let roleArray = convertToRoleSet(roleSelectedId, roleSelectedValues);
 
     let data = {
 
@@ -137,6 +300,7 @@ async function newUser() {
         password: $('#AdminPanelUserPassword').val(),
         firsName: $('#AdminPanelUserFirstName').val(),
         lastName: $('#AdminPanelUserLastName').val(),
+        phone: $('#AdminPanelUserPhoneCP').val(),
 
         roles: roleArray
 
@@ -168,6 +332,7 @@ async function newUser() {
 
         clearTheValidateCreate();
         document.getElementById("createUserResult").innerText = "Successful Creation";
+        console.log(data);
         clearTable();
         showAllUsersTable();
     } else {
@@ -210,7 +375,9 @@ async function updateUsers(value) {
     let elementUpdateUserRoles = document.getElementById('userUpdRoles');
 
     let roleSelectedValues = Array.from(elementUpdateUserRoles.selectedOptions).map(el => el.value);
-    let roleArray = convertToRoleSet(roleSelectedValues);
+    let roleSelectedId = Array.from(elementUpdateUserRoles.selectedOptions).map(el => el.id);
+
+    let roleArray = convertToRoleSet(roleSelectedId, roleSelectedValues);
 
     let data = {
 
@@ -219,11 +386,12 @@ async function updateUsers(value) {
         lastName: $('#updUserLastName').val(),
         email: $('#updUserEmail').val(),
         password: $('#updUserPassword').val(),
-
+        phone: $('#updUserPhone').val(),
 
         roles: roleArray
 
     };
+
 
     let userEmailFormData = document.forms["userUpdateFormCP"]["email"].value;
     let userPasswordFormData = document.forms["userUpdateFormCP"]["password"].value;
@@ -300,7 +468,7 @@ function fillingModalFormDelete(id) {
     deleteButtonInModal.setAttribute('class', "btn btn-danger");
     deleteButtonInModal.setAttribute('data-dismiss', "modal");
     deleteButtonInModal.setAttribute('onclick', `${userIdForDeleteButton}`);
-    deleteButtonInModal.appendChild(document.createTextNode("Delete"));
+    deleteButtonInModal.appendChild(document.createTextNode($.i18n('button-delete')));
 
     deleteButtonInModalForm.append(deleteButtonInModal);
 
@@ -311,9 +479,19 @@ function fillingModalFormDelete(id) {
                 return role.name;
             }).join(", ");
 
+            if (data.data.dataRegistration[4].toString().length === 1) {
+                data.data.dataRegistration[4] = '0' + data.data.dataRegistration[4];
+            }
+
+            let usrDataRegistration = data.data.dataRegistration[2]
+                + '/' + data.data.dataRegistration[1]
+                + '/' + data.data.dataRegistration[0]
+                + ' ' + data.data.dataRegistration[3]
+                + ':' + data.data.dataRegistration[4];
+
             $('#delUserID').val(id);
             $('#delUserName').val(data.data.firsName);
-            $('#delUserDataReg').val(data.data.dataRegistration);
+            $('#delUserDataReg').val(usrDataRegistration);
             $('#delUserEmail').val(data.data.email);
             $('#delUserRoles').val(userRoles);
         });
@@ -352,24 +530,42 @@ function fillingModalFormUpdate(id) {
     updateButtonInModal.setAttribute('id', "updButtInModal");
     updateButtonInModal.setAttribute('class', "btn btn-success");
     updateButtonInModal.setAttribute('onclick', `${userIdForUpdateButton}`);
-    updateButtonInModal.appendChild(document.createTextNode("Save"));
+    updateButtonInModal.appendChild(document.createTextNode($.i18n('button-save')));
 
     saveButtonInModalForm.append(updateButtonInModal);
 
     fetch(getUserById + "/" + id).then(function (response) {
         response.json().then(function (data) {
 
+            if (data.data.dataRegistration[4].toString().length === 1) {
+                data.data.dataRegistration[4] = '0' + data.data.dataRegistration[4];
+            }
+
+            let usrDataRegistration = data.data.dataRegistration[2]
+                + '/' + data.data.dataRegistration[1]
+                + '/' + data.data.dataRegistration[0]
+                + ' ' + data.data.dataRegistration[3]
+                + ':' + data.data.dataRegistration[4];
+
             $('#updUserID').val(id);
             $('#updUserName').val(data.data.firsName);
             $('#updUserLastName').val(data.data.lastName);
             $('#updUserEmail').val(data.data.email);
-            $('#updUserDataReg').val(data.data.dataRegistration);
+            $('#updUserPhone').val(data.data.phone);
+            $('#updUserDataReg').val(usrDataRegistration);
 
         });
     });
 }
 
 // ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ НА ON.CLICK
+elementAnalyticLink.onclick = function () {
+    $("#analyzeTBody").empty();
+};
+
+elementCreateAnalPosts.onclick = function () {
+    analyzePostCount();
+};
 
 elementCreateUser.onclick = function () {
     newUser();
@@ -381,6 +577,7 @@ elementCreateNewUserHref.onclick = function () {
     document.getElementById('AdminPanelUserPassword').value = '';
     document.getElementById('AdminPanelUserFirstName').value = '';
     document.getElementById('AdminPanelUserLastName').value = '';
+    document.getElementById('adminPanelUserPhone').value = '';
 };
 
 //Сокрытие информации о создании нового пользователя
@@ -390,15 +587,13 @@ elementUserTable.onclick = function () {
 };
 
 /*создаем массив из значений полученных с селектора при создании нового пользователя*/
-function convertToRoleSet(Array) {
+function convertToRoleSet(roleId, roleName) {
     let roleArray = [];
 
-    if (Array.indexOf("USER") !== -1) {
-        roleArray.unshift({id: 2, name: "USER"});
+    for (let index = 0; index < roleId.length; ++index) {
+        roleArray.unshift({id: roleId[index], name: roleName[index]})
     }
-    if (Array.indexOf("ADMIN") !== -1) {
-        roleArray.unshift({id: 1, name: "ADMIN"});
-    }
+
     return roleArray;
 }
 
@@ -456,17 +651,29 @@ function clearTheValidateCreate() {
     document.getElementById("rolesErrorsNU").innerText = "";
 }
 
-$('#categoryPanel span').on('click', function() {
-    console.log("bla");
+$('#categoryPanel span').on('click', function () {
     document.getElementById('nav-userlist').style.display = "none";
+    document.getElementById('nav-analytics').style.display = "none";
     document.getElementById('nav-category').style.display = "block";
     document.getElementById('nav-userlist').className = "tab-pane fade";
+    document.getElementById('nav-analytics').className = "tab-pane fade";
     document.getElementById('nav-category').className = "tab-pane fade active show";
-})
+});
 
-$('#userTableAtAdminPanel span').on('click', function() {
+$('#userTableAtAdminPanel span').on('click', function () {
     document.getElementById('nav-userlist').style.display = "block";
     document.getElementById('nav-category').style.display = "none";
+    document.getElementById('nav-analytics').style.display = "none";
     document.getElementById('nav-category').className = "tab-pane fade";
+    document.getElementById('nav-analytics').className = "tab-pane fade";
     document.getElementById('nav-userlist').className = "tab-pane fade active show";
-})
+});
+
+$('#statisticPanel span').on('click', function () {
+    document.getElementById('nav-userlist').style.display = "none";
+    document.getElementById('nav-category').style.display = "none";
+    document.getElementById('nav-analytics').style.display = "block";
+    document.getElementById('nav-category').className = "tab-pane fade";
+    document.getElementById('nav-analytics').className = "tab-pane fade active show";
+    document.getElementById('nav-userlist').className = "tab-pane fade";
+});

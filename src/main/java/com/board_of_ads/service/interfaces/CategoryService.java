@@ -16,7 +16,9 @@ public interface CategoryService {
 
     Optional<CategoryDto> getCategoryDtoById(Long id);
 
-    Category updateCategory(CategoryDto category);
+    Optional<CategoryDto> getCategoryDtoByName(String name);
+
+    Category updateCategory(String name, CategoryDto category);
 
     void deleteCategory(Long id);
 

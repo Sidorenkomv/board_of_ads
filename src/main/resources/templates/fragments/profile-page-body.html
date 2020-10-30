@@ -17,8 +17,9 @@
                         %username%
                     </div>
                 </div>
+
                 <a href="#">
-                    <span style="color: black"><strong>0,0</strong></span>
+                    <span style="color: black"><strong>3,0</strong></span>
                     <div class="rating-mini-profile">
                         <span class="active"></span>
                         <span class="active"></span>
@@ -35,8 +36,8 @@
                     <a th:text="#{MyReviews}" href="#">Мои отзывы</a><br>
                     <a th:text="#{Favourites}" href="#">Избранное</a><br>
                     <li class="dropdown-divider"></li>
-                    <a th:text="#{messages}" href="#">Сообщения</a><br>
-                    <a th:text="#{Notifications}" href="#">Уведомления</a><br>
+                    <a th:text="#{messages}" href="#" >Сообщения</a><br>
+                    <a th:text="#{Notifications}" href="/notifications" id="noteCallLeft">Уведомления</a><br>
                     <li class="dropdown-divider"></li>
                     <a th:text="#{Wallet}" href="#">Кошелек</a><br>
                     <a th:text="#{PaidService}" href="#">Платные услуги</a><br>
@@ -48,7 +49,9 @@
                 <h1>Мои Объявления</h1>
                 <li class="dropdown-divider"></li>
 
+            <div class="col-md-9" id="posts_block">
+                <div id="profile-posts-content" th:insert="fragments/posts_block_fragments::profile-posts-block"></div>
             </div>
-        </div>
     </div>
+</div>
 </div>

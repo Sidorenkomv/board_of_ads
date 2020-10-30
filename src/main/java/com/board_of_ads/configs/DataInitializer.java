@@ -2,32 +2,39 @@ package com.board_of_ads.configs;
 
 import com.board_of_ads.models.Category;
 import com.board_of_ads.models.Image;
+import com.board_of_ads.models.Notification;
 import com.board_of_ads.models.Role;
 import com.board_of_ads.models.User;
 import com.board_of_ads.models.dto.order.Order;
 import com.board_of_ads.models.dto.order.DeliveryStatus;
 import com.board_of_ads.models.dto.review.Review;
+import com.board_of_ads.models.UserNotification;
 import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.service.interfaces.CityService;
+import com.board_of_ads.service.interfaces.ImageService;
 import com.board_of_ads.service.interfaces.KladrService;
 import com.board_of_ads.service.interfaces.OrderService;
+import com.board_of_ads.service.interfaces.NotificationService;
 import com.board_of_ads.service.interfaces.PostingService;
 import com.board_of_ads.service.interfaces.ReviewService;
 import com.board_of_ads.service.interfaces.RoleService;
 import com.board_of_ads.service.interfaces.UserService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Component
 @AllArgsConstructor
+@Slf4j
 public class DataInitializer {
 
     private final UserService userService;
@@ -38,15 +45,20 @@ public class DataInitializer {
     private final CityService cityService;
     private final OrderService orderService;
     private final ReviewService reviewService;
+    private final ImageService imageService;
+    private final NotificationService notificationService;
 
     @PostConstruct
     private void init() throws IOException {
         initUsers();
+        initMoreUsers();
         initKladr();
+        initUsers();
         initCategories();
         initPosting();
         initOrders();
         initReviews();
+        initNotifications();
     }
 
     private void initUsers() {
@@ -63,10 +75,12 @@ public class DataInitializer {
             admin.setPassword("1234567");
             admin.setFirsName("Admin");
             admin.setLastName("Admin");
+            admin.setPhone("8-922-0123456");
             admin.setAvatar(new Image(null, "images/admin.jpg"));
             Set<Role> roleAdmin = new HashSet<>();
             roleAdmin.add(roleService.getRoleByName("ADMIN"));
             admin.setRoles(roleAdmin);
+           // admin.setCity(cityService.findCityByName("Екатеринбург").get());
             userService.saveUser(admin);
         }
         if (userService.getUserByEmail("user@mail.ru") == null) {
@@ -75,10 +89,12 @@ public class DataInitializer {
             user.setPassword("1234567");
             user.setFirsName("User");
             user.setLastName("User");
+            user.setPhone("8-922-1234567");
             user.setAvatar(new Image(null, "images/user.jpg"));
             Set<Role> roleAdmin = new HashSet<>();
             roleAdmin.add(roleService.getRoleByName("USER"));
             user.setRoles(roleAdmin);
+           // user.setCity(cityService.findCityByName("Рязань").get());
             userService.saveUser(user);
         }
     }
@@ -515,68 +531,88 @@ public class DataInitializer {
     private void initPosting() {
         List<Posting> postingList = new ArrayList<>();
         postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Услуги").get()
-                , "Поглажу кота", "Очень качественно", 100L, "+79998887766", cityService.findCityByName("Ростов").get()));
+                , "Поглажу кота", "Очень качественно", 100L, "+79998887766", cityService.findCityByName("Ростов").get(), true));
         postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Транспорт").get()
-                , "Поддержу советом", "Не факт что полезным", 50L, "+79998887766", cityService.findCityByName("Ростов").get()));
+                , "Поддержу советом", "Не факт что полезным", 50L, "+79998887766", cityService.findCityByName("Ростов").get(), true));
         postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Недвижимость").get()
-                , "Ремонт электроники", "Быстро, качественно", 1000L, "+79998887766", cityService.findCityByName("Ростов").get()));
+                , "Ремонт электроники", "Быстро, качественно", 1000L, "+79998887766", cityService.findCityByName("Ростов").get(), true));
         postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Недвижимость").get()
-                , "Монтаж электросетей", "Любая сложность", 10_000L, "+79998887766", cityService.findCityByName("Азов").get()));
+                , "Монтаж электросетей", "Любая сложность", 10_000L, "+79998887766", cityService.findCityByName("Азов").get(), true));
         postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Транспорт").get()
-                , "Няня", "от 1 года", 2_000L, "+79998887766", cityService.findCityByName("Азов").get()));
+                , "Няня", "от 1 года", 2_000L, "+79998887766", cityService.findCityByName("Азов").get(), true));
         postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Услуги").get()
-                , "Посмотрю телевизор за Вас", "только 16к", 1_000L, "+79998887766", cityService.findCityByName("Азов").get()));
+                , "Посмотрю телевизор за Вас", "только 16к", 1_000L, "+79998887766", cityService.findCityByName("Азов").get(), false));
         postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Услуги").get()
-                , "Схожу за продуктами", "Могу в Ашан, могу в Пятерочку", 1_000L, "+79998887766", cityService.findCityByName("Азов").get()));
+                , "Схожу за продуктами", "Могу в Ашан, могу в Пятерочку", 1_000L, "+79998887766", cityService.findCityByName("Азов").get(), false));
         postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Услуги").get()
-                , "Выгуляю собаку", "Ей понравится", 1_000L, "+79998887766", cityService.findCityByName("Азов").get()));
+                , "Выгуляю собаку", "Ей понравится", 1_000L, "+79998887766", cityService.findCityByName("Азов").get(), false));
         postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Услуги").get()
-                , "Газовщик", "Любая сложность", 2_000L, "+79998887766", cityService.findCityByName("Азов").get()));
+                , "Газовщик", "Любая сложность", 2_000L, "+79998887766", cityService.findCityByName("Азов").get(), false));
         postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Услуги").get()
-                , "Врач", "Терапевт", 3_000L, "+79998887766", cityService.findCityByName("Ростов-на-Дону").get()));
+                , "Врач", "Терапевт", 3_000L, "+79998887766", cityService.findCityByName("Ростов-на-Дону").get(), true));
         postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Транспорт").get()
-                , "Стоматолог", "Будет не больно", 5_000L, "+79998887766", cityService.findCityByName("Ростов-на-Дону").get()));
+                , "Стоматолог", "Будет не больно", 5_000L, "+79998887766", cityService.findCityByName("Ростов-на-Дону").get(), true));
         postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Недвижимость").get()
-                , "Киллер", "Будет больно", 300_000L, "+79998887766", cityService.findCityByName("Ростов-на-Дону").get()));
+                , "Киллер", "Будет больно", 300_000L, "+79998887766", cityService.findCityByName("Ростов-на-Дону").get(), true));
         postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Услуги").get()
-                , "Собутыльник", "Будет весело", 500L, "+79998887766", cityService.findCityByName("Ростов-на-Дону").get()));
+                , "Собутыльник", "Будет весело", 500L, "+79998887766", cityService.findCityByName("Ростов-на-Дону").get(), true));
         postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Услуги").get()
-                , "Грузовые перевозки", "Трезвые грузчики", 10_000L, "+79998887766", cityService.findCityByName("Ростов-на-Дону").get()));
+                , "Грузовые перевозки", "Трезвые грузчики", 10_000L, "+79998887766", cityService.findCityByName("Ростов-на-Дону").get(), true));
         postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Услуги").get()
-                , "Сыграю в лото", "Я в этом хорош", 500L, "+79998887766", cityService.findCityByName("Ростов-на-Дону").get()));
+                , "Сыграю в лото", "Я в этом хорош", 500L, "+79998887766", cityService.findCityByName("Ростов-на-Дону").get(), true));
         postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Услуги").get()
-                , "Разобью сердце", "Только парням", 10_000L, "+79998887766", cityService.findCityByName("Ростов-на-Дону").get()));
+                , "Разобью сердце", "Только парням", 10_000L, "+79998887766", cityService.findCityByName("Ростов-на-Дону").get(), true));
         postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Услуги").get()
-                , "Схожу в кино", "За компанию", 1_000L, "+79998887766", cityService.findCityByName("Ростов-на-Дону").get()));
+                , "Схожу в кино", "За компанию", 1_000L, "+79998887766", cityService.findCityByName("Ростов-на-Дону").get(), true));
         postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Услуги").get()
-                , "Сдамся в рабство", "ненадолго", 50_000L, "+79998887766"));
+                , "Сдамся в рабство", "ненадолго", 50_000L, "+79998887766", true));
         postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Услуги").get()
-                , "Уведу у Вас девушку", "Вдруг она вам надоела", 3_000L, "+79998887766"));
+                , "Уведу у Вас девушку", "Вдруг она вам надоела", 3_000L, "+79998887766", false));
         postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Услуги").get()
-                , "Обижу обидчиков", "Не старше 18 лет", 5_000L, "+79896661488"));
+                , "Обижу обидчиков", "Не старше 18 лет", 5_000L, "+79896661488", true));
         postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Услуги").get()
-                , "Отмажу от ментов", "У меня папка начальник", 10_000L, "+79896661488"));
+                , "Отмажу от ментов", "У меня папка начальник", 10_000L, "+79896661488", false));
         postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Услуги").get()
-                , "Вынесу мусор", "Небольшой", 400L, "+79896661488"));
+                , "Вынесу мусор", "Небольшой", 400L, "+79896661488", true));
         postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Услуги").get()
-                , "Научу играть на гитаре", "Учил самого Цоя", 10_000L, "+79896661488"));
+                , "Научу играть на гитаре", "Учил самого Цоя", 10_000L, "+79896661488", false));
         postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Услуги").get()
-                , "Научу играть в Warcraft", "PvP или зассал?", 10_000L, "+79896661488"));
+                , "Научу играть в Warcraft", "PvP или зассал?", 10_000L, "+79896661488", false));
         postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Услуги").get()
-                , "Продам средство для похудения", "Результат уже через 3 дня. Нужно всего лишь 1 ложка...", 10_000L, "+79896661488"));
+                , "Продам средство для похудения", "Результат уже через 3 дня. Нужно всего лишь 1 ложка...", 10_000L, "+79896661488", true));
         postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Услуги").get()
-                , "Продам ядерный реактор", "Самовывоз с Припяти", 500_000L, "+79896661488"));
+                , "Продам ядерный реактор", "Самовывоз с Припяти", 500_000L, "+79896661488", true));
         postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Услуги").get()
-                , "Стань программистом за 1 урок", "Урок №1: перезагрузка роутера", 20_000L, "+79896661488"));
+                , "Стань программистом за 1 урок", "Урок №1: перезагрузка роутера", 20_000L, "+79896661488", true));
         postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Услуги").get()
-                , "Свадебный фотограф", "Фоткаю на iPhone 7", 10_000L, "+79896661488"));
+                , "Свадебный фотограф", "Фоткаю на iPhone 7", 10_000L, "+79896661488", true));
         postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Услуги").get()
-                , "Компьютерный мастер на дом", "Перезагружу ваш компьютер быстро и качественно", 4_000L, "+79896661488"));
+                , "Компьютерный мастер на дом", "Перезагружу ваш компьютер быстро и качественно", 4_000L, "+79896661488", true));
         postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Услуги").get()
-                , "Сесть на пенёк", "...Почему тут так мало?", 1_000L, "+79896661488"));
+                , "Сесть на пенёк", "...Почему тут так мало?", 1_000L, "+79896661488", true));
+
+        Image one = new Image(null,"/images/numbers/0.jpg");
+        Image two = new Image(null,"/images/numbers/1.jpg");
+        Image three = new Image(null,"/images/numbers/2.jpg");
+        Image four = new Image(null,"/images/numbers/3.jpg");
+        Image five = new Image(null,"/images/numbers/4.jpg");
+
+        imageService.save(one);
+        imageService.save(two);
+        imageService.save(three);
+        imageService.save(four);
+        imageService.save(five);
+
+        List<Image> imageList = new ArrayList<>();
+        imageList.add(imageService.getByPathURL("/images/numbers/0.jpg"));
+        imageList.add(imageService.getByPathURL("/images/numbers/1.jpg"));
+        imageList.add(imageService.getByPathURL("/images/numbers/2.jpg"));
+        imageList.add(imageService.getByPathURL("/images/numbers/3.jpg"));
+        imageList.add(imageService.getByPathURL("/images/numbers/4.jpg"));
 
         for (Posting posting : postingList) {
             if (postingService.getPostingByTitle(posting.getTitle()).isEmpty()) {
+                posting.setImages(imageList);
                 postingService.save(posting);
             }
         }
@@ -599,6 +635,96 @@ public class DataInitializer {
 
         for (Review review: reviewList){
             reviewService.save(review);
+    private void initMoreUsers() {
+
+        if (userService.getUserByEmail("super@mail.ru") == null) {
+            User admin = new User();
+            admin.setEmail("super@mail.ru");
+            admin.setPassword("super");
+            admin.setFirsName("Super");
+            admin.setLastName("Mario");
+            admin.setAvatar(new Image(null, "images/admin.jpg"));
+            Set<Role> roles = new HashSet<>();
+            roles.add(roleService.getRoleByName("ADMIN"));
+            admin.setRoles(roles);
+            userService.saveUser(admin);
+        }
+
+        if (userService.getUserByEmail("simple@mail.ru") == null) {
+            User user = new User();
+            user.setEmail("simple@mail.ru");
+            user.setPassword("1111111");
+            user.setFirsName("Simply");
+            user.setLastName("Red");
+            user.setAvatar(new Image(null, "images/user.jpg"));
+            Set<Role> roles = new HashSet<>();
+            roles.add(roleService.getRoleByName("ADMIN"));
+            user.setRoles(roles);
+            userService.saveUser(user);
+        }
+
+        if (userService.getUserByEmail("hero@mail.ru") == null) {
+            User user = new User();
+            user.setEmail("hero@mail.ru");
+            user.setPassword("1111111");
+            user.setFirsName("Hero");
+            user.setLastName("Sensei");
+            user.setAvatar(new Image(null, "images/user.jpg"));
+            Set<Role> roles = new HashSet<>();
+            roles.add(roleService.getRoleByName("USER"));
+            user.setRoles(roles);
+            userService.saveUser(user);
+        }
+    }
+
+    private void initNotifications() {
+        List<User> groupOfAllUsers = userService.getAllUsers();
+        Long adminId = userService.getUserByEmail("admin@mail.ru").getId();
+        Long simplyUserId = userService.getUserByEmail("user@mail.ru").getId();
+        List<User> singleUser = Collections.singletonList(userService.getUserById(adminId));
+        List<User> singleUser2 = Collections.singletonList(userService.getUserById(simplyUserId));
+        Notification notification1 = new Notification("Это вообще первое уведомление",
+                "Привет! Раз ты читаешь это уведомление, наверное ты в команде проекта board of ads. Ты находишься в разделе уведомлений");
+        Notification notification2 = new Notification("Что мы делаем?",
+                "Делаем клон Avito. Проект полу-настоящий, венчурная внутренняя разработка JM силами " +
+                        "студентов на проекте. Задача – самостоятельно взаимодействовать в командной работе с " +
+                        "минимальным участием ментора");
+        Notification notification3 = new Notification("Какой javascript задействован в разделе уведомления?",
+                "Логика управления уведомлениями зашита в скрипте profile_notes.js." +
+                        " Смотри resources/static/js");
+        Notification notification4 = new Notification("Что получаем в response?",
+                "При fetch запросе получаем DTO сущность NotificationDTO с полями notificationId, " +
+                        "messageTitle, messageBody, clickAction, sentTime, status, urgentLevel");
+        Notification notification5 = new Notification("Как устроены Rest-запросы на уведомления?",
+                "Тестируешь раздел уведомлений? Запросы отправляются в Rest-контроллер NotificationRestController");
+        notification2.setClickAction("https://www.google.com");
+        notification4.setClickAction("https://learn.javascript.ru/fetch");
+
+        notificationService.createNotification(notification1);
+        notificationService.createNotification(notification2);
+        notificationService.createNotification(notification3);
+        notificationService.createNotification(notification4);
+        notificationService.createNotification(notification5);
+
+        notificationService.sendNotificationToUsers(notification1,singleUser);
+        notificationService.sendNotificationToUsers(notification2,singleUser);
+        notificationService.sendNotificationToUsers(notification3,singleUser);
+        notificationService.sendNotificationToUsers(notification3,singleUser2);
+
+        notificationService.sendNotificationToUsers(notification4,singleUser);
+        notificationService.sendNotificationToUsers(notification5,groupOfAllUsers);
+        notificationService.sendNotificationToUsers(notification3,singleUser2);
+
+        UserNotification un = notificationService.findByNoteIdAndUserId(1696L, adminId);
+        if (un != null) {
+            un.setStatus("read");
+            notificationService.updateUserNotificationFields(un);
+        }
+
+        UserNotification un2 = notificationService.findByNoteIdAndUserId(1694L, adminId);
+        if (un2 != null) {
+            un2.setUrgentLevel(2);
+            notificationService.updateUserNotificationFields(un2);
         }
     }
 }

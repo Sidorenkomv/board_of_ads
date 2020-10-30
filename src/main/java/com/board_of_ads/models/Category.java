@@ -29,6 +29,9 @@ public class Category {
     private Long id;
 
     @Column
+    private boolean isActive;
+
+    @Column
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -42,22 +45,33 @@ public class Category {
     private int layer;
 
     public Category(String name, Category category) {
+        this.isActive = true;
         this.name = name;
         this.category = category;
     }
 
     public Category(Long id, String name, Category category) {
+        this.isActive = true;
         this.id = id;
         this.name = name;
         this.category = category;
     }
 
     public Category(String name, Category category, int layer) {
+        this.isActive = true;
         if (category == null) {
             this.name = name;
         } else {
             this.name = category.getName() + ":" + name;
         }
+        this.category = category;
+        this.layer = layer;
+    }
+
+    public Category(Long id, String name, Category category, int layer) {
+        this.isActive = true;
+        this.id = id;
+        this.name = name;
         this.category = category;
         this.layer = layer;
     }

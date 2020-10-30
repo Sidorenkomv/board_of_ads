@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Posting page</title>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/main_page.css" th:href="@{/css/main_page.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/fragment-navigate-panel-style.css"
+          th:href="@{/css/fragment-navigate-panel-style.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/header-fragment-style.css"
+          th:href="@{/css/header-fragment-style.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/search-fragment-style.css"
+          th:href="@{/css/search-fragment-style.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/auth-style.css" th:href="@{/css/auth-style.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/user-info-menu.css"
+          th:href="@{/css/user-info-menu.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/recovery-pswd.css" th:href="@{/css/recovery-pswd.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/posting_page.css" th:href="@{/css/posting_page.css}"/>
+
+    <!-- script -->
+    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="main-header">
+    <header th:insert="fragments/header::main-header"></header>
+    <div class="second-header">
+        <div th:insert="fragments/navigate-panel::navigate-header"></div>
+        <div th:insert="fragments/search-header::search-header"></div>
+        <div th:insert="fragments/authorization-button::authorization-button"></div>
+        <div th:insert="fragments/search-city::search-city"></div>
+        <div th:insert="fragments/pswd-recovery-modal-window::password-recovery"></div>
+        <div th:insert="fragments/new-password-modal::new-password"></div>
+    </div>
+</div>
+
+<div id="MainBody" class="container-fluid">
+    <div class="row">
+        <div id="mainPageBody" class="d-flex col-md-9">
+            <div class="col-md-8" data-spy="scroll" data-target="#list-example">
+                <div class="row">
+                    <ul id="categoriesHrefs" class="d-flex list-inline">
+                    </ul>
+                </div>
+                <div class="row">
+                    <h2></h2>
+                </div>
+                <div id="buttons" class="row d-flex list-inline">
+                    <div class="col-md-5" style="padding:0; padding-right:15px">
+                        <button id="button1" type="button" class="btn btn-outline-dark btn-block">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-heart" fill="currentColor"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                      d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+                            </svg>
+                            Добавить в избранное
+                        </button>
+                    </div>
+                    <div class="col-md-4" style="padding:0;">
+                        <button id="button1" type="button" class="btn btn-outline-dark btn-block">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-sticky" fill="currentColor"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                      d="M1 2.5A1.5 1.5 0 0 1 2.5 1h11A1.5 1.5 0 0 1 15 2.5v6.086a1.5 1.5 0 0 1-.44 1.06l-4.914 4.915a1.5 1.5 0 0 1-1.06.439H2.5A1.5 1.5 0 0 1 1 13.5v-11zM2.5 2a.5.5 0 0 0-.5.5v11a.5.5 0 0 0 .5.5h6.086a.5.5 0 0 0 .353-.146l4.915-4.915A.5.5 0 0 0 14 8.586V2.5a.5.5 0 0 0-.5-.5h-11z"/>
+                                <path fill-rule="evenodd"
+                                      d="M9.5 9a.5.5 0 0 0-.5.5v5H8v-5A1.5 1.5 0 0 1 9.5 8h5v1h-5z"/>
+                            </svg>
+                            Добавить заметку
+                        </button>
+                    </div>
+                    <div class="col-md" style="padding:0; padding-left:15px">
+                        <p id="timeOfPosting" style="margin-top:5px;"></p>
+                    </div>
+                </div>
+                <div id="mainRow" class="row">
+                    <div class="col-md" style="padding:0;">
+                        <div id="ImageSlider" class="carousel slide" data-interval="false">
+                            <div id="carouselInner" class="carousel-inner"></div>
+                            <ol id="carousel-indic" class="carousel-indicators"></ol>
+                        </div>
+                    </div>
+                </div>
+                <div id="conditionOptions" class="row">
+                    <div class="col-md">
+                        <span style="color:gray;">Состояние: <span style="color:black;">б/у</span></span>
+                    </div>
+                </div>
+                <div id="conditionOptions" class="row">
+                    <div id="address" class="col-md">
+                        Адрес:
+                    </div>
+                </div>
+                <div id="conditionOptions" class="row">
+                    <div id="description" class="col-md">
+                        ОПИСАНИЕ:
+                    </div>
+                </div>
+            </div>
+            <div id="list-example" class="col-md-4 list-group">
+                <section class="sticky-top">
+                    <div class="list-group-item">
+                        <div id="directionIndicators" class="row d-flex justify-content-between" style="margin:0px">
+                            <a href="#">Назад</a>
+                            <a href="#">Следующее
+                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-right"
+                                     fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                          d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                                </svg>
+                            </a>
+                        </div>
+                        <div class="row">
+                            <h2 id="price"></h2>
+                        </div>
+                        <div><br><br></div>
+                        <div id="clientButtons">
+                            <button id="contactNumber" type="button" class="btn btn-success btn-lg btn-block">Показать
+                                телефон
+                            </button>
+                            <button type="button" class="btn btn-primary btn-lg btn-block">Написать сообщение<br>
+                            </button>
+                        </div>
+                        <div class="container-fluid" style="padding:0;">
+                            <div id="rowInfo" class="row">
+                                <div id="userInfo" class="col-md-9">
+                                    <span><a href="#">Николай</a></span>
+                                    <span>Контактное лицо</span>
+                                    <span>На авито с июня 2018</span>
+                                </div>
+                                <div class="col-md">
+                                    <img class="img-fluid" id="avatarPosting"
+                                         src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22348%22%20height%3D%22225%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20348%20225%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_1751bef69e3%20text%20%7B%20fill%3A%23eceeef%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A17pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_1751bef69e3%22%3E%3Crect%20width%3D%22348%22%20height%3D%22225%22%20fill%3D%22%2355595c%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22116.71875%22%20y%3D%22120.3%22%3EThumbnail%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div id="btnSubscribe" class="col-md">
+                                    <button type="button" class="btn btn-outline-dark btn-lg btn-block">Подписаться на
+                                        продавца<br></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div id="postingStatistics">
+                            <div>
+                                № <span id="postingId" th:utext="${DtoId}"></span>,
+                                <span>
+                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-eye-fill"
+                                         fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                                        <path fill-rule="evenodd"
+                                              d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+                                    </svg>
+                                </span>
+                                <span>187 (+1)</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3"></div>
+</div>
+
+<script src="../static/js/posting_page.js" th:src="@{/js/posting_page.js}"></script>
+<script src="../static/js/main_page.js" th:src="@{/js/main_page.js}"></script>
+<script src="../static/js/recovery_password.js" th:src="@{/js/recovery_password.js}"></script>
+<script type="text/javascript" src="../static/js/user-info-menu.js" th:src="@{/js/user-info-menu.js}"></script>
+<script src="../static/js/header.js" th:src="@{/js/header.js}"></script>
+</body>
+</html>

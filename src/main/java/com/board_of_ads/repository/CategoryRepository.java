@@ -16,4 +16,7 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     @Query("from Category c where c.category.id = :id")
     List<Category> findCategoriesByCategory(Long id);
+
+    @Query("from Category c where c.name like :name")
+    List<Category> findParentLikeName(String name);
 }

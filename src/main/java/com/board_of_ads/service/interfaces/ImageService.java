@@ -6,4 +6,8 @@ public interface ImageService {
 
     Image getPathById(Long id);
 
+    void save(Image image);
+
+    Image getByPathURL(String url);
+
 }

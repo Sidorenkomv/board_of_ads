@@ -1,4 +1,5 @@
 let categories;
+let oldNameCategory;
 
 $(document).ready(function () {
     showCategories();
@@ -10,7 +11,7 @@ $('#saveCategoryButton').on('click', function() {
         name: $('#categoryName').val(),
         parentName: $('#parent-category-select').val()
     }
-    categoryService.updateCategory(data).then(categoryResponse => {
+    categoryService.updateCategory(oldNameCategory, data).then(categoryResponse => {
         if (categoryResponse.status === 200) {
             $('#updateCategoryModal').modal('hide');
             $('.list-group-item').remove();
@@ -26,10 +27,10 @@ $('#addCategory').on('click', function() {
     categories.then(categories => {
         categories.data.forEach((cat) => {
             if (cat.parentName == null) {
-                let option = `<option th:value="${cat.name}" style="background: #b3cccc; color: #fff;">${cat.name}</option>`;
+                let option = `<option name="${cat.name}" style="background: #b3cccc; color: #fff;">${cat.name}</option>`;
                 categorySelect.append(option);
             } else {
-                let option = `<option th:value="${cat.name}">${cat.name}</option>`;
+                let option = `<option name="${cat.name}">${cat.name.substring(cat.parentName.length + 1)}</option>`;
                 categorySelect.append(option);
             }
         });
@@ -41,7 +42,7 @@ $('#addCategory').on('click', function() {
 $('#addCategoryButton').on('click', function() {
     let data = {
         name: $('#categoryAddName').val(),
-        parentName: $('#parent-add-select').val()
+        parentName: $('#parent-add-select').val() === 'Без категории' ? '' : $('#parent-add-select').val()
     }
     categoryService.createCategory(data).then(categoryResponse => {
         if (categoryResponse.status === 200) {
@@ -71,66 +72,93 @@ async function showCategories() {
     categories.then(categories => {
         categories.data.forEach((cat) => {
             if (cat.parentName == null) {
-                let rowCategory = `<li class="list-group-item list-group-item-dark col-md-5" th:text="'${cat.name}'">
+                let rowCategory = `<li class="list-group-item list-group-item-light" th:text="${cat.name}">
                                     <div class="far fa-edit" onclick="showEditCategoryModal(${cat.id})"></div>
-                                    <div class="far fa-trash-alt mr-2" onclick="showDeleteCategoryModal(${cat.id})"></div>                                    
-                                    ${cat.name}
-                                    </li>`;
+                                    <div class="far fa-trash-alt mr-2" onclick="showDeleteCategoryModal(${cat.id})"></div>${cat.name}</li>`;
                 categoryList.append(rowCategory);
             } else {
-                let rowCategory = `<li class="list-group-item list-group-item-light col-md-5" th:text="'${cat.name}'">
+                let rowWithLayerCategory;
+                if (cat.layer === 2) {
+                    rowWithLayerCategory= `<ul><li class="list-group-item list-group-item-light">
                                     <div class="far fa-edit" onclick="showEditCategoryModal(${cat.id})"></div>
-                                    <div class="far fa-trash-alt mr-2" onclick="showDeleteCategoryModal(${cat.id})"></div>                                    
-                                    ${cat.name}
-                                    </li>`;
-                categoryList.append(rowCategory);
+                                    <div class="far fa-trash-alt mr-2" onclick="showDeleteCategoryModal(${cat.id})"></div>
+                                    ${cat.name.split(":")[1]}
+                                    </li></ul>`;
+                }
+                if (cat.layer === 3) {
+                    rowWithLayerCategory = `<ul><ul><li class="list-group-item list-group-item-light">
+                                    <div class="far fa-edit" onclick="showEditCategoryModal(${cat.id})"></div>
+                                    <div class="far fa-trash-alt mr-2" onclick="showDeleteCategoryModal(${cat.id})"></div>
+                                   ${cat.name.split(":")[2]}
+                                    </li></ul></ul>`;
+                }
+                categoryList.append(rowWithLayerCategory);
             }
         })
     });
 }
 
-async function showEditCategoryModal(catName) {
-    let categoryResponse = await categoryService.findCategoryByName(catName);
+async function showEditCategoryModal(id) {
+    let categoryResponse = await categoryService.findCategoryById(id);
     let categoryJson = categoryResponse.json();
     $('#updateCategoryModal').modal('show');
     categoryJson.then(category => {
+        console.log(category);
         $('#categoryID').val(category.data.id);
-        $('#categoryID').text(category.data.id);
-        $('#categoryName').val(category.data.name);
-        $('#categoryName').text(category.data.name);
+        if (category.data.layer > 1) {
+            $('#categoryName').val(category.data.name.substring(category.data.parentName.length + 1));
+            oldNameCategory = category.data.name.substring(category.data.parentName.length + 1);
+        } else {
+            $('#categoryName').val(category.data.name);
+            oldNameCategory = category.data.name;
+        }
         let categorySelect = $('#parent-category-select');
         $('select option').remove();
         categories.then(categories => {
-            let option = `<option  th:value=null></option>`;
-            categorySelect.append(option);
-            categories.data.forEach((cat) => {
-                if (category.data.parentName === cat.name) {
-                    let option = `<option  th:value="${cat.name}" selected>${cat.name}</option>`;
-                    categorySelect.append(option);
-                } else if (cat.parentName == null) {
-                    let option = `<option th:value="${cat.name}" style="background: #b3cccc; color: #fff;">${cat.name}</option>`;
-                    categorySelect.append(option);
-                } else {
-                    let option = `<option th:value="${cat.name}">${cat.name}</option>`;
-                    categorySelect.append(option);
-                }
-            });
-            if (category.data.parentName == null) {
-                let option = `<option  th:value=null selected></option>`;
-                categorySelect.append(option);
+            let optionNull;
+            if (category.data.layer === 1) {
+                optionNull = `<option th:value=null selected></option>`;
+            } else {
+                optionNull = `<option th:value=null></option>`;
             }
+            categorySelect.append(optionNull);
+            categories.data.forEach((cat) => {
+                let option;
+                    if (category.data.parentName === cat.name) {
+                        if (cat.layer > 1) {
+                            option = `<option  th:value="${cat.name}" selected>${cat.name.substring(cat.parentName.length + 1)}</option>`;
+                        } else {
+                            option = `<option  th:value="${cat.name}" selected>${cat.name}</option>`;
+                        }
+                    } else {
+                        if (cat.layer > 1) {
+                            option = `<option  th:value="${cat.name}">${cat.name.substring(cat.parentName.length + 1)}</option>`;
+                        } else {
+                            option = `<option  th:value="${cat.name}">${cat.name}</option>`;
+                        }
+                    }
+                categorySelect.append(option);
+            });
         });
     });
 }
 
 async function showDeleteCategoryModal(catName) {
     $('#deleteCategoryModal').modal('show');
-    let categoryResponse = await categoryService.findCategoryByName(catName);
+    let categoryResponse = await categoryService.findCategoryById(catName);
     let categoryJson = categoryResponse.json();
     categoryJson.then(category => {
         $('#categoryDeleteID').val(category.data.id);
-        $('#categoryDeleteName').val(category.data.name);
-        $('#categoryParentName').val(category.data.parentName);
+        if (category.data.layer > 1) {
+            $('#categoryDeleteName').val(category.data.name.substring(category.data.parentName.length + 1));
+        } else {
+            $('#categoryDeleteName').val(category.data.name);
+        }
+        if (category.data.layer < 3) {
+            $('#categoryParentName').val(category.data.parentName);
+        } else {
+            $('#categoryParentName').val(category.data.parentName.split(":")[1]);
+        }
     });
 }
 
@@ -153,11 +181,11 @@ const categoryService = {
             method: 'GET'
         });
     },
-    findCategoryByName: async (id) => {
+    findCategoryById: async (id) => {
         return await http.fetch('/api/category/' + id);
     },
-    updateCategory: async (data) => {
-        return await http.fetch('/api/category/', {
+    updateCategory: async (oldNameCategory, data) => {
+        return await http.fetch('/api/category/' + oldNameCategory, {
             body: JSON.stringify(data),
             method: 'PUT'
         });

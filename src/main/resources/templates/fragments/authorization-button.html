@@ -10,7 +10,7 @@
          aria-hidden="true">
 
         <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
+            <div class="modal-content z-index">
 
                 <!--HEADER-->
 
@@ -28,11 +28,12 @@
 
                 <div class="modal-body auth-app-login-form-2_SQa" id="center-ids">
                     <div class="form-group c123123">
-                        <input type="email" class="form-control " id="emailAuth"
+                        <input type="email" class="form-control " id="emailAuth" value="admin@mail.ru"
                                placeholder="Электронная почта" required autofocus>
                     </div>
                     <div class="form-group">
-                        <input type="password" class="form-control" id="passwordAuth" placeholder="Пароль" required>
+                        <input type="password" class="form-control" id="passwordAuth" value="1234567"
+                               placeholder="Пароль" required>
                     </div>
                     <div style="width: auto" class="container">
                         <div class="row">
@@ -90,6 +91,10 @@
                                     class="social-network-item-icon-1tXjO social-network-item-icon_gp-30vPn"
                                     data-marker="social-network-item(gp)">
                                 <img src="https://static.avito.ru/s/cc/resources/a0a0fd5f488d.svg">
+                            </span></a>
+                            <a href="/social/auth_instagram"><span class="social-network-item-icon-1tXjO"
+                                                                data-marker="social-network-item(apple)">
+                                <img th:src="@{images/instagram-logo.jpg}" th:height="44px" th:width="44px">
                             </span></a>
                         </div>
                     </div>
