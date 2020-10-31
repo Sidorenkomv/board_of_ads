@@ -5,11 +5,13 @@ let createNewUser = '/api/admin/newUser';
 let updateUser = '/api/admin/newUserData';
 let allRoles = '/api/admin/allRoles';
 let countPosts = '/api/posting/date';
+let countPostsByRegions = '/api/region/date';
 
 let adminUsersTable = $('#userTableJs tbody');
 let deleteButtonInModalForm = $('#deleteButtonInModal div');
 let saveButtonInModalForm = $('#updateButtonInModal div');
 let usersPostAnalyzing = $('#userAnalPost tbody');
+let regionsPostAnalyzing = $('#userAnalPost tbody');
 
 let elementCloseDeleteModal1 = document.getElementById('closeDeleteModal');
 let elementCloseDeleteModal2 = document.getElementById('closeDeleteModal2');
@@ -20,6 +22,7 @@ let elementCloseUpdateModal2 = document.getElementById('closeUpdateModal2');
 let elementCloseCreateNewUserModal = document.getElementById('closeNewUserModal');
 let elementCreateNewUserHref = document.getElementById('addUser');
 let elementCreateAnalPosts = document.getElementById('createAnalByUser');
+let elementCreateRegionsAnalPosts = document.getElementById('createAnalByRegion');
 let elementUserTable = document.getElementById('userTableAtAdminPanel');
 let elementAnalyticLink = document.getElementById('statisticPanel');
 
@@ -96,6 +99,66 @@ function analyzePostCount() {
 
                 tdPos.appendChild(document.createTextNode("№"));
                 tdEmail.appendChild(document.createTextNode("Почта"));
+                tdCount.appendChild(document.createTextNode("Количество постов"));
+
+                tr.appendChild(tdPos);
+                tr.appendChild(tdEmail);
+                tr.appendChild(tdCount);
+
+                usersPostAnalyzing.append(tr);
+
+                for (let o in data.data) {
+
+                    counter++;
+                    let tr = document.createElement('tr');
+                    let tdPosition = document.createElement('td');
+                    let tdUser = document.createElement('td');
+                    let tdCount = document.createElement('td');
+                    let userInfo = document.createTextNode(data.data[o][0]);
+                    let countInfo = document.createTextNode(data.data[o][1]);
+
+                    tdPosition.appendChild(document.createTextNode(counter));
+                    tdUser.appendChild(userInfo);
+                    tdCount.appendChild(countInfo);
+
+                    tr.appendChild(tdPosition);
+                    tr.appendChild(tdUser);
+                    tr.appendChild(tdCount);
+
+                    usersPostAnalyzing.append(tr);
+                }
+            } else {
+                let span = document.createElement('span');
+                let empty = document.createTextNode("За указанные даты посты отсутствуют");
+                span.appendChild(empty);
+                usersPostAnalyzing.append(span);
+            }
+        })
+}
+
+function analyzeRegion(){
+    $("#analyzeTBody").empty();
+
+    let date = $('#reportrange > span').text();
+
+    fetch(countPostsByRegions, {
+        method: 'POST',
+        body: JSON.stringify(date)
+    })
+        .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            if (data.success && Object.keys(data.data).length !== 0) {
+
+                let counter = 0;
+                let tr = document.createElement('tr');
+                let tdPos = document.createElement('td');
+                let tdEmail = document.createElement('td');
+                let tdCount = document.createElement('td');
+
+                tdPos.appendChild(document.createTextNode("№"));
+                tdEmail.appendChild(document.createTextNode("Регион"));
                 tdCount.appendChild(document.createTextNode("Количество постов"));
 
                 tr.appendChild(tdPos);
@@ -565,6 +628,10 @@ elementAnalyticLink.onclick = function () {
 
 elementCreateAnalPosts.onclick = function () {
     analyzePostCount();
+};
+
+elementCreateRegionsAnalPosts.onclick = function () {
+    analyzeRegion();
 };
 
 elementCreateUser.onclick = function () {
