@@ -83,9 +83,6 @@ public class PostingRestController {
 
     @PostMapping("/date")
     public Response<List<Map>> findByDate(@RequestBody String date) {
-        var postings = postingService.getPostBetweenDates(date);
-        return (postings != null)
-                ? Response.ok(postings)
-                : new ErrorResponse<>(new Error(204, "No found postings"));
+        return Response.ok(postingService.getPostBetweenDates(date));
     }
 }
