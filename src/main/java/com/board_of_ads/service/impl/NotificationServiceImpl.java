@@ -6,7 +6,6 @@ import com.board_of_ads.models.UserNotification;
 import com.board_of_ads.repository.NotificationRepository;
 import com.board_of_ads.repository.UserNotificationRepository;
 import com.board_of_ads.service.interfaces.NotificationService;
-
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +52,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public List<UserNotification> getUsersAllNotifications(User user) {
-        log.debug("Get all notifications of {} - user, user.id = {} ", user.getFirsName(), user.getId());
+        log.debug("Get all notifications of {} - user, user.id = {} ", user.getFirstName(), user.getId());
         try {
             return userNotificationRepository.getUserNotificationsByUser(user);
         } catch (Exception e) {

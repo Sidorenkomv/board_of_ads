@@ -57,13 +57,13 @@
                                 <img style="height: 30px; width: 30px; border-radius: 100%; margin-right: 10px;"
                                      class="user-info-avatar" id="avatar" th:src="${user.getAvatar().getPathURL()}">
                                 <div class="user-info-name" id="name"
-                                     th:text="${user.getFirsName() + ' ' + user.getLastName()}">%username%
+                                     th:text="${user.getFirstName() + ' ' + user.getLastName()}">%username%
                                 </div>
                                 <input type="hidden" id="reguserid" th:value="${user.getId()}">
                             </div>
                             <div th:if="${user.getAvatar() == null}">
                                 <div class="user-info-avatar" id="avatar"></div>
-                                <div class="user-info-name" id="name" th:text="${user.getFirsName() + ' ' + user.getLastName()}">%username%</div>
+                                <div class="user-info-name" id="name" th:text="${user.getFirstName() + ' ' + user.getLastName()}">%username%</div>
                                 <input type="hidden" id="reguserid" th:value="${user.getId()}">
                             </div>
                         </a>

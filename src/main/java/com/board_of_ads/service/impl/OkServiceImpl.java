@@ -7,15 +7,12 @@ import com.board_of_ads.service.interfaces.UserService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -170,7 +167,7 @@ public class OkServiceImpl implements OkService {
         user.setEnable(true);
         user.setDataRegistration(LocalDateTime.now());
         user.setEmail(userData.get("email"));
-        user.setFirsName(userData.get("first_name"));
+        user.setFirstName(userData.get("first_name"));
         user.setLastName(userData.get("last_name"));
         user.setAvatar(new Image(null, userData.get("avatar_link")));
         user.setPassword(userData.get("email")); //todo create set password page (and phone)

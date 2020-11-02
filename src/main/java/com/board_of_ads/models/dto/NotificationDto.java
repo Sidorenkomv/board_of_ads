@@ -1,16 +1,12 @@
 package com.board_of_ads.models.dto;
 
 import com.board_of_ads.models.Notification;
-import com.board_of_ads.models.User;
 import com.board_of_ads.models.UserNotification;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @Data
 @AllArgsConstructor

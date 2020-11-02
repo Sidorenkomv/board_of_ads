@@ -45,7 +45,7 @@ public class OAuth2ServiceImpl implements OAuth2Service {
             if (token.getAuthorizedClientRegistrationId().equals("google")) {
                 user.setAvatar(new Image(null, (String) attributes.get("picture")));
                 user.setEmail((String) attributes.get("email"));
-                user.setFirsName((String) attributes.get("given_name"));
+                user.setFirstName((String) attributes.get("given_name"));
                 user.setLastName((String) attributes.get("family_name"));
                 user.setEnable(true);
                 user.setPassword((String) attributes.get("email"));
@@ -55,7 +55,7 @@ public class OAuth2ServiceImpl implements OAuth2Service {
                 user.setPassword((String) attributes.get("email"));
                 String name = (String) attributes.get("name");
                 String[] userData = name.split(" ");
-                user.setFirsName(userData[0]);
+                user.setFirstName(userData[0]);
                 user.setLastName(userData[1]);
                 user.setEnable(true);
                 userService.saveUser(user);

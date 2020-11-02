@@ -64,7 +64,7 @@ public class DataInitializer {
             User admin = new User();
             admin.setEmail("admin@mail.ru");
             admin.setPassword("1234567");
-            admin.setFirsName("Admin");
+            admin.setFirstName("Admin");
             admin.setLastName("Admin");
             admin.setPhone("8-922-0123456");
             admin.setAvatar(new Image(null, "images/admin.jpg"));
@@ -78,7 +78,7 @@ public class DataInitializer {
             User user = new User();
             user.setEmail("user@mail.ru");
             user.setPassword("1234567");
-            user.setFirsName("User");
+            user.setFirstName("User");
             user.setLastName("User");
             user.setPhone("8-922-1234567");
             user.setAvatar(new Image(null, "images/user.jpg"));
@@ -615,7 +615,7 @@ public class DataInitializer {
             User admin = new User();
             admin.setEmail("super@mail.ru");
             admin.setPassword("super");
-            admin.setFirsName("Super");
+            admin.setFirstName("Super");
             admin.setLastName("Mario");
             admin.setAvatar(new Image(null, "images/admin.jpg"));
             Set<Role> roles = new HashSet<>();
@@ -628,7 +628,7 @@ public class DataInitializer {
             User user = new User();
             user.setEmail("simple@mail.ru");
             user.setPassword("1111111");
-            user.setFirsName("Simply");
+            user.setFirstName("Simply");
             user.setLastName("Red");
             user.setAvatar(new Image(null, "images/user.jpg"));
             Set<Role> roles = new HashSet<>();
@@ -641,7 +641,7 @@ public class DataInitializer {
             User user = new User();
             user.setEmail("hero@mail.ru");
             user.setPassword("1111111");
-            user.setFirsName("Hero");
+            user.setFirstName("Hero");
             user.setLastName("Sensei");
             user.setAvatar(new Image(null, "images/user.jpg"));
             Set<Role> roles = new HashSet<>();
