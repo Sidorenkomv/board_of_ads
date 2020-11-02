@@ -155,7 +155,7 @@ function analyzePostCount() {
 function analyzeRegion(){
     $("#analyzeTBody").empty();
 
-    let date = $('#reportrange > span').text();
+    let date = $('#reportrange2 > span').text();
 
     fetch(countPostsByRegions, {
         method: 'POST',
