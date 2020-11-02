@@ -49,6 +49,7 @@ public class PostingServiceImpl implements PostingService {
 
     @Override
     public PostingDto getPostingDtoById(Long id) {
+        postingRepository.addViewNumber(id);
         PostingDto postingDto = postingRepository.getPostingDtoById(id);
         postingDto.setImages(getPostingById(postingDto.getId()).getImages());
         postingDto.setCategory(categoryService.getCategoryDtoById(
