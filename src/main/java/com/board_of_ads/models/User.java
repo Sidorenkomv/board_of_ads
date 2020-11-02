@@ -2,6 +2,7 @@ package com.board_of_ads.models;
 
 
 import com.board_of_ads.models.posting.Posting;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -71,6 +72,7 @@ public class User implements UserDetails {
     @JoinColumn(name = "city_id")
     private City city;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Message> messages;
 
@@ -124,5 +126,4 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
 }
