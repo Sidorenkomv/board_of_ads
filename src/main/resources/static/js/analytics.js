@@ -1,6 +1,6 @@
 
 const meta = {
-    body: $('#analyticsContent tbody'),
+    body: $('#analyticsContent'),
     modalTitle: $('.modal-title'),
     report: $('#reportrange > span'),
     reportrange: $('#reportrange'),
@@ -54,9 +54,6 @@ async function drawBody(analyticElem) {
     if (response.success && Object.keys(response.data).length !== 0) {
         let counter = 0;
 
-        let tbl = document.createElement("table");
-        meta.body.append(tbl);
-
         // CREATE HEADER
         let tr = document.createElement("thead");
         let num = document.createElement("th");
@@ -67,7 +64,7 @@ async function drawBody(analyticElem) {
             th.appendChild(document.createTextNode(x.title));
             tr.appendChild(th);
         });
-        tbl.appendChild(tr);
+        meta.body.append(tr);
 
         // FILL TABLE
         for(let el in response.data){
@@ -82,7 +79,7 @@ async function drawBody(analyticElem) {
                 td.appendChild(text);
                 tr.appendChild(td);
             });
-            tbl.appendChild(tr);
+            meta.body.append(tr);
         }
     } else {
         let span = document.createElement('span');
