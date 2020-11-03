@@ -34,11 +34,13 @@ public class Posting {
         this.price = price;
         this.contact = contact;
         this.isActive = isActive;
+        this.viewNumber = viewNumber;
     }
 
-    public Posting(User user, Category category, String title, String description, Long price, String contact, City city, Boolean isActive) {
+    public Posting(User user, Category category, String title, String description, Long price, String contact, City city, Boolean isActive, Integer viewNumber) {
         this(user, category, title, description, price, contact, isActive);
         this.city = city;
+        this.viewNumber = viewNumber;
     }
 
     @Id
@@ -77,12 +79,15 @@ public class Posting {
     private Boolean isActive;
 
     @Column
+    private Integer viewNumber;
+
+    @Column
     private LocalDateTime datePosting = LocalDateTime.now();
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    @JoinTable(name="posting_images",
-            joinColumns=@JoinColumn (name="posting_id"),
-            inverseJoinColumns=@JoinColumn(name="image_id"))
+    @JoinTable(name = "posting_images",
+            joinColumns = @JoinColumn(name = "posting_id"),
+            inverseJoinColumns = @JoinColumn(name = "image_id"))
     private List<Image> images;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)

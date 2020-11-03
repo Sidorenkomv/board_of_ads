@@ -3,6 +3,7 @@ package com.board_of_ads.service.impl;
 import com.board_of_ads.models.City;
 import com.board_of_ads.models.User;
 import com.board_of_ads.models.dto.PostingDto;
+import com.board_of_ads.models.dto.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.repository.CityRepository;
 import com.board_of_ads.repository.PostingRepository;
@@ -19,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -52,6 +52,7 @@ public class PostingServiceImpl implements PostingService {
 
     @Override
     public PostingDto getPostingDtoById(Long id) {
+        postingRepository.addViewNumber(id);
         PostingDto postingDto = postingRepository.getPostingDtoById(id);
         postingDto.setImages(getPostingById(postingDto.getId()).getImages());
         postingDto.setCategory(categoryService.getCategoryDtoById(
@@ -180,7 +181,7 @@ public class PostingServiceImpl implements PostingService {
     }
 
     @Override
-    public List<Map> getPostBetweenDates(String date) {
+    public List<ReportUserPostingDto> getPostBetweenDates(String date) {
         List<LocalDateTime> localDateTimes = dateConvertation(date);
         return postingRepository.findAllByDatePostingBetween(localDateTimes.get(0), localDateTimes.get(1));
     }
