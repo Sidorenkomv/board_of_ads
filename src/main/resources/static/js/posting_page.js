@@ -34,17 +34,17 @@ async function getPostingInfo(id) {
     let liDot = `<li>·</li>`;
     let li;
     let postingId = $("#postingId").text().valueOf();
-
+    let favorite = await isFavorite();
     categoriesLine.append(liCity);
     categoriesLine.append(liDot);
 
-    if (isFavorite()) {
-        $("#imgAdd" + postingId).show()
-        $("#imgDel" + postingId).hide()
+    if (favorite) {
+        $("#imgAdd" + postingId).hide()
+        $("#imgDel" + postingId).show()
         $("#buttonFav_txt" + postingId).textContent="Добавить в избранное";
     } else {
-        $("#imgAdd" + postingId).hide();
-        $("#imgDel" + postingId).show();
+        $("#imgAdd" + postingId).show();
+        $("#imgDel" + postingId).hide();
         $("#buttonFav_txt" + postingId).textContent="В избранном";
     }
 
@@ -131,7 +131,7 @@ async function onClickFav() {
 async function addToFavorites() {
     // let userid = $("#reguserid").val();
     let postingId = $("#postingId").text().valueOf();
-    alert("add "+postingId);
+    // alert("add "+postingId);
 
     $("#imgAdd" + postingId).hide()
     $("#imgDel" + postingId).show()
@@ -150,7 +150,7 @@ async function deleteFromFavorites() {
     // let userid = $("#reguserid").val();
     let postingId = $("#postingId").text().valueOf();
     //alert(postingId);
-    alert("del "+postingId);
+    // alert("del "+postingId);
      $("#imgAdd" + postingId).show()
      $("#imgDel" + postingId).hide()
 

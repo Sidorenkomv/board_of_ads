@@ -131,10 +131,10 @@ function getPostingsTable(posts, favorites) {
         }
 
 
-        if ($("#reguserid").val()) {
-            fetch(`/api/favorite/addregid/` + $("#reguserid").val())
-            fetch(`/api/favorite/addregipafter/` + $("#reguserid").val())
-        }
+        // if ($("#reguserid").val()) {
+        //     fetch(`/api/favorite/addregid/` + $("#reguserid").val())
+        //     fetch(`/api/favorite/addregipafter/` + $("#reguserid").val())
+        // }
 
 
     }
