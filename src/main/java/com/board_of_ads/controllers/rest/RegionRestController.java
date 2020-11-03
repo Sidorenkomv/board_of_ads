@@ -7,6 +7,7 @@ import com.board_of_ads.util.ErrorResponse;
 import com.board_of_ads.util.Response;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +23,7 @@ import java.util.Map;
 public class RegionRestController {
     private RegionService regionService;
 
-    @PostMapping("/date")
+    @GetMapping("/date")
     public Response<List<ReportRegionPostingDto>> findByDate(@RequestBody String date) {
         var postings = regionService.getNumberOfPostings(date);
         return (postings.size() > 0)

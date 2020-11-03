@@ -82,7 +82,7 @@ public class PostingRestController {
                 : new ErrorResponse<>(new Error(204, "No found postings"));
     }
 
-    @PostMapping("/date")
+    @GetMapping("/date")
     public Response<List<ReportUserPostingDto>> findByDate(@RequestBody String date) {
         return Response.ok(postingService.getPostBetweenDates(date));
     }
