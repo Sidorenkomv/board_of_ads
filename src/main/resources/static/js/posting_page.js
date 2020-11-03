@@ -33,9 +33,30 @@ async function getPostingInfo(id) {
     let liCity = `<li><a href="#">${postingDto.city}</a></li>`;
     let liDot = `<li>·</li>`;
     let li;
+    let postingId = $("#postingId").text().valueOf();
 
     categoriesLine.append(liCity);
     categoriesLine.append(liDot);
+
+    // if (isFavorite()) {
+    //     $("#add" + postingId).show()
+    //     $("#delete" + postingId).hide()
+    //     $("#buttonFav_txt" + postingId).textContent="Добавить в избранное";
+    // } else {
+    //     $("#add" + postingId).hide();
+    //     $("#delete" + postingId).show();
+    //     $("#buttonFav_txt" + postingId).textContent="В избранном";
+    // }
+
+    if (isFavorite()) {
+        $("#imgAdd" + postingId).show()
+        $("#imgDel" + postingId).hide()
+        $("#buttonFav_txt" + postingId).textContent="Добавить в избранное";
+    } else {
+        $("#imgAdd" + postingId).hide();
+        $("#imgDel" + postingId).show();
+        $("#buttonFav_txt" + postingId).textContent="В избранном";
+    }
 
     while (true) {
         li = `<li><a href="#">${categoryDto.name}</a></li>`;
@@ -107,4 +128,74 @@ async function getPostingInfo(id) {
     $("#address").append(`${postingDto.city}`);
     $("#description").append(`${postingDto.description}`);
 
+}
+
+async function onClickFav() {
+    if (await isFavorite() === true) {
+        deleteFromFavorites();
+    } else {
+        addToFavorites();
+    }
+}
+
+async function addToFavorites() {
+    // let userid = $("#reguserid").val();
+    let postingId = $("#postingId").text().valueOf();
+    alert("add "+postingId);
+
+    // $("#add" + postingId).hide()
+    // $("#delete" + postingId).show()
+    $("#imgAdd" + postingId).hide()
+    $("#imgDel" + postingId).show()
+
+    $("#buttonFav_txt" + postingId).text("В избранном");
+    fetch(`/api/favorite/add/` + postingId, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-type': 'application/json'
+        }
+    });
+}
+
+async function deleteFromFavorites() {
+    // let userid = $("#reguserid").val();
+    let postingId = $("#postingId").text().valueOf();
+    //alert(postingId);
+    alert("del "+postingId);
+    // $("#add" + postingId).show()
+    // $("#delete" + postingId).hide()
+     $("#imgAdd" + postingId).show()
+     $("#imgDel" + postingId).hide()
+
+    $("#buttonFav_txt" + postingId).text("Добавить в избранное");
+    fetch(`/api/favorite/delete/` + postingId, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+    });
+}
+
+async function isFavorite() {
+    let response = await fetch("/api/favorite/get", {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+    });
+    let favorites = (await response.json()).data;
+
+    if (favorites === "undefined") {
+        return false;
+    }
+    let postingId = $("#postingId").text().valueOf();
+    for (let i = 0; i < favorites.length; i++) {
+        if (favorites[i].id == postingId) {
+            return true;
+        }
+    }
+    return false;
 }

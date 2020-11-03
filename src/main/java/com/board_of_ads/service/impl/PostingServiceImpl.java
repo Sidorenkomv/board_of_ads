@@ -1,6 +1,7 @@
 package com.board_of_ads.service.impl;
 
 import com.board_of_ads.models.City;
+import com.board_of_ads.models.User;
 import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.repository.CityRepository;
@@ -16,15 +17,17 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-@Transactional
 @Slf4j
+@Transactional
 public class PostingServiceImpl implements PostingService {
 
     private final PostingRepository postingRepository;
@@ -96,6 +99,21 @@ public class PostingServiceImpl implements PostingService {
            }
         }
         return postingDtos;
+    }
+
+    public List<PostingDto> getFavDtosFromUser(User user) {
+        Set<Posting> userfavorites = (user.getFavorites() != null) ? user.getFavorites() : new HashSet<Posting>();
+        List<PostingDto> list_post = new ArrayList<>();
+        for (Posting post : userfavorites) {
+            list_post.add(new PostingDto(post.getId(),
+                    post.getTitle(),
+                    post.getDescription(),
+                    post.getPrice(),
+                    post.getContact(),
+                    post.getDatePosting(),
+                    post.getCity() == null ? null : post.getCity().getName()));
+        }
+        return list_post;
     }
 
     @Override

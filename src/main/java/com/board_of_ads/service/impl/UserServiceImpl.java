@@ -2,7 +2,9 @@ package com.board_of_ads.service.impl;
 
 import com.board_of_ads.models.Image;
 import com.board_of_ads.models.User;
+import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.UserDto;
+import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.repository.UserRepository;
 import com.board_of_ads.service.interfaces.CityService;
 import com.board_of_ads.service.interfaces.RoleService;
@@ -13,10 +15,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
-import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -132,4 +137,20 @@ public class UserServiceImpl implements UserService {
             throw new Exception("Password invalid");
         }
     }
+
+    public List<PostingDto> getFavDtosFromUser(User user) {
+        Set<Posting> userfavorites = (user.getFavorites() != null) ? user.getFavorites() : new HashSet<Posting>();
+        List<PostingDto> list_post = new ArrayList<>();
+        for (Posting post : userfavorites) {
+            list_post.add(new PostingDto(post.getId(),
+                    post.getTitle(),
+                    post.getDescription(),
+                    post.getPrice(),
+                    post.getContact(),
+                    post.getDatePosting(),
+                    post.getCity() == null ? null : post.getCity().getName()));
+        }
+        return list_post;
+    }
+
 }
