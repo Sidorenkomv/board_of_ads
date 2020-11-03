@@ -47,7 +47,7 @@ for (let key in analyticsElements) {
 async function drawBody(analyticElem) {
     let date = meta.report.text();
     const request = await fetch(analyticElem.url, {
-        method: 'GET',
+        method: 'POST',
         body: JSON.stringify(date)
     });
     const response = await request.json();
