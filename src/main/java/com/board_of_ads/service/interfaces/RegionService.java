@@ -1,6 +1,7 @@
 package com.board_of_ads.service.interfaces;
 
 import com.board_of_ads.models.Region;
+import com.board_of_ads.models.dto.analytics.ReportRegionPostingDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,5 +14,5 @@ public interface RegionService {
 
     List<Region> findAll();
 
-    List<Map> getNumberOfPostings(String date);
+    List<ReportRegionPostingDto> getNumberOfPostings(String date);
 }

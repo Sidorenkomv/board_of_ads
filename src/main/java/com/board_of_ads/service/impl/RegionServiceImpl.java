@@ -2,6 +2,7 @@ package com.board_of_ads.service.impl;
 
 
 import com.board_of_ads.models.Region;
+import com.board_of_ads.models.dto.analytics.ReportRegionPostingDto;
 import com.board_of_ads.repository.RegionRepository;
 import com.board_of_ads.service.interfaces.RegionService;
 import lombok.AllArgsConstructor;
@@ -36,7 +37,7 @@ public class RegionServiceImpl implements RegionService {
     }
 
     @Override
-    public List<Map> getNumberOfPostings(String date){
+    public List<ReportRegionPostingDto> getNumberOfPostings(String date){
         List<LocalDateTime> localDateTimes = dateConvertation(date);
         return regionRepository.findAllByDatePostingBetween(localDateTimes.get(0), localDateTimes.get(1));
     }
