@@ -38,16 +38,6 @@ async function getPostingInfo(id) {
     categoriesLine.append(liCity);
     categoriesLine.append(liDot);
 
-    // if (isFavorite()) {
-    //     $("#add" + postingId).show()
-    //     $("#delete" + postingId).hide()
-    //     $("#buttonFav_txt" + postingId).textContent="Добавить в избранное";
-    // } else {
-    //     $("#add" + postingId).hide();
-    //     $("#delete" + postingId).show();
-    //     $("#buttonFav_txt" + postingId).textContent="В избранном";
-    // }
-
     if (isFavorite()) {
         $("#imgAdd" + postingId).show()
         $("#imgDel" + postingId).hide()
@@ -143,8 +133,6 @@ async function addToFavorites() {
     let postingId = $("#postingId").text().valueOf();
     alert("add "+postingId);
 
-    // $("#add" + postingId).hide()
-    // $("#delete" + postingId).show()
     $("#imgAdd" + postingId).hide()
     $("#imgDel" + postingId).show()
 
@@ -163,8 +151,6 @@ async function deleteFromFavorites() {
     let postingId = $("#postingId").text().valueOf();
     //alert(postingId);
     alert("del "+postingId);
-    // $("#add" + postingId).show()
-    // $("#delete" + postingId).hide()
      $("#imgAdd" + postingId).show()
      $("#imgDel" + postingId).hide()
 

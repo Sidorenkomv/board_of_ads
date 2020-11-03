@@ -74,10 +74,10 @@ public class FavoriteRestController {
             user = userService.getUserByEmail(session.getId());
         }
         Set<Posting> userFavorites = user.getFavorites();
-        System.out.println(user.getFavorites());
+//        System.out.println(user.getFavorites());
         userFavorites.removeIf(post -> post.getId().equals(postingID));
         user.setFavorites(userFavorites);
-        System.out.println(user.getFavorites());
+//        System.out.println(user.getFavorites());
         userService.saveUser(user);
         return new ResponseEntity(HttpStatus.OK);
     }

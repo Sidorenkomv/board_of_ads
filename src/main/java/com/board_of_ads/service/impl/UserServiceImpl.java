@@ -138,19 +138,4 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public List<PostingDto> getFavDtosFromUser(User user) {
-        Set<Posting> userfavorites = (user.getFavorites() != null) ? user.getFavorites() : new HashSet<Posting>();
-        List<PostingDto> list_post = new ArrayList<>();
-        for (Posting post : userfavorites) {
-            list_post.add(new PostingDto(post.getId(),
-                    post.getTitle(),
-                    post.getDescription(),
-                    post.getPrice(),
-                    post.getContact(),
-                    post.getDatePosting(),
-                    post.getCity() == null ? null : post.getCity().getName()));
-        }
-        return list_post;
-    }
-
 }
