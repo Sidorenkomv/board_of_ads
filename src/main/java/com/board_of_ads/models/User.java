@@ -95,7 +95,6 @@ public class User implements UserDetails {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Set<Review> reviews;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Posting> postings;
