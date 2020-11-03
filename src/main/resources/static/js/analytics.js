@@ -17,7 +17,9 @@ const analyticsElements = {
         title: "Отчет по регионам",
         columns: [
             {title: "Регион",               name: "region"},
-            {title: "Количество постов",    name: "posts"},
+            {title: "Количество постов",    name: "postsCount"},
+            {title: "Активные посты",       name: "activePostsCount"},
+            {title: "Архивные посты",       name: "archivePostsCount"},
         ],
     },
 

@@ -20,6 +20,9 @@ public interface RegionRepository extends JpaRepository<Region, Long> {
     Region findRegionByName(String name);
 
 
-    @Query("select new com.board_of_ads.models.dto.analytics.ReportRegionPostingDto(r.name, count (r.name)) from Region r, Posting p where p.city.region = r AND p.datePosting BETWEEN :startDate and :endDate GROUP BY r.name")
+    @Query("select new com.board_of_ads.models.dto.analytics.ReportRegionPostingDto(" +
+            "r.name, count (r.name), sum (case when p.isActive = true then 1 else 0 end), sum (case when p.isActive = true then 0 else 1 end)" +
+            ")" +
+            " from Region r, Posting p where p.city.region = r AND p.datePosting BETWEEN :startDate and :endDate GROUP BY r.name")
     List<ReportRegionPostingDto> findAllByDatePostingBetween(LocalDateTime startDate, LocalDateTime endDate);
 }
