@@ -1,0 +1,188 @@
+<div th:fragment="profile-settings" xmlns:th="http://www.w3.org/1999/xhtml">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <div class="container" id="panel-content">
+        <div class="tab-pane fade" id="nav-settings">
+            <div class="d-none" id="SuccessMessage"></div>
+            <div class="profile-settings">
+                <div class="h2 font-weight-bold mt-4">Настройки</div>
+                <div>
+                    <div data-marker="change-email-block">
+                        <div>
+                            <span>
+                                <span id="editEmail">
+                                    <span class="h5" id="userEmail"></span>
+                                    <i class="text-primary fa fa-pencil"></i>
+                                </span>
+                                <span class="float-right">
+                                    <i class="text-success fa fa-check" aria-hidden="true"></i>
+                                    <span data-marker="status">Подтверждён</span>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3" style="font-size: 15px;">
+                    <table class="table">
+                        <tbody class="font-weight-normal">
+                            <tr>
+                                <th>
+                                    <div class="mt-3 text-muted font-weight-normal">Тип пользователя</div>
+                                    <div class="mt-3">
+                                        <span class="text-muted font-weight-normal">Номер профиля</span>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="mt-3 font-weight-normal">
+                                        <span>Частное лицо</span>
+                                        <a href="/profile/settings/business/profile">Настроить бизнес профиль</a>
+                                        <i class="fa fa-question-circle-o text-muted"
+                                           id="tooltip"
+                                           title="О бизнес профиле"
+                                           data-toggle="popover"
+                                           data-placement="bottom"
+                                           data-content="Вы получите статус компании и профессиональный внешний вид профиля"></i>
+                                    </div>
+                                    <div class="mt-3 font-weight-normal">
+                                        <span id="userId"></span>
+                                    </div>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <div class="mt-3">
+                                        <span class="text-muted font-weight-normal">Объявления</span>
+                                    </div>
+                                    <div class="mt-3">
+                                        <span class="text-muted font-weight-normal">Кошелёк</span>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="mt-3 font-weight-normal">
+                                        <span id="postCount">
+                                        </span>
+                                        <span>
+                                        <a href="/new_post">подать объявление →</a>
+                                        </span>
+                                    </div>
+                                    <div class="mt-3 font-weight-normal">
+                                        <span>0
+                                            <span>₽</span>
+                                            <a class="ml-2" href="/account">пополнить кошелёк</a>
+                                        </span>
+                                    </div>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <div class="h6 mt-3" style="font-size: 17px;">Контактная информация</div>
+                                    <div class="mt-3">
+                                        <span class="text-muted font-weight-normal" style="font-size: 15px;">Имя</span>
+                                    </div>
+                                    <div class="mt-3">
+                                        <label class="text-muted font-weight-normal" style="font-size: 15px;">Город</label>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="mt-5">
+                                        <input id="fld_name"
+                                               class="form-control form-control-sm w-75"
+                                               type="text"
+                                               name="name"
+                                               maxlength="30">
+                                    </div>
+                                    <div class="mt-3">
+                                        <select id="selectCity" class="form-control form-control-sm w-50">
+                                            <option id="selectedCity"></option>
+                                            <option id="otherCities">Выбрать другой...</option>
+                                        </select>
+                                    </div>
+                                    <div class="mt-3">
+                                        <input class="btn btn-outline-dark btn-sm" id="saveCityOrNameButton" type="submit" value="Сохранить"/>
+                                    </div>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <div class="mt-3">
+                                        <span class="text-muted font-weight-normal" style="font-size: 15px;">Телефоны</span>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="mt-3">
+                                        <span id="phoneUser">
+                                        <span id="phoneTd">
+                                            <span id="phone-number" class="font-weight-normal"></span>
+                                            <span id="editPhone">
+                                                <i class="text-primary fa fa-pencil"></i>
+                                            </span>
+                                            <span id="deletePhone">
+                                                <i class="text-danger fa fa-times"></i>
+                                            </span>
+                                        </span>
+                                        <span class="font-weight-normal">
+                                            <i class="text-success ml-4 fa fa-check " aria-hidden="true"></i>
+                                            Подтверждён
+                                        </span>
+                                        <span id="phoneCountPost" class="text-muted font-weight-normal ml-4"></span>
+                                    </span>
+                                    </div>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <div class="h6 mt-4 mb-4" style="font-size: 17px;">Соцсети и сервисы</div>
+                                    <!-- TODO: Реализовать отображение раздела Соцсети и сервисы и другие переключатели-->
+                                </th>
+                                <th>
+
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <div class="mt-3 font-weight-normal" style="font-size: 17px;">Смена пароля</div>
+                                    <div class="mt-3">
+                                        <span class="text-muted font-weight-normal" style="font-size: 15px;">Текущий пароль</span>
+                                    </div>
+                                    <div class="mt-3">
+                                        <span class="text-muted font-weight-normal" style="font-size: 15px;">Новый пароль</span>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="mt-5">
+                                        <input id="current_password"
+                                               class="form-control form-control-sm w-50"
+                                               type="password"
+                                               minlength="7">
+                                        <div class="text-danger" id="errorPassMessage"></div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <input id="new_password"
+                                               class="form-control form-control-sm w-50"
+                                               type="password"
+                                               minlength="7">
+                                    </div>
+                                    <div class="mt-3">
+                                        <input class="btn btn-outline-dark btn-sm"
+                                               id="changePasswordButton"
+                                               type="submit"
+                                               th:value="Изменить"
+                                               disabled="disabled">
+                                    </div>
+                                </th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div th:insert="fragments/profile-settings-email-modal::email-edit"></div>
+        <div th:insert="fragments/profile-settings-email-modal-confirm::email-edit-confirm"></div>
+        <div th:insert="fragments/profile-settings-choose-city-modal::choose-city"></div>
+        <div th:insert="fragments/profile-settings-phone-edit-modal::edit-phone"></div>
+        <div th:insert="fragments/profile-settings-phone-delete-modal::delete-phone"></div>
+
+    </div>
+</div>

@@ -1,0 +1,39 @@
+#ids{
+    display: inline;
+    border: 0;
+    text-decoration: none;
+    line-height: inherit;
+    font-size: 14px;
+    padding: 0px 12px 4px;
+    font: 13px/1.5 Arial,'Helvetica Neue',Helvetica,sans-serif;
+    position: relative;
+    color: #009cf0;
+}
+.logo-not-avito{
+    position: relative;
+    display: inline-block;
+    height: 40px;
+    width: 100px;
+    z-index: 1;
+    cursor: pointer;
+    top: 4px;
+}
+.navigate-bar{
+    height: 50px;
+}
+.img-fluid{
+    height: 40px;
+    margin-top: 0px;
+}
+
+.scroll-for-category {
+    overflow: auto;
+    max-width: 370px;
+    max-height: 750px;
+}
+
+.fixed {
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+}

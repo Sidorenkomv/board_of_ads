@@ -1,0 +1,58 @@
+<div th:fragment="ads-by-user-seach" xmlns:th="https://www.thymeleaf.org">
+    <div id="anal-by-user-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content  col-md-8">
+                <div class="modal-header">
+                    <h4 class="modal-title">Отчет по пользователям</h4>
+                    <button id="closeNewUserModal" type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form name="anal-create-blank" align="center" id="new-anal-by-user">
+                <div class="modal-body">
+                    <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                        <i class="fa fa-calendar"></i>&nbsp;
+                        <span id="calendarTimeData"></span> <i class="fa fa-caret-down"></i>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-dismiss="modal" th:text="#{adminPanelCloseButton}">
+                    </button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal" id="createAnalByUser">Сформировать</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:fragment="ads-by-region-seach" xmlns:th="https://www.thymeleaf.org">
+    <div id="anal-by-region-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content  col-md-8">
+                <div class="modal-header">
+                    <h4 class="modal-title">Отчет по регионам</h4>
+                    <button id="closeNewRegionModal" type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form name="anal-create-blank" align="center" id="new-anal-by-region">
+                    <div class="modal-body">
+                        <div id="reportrange2" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                            <i class="fa fa-calendar"></i>&nbsp;
+                            <span id="calendarTimeData"></span> <i class="fa fa-caret-down"></i>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                                data-dismiss="modal" th:text="#{adminPanelCloseButton}">
+                        </button>
+                        <button type="button" class="btn btn-success" data-dismiss="modal" id="createAnalByRegion">Сформировать</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
