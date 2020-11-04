@@ -15,7 +15,7 @@ async function getCategoryTable3(categoryName, simpleName) {
             let simpleName = x.name.substring(x.parentName.length + 1);
             document.getElementById("cascade-table-3").innerHTML +=
                 `<div class="category-table-button-3 unactive-category-table-button-3" id="category-table-button-3"
-                            onclick="clickOnCategoryButton3(this)" onmouseover="hoverOnCategoryButton3()">
+                            onclick="clickOnCategoryButton3()" onmouseover="hoverOnCategoryButton3()">
                         ${simpleName}
                     </div>`
         }
@@ -99,12 +99,16 @@ function hoverOnCategoryButton2() {
         });
 }
 
-function clickOnCategoryButton3(o) {
-    $(".category-table-button-3").removeClass("active-category-table-button-3")
+function clickOnCategoryButton3() {
+    $('#pathCategory').show();
+    $('#visibleElement1').hide();
+    $('#visibleElement2').show();
+    $('#visibleElement3').show();
+    /*$(".category-table-button-3").removeClass("active-category-table-button-3")
         .addClass("inactive-category-table-button-3").css("background-color", "#fff");
     $(o).removeClass("inactive-category-table-button-3")
         .addClass("active-category-table-button-3").css("background-color", "#0af", "color", "#fff");
-    // todo add action
+    // todo add action*/
 }
 
 function hoverOnCategoryButton3() {
@@ -130,3 +134,8 @@ async function getCategories() {
     });
     return (await response.json()).data;
 }
+
+$('#pathCategoryButton').on('click', function () {
+    $('#pathCategory').hide();
+    $('#visibleElement1').show();
+});
