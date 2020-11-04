@@ -2,6 +2,7 @@ package com.board_of_ads.configs;
 
 import com.board_of_ads.models.Category;
 import com.board_of_ads.models.Image;
+import com.board_of_ads.models.Message;
 import com.board_of_ads.models.Notification;
 import com.board_of_ads.models.Role;
 import com.board_of_ads.models.User;
@@ -11,6 +12,7 @@ import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.service.interfaces.CityService;
 import com.board_of_ads.service.interfaces.ImageService;
 import com.board_of_ads.service.interfaces.KladrService;
+import com.board_of_ads.service.interfaces.MessageService;
 import com.board_of_ads.service.interfaces.NotificationService;
 import com.board_of_ads.service.interfaces.PostingService;
 import com.board_of_ads.service.interfaces.RoleService;
@@ -40,6 +42,8 @@ public class DataInitializer {
     private final CityService cityService;
     private final ImageService imageService;
     private final NotificationService notificationService;
+    private final MessageService messageService;
+
 
     @PostConstruct
     private void init() throws IOException {
@@ -699,6 +703,49 @@ public class DataInitializer {
         if (un2 != null) {
             un2.setUrgentLevel(2);
             notificationService.updateUserNotificationFields(un2);
+        }
+    }
+    private void initMessages() {
+        List<Message> messages = new ArrayList<>();
+        User test = new User();
+        test.setEmail("test@mail.ru");
+        test.setPassword("1234567");
+        test.setFirstName("test");
+        test.setLastName("test");
+        test.setPhone("8-9150469270");
+        test.setAvatar(new Image(null, "images/admin.jpg"));
+        Set<Role> roleAdmin = new HashSet<>();
+        roleAdmin.add(roleService.getRoleByName("ADMIN"));
+        test.setRoles(roleAdmin);
+        test.setCity(cityService.findCityByName("Екатеринбург").get());
+        userService.saveUser(test);
+        Set<Message> messages1 = new HashSet<>();
+        Posting posting115 = new Posting(userService.getUserByEmail("test@mail.ru"), categoryService.getCategoryByName("Услуги").get()
+                , "Тестовое обьявление115", "Тестовое обьявление115 дескрипшн", 100_000L, "+79896661488", true);
+
+        Posting posting2 = new Posting(userService.getUserByEmail("test@mail.ru"), categoryService.getCategoryByName("Услуги").get()
+                , "Приду в гости", "Приду в гости описание", 10_000L, "+79896661488", true);
+        List<Image> imageList = new ArrayList<>();
+        imageList.add(imageService.getByPathURL("/images/numbers/1.jpg"));
+        imageList.add(imageService.getByPathURL("/images/numbers/2.jpg"));
+
+        posting2.setImages(imageList);
+        posting115.setImages(imageList);
+        postingService.save(posting115);
+        postingService.save(posting2);
+        messages.add(new Message(1L, "привет", test, postingService.getPostingById(1657L)));
+        messages.add(new Message(2L, "можно обсудить скидку?", test, postingService.getPostingById(1658L)));
+        messages.add(new Message(3L, "покупаю", test, postingService.getPostingById(1659L)));
+        messages.add(new Message(4L, "здравствуйте", test, postingService.getPostingById(1660L)));
+        messages.add(new Message(5L, "еще актуально?", test, postingService.getPostingById(1661L)));
+        messages.add(new Message(6L, "приеду завтра", test, postingService.getPostingById(1662L)));
+        messages.add(new Message(7L, "подумаю", test, postingService.getPostingById(1663L)));
+        messages.add(new Message(8L, "предложу другу", test, postingService.getPostingById(1664L)));
+        messages.add(new Message(9L, "приеду сегодня вечером", test, postingService.getPostingById(1665L)));
+        messages.add(new Message(10L, "спасибо!", test, postingService.getPostingById(1666L)));
+
+        for (Message message : messages) {
+            messageService.save(message);
         }
     }
 }
