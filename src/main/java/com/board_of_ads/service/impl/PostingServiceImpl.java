@@ -2,7 +2,7 @@ package com.board_of_ads.service.impl;
 
 import com.board_of_ads.models.City;
 import com.board_of_ads.models.dto.PostingDto;
-import com.board_of_ads.models.dto.ReportUserPostingDto;
+import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.repository.CityRepository;
 import com.board_of_ads.repository.PostingRepository;

@@ -1,7 +1,7 @@
 package com.board_of_ads.controllers.rest;
 
 import com.board_of_ads.models.dto.PostingDto;
-import com.board_of_ads.models.dto.ReportUserPostingDto;
+import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.service.interfaces.CityService;
 import com.board_of_ads.service.interfaces.PostingService;
 import com.board_of_ads.util.Error;
@@ -75,6 +75,7 @@ public class PostingRestController {
                                                       @RequestParam(name="phOpt",required = false) String photoOption) {
         log.info("Use this default logger");
         var postings = postingService
+
                 .searchPostings(categorySelect, citySelect, searchText, photoOption);
         return (postings != null)
                 ? Response.ok(postings)

@@ -4,14 +4,10 @@ let deleteUserById = '/api/admin/user';
 let createNewUser = '/api/admin/newUser';
 let updateUser = '/api/admin/newUserData';
 let allRoles = '/api/admin/allRoles';
-let countPosts = '/api/posting/date';
-let countPostsByRegions = '/api/region/date';
 
 let adminUsersTable = $('#userTableJs tbody');
 let deleteButtonInModalForm = $('#deleteButtonInModal div');
 let saveButtonInModalForm = $('#updateButtonInModal div');
-let usersPostAnalyzing = $('#userAnalPost tbody');
-let regionsPostAnalyzing = $('#userAnalPost tbody');
 
 let elementCloseDeleteModal1 = document.getElementById('closeDeleteModal');
 let elementCloseDeleteModal2 = document.getElementById('closeDeleteModal2');
@@ -29,7 +25,6 @@ let elementAnalyticLink = document.getElementById('statisticPanel');
 $(document).ready(function () {
     showAllUsersTable();
     createRoleSelector();
-    calendar();
 });
 
 $(document).mouseup(function (e) {
@@ -49,183 +44,7 @@ $(document).mouseup(function (e) {
     }
 });
 
-//Дата + календарь
-
-function calendar() {
-    var start = moment().subtract(29, 'days');
-    var end = moment();
-
-    function cb(start, end) {
-        $('#reportrange span').html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
-        $('#reportrangeregion span').html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
-    }
-
-    $('#reportrange').daterangepicker({
-        startDate: start,
-        endDate: end,
-        ranges: {
-            'Today': [moment(), moment()],
-            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-            'This Month': [moment().startOf('month'), moment().endOf('month')],
-            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-        }
-    }, cb);
-
-    $('#reportrangeregion').daterangepicker({
-        startDate: start,
-        endDate: end,
-        ranges: {
-            'Today': [moment(), moment()],
-            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-            'This Month': [moment().startOf('month'), moment().endOf('month')],
-            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-        }
-    }, cb);
-
-    cb(start, end);
-}
-
 //ОСНОВНЫЕ ФУНКЦИИ
-function analyzePostCount() {
-    $("#analyzeTBody").empty();
-
-    let date = $('#reportrange > span').text();
-
-    fetch(countPosts, {
-        method: 'POST',
-        body: JSON.stringify(date)
-    })
-        .then((response) => {
-            return response.json();
-        })
-        .then((data) => {
-
-            if (data.success && Object.keys(data.data).length !== 0) {
-
-                let counter = 0;
-                let tr = document.createElement('tr');
-                let tdPos = document.createElement('td');
-                let tdEmail = document.createElement('td');
-                let tdCount = document.createElement('td');
-                let tdActivePost = document.createElement('td');
-                let tdArchivePost = document.createElement('td');
-
-                tdPos.appendChild(document.createTextNode("№"));
-                tdEmail.appendChild(document.createTextNode("Почта"));
-                tdCount.appendChild(document.createTextNode("Количество постов"));
-                tdActivePost.appendChild(document.createTextNode("Активные посты"));
-                tdArchivePost.appendChild(document.createTextNode("Архивные посты"));
-
-                tr.appendChild(tdPos);
-                tr.appendChild(tdEmail);
-                tr.appendChild(tdCount);
-                tr.appendChild(tdActivePost);
-                tr.appendChild(tdArchivePost);
-
-                usersPostAnalyzing.append(tr);
-
-                for (let o in data.data) {
-
-                    counter++;
-                    let tr = document.createElement('tr');
-                    let tdPosition = document.createElement('td');
-                    let tdUser = document.createElement('td');
-                    let tdCount = document.createElement('td');
-                    let tdActive = document.createElement('td');
-                    let tdArchive = document.createElement('td');
-
-                    let userInfo = document.createTextNode(data.data[o].userEmail);
-                    let countInfo = document.createTextNode(data.data[o].allUserPosts);
-                    let activePosts = document.createTextNode(data.data[o].activeUserPosts);
-                    let archivePosts = document.createTextNode(data.data[o].archiveUserPosts);
-
-                    tdPosition.appendChild(document.createTextNode(counter));
-                    tdUser.appendChild(userInfo);
-                    tdCount.appendChild(countInfo);
-                    tdActive.appendChild(activePosts);
-                    tdArchive.appendChild(archivePosts);
-
-                    tr.appendChild(tdPosition);
-                    tr.appendChild(tdUser);
-                    tr.appendChild(tdCount);
-                    tr.appendChild(tdActive);
-                    tr.appendChild(tdArchive);
-
-                    usersPostAnalyzing.append(tr);
-                }
-            } else {
-                let span = document.createElement('span');
-                let empty = document.createTextNode("За указанные даты посты отсутствуют");
-                span.appendChild(empty);
-                usersPostAnalyzing.append(span);
-            }
-        })
-}
-
-function analyzeRegion(){
-    $("#analyzeTBody").empty();
-
-    let date = $('#reportrangeregion > span').text();
-
-    fetch(countPostsByRegions, {
-        method: 'POST',
-        body: JSON.stringify(date)
-    })
-        .then((response) => {
-            return response.json();
-        })
-        .then((data) => {
-            if (data.success && Object.keys(data.data).length !== 0) {
-
-                let counter = 0;
-                let tr = document.createElement('tr');
-                let tdPos = document.createElement('td');
-                let tdEmail = document.createElement('td');
-                let tdCount = document.createElement('td');
-
-                tdPos.appendChild(document.createTextNode("№"));
-                tdEmail.appendChild(document.createTextNode("Регион"));
-                tdCount.appendChild(document.createTextNode("Количество постов"));
-
-                tr.appendChild(tdPos);
-                tr.appendChild(tdEmail);
-                tr.appendChild(tdCount);
-
-                usersPostAnalyzing.append(tr);
-
-                for (let o in data.data) {
-
-                    counter++;
-                    let tr = document.createElement('tr');
-                    let tdPosition = document.createElement('td');
-                    let tdUser = document.createElement('td');
-                    let tdCount = document.createElement('td');
-                    let userInfo = document.createTextNode(data.data[o][0]);
-                    let countInfo = document.createTextNode(data.data[o][1]);
-
-                    tdPosition.appendChild(document.createTextNode(counter));
-                    tdUser.appendChild(userInfo);
-                    tdCount.appendChild(countInfo);
-
-                    tr.appendChild(tdPosition);
-                    tr.appendChild(tdUser);
-                    tr.appendChild(tdCount);
-
-                    usersPostAnalyzing.append(tr);
-                }
-            } else {
-                let span = document.createElement('span');
-                let empty = document.createTextNode("За указанные даты посты отсутствуют");
-                span.appendChild(empty);
-                usersPostAnalyzing.append(span);
-            }
-        })
-}
-
 //Функция формирующая селекты
 
 function createRoleSelector() {
@@ -652,17 +471,6 @@ function fillingModalFormUpdate(id) {
 }
 
 // ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ НА ON.CLICK
-elementAnalyticLink.onclick = function () {
-    $("#analyzeTBody").empty();
-};
-
-elementCreateAnalPosts.onclick = function () {
-    analyzePostCount();
-};
-
-elementCreateRegionsAnalPosts.onclick = function () {
-    analyzeRegion();
-};
 
 elementCreateUser.onclick = function () {
     newUser();
