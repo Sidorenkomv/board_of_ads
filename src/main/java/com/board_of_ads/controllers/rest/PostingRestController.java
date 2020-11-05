@@ -47,17 +47,13 @@ public class PostingRestController {
     @GetMapping("/city/{name}")
     public Response<List<PostingDto>> findPostingsByCityName(@PathVariable String name) {
         var postings = postingService.getPostingByCity(cityService.findCityByName(name).get());
-        return (postings.size() > 0)
-                ? Response.ok(postings)
-                : new ErrorResponse<>(new Error(204, "No found postings"));
+        return Response.ok(postings);
     }
 
     @GetMapping("/region/{name}")
     public Response<List<PostingDto>> findPostingsByRegionName(@PathVariable String name) {
         var postings = postingService.getPostingByFullRegionName(name);
-        return (postings.size() > 0)
-                ? Response.ok(postings)
-                : new ErrorResponse<>(new Error(204, "No found postings"));
+        return Response.ok(postings);
     }
 
     @GetMapping("/userpost/{id}")
