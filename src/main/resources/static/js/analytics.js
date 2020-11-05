@@ -33,7 +33,19 @@ const analyticsElements = {
             {title: "Активные посты",       name: "activeUserPosts"},
             {title: "Архивные посты",       name: "archiveUserPosts"}
         ],
-    }
+    },
+
+    city: {
+        url: '/api/city/date',
+        element: $('#city-analytics'),
+        title: "Отчет по городам",
+        columns: [
+            {title: "Город",                name: "city"},
+            {title: "Количество постов",    name: "postsCount"},
+            {title: "Активные посты",       name: "activePostsCount"},
+            {title: "Архивные посты",       name: "archivePostsCount"}
+        ],
+    },
 };
 
 for (let key in analyticsElements) {
