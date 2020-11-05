@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Add new used car</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/add-new-post-style.css"
+          th:href="@{/css/add-new-post-style.css}"/>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../../static/css/main_page.css" th:href="@{/css/main_page.css}"/>
+    <link rel="stylesheet" type="text/css" href="../../static/css/header-fragment-style.css"
+          th:href="@{/css/header-fragment-style.css}"/>
+    <link rel="stylesheet" type="text/css" href="../../static/css/auth-style.css" th:href="@{/css/auth-style.css}"/>
+    <link rel="stylesheet" type="text/css" href="../../static/css/user-info-menu.css"
+          th:href="@{/css/user-info-menu.css}"/>
+    <link rel="stylesheet" type="text/css" href="../../static/css/main_page_posting.css"
+          th:href="@{/css/main_page_posting.css}"/>
+    <link rel="stylesheet" type="text/css" href="../../static/css/used-car-posting.css"
+          th:href="@{/css/used-car-posting.css}"/>
+    <link rel="stylesheet" type="text/css" href="../../static/css/recovery-pswd.css"
+          th:href="@{/css/recovery-pswd.css}"/>
+
+    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+<header th:insert="fragments/header::main-header"></header>
+<div class="main-container">
+    <div class="head-container">
+        <a><img class="main-logo" th:src="@{images/logo.jpg}"></a>
+        <div class="text-in-logo-header">Новое объявление</div>
+    </div>
+    <div class="category-head-container">
+        <label class="category-head-text">Категория</label>
+        <label class="category-head-text">
+            <a href="#">Транспорт / Автомобили / С пробегом</a></label>
+    </div>
+
+    <div>
+        <div>
+            <div class="category-table-title">
+                <!--                -->
+                <form id="used-car-posting-form" class="creating-used-car-posting" action="#" th:action="@{/save-used-car-posting}" th:object="${usedCarPosting}"
+                      method="POST">
+
+                    <div>
+                        <label class="category-head-text" for="typeOfUsedCarPosting">Вид объявления </label>
+                        <select id="typeOfUsedCarPosting" name="typeOfUsedCarPosting"
+                                th:field="*{typeOfUsedCarPosting}">
+                            <option selected="selected" value="">---</option>
+                            <option th:each="typeOfUsedCarPosting : ${typeOfUsedCarPostingSet}"
+                                    th:value="${typeOfUsedCarPosting}"
+                                    th:utext="${typeOfUsedCarPosting}"></option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <div>
+                            <h4 class="category-head-text">Внешний вид</h4>
+                        </div>
+                        <div>
+                            <h4 class="category-text">Фотографии</h4>
+
+                        </div>
+                        <div>
+                            <div class="form-group col-md-6">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <h4 class="category-text">Цвет</h4>
+                                <label for="car_color"></label>
+                                <select id="car_color" name="car_color" th:field="*{carColor}">
+                                    <option selected="selected" value="">--</option>
+                                    <option th:each="colorName : ${autoColorsRusNames}" th:value="${colorName}"
+                                            th:utext="${colorName}"></option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <h4 class="category-text">Видео с YouTube</h4>
+
+                        <div>
+                            <br><br>
+                            <div>
+                                <div>
+                                    <h4 class="category-head-text">Регистрационные данные</h4>
+                                    <p>Технические характеристики автоматически определятся по VIN — мы покажем в
+                                        объявлении лишь часть цифр.
+                                        Госномер пользователи не увидят.</p>
+                                </div>
+                                <div>
+                                    <div>VIN или номер кузова</div>
+                                    <input type="text"/>
+                                </div>
+                                <div>
+                                    <div>Государственный номер</div>
+                                    <input type="text"/>
+                                </div>
+                            </div>
+
+
+                            <div>
+                                <div>
+                                    <h4>Технические характеристики</h4>
+                                </div>
+                                <div class="form-group col-md-8">
+                                    <label class="col-form-label"><h5>Марка</h5></label>
+                                    <label for="car_brand_"></label>
+                                    <select id="car_brand_" name="car_brand_" th:field="*{carBrand}">
+                                        <option selected="selected" value="">--</option>
+                                        <option th:each="brand : ${brandsSet}" th:value="${brand}"
+                                                th:utext="${brand}"></option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <h5>Модель</h5>
+                                </div>
+                                <div>
+                                    <h5>Год выпуска</h5>
+                                    <div>
+                                        <select id="percentage" name="percentage">
+                                            <option th:each="i : ${#numbers.sequence(1999, 2020)}" th:value="${i}" th:text="${i}"
+                                                    th:selected="${i==2018}" th:field="${usedCarPosting.carYear}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div>
+
+                                </div>
+                            </div>
+                            <br><br>
+                            <div>
+                                <div>
+                                    <h5>История эксплуатации и состояние</h5>
+                                </div>
+
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <h5 >Введите пробег авто </h5>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label for="mileage">
+                                                <input id="mileage" type="text" th:field="${usedCarPosting.mileage}"/>
+                                                <span>km</span>
+                                            </label>
+                                        </div>
+                                        <div class="col-sm-3">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <h5 >Состояние </h5>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="btn-group mr-2" role="group" aria-label="Second group">
+                                                <button type="button" class="btn btn-outline-secondary">Битый</button>
+                                                <button type="button" class="btn btn-outline-secondary">Не битый</button>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <h5 >Владельцев по ПТС </h5>
+                                        </div>
+                                        <div class="col-sm-6">
+
+                                            <div class="btn-group mr-2" role="group" aria-label="First group" th:field="*{numberOfOwners}">
+                                                <button type="button" class="btn btn-outline-secondary">1</button>
+                                                <button type="button" class="btn btn-outline-secondary">2</button>
+                                                <button type="button" class="btn btn-outline-secondary">3</button>
+                                                <button type="button" class="btn btn-outline-secondary">4+</button>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <h5 >Данные о ТО </h5>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div>
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="hasServiceBook" th:checked="*{hasServiceBook}" th:field="*{hasServiceBook}">
+                                                    <label class="custom-control-label" for="hasServiceBook">Есть Сервисная книжка</label>
+                                                </div>
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="dealerServiced" th:checked="*{dealerServiced}" th:field="*{dealerServiced}">
+                                                    <label class="custom-control-label" for="dealerServiced">Обслуживался у дилера</label>
+                                                </div>
+                                                <div class="custom-control custom-checkbox">
+                                                    <input type="checkbox" class="custom-control-input" id="warrantyValid" th:checked="*{warrantyValid}" th:field="${usedCarPosting.warrantyValid}">
+                                                    <label class="custom-control-label" for="warrantyValid">На гарантии</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <br><br>
+                            <div>
+                                <div>
+                                    <h4>Дополнительные опции</h4>
+                                    <div class="container no-gutters border" style="padding: 0">
+                                        <div class="row no-gutters">
+                                            <div class="col-4 no-gutters">
+                                                <div>
+                                                    <div>
+                                                        <label class="category-head-text" for="typeOfUsedCarPosting">Усилитель руля</label>
+                                                        <select id="powerSteeringType" name="powerSteeringType"
+                                                                th:field="*{powerSteeringType}">
+                                                            <option selected="selected" value="">---</option>
+                                                            <option th:each="ps_type : ${powerSteeringTypes}"
+                                                                    th:value="${ps_type}"
+                                                                    th:utext="${ps_type}"></option>
+                                                        </select>
+                                                    </div>
+                                                    <div>
+                                                        <label  for="typeOfUsedCarPosting">Управление климатом</label>
+                                                        <select id="climateControlType" name="climateControlType"
+                                                                th:field="*{climateControlType}">
+                                                            <option selected="selected" value="">---</option>
+                                                            <option th:each="cc_type : ${climateControlTypes}"
+                                                                    th:value="${cc_type}"
+                                                                    th:utext="${cc_type}"></option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="onWheelControl" th:field="*{onWheelControl}">
+                                                        <label class="custom-control-label" for="onWheelControl">Управление на руле</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="thermalGlass" th:field="${usedCarPosting.thermalGlass}">
+                                                        <label class="custom-control-label" for="thermalGlass">Атермальное остекление</label>
+                                                    </div>
+
+                                                    <div>
+                                                        <label for="typeOfUsedCarPosting">Салон</label>
+                                                        <select id="interiorType" name="interiorType"
+                                                                th:field="*{interiorType}">
+                                                            <option selected="selected" value="">---</option>
+                                                            <option th:each="int_type : ${interiorTypes}"
+                                                                    th:value="${int_type}"
+                                                                    th:utext="${int_type}"></option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="leatherWheel" th:field="${usedCarPosting.leatherWheel}">
+                                                        <label class="custom-control-label" for="leatherWheel">Кожаный руль</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="sunroof" th:field="${usedCarPosting.sunroof}">
+                                                        <label class="custom-control-label" for="sunroof">Люк</label>
+                                                    </div>
+                                                    <br>
+                                                    <h6>Обогрев</h6>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="heatedFrontSeats" th:field="${usedCarPosting.heatedFrontSeats}">
+                                                        <label class="custom-control-label" for="heatedFrontSeats">Передних сидений</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="heatedRearSeats" th:field="${usedCarPosting.heatedRearSeats}">
+                                                        <label class="custom-control-label" for="heatedRearSeats">Задних сидений</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="heatedMirrors" th:field="${usedCarPosting.heatedMirrors}">
+                                                        <label class="custom-control-label" for="heatedMirrors">Зеркал</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="heatedRearWindow" th:field="${usedCarPosting.heatedRearWindow}">
+                                                        <label class="custom-control-label" for="heatedRearWindow">Заднего стекла</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="heatedWheel" th:field="${usedCarPosting.heatedWheel}">
+                                                        <label class="custom-control-label" for="heatedWheel">Руля</label>
+                                                    </div>
+                                                    <div>
+                                                        <label for="typeOfUsedCarPosting">Электростеклоподъемники</label>
+                                                        <select id="powerWindowsType" name="powerWindowsType"
+                                                                th:field="*{powerWindowsType}">
+                                                            <option selected="selected" value="">---</option>
+                                                            <option th:each="pw_type : ${powerWindowTypes}"
+                                                                    th:value="${pw_type}"
+                                                                    th:utext="${pw_type}"></option>
+                                                        </select>
+                                                    </div>
+                                                    <br>
+                                                    <h6>Электропривод</h6>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="powerFrontSeats" th:field="${usedCarPosting.powerFrontSeats}">
+                                                        <label class="custom-control-label" for="powerFrontSeats">Передних сидений</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="powerRearSeats" th:field="${usedCarPosting.powerRearSeats}">
+                                                        <label class="custom-control-label" for="powerRearSeats">Задних сидений</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="powerMirrorRegulation" th:field="${usedCarPosting.powerMirrorRegulation}">
+                                                        <label class="custom-control-label" for="powerMirrorRegulation">Зеркал</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="powerSteeringWheelRegulation" th:field="${usedCarPosting.powerSteeringWheelRegulation}">
+                                                        <label class="custom-control-label" for="powerSteeringWheelRegulation">Рулевой колонки</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="powerMirrorClose" th:field="${usedCarPosting.powerMirrorClose}">
+                                                        <label class="custom-control-label" for="powerMirrorClose">Складывания зеркал</label>
+                                                    </div>
+                                                    <br><br>
+                                                    <h6>Память настроек</h6>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="frontSeatsMemory" th:field="${usedCarPosting.frontSeatsMemory}">
+                                                        <label class="custom-control-label" for="frontSeatsMemory">Передних сидений</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="rearSeatsMemory" th:field="${usedCarPosting.rearSeatsMemory}">
+                                                        <label class="custom-control-label" for="rearSeatsMemory">Задних сидений</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="mirrorRegulationMemory" th:field="${usedCarPosting.mirrorRegulationMemory}">
+                                                        <label class="custom-control-label" for="mirrorRegulationMemory">Зеркал</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="steeringWheelRegulationMemory" th:field="${usedCarPosting.steeringWheelRegulationMemory}">
+                                                        <label class="custom-control-label" for="steeringWheelRegulationMemory">Рулевой колонки</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--                                            ======= 2/3 ================-->
+                                            <div class="col-4 no-gutters">
+                                                <div>
+                                                    <h5>Помощь при вождении</h5>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="parkingAssist" th:field="${usedCarPosting.parkingAssist}">
+                                                        <label class="custom-control-label" for="parkingAssist">Автоматический парковщик</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="rainSensor" th:field="${usedCarPosting.rainSensor}">
+                                                        <label class="custom-control-label" for="rainSensor">Датчик дождя</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="lightSensor" th:field="${usedCarPosting.lightSensor}">
+                                                        <label class="custom-control-label" for="lightSensor">Датчик света</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="rearParkingSensor" th:field="${usedCarPosting.rearParkingSensor}">
+                                                        <label class="custom-control-label" for="rearParkingSensor">Парктроник задний</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="frontParkingSensor" th:field="${usedCarPosting.frontParkingSensor}">
+                                                        <label class="custom-control-label" for="frontParkingSensor">Парктроник передний</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="blindSpotZoneControl" th:field="${usedCarPosting.blindSpotZoneControl}">
+                                                        <label class="custom-control-label" for="blindSpotZoneControl">Система контроля слепых зон</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="rearCamera" th:field="${usedCarPosting.rearCamera}">
+                                                        <label class="custom-control-label" for="rearCamera">Камера заднего вида</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="cruiseControl" th:field="${usedCarPosting.cruiseControl}">
+                                                        <label class="custom-control-label" for="cruiseControl">Круиз-контроль</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="onBoardComp" th:field="${usedCarPosting.onBoardComp}">
+                                                        <label class="custom-control-label" for="onBoardComp">Бортовой компьютер</label>
+                                                    </div>
+                                                    <br>
+                                                    <h6>Противоугонная система</h6>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="alarmSystem" th:field="${usedCarPosting.alarmSystem}">
+                                                        <label class="custom-control-label" for="alarmSystem">Сигнализация</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="powerDoorBlocking" th:field="${usedCarPosting.powerDoorBlocking}">
+                                                        <label class="custom-control-label" for="powerDoorBlocking">Центральный замок</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="immobilizer" th:field="${usedCarPosting.immobilizer}">
+                                                        <label class="custom-control-label" for="immobilizer">Иммобилайзер</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="satelliteAlarmControl" th:field="${usedCarPosting.satelliteAlarmControl}">
+                                                        <label class="custom-control-label" for="satelliteAlarmControl">Спутник</label>
+                                                    </div>
+                                                    <br>
+                                                    <h6>Подушки безопасности</h6>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="frontalAirbags" th:field="${usedCarPosting.frontalAirbags}">
+                                                        <label class="custom-control-label" for="frontalAirbags">Фронтальные</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="kneeAirbags" th:field="${usedCarPosting.kneeAirbags}">
+                                                        <label class="custom-control-label" for="kneeAirbags">Коленные</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="sideWindowAirbags" th:field="${usedCarPosting.sideWindowAirbags}">
+                                                        <label class="custom-control-label" for="sideWindowAirbags">Шторки</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="frontSideAirbags" th:field="${usedCarPosting.frontSideAirbags}">
+                                                        <label class="custom-control-label" for="frontSideAirbags">Боковые передние</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="rearSideAirbags" th:field="${usedCarPosting.rearSideAirbags}">
+                                                        <label class="custom-control-label" for="rearSideAirbags">Боковые задние</label>
+                                                    </div>
+                                                    <br><br>
+                                                    <h6>Активная безопасность</h6>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="absSystem" th:field="${usedCarPosting.absSystem}">
+                                                        <label class="custom-control-label" for="absSystem">Антиблокировка тормозов</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="dtcSystem" th:field="${usedCarPosting.dtcSystem}">
+                                                        <label class="custom-control-label" for="dtcSystem">Антипробуксовка</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="trackingControl" th:field="${usedCarPosting.trackingControl}">
+                                                        <label class="custom-control-label" for="trackingControl">Курсовая устойчивость</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="breakAssistSystem" th:field="${usedCarPosting.breakAssistSystem}">
+                                                        <label class="custom-control-label" for="breakAssistSystem">Распред. тормозных усилий</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="emergencyBreakSystem" th:field="${usedCarPosting.emergencyBreakSystem}">
+                                                        <label class="custom-control-label" for="emergencyBreakSystem">Экстренное торможение</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="diffLockSystem" th:field="${usedCarPosting.diffLockSystem}">
+                                                        <label class="custom-control-label" for="diffLockSystem">Блок. дифференциала</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="pedestrianDetectSystem" th:field="${usedCarPosting.pedestrianDetectSystem}">
+                                                        <label class="custom-control-label" for="pedestrianDetectSystem">Обнаружение пешеходов</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--                                            ==== 3/3-->
+                                            <div class="col-4 no-gutters">
+                                                <div>
+                                                    <h5>Мультимедия и навигация</h5>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="cdDvdBluRay" th:field="${usedCarPosting.cdDvdBluRay}">
+                                                        <label class="custom-control-label" for="cdDvdBluRay">CD/DVD/Blu-ray</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="mp3" th:field="${usedCarPosting.mp3}">
+                                                        <label class="custom-control-label" for="mp3">МР3</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="radio" th:field="${usedCarPosting.radio}">
+                                                        <label class="custom-control-label" for="radio">Радио</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="tvSystem" th:field="${usedCarPosting.tvSystem}">
+                                                        <label class="custom-control-label" for="tvSystem">ТВ</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="videoSystem" th:field="${usedCarPosting.videoSystem}">
+                                                        <label class="custom-control-label" for="videoSystem">Видео</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="mediaOnWheelControl" th:field="${usedCarPosting.mediaOnWheelControl}">
+                                                        <label class="custom-control-label" for="mediaOnWheelControl">Управление на руле</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="usb" th:field="${usedCarPosting.usb}">
+                                                        <label class="custom-control-label" for="usb">USB</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="aux" th:field="${usedCarPosting.aux}">
+                                                        <label class="custom-control-label" for="aux">AUX</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="bluetooth" th:field="${usedCarPosting.bluetooth}">
+                                                        <label class="custom-control-label" for="bluetooth">Bluetooth</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="gpsNavigation" th:field="${usedCarPosting.gpsNavigation}">
+                                                        <label class="custom-control-label" for="gpsNavigation">GPS-навигатор</label>
+                                                    </div>
+                                                    <div>
+                                                        <label for="typeOfUsedCarPosting">Аудиосистема</label>
+                                                        <select id="audioSystemType" name="audioSystemType"
+                                                                th:field="*{audioSystemType}">
+                                                            <option selected="selected" value="">---</option>
+                                                            <option th:each="as_type : ${audioSystemTypes}"
+                                                                    th:value="${as_type}"
+                                                                    th:utext="${as_type}"></option>
+                                                        </select>
+                                                    </div>
+                                                    <br>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="subwoofer" th:field="${usedCarPosting.subwoofer}">
+                                                        <label class="custom-control-label" for="subwoofer">Сабвуфер</label>
+                                                    </div>
+                                                    <div>
+                                                        <label for="typeOfUsedCarPosting">Фары</label>
+                                                        <select id="frontLightType" name="frontLightType"
+                                                                th:field="*{frontLightType}">
+                                                            <option selected="selected" value="">---</option>
+                                                            <option th:each="fl_type : ${frontLightTypes}"
+                                                                    th:value="${fl_type}"
+                                                                    th:utext="${fl_type}"></option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="antifogLights" th:field="${usedCarPosting.antifogLights}">
+                                                        <label class="custom-control-label" for="antifogLights">Противотуманные</label>
+                                                    </div>
+                                                    <br>
+                                                    <h5>Подушки безопасности</h5>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="frontLightCleaning" th:field="${usedCarPosting.frontLightCleaning}">
+                                                        <label class="custom-control-label" for="frontLightCleaning">Омыватели фар</label>
+                                                    </div>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="adaptiveLights" th:field="${usedCarPosting.adaptiveLights}">
+                                                        <label class="custom-control-label" for="adaptiveLights">Адаптивное освещение</label>
+                                                    </div>
+                                                    <form>
+                                                        <label for="typeOfUsedCarPosting">Шины и диски</label>
+
+                                                        <select id="tyreSize" name="tyreSize" th:field="*{tyreSize}">
+                                                            <option th:each="i : ${#numbers.sequence(7, 30)}" th:value="${i}" th:text="${i+' s'}"
+                                                                    th:selected="${i==15}"></option>
+                                                        </select>
+                                                    </form>
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="winterTyreSetIncluded" th:field="${usedCarPosting.winterTyreSetIncluded}">
+                                                        <label class="custom-control-label" for="winterTyreSetIncluded">Зимние шины в комплекте</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div>
+                                        <h3>Описание</h3>
+                                    </div>
+                                    <div>
+                                        <textarea name="ta" id="ta" cols="60" rows="10">
+
+                                        </textarea>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div>
+                                        <h3>Место осмотра</h3>
+                                    </div>
+                                    <div>
+                                        <h3>Enter address Место осмотра</h3>
+                                    </div>
+                                    <div>
+                                        <textarea name="tta" id="tta" cols="30" rows="10">
+                                        </textarea>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div>
+                                        <label for="carPrice">Цена: </label>
+                                        <input id="carPrice" type="text" th:field="${usedCarPosting.carPrice}"/>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div>
+                                        <h3>Контакты</h3>
+                                    </div>
+                                    <div>
+                                        <label for="sellerEmail">Электронная почта: </label>
+                                        <input id="sellerEmail" type="email" th:field="${usedCarPosting.sellerEmail}"/>
+                                    </div>
+                                    <div>
+                                        <label for="sellerPhone">Телефон: </label>
+                                        <input id="sellerPhone" type="text" th:field="${usedCarPosting.sellerPhone}"/>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+                    <input class="btn-primary" type="button" value="Сохранить и выйти" onclick="submitUsedCarForm()"/>
+
+                    ---- Здесь будет конец ввода инфо ----
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                            aria-controls="navbarResponsive"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+
+
+
+
+        <div>
+
+        </div>
+
+        <div class="cascade-table-column-2" id="cascade-table-2" style="display: none">
+        </div>
+        <div class="cascade-table-column-3" id="cascade-table-3" style="display: none">
+        </div>
+    </div>
+
+</div>
+
+<script src="../../static/js/new-used-car-post.js" th:src="@{/js/new-used-car-post.js}"></script>
+</body>
+</html>

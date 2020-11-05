@@ -4,6 +4,7 @@ import com.board_of_ads.models.City;
 import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
+import com.board_of_ads.models.posting.autoTransport.cars.PostingCar;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,4 +30,7 @@ public interface PostingService {
     List<PostingDto> searchPostings(String categorySelect, String citySelect, String searchText, String photoOption);
 
     List<ReportUserPostingDto> getPostBetweenDates(String date);
+
+    void saveNewPostingCar(PostingCar postingCar);
+
 }
