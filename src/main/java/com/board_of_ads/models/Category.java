@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Data
@@ -44,6 +45,10 @@ public class Category {
     @Column
     private int layer;
 
+    @Size(max=20)
+    @Column
+    private String inFrontName;
+
     public Category(String name, Category category) {
         this.isActive = true;
         this.name = name;
@@ -66,6 +71,18 @@ public class Category {
         }
         this.category = category;
         this.layer = layer;
+    }
+
+    public Category(String name, Category category, int layer, String inFrontName) {
+        this.isActive = true;
+        if (category == null) {
+            this.name = name;
+        } else {
+            this.name = category.getName() + ":" + name;
+        }
+        this.category = category;
+        this.layer = layer;
+        this.inFrontName = inFrontName;
     }
 
     public Category(Long id, String name, Category category, int layer) {
