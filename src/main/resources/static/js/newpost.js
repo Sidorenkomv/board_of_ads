@@ -14,7 +14,7 @@ async function getCategoryTable3(categoryName, simpleName) {
         if (x.parentName === categoryName) {
             let simpleName = x.name.substring(x.parentName.length + 1);
             document.getElementById("cascade-table-3").innerHTML +=
-                `<div class="category-table-button-3 unactive-category-table-button-3" id="category-table-button-3"
+                `<div class="category-table-button-3 inactive-category-table-button-3" id="category-table-button-3"                       
                             onclick="clickOnCategoryButton3()" onmouseover="hoverOnCategoryButton3()">
                         ${simpleName}
                     </div>`
@@ -101,7 +101,7 @@ function hoverOnCategoryButton2() {
 
 function clickOnCategoryButton3() {
     $('#pathCategory').show();
-    $('#visibleElement1').hide();
+    $('#visibleElement1').show();
     $('#visibleElement2').show();
     $('#visibleElement3').show();
     /*$(".category-table-button-3").removeClass("active-category-table-button-3")

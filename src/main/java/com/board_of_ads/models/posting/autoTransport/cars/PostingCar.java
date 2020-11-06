@@ -21,6 +21,7 @@ public class PostingCar extends AutoTransport {
 
     private String vinCode;
     private boolean isCarNew = false;
+    private Long sellerId;
 
     @Size(max=120)
     private String typeOfUsedCarPosting;
@@ -41,7 +42,7 @@ public class PostingCar extends AutoTransport {
     private byte numberOfDoors;
     private boolean wasInAccident;
     private boolean dealerServiced = true;
-    private boolean warrantyValid;
+    private boolean underWarranty;
     private boolean hasServiceBook;
     @Size(max=50)
     private String powerSteeringType;
@@ -112,6 +113,8 @@ public class PostingCar extends AutoTransport {
     private boolean antifogLights;
     private boolean frontLightCleaning;
     private boolean adaptiveLights;
+    @Size(max=35)
+    private String howToContactVsSeller;
     @Size(max=5)
     private String tyreSize;
     private boolean winterTyreSetIncluded;

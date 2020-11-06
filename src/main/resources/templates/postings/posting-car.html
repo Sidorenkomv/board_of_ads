@@ -25,6 +25,7 @@
 </head>
 <body>
 <header th:insert="fragments/header::main-header"></header>
+
 <div class="main-container">
     <div class="head-container">
         <a><img class="main-logo" th:src="@{images/logo.jpg}"></a>
@@ -40,7 +41,7 @@
         <div>
             <div class="category-table-title">
                 <!--                -->
-                <form id="used-car-posting-form" class="creating-used-car-posting" action="#" th:action="@{/save-used-car-posting}" th:object="${usedCarPosting}"
+                <form id="used-car-posting-form" class="creating-used-car-posting" action="#" th:action="@{/save-used-car-posting}" th:object="${carPost}"
                       method="POST">
 
                     <div>
@@ -633,6 +634,6 @@
 
 </div>
 
-<script src="../../static/js/new-used-car-post.js" th:src="@{/js/new-used-car-post.js}"></script>
+<script src="../../static/js/posting-car.js" th:src="@{/js/posting-car.js}"></script>
 </body>
 </html>

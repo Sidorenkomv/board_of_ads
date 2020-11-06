@@ -180,8 +180,14 @@ public class DataInitializer {
 
 
         List<Category> secondSubCategory = new ArrayList<>();
-        secondSubCategory.add(new Category("С пробегом", categoryService.getCategoryByName("Транспорт:Автомобили").get(), 3));
-        secondSubCategory.add(new Category("Новые", categoryService.getCategoryByName("Транспорт:Автомобили").get(), 3));
+        Category myUsedCarCategory = new Category("С пробегом", categoryService.getCategoryByName("Транспорт:Автомобили").get(), 3, "used-car");
+        Category myNewCarCategory = new Category("Новые", categoryService.getCategoryByName("Транспорт:Автомобили").get(), 3, "new-car");
+
+//        secondSubCategory.add(new Category("С пробегом", categoryService.getCategoryByName("Транспорт:Автомобили").get(), 3));
+//        secondSubCategory.add(new Category("Новые", categoryService.getCategoryByName("Транспорт:Автомобили").get(), 3));
+
+        secondSubCategory.add(myNewCarCategory);
+        secondSubCategory.add(myUsedCarCategory);
 
         secondSubCategory.add(new Category("Багги", categoryService.getCategoryByName("Транспорт:Мотоциклы и мототехника").get(), 3));
         secondSubCategory.add(new Category("Вездеходы", categoryService.getCategoryByName("Транспорт:Мотоциклы и мототехника").get(), 3));
