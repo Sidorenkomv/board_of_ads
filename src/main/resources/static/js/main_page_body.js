@@ -1,10 +1,11 @@
 let allPostings = [];
+let allFavorites = [];
 selectedCategoryOption = "Любая категория";
 selectedCity = $("#category-select-city option:selected").val();
 textInput = $("#search-main-text").val();
 photoOption = $("#image-select option:selected").val();
 
-function getPostingsTable(posts) {
+function getPostingsTable(posts, favorites) {
     if(posts === "undefined") {
 
     } else {
@@ -46,76 +47,52 @@ function getPostingsTable(posts) {
                         </div>
                     </div>`
 
-            $("#add" + postingDTO.id).show()
-            $("#delete" + postingDTO.id).hide()
 
-            if ($("#reguserid").val()) {
-
-                $(".addToWish").on('click', function (event) {
-                    event.preventDefault();
-
-                    let userid = $("#reguserid").val();
-
-                    let postingId = this.dataset.id;
-
-                    $("#add" + postingId).hide()
-                    $("#delete" + postingId).show()
-
-                    fetch(`/api/favorite/add/authentication`, {
-                        method: 'POST',
-                        headers: {
-                            'Accept': 'application/json, text/plain, */*',
-                            'Content-type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            ip: $("#reguserid").val(),
-                            posting: postingId,
-                            userid: userid
-                        })
-                    })
-                });
-
+            if (isFavorite(postingDTO.id, favorites)) {
+                $("#add" + postingDTO.id).hide()
+                $("#delete" + postingDTO.id).show()
             } else {
-
-                $(".addToWish").on('click', function (event) {
-                    event.preventDefault();
-
-                    let userid = $("#reguserid").val();
-
-                    let postingId = this.dataset.id;
-
-                    $("#add" + postingId).hide()
-                    $("#delete" + postingId).show()
-
-                    fetch(`/api/favorite/add/none/authentication`, {
-                        method: 'POST',
-                        headers: {
-                            'Accept': 'application/json, text/plain, */*',
-                            'Content-type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            posting: postingId,
-                            userid: userid
-                        })
-                    })
-                });
+                $("#add" + postingDTO.id).show()
+                $("#delete" + postingDTO.id).hide()
             }
 
+            $(".addToWish").on('click', function (event) {
+                event.preventDefault();
 
-            $('.deleteWish').on('click', function (event) {
+                let userid = $("#reguserid").val();
+                let postingId = this.dataset.id;
+
+                $("#add" + postingId).hide()
+                $("#delete" + postingId).show()
+
+                fetch(`/api/favorite/add/` + postingId, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-type': 'application/json'
+                    }
+                });
+            });
+
+
+            $(".deleteWish").on('click', function (event) {
 
                 event.preventDefault();
 
+                let userid = $("#reguserid").val();
                 let postingId = this.dataset.id;
 
                 $("#delete" + postingId).hide()
                 $("#add" + postingId).show()
 
-                fetch(`/api/favorite/delete/${postingId}`, {
-                    method: 'DELETE',
-                })
-            })
-
+                fetch(`/api/favorite/delete/` + postingId, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                });
+            });
 
             if (postingDTO.images.length > 0) {
                 for (let i = 0; i < postingDTO.images.length; i++) {
@@ -181,12 +158,24 @@ async function reinstallTable(categoryOption, cityOption, searchTextOption, phot
 
     document.querySelectorAll('#main_page_posting').forEach(block => block.remove())
 
-    allPostings = await getData(categoryOption, cityOption, searchTextOption, photoOption);
+    allPostings = await getPostings(categoryOption, cityOption, searchTextOption, photoOption);
+    allFavorites = await getFavorites();
 
-    getPostingsTable(allPostings);
+    getPostingsTable(allPostings, allFavorites);
 }
 
-async function getData(categoryOption, cityOption, searchTextOption, photoOption) {
+async function getFavorites() {
+    let response = await fetch("/api/favorite/get", {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+    });
+    return (await response.json()).data;
+}
+
+async function getPostings(categoryOption, cityOption, searchTextOption, photoOption) {
     let response = await fetch("/api/posting/search" + "?catSel=" + categoryOption
         + "&citSel=" + cityOption
         + "&searchT=" + searchTextOption
@@ -198,4 +187,16 @@ async function getData(categoryOption, cityOption, searchTextOption, photoOption
         },
     });
     return (await response.json()).data;
+}
+
+function isFavorite(postingID, favorites) {
+    if (favorites === "undefined") {
+        return false;
+    }
+    for (let i = 0; i < favorites.length; i++) {
+        if (favorites[i] === postingID) {
+            return true;
+        }
+    }
+    return false;
 }

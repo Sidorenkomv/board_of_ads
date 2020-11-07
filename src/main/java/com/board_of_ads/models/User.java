@@ -48,6 +48,9 @@ public class User implements UserDetails {
     private Long id;
 
     @Column
+    private String sessionID;
+
+    @Column
     @NotBlank
     private String email;
 
@@ -100,6 +103,12 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true  )
     private List<UserNotification> notifications = new ArrayList<>();
+
+    public User(String sessionID) {
+        this.sessionID = sessionID;
+        this.email = sessionID;
+        this.password = sessionID;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

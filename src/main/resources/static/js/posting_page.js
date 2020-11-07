@@ -37,6 +37,16 @@ async function getPostingInfo(id) {
     categoriesLine.append(liCity);
     categoriesLine.append(liDot);
 
+    if (favorite) {
+        $("#imgAdd" + postingId).hide()
+        $("#imgDel" + postingId).show()
+        $("#buttonFav_txt" + postingId).textContent="Добавить в избранное";
+    } else {
+        $("#imgAdd" + postingId).show();
+        $("#imgDel" + postingId).hide();
+        $("#buttonFav_txt" + postingId).textContent="В избранном";
+    }
+
     while (true) {
         li = `<li><a href="#">${categoryDto.name}</a></li>`;
         categoriesLine.append(li);
@@ -109,3 +119,66 @@ async function getPostingInfo(id) {
     $("#viewNumber").append(`${postingDto.viewNumber}`);
 
 }
+
+
+async function onClickFav() {
+    if (await isFavorite() === true) {
+        deleteFromFavorites();
+    } else {
+        addToFavorites();
+    }
+}
+
+async function addToFavorites() {
+    let postingId = $("#postingId").text().valueOf();
+
+    $("#imgAdd" + postingId).hide()
+    $("#imgDel" + postingId).show()
+
+    $("#buttonFav_txt" + postingId).text("В избранном");
+    fetch(`/api/favorite/add/` + postingId, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-type': 'application/json'
+        }
+    });
+}
+
+async function deleteFromFavorites() {
+    let postingId = $("#postingId").text().valueOf();
+    $("#imgAdd" + postingId).show()
+    $("#imgDel" + postingId).hide()
+
+    $("#buttonFav_txt" + postingId).text("Добавить в избранное");
+    fetch(`/api/favorite/delete/` + postingId, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+    });
+}
+
+async function isFavorite() {
+    let response = await fetch("/api/favorite/get", {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+    });
+    let favorites = (await response.json()).data;
+
+    if (favorites === "undefined") {
+        return false;
+    }
+    let postingId = $("#postingId").text().valueOf();
+    for (let i = 0; i < favorites.length; i++) {
+        if (favorites[i] === postingId) {
+            return true;
+        }
+    }
+    return false;
+}
+
