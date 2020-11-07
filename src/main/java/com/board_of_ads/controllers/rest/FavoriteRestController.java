@@ -54,10 +54,7 @@ public class FavoriteRestController {
         if (user == null) {
             user = userService.getUserByEmail(session.getId());
         }
-        Set<Posting> userFavorites = (user.getFavorites() != null) ? user.getFavorites() : new HashSet<Posting>();
-        userFavorites.add(postingService.getPostingById(postingID));
-        user.setFavorites(userFavorites);
-        userService.saveUser(user);
+        userRepository.AddFavorite(user.getId(), postingID);
         return new ResponseEntity(HttpStatus.OK);
     }
 

@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    getPostingInfo($("#postingId").text().valueOf());
+    getPostingInfo(Number.parseInt($("#postingId").text().valueOf()));
 });
 
 async function getPostingDto(id) {
@@ -33,18 +33,19 @@ async function getPostingInfo(id) {
     let liCity = `<li><a href="#">${postingDto.city}</a></li>`;
     let liDot = `<li>·</li>`;
     let li;
+    let favorite = await isFavorite();
 
     categoriesLine.append(liCity);
     categoriesLine.append(liDot);
 
     if (favorite) {
-        $("#imgAdd" + postingId).hide()
-        $("#imgDel" + postingId).show()
-        $("#buttonFav_txt" + postingId).textContent="Добавить в избранное";
+        $("#imgAdd" + id).hide()
+        $("#imgDel" + id).show()
+        $("#buttonFav_txt" + id).text("В избранном");
     } else {
-        $("#imgAdd" + postingId).show();
-        $("#imgDel" + postingId).hide();
-        $("#buttonFav_txt" + postingId).textContent="В избранном";
+        $("#imgAdd" + id).show();
+        $("#imgDel" + id).hide();
+        $("#buttonFav_txt" + id).text("Добавить в избранное");
     }
 
     while (true) {
@@ -173,9 +174,9 @@ async function isFavorite() {
     if (favorites === "undefined") {
         return false;
     }
-    let postingId = $("#postingId").text().valueOf();
+    let postingid = Number.parseInt($("#postingId").text().valueOf());
     for (let i = 0; i < favorites.length; i++) {
-        if (favorites[i] === postingId) {
+        if (favorites[i] === postingid) {
             return true;
         }
     }
