@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(Long id) {
-        return userRepository.findById(id).orElseThrow(() ->new RuntimeException("User identity " + id + "not found!"));
+        return userRepository.findById(id).orElseThrow(() ->new RuntimeException("User identity " + id + " not found!"));
     }
 
     @Override

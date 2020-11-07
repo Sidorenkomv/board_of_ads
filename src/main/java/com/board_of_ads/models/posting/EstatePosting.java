@@ -25,5 +25,5 @@ public class EstatePosting extends Posting {
     private Integer countRoom;
     //Является ли собственником
     @Column
-    private boolean isProprietor; // правильное слово isLandlord
+    private boolean isProprietor;
 }
