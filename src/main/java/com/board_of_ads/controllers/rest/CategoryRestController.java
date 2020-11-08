@@ -2,6 +2,7 @@ package com.board_of_ads.controllers.rest;
 
 import com.board_of_ads.models.Category;
 import com.board_of_ads.models.dto.CategoryDto;
+import com.board_of_ads.models.dto.CategoryDtoMenu;
 import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.util.Error;
 import com.board_of_ads.util.ErrorResponse;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -35,6 +37,16 @@ public class CategoryRestController {
         return (categories.size() > 0)
                 ? Response.ok(categories)
                 : new ErrorResponse<>(new Error(204, "No found categories"));
+    }
+
+    @GetMapping("/AllParentCategory")
+    public Response<List<CategoryDtoMenu>> findAllParentCategory() {
+        return Response.ok(categoryService.allParentCategory());
+    }
+
+    @GetMapping("/allChildCategories/{id}")
+    public Response<List<CategoryDtoMenu>> findAllChildCategoryByParentId(@PathVariable Long id) {
+        return Response.ok(categoryService.findChildCatById(id));
     }
 
     @GetMapping("/{id}")
