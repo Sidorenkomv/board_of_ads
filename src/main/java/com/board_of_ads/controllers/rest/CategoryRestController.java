@@ -9,6 +9,8 @@ import com.board_of_ads.util.ErrorResponse;
 import com.board_of_ads.util.Response;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,14 +41,18 @@ public class CategoryRestController {
                 : new ErrorResponse<>(new Error(204, "No found categories"));
     }
 
-    @GetMapping("/AllParentCategory")
+    @GetMapping("/allParentCategory")
     public Response<List<CategoryDtoMenu>> findAllParentCategory() {
         return Response.ok(categoryService.allParentCategory());
     }
 
     @GetMapping("/allChildCategories/{id}")
     public Response<List<CategoryDtoMenu>> findAllChildCategoryByParentId(@PathVariable Long id) {
-        return Response.ok(categoryService.findChildCatById(id));
+        List<CategoryDtoMenu> category = categoryService.findChildCatById(id);
+        log.info("CategoryRestController.findAllChildCategoryByParentId() method worked");
+        return category != null
+                ? Response.ok(category)
+                : new ErrorResponse<>(new Error(204, "No found category"));
     }
 
     @GetMapping("/{id}")

@@ -47,7 +47,7 @@ public class Category {
 
     @Size(max=20)
     @Column
-    private String inFrontName;
+    private String frontName;
 
     public Category(String name, Category category) {
         this.isActive = true;
@@ -69,12 +69,12 @@ public class Category {
         this.layer = layer;
     }
 
-    public Category(String name, Category category, int layer, String inFrontName) {
+    public Category(String name, Category category, int layer, String frontName) {
         this.isActive = true;
         this.name = name;
         this.category = category;
         this.layer = layer;
-        this.inFrontName = inFrontName;
+        this.frontName = frontName;
     }
 
     public Category(Long id, String name, Category category, int layer) {
