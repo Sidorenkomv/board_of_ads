@@ -23,8 +23,6 @@ import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 @Data
-@Setter
-@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
