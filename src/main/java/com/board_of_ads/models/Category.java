@@ -45,8 +45,7 @@ public class Category {
     @Column
     private int layer;
 
-    @Size(max=20)
-    @Column
+    @Column(unique = true)
     private String frontName;
 
     public Category(String name, Category category) {

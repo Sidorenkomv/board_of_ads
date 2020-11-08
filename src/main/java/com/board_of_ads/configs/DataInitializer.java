@@ -349,11 +349,11 @@ public class DataInitializer {
         secondSubCategory.add(new Category("Услуги", categoryService.getCategoryByName("Красота и здоровье").get(), 3));
 
 
-        secondSubCategory.add(new Category("Для дома", categoryService.getCategoryByName("Бытовая техника").get(), 3));
-        secondSubCategory.add(new Category("Для индивидуального ухода", categoryService.getCategoryByName("Бытовая техника").get(), 3));
-        secondSubCategory.add(new Category("Для кухни", categoryService.getCategoryByName("Бытовая техника").get(), 3));
-        secondSubCategory.add(new Category("Климатическое оборудование", categoryService.getCategoryByName("Бытовая техника").get(), 3));
-        secondSubCategory.add(new Category("Другое", categoryService.getCategoryByName("Бытовая техника").get(), 3));
+        secondSubCategory.add(new Category("Для дома", categoryService.getCategoryByName("Бытовая техника").get(), 3, "forHome"));
+        secondSubCategory.add(new Category("Для индивидуального ухода", categoryService.getCategoryByName("Бытовая техника").get(), 3, "forIndividualCare"));
+        secondSubCategory.add(new Category("Для кухни", categoryService.getCategoryByName("Бытовая техника").get(), 3, "forKitchen"));
+        secondSubCategory.add(new Category("Климатическое оборудование", categoryService.getCategoryByName("Бытовая техника").get(), 3, "climaticEquipment"));
+        secondSubCategory.add(new Category("Другое", categoryService.getCategoryByName("Бытовая техника").get(), 3, "otherHouseholdAppliances"));
 
         secondSubCategory.add(new Category("Компьютерные столы и кресла", categoryService.getCategoryByName("Мебель и интерьер").get(), 3));
         secondSubCategory.add(new Category("Кровати, диваны и кресла", categoryService.getCategoryByName("Мебель и интерьер").get(), 3));

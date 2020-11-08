@@ -33,7 +33,7 @@ public class CategoryRestController {
 
     @GetMapping
     public Response<Set<CategoryDto>> findAll() {
-        log.info("Use this default logger");
+        log.info("Use CategoryRestController.findAll() method");
 
         var categories = categoryService.findAllCategory();
         return (categories.size() > 0)
@@ -43,6 +43,7 @@ public class CategoryRestController {
 
     @GetMapping("/allParentCategory")
     public Response<List<CategoryDtoMenu>> findAllParentCategory() {
+        log.info("Use CategoryRestController.findAllParentCategory() method");
         return Response.ok(categoryService.allParentCategory());
     }
 
