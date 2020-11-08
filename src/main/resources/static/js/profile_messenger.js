@@ -1,4 +1,4 @@
-let usersProfilePostings = $('#userMess tbody');
+let usersProfileMessages = $('#userMess tbody');
 
 $(document).ready(function () {
     getAllUserMess();
@@ -6,12 +6,12 @@ $(document).ready(function () {
 
 function getAllUserMess() {
     let user_id = document.getElementById('profile-user-id').textContent;
-    profileService.findPostingByUserId(user_id).then((response => {
+    profileService.findMessageByUserId(user_id).then((response => {
 
         let activeCounter = 0;
-        response.data.map(post => {
+        response.data.map(mess => {
 
-            for (let o in post) {
+            for (let o in mess) {
                 let divSlider = document.createElement('div');
                 let divInnerSlider = document.createElement('div')
                 let olIndicSlider = document.createElement('ol')
@@ -25,9 +25,9 @@ function getAllUserMess() {
                 let tdMeeting = document.createElement('td');
                 let tdTitleHref = document.createElement('a');
 
-                let title = document.createTextNode('Admin');
-                let price = document.createTextNode(post.posting.title + ' - ' + post.posting.price + ' ₽');
-                let meeting = document.createTextNode(post.text);
+                let title = document.createTextNode(mess.postingAuthorFirstName + ' ' + mess.postingAuthorLastName);
+                let price = document.createTextNode(mess.postingTitle + ' - ' +  mess.postingPrice  + ' ₽');
+                let meeting = document.createTextNode(mess.messageText);
                 let divImg = document.createElement('div');
                 let imgName = document.createElement('img');
                 // -------
@@ -69,7 +69,7 @@ function getAllUserMess() {
                 trPrice.appendChild(tdPrice);
                 trMeeting.appendChild(tdMeeting);
 
-                if (post.posting.images.length > 0) {
+
                     let liIndic = document.createElement('li');
                     liIndic.setAttribute('data-slide-to', '' + 1);
                     liIndic.setAttribute('style', 'border-bottom: 5px solid gray;margin:1px;height: 130px;\n' +
@@ -77,7 +77,7 @@ function getAllUserMess() {
 
                     let img = document.createElement('img');
                     img.setAttribute('class', 'img-fluid');
-                    img.setAttribute('src',  post.posting.images[1].pathURL);
+                    img.setAttribute('src', '/images/numbers/0.jpg');
                     img.setAttribute('style', 'height: 70px; width: 70;');
 
                     let divInner = document.createElement('div');
@@ -89,21 +89,7 @@ function getAllUserMess() {
                     divInner.setAttribute('class', 'carousel-item');
                     divInnerSlider.appendChild(divInner);
 
-
-                } else {
-
-                    let img = document.createElement('img');
-                    img.setAttribute('class', 'img-fluid');
-                    img.setAttribute('src', '../images/empty_image.jpg');
-                    img.setAttribute('style', 'height: 150px; width: 210px;');
-
-                    let divInner = document.createElement('div');
-                    divInner.setAttribute('class', 'carousel-item active');
-                    divInner.appendChild(img);
-                    divInnerSlider.appendChild(divInner);
-                }
-                activeCounter = activeCounter + 1;
-                usersProfilePostings.append(tr).append(trPrice).append(trMeeting).append(li);
+                usersProfileMessages.append(tr).append(trPrice).append(trMeeting).append(li);
                 break;
             }
         });
@@ -124,7 +110,7 @@ const httpHeader = {
 };
 
 const profileService = {
-    findPostingByUserId: async (id) => {
+    findMessageByUserId: async (id) => {
         return await httpHeader.fetch('api/messages/' + id);
     }
 };

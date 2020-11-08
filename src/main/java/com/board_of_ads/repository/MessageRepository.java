@@ -14,6 +14,6 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
 //    List<MessageDto> getAllByAuthor_Id(Long id);
 //    List<MessageDto> getMessagesByAuthor_Id(Long id);
 //    List<MessageDto> getMessageById(Long id);
-    @Query("select new com.board_of_ads.models.dto.MessageDto(p.id, p.text, p.author, p.posting) from Message p where p.author.id = :user_id")
-    List<MessageDto> findAllUserMessages(@Param("user_id") Long id);
+@Query("select new com.board_of_ads.models.dto.MessageDto(p.id, p.text, p.posting.user.firstName, p.posting.user.lastName, p.posting.title, p.posting.price) from Message p where p.author.id = :user_id")
+List<MessageDto> findAllUserMessages(@Param("user_id") Long id);
 }

@@ -708,41 +708,15 @@ public class DataInitializer {
     }
     private void initMessages() {
         List<Message> messages = new ArrayList<>();
-        User test = new User();
-        test.setEmail("test@mail.ru");
-        test.setPassword("1234567");
-        test.setFirstName("test");
-        test.setLastName("test");
-        test.setPhone("8-9150469270");
-        test.setAvatar(new Image(null, "images/admin.jpg"));
-        Set<Role> roleAdmin = new HashSet<>();
-        roleAdmin.add(roleService.getRoleByName("ADMIN"));
-        test.setRoles(roleAdmin);
-        test.setCity(cityService.findCityByName("Екатеринбург").get());
-        userService.saveUser(test);
-        Set<Message> messages1 = new HashSet<>();
-        Posting posting115 = new Posting(userService.getUserByEmail("test@mail.ru"), categoryService.getCategoryByName("Услуги").get()
-                , "Тестовое обьявление115", "Тестовое обьявление115 дескрипшн", 100_000L, "+79896661488", true);
-
-        Posting posting2 = new Posting(userService.getUserByEmail("test@mail.ru"), categoryService.getCategoryByName("Услуги").get()
-                , "Приду в гости", "Приду в гости описание", 10_000L, "+79896661488", true);
-        List<Image> imageList = new ArrayList<>();
-        imageList.add(imageService.getByPathURL("/images/numbers/1.jpg"));
-        imageList.add(imageService.getByPathURL("/images/numbers/2.jpg"));
-
-        posting2.setImages(imageList);
-        posting115.setImages(imageList);
-        postingService.save(posting115);
-        postingService.save(posting2);
-        messages.add(new Message(1L, "привет", test, postingService.getPostingById(1663L)));
-        messages.add(new Message(2L, "можно обсудить скидку?", test, postingService.getPostingById(1664L)));
-        messages.add(new Message(4L, "здравствуйте", test, postingService.getPostingById(1665L)));
-        messages.add(new Message(5L, "еще актуально?", test, postingService.getPostingById(1666L)));
-        messages.add(new Message(6L, "приеду завтра", test, postingService.getPostingById(1667L)));
-        messages.add(new Message(7L, "подумаю", test, postingService.getPostingById(1668L)));
-        messages.add(new Message(8L, "предложу другу", test, postingService.getPostingById(1669L)));
-        messages.add(new Message(9L, "приеду сегодня вечером", test, postingService.getPostingById(1670L)));
-        messages.add(new Message(10L, "спасибо!", test, postingService.getPostingById(1671L)));
+        messages.add(new Message(1L, "привет", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1663L)));
+        messages.add(new Message(2L, "можно обсудить скидку?", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1664L)));
+        messages.add(new Message(4L, "здравствуйте", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1665L)));
+        messages.add(new Message(5L, "еще актуально?", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1666L)));
+        messages.add(new Message(6L, "приеду завтра", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1667L)));
+        messages.add(new Message(7L, "подумаю", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1668L)));
+        messages.add(new Message(8L, "предложу другу", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1669L)));
+        messages.add(new Message(9L, "приеду сегодня вечером", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1670L)));
+        messages.add(new Message(10L, "спасибо!", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1671L)));
 
         for (Message message : messages) {
             messageService.save(message);
