@@ -30,8 +30,6 @@ function getAllUserMess() {
                 let meeting = document.createTextNode(mess.messageText);
                 let divImg = document.createElement('div');
                 let imgName = document.createElement('img');
-                // -------
-
 
                 divSlider.setAttribute('id', 'userImageSlider' + activeCounter);
                 divSlider.setAttribute('class', 'carousel slide');
