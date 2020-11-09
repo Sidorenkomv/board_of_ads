@@ -45,9 +45,8 @@ public class Category {
     @Column
     private int layer;
 
-    @Size(max=20)
-    @Column
-    private String inFrontName;
+    @Column(unique = true)
+    private String frontName;
 
     public Category(String name, Category category) {
         this.isActive = true;
@@ -64,25 +63,17 @@ public class Category {
 
     public Category(String name, Category category, int layer) {
         this.isActive = true;
-        if (category == null) {
-            this.name = name;
-        } else {
-            this.name = category.getName() + ":" + name;
-        }
+        this.name = name;
         this.category = category;
         this.layer = layer;
     }
 
-    public Category(String name, Category category, int layer, String inFrontName) {
+    public Category(String name, Category category, int layer, String frontName) {
         this.isActive = true;
-        if (category == null) {
-            this.name = name;
-        } else {
-            this.name = category.getName() + ":" + name;
-        }
+        this.name = name;
         this.category = category;
         this.layer = layer;
-        this.inFrontName = inFrontName;
+        this.frontName = frontName;
     }
 
     public Category(Long id, String name, Category category, int layer) {

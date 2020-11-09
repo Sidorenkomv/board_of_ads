@@ -5,8 +5,7 @@
     <meta charset="UTF-8">
     <title>Add new post</title>
     <link rel="stylesheet" type="text/css" href="../static/css/add-new-post-style.css" th:href="@{/css/add-new-post-style.css}"/>
-    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css"
-          th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
     <link rel="stylesheet" type="text/css" href="../static/css/main_page.css" th:href="@{/css/main_page.css}"/>
     <link rel="stylesheet" type="text/css" href="../static/css/header-fragment-style.css" th:href="@{/css/header-fragment-style.css}"/>
     <link rel="stylesheet" type="text/css" href="../static/css/auth-style.css" th:href="@{/css/auth-style.css}"/>
@@ -33,11 +32,7 @@
         </div>
     </div>
     <div id="visibleElement1" style="display: block">
-        <div class="cascade-table-container" id="cascade-table-container">
-            <div class="cascade-table-column" id="cascade-table"><div class="category-table-title">Категория</div></div>
-            <div class="cascade-table-column-2" id="cascade-table-2" style="display: none"></div>
-            <div class="cascade-table-column-3" id="cascade-table-3" style="display: none"></div>
-        </div>
+        <div class="cascade-table-container" id="cascadeTableContainer"></div>
     </div>
 </div>
 
@@ -120,7 +115,8 @@
 
 </div>
 
-<!--<script src="../static/js/newpost.js" th:src="@{/js/newpost.js}"></script>-->
 <script src="../static/js/newpost.js" th:src="@{/js/newpost.js}"></script>
+<script src="../static/js/new_posting_forms/test.js"
+        th:src="@{/js/new_posting_forms/test.js}"></script>
 </body>
 </html>
