@@ -188,11 +188,6 @@ public class PostingServiceImpl implements PostingService {
         return localDateTimeList;
     }
 
-    @Override
-    public void saveNewPostingCar(PostingCar postingCar) {
-        postingCarRepository.save(postingCar);
-    }
-
     public List<PostingDto> getFavDtosFromUser(User user) {
         List<Long> listfavoritsid = new ArrayList<>();
         user.getFavorites().forEach(x ->listfavoritsid.add(x.getId()));
