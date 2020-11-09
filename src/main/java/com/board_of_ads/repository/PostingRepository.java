@@ -36,4 +36,7 @@ public interface PostingRepository extends JpaRepository<Posting, Long> {
     @Modifying
     @Query("update Posting p set p.viewNumber = p.viewNumber + 1 where p.id= :id")
     void addViewNumber(@Param("id") Long id);
+
+    @Query("select new com.board_of_ads.models.dto.PostingDto(p.id, p.title, p.description, p.price, p.contact, p.datePosting,p.city.name, p.isActive, p.viewNumber) from Posting p where p.id in :favlist")
+    List<PostingDto> findUserFavorites(List<Long> favlist);
 }

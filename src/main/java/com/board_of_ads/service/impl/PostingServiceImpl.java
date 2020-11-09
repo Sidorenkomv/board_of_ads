@@ -1,6 +1,7 @@
 package com.board_of_ads.service.impl;
 
 import com.board_of_ads.models.City;
+import com.board_of_ads.models.User;
 import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
@@ -187,4 +188,20 @@ public class PostingServiceImpl implements PostingService {
         return localDateTimeList;
     }
 
+    @Override
+    public void saveNewPostingCar(PostingCar postingCar) {
+        postingCarRepository.save(postingCar);
+    }
+
+    public List<PostingDto> getFavDtosFromUser(User user) {
+        List<Long> listfavoritsid = new ArrayList<>();
+        user.getFavorites().forEach(x ->listfavoritsid.add(x.getId()));
+        return postingRepository.findUserFavorites(listfavoritsid);
+    }
+
+    public List<Long> getFavIDFromUser(User user) {
+        List<Long> listfavoritsid = new ArrayList<>();
+        user.getFavorites().forEach(x ->listfavoritsid.add(x.getId()));
+        return listfavoritsid;
+    }
 }
