@@ -15,29 +15,21 @@
 
             <div style="padding-top: 5px" class="header-favorite-button">
                 <div class="head-container">
-                    <div >
-                        <a href="#">
-                            <a href="/favorite">
-                                <svg width="25" height="21" xmlns="http://www.w3.org/2000/svg">
-                                    <path style="padding-top: 5px" class="fill-favorite-icon"
-                                          d="M10.918 5.085a5.256 5.256 0 0 1 7.524 0c2.077 2.114 2.077 5.541 0 7.655l-7.405 7.534a.75.75 0 0 1-1.074 0L2.558 12.74c-2.077-2.114-2.077-5.54 0-7.655a5.256 5.256 0 0 1 7.524 0c.15.152.289.312.418.479.13-.167.269-.327.418-.479z"></path>
-                                </svg>
-                            </a>
+                    <div>
+                        <a href="/favorite">
+                            <svg width="25" height="21" xmlns="http://www.w3.org/2000/svg">
+                                <path style="padding-top: 5px" class="fill-favorite-icon"
+                                      d="M10.918 5.085a5.256 5.256 0 0 1 7.524 0c2.077 2.114 2.077 5.541 0 7.655l-7.405 7.534a.75.75 0 0 1-1.074 0L2.558 12.74c-2.077-2.114-2.077-5.54 0-7.655a5.256 5.256 0 0 1 7.524 0c.15.152.289.312.418.479.13-.167.269-.327.418-.479z"></path>
+                            </svg>
+                        </a>
                     </div>
                     <div style="position: relative; right: 30px; bottom: 20px"  sec:authorize="isAuthenticated()">
                         <a href="/notifications" >
-                            <svg id="bell_icons" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
-                                 viewBox="0 0 32 32"  xml:space="preserve" >
-
-                            <path class="note_bell" d="M26,21.5L25,20c-1.6-2.4-2.4-5.3-2.4-8.2c0-3.1-2-5.7-4.7-6.5C17.6,4.5,16.8,4,16,4s-1.6,0.5-1.9,1.3
-	c-2.7,0.8-4.7,3.4-4.7,6.5c0,2.9-0.8,5.8-2.4,8.2l-1,1.5c-0.4,0.7,0,1.5,0.8,1.5h18.3C25.9,23,26.4,22.1,26,21.5z"/>
-                                <path class="note_bell" d="M19,26c0,1.7-1.3,3-3,3s-3-1.3-3-3"/>
-                        </svg>
+                            <svg id="bell_icons" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 32 32"  xml:space="preserve" >
+                                <path id="bell_icon" class="note_bell_inactive" d="M26,21.5L25,20c-1.6-2.4-2.4-5.3-2.4-8.2c0-3.1-2-5.7-4.7-6.5C17.6,4.5,16.8,4,16,4s-1.6,0.5-1.9,1.3c-2.7,0.8-4.7,3.4-4.7,6.5c0,2.9-0.8,5.8-2.4,8.2l-1,1.5c-0.4,0.7,0,1.5,0.8,1.5h18.3C25.9,23,26.4,22.1,26,21.5z
+                                                                    M19,26c0,1.7-1.3,3-3,3s-3-1.3-3-3"/>
+                            </svg>
                         </a>
-
-                        <span th:if="${hasNew}">
-<!--                        <span  id="note_bell_count" th:with="var=${countMap[1]}" th:text="${var}"></span>-->
-                     </span>
                     </div>
                 </div>
             </div>
@@ -52,7 +44,6 @@
                     <li sec:authorize="isAuthenticated()" class="dropdown">
                         <a class="btn btn-light " type="button" data-toggle="dropdown"
                            data-target="#dropdownUserInfo" id="dropdownButton" style="padding: 1px" href="#">
-                            <!--/*@thymesVar id="user" type="com.board_of_ads.models.User"*/-->
                             <div style="display: flex;" th:if="${user.getAvatar()}">
                                 <img style="height: 30px; width: 30px; border-radius: 100%; margin-right: 10px;"
                                      class="user-info-avatar" id="avatar" th:src="${user.getAvatar().getPathURL()}">
@@ -61,11 +52,11 @@
                                 </div>
                                 <input type="hidden" id="reguserid" th:value="${user.getId()}">
                             </div>
-                            <div th:if="${user.getAvatar() == null}">
+                            <!--<div th:if="${user.getAvatar() == null}">
                                 <div class="user-info-avatar" id="avatar"></div>
                                 <div class="user-info-name" id="name" th:text="${user.getFirstName() + ' ' + user.getLastName()}">%username%</div>
                                 <input type="hidden" id="reguserid" th:value="${user.getId()}">
-                            </div>
+                            </div>-->
                         </a>
                         <ul class="dropdown-menu " id="dropdownUserInfo" aria-labelledby="dropdownButton">
                             <li class="dropdown-item">

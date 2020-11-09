@@ -59,7 +59,6 @@ function getPostingsTable(posts, favorites) {
             $(".addToWish").on('click', function (event) {
                 event.preventDefault();
 
-                let userid = $("#reguserid").val();
                 let postingId = this.dataset.id;
 
                 $("#add" + postingId).hide()
@@ -79,7 +78,6 @@ function getPostingsTable(posts, favorites) {
 
                 event.preventDefault();
 
-                let userid = $("#reguserid").val();
                 let postingId = this.dataset.id;
 
                 $("#delete" + postingId).hide()
@@ -129,14 +127,6 @@ function getPostingsTable(posts, favorites) {
                                 </div>`
             }
         }
-
-
-        if ($("#reguserid").val()) {
-            fetch(`/api/favorite/addregid/` + $("#reguserid").val())
-            fetch(`/api/favorite/addregipafter/` + $("#reguserid").val())
-        }
-
-
     }
 }
 
