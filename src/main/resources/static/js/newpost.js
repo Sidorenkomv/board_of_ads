@@ -1,12 +1,12 @@
 let displayLayer = 0;
+let path = [];
 
 $(document).ready(function () {
     getCategoryColumn(0, 0).then();
 })
 
-async function getCategoryColumn(parentID, selectLayer) {
+async function getCategoryColumn(parentID, selectLayer, frontName) {
     let categories = await getCategories(await getURL(parentID));
-
     await cleanCategoryColumns(selectLayer);
 
     if (categories.length !== 0) {
@@ -22,20 +22,21 @@ async function getCategoryColumn(parentID, selectLayer) {
         for (let i = 0; i < categories.length; i++) {
             let category = categories[i];
             let id = 'cascadeTableButton_' + (category.frontName === null ? category.id : category.frontName);
+            let frontName = "\'" + category.frontName + "\'";
             document.getElementById('cascadeTableColumn' + displayLayer).innerHTML +=
                 `<div id="${id}" onMouseOver="hoverOnMouseOver()" 
                         class="category-table-button inactive-category-table-button layer${displayLayer}"  
-                        onclick="clickOnCategoryButton(this, ${category.id}, ${displayLayer})">
+                        onclick="clickOnCategoryButton(this, ${category.id}, ${displayLayer}, ${frontName})">
                 ${category.name}
             </div>`
         }
         return true;
     } else {
-        return await changeVisible();
+        return await changeVisible(frontName);
     }
 }
 
-async function clickOnCategoryButton(o, id, selectLayer) {
+async function clickOnCategoryButton(o, id, selectLayer, frontName) {
     let className = '.layer' + selectLayer;
     $(className)
         .removeClass("active-category-table-button")
@@ -43,7 +44,7 @@ async function clickOnCategoryButton(o, id, selectLayer) {
     $(o).removeClass("inactive-category-table-button")
         .addClass("active-category-table-button").css("background-color", "#0af", "color", "#fff");
 
-    return await getCategoryColumn(id, selectLayer);
+    return await getCategoryColumn(id, selectLayer, frontName);
 }
 
 async function getCategories(url) {
@@ -85,12 +86,23 @@ async function cleanCategoryColumns(selectLayer) {
     }
 }
 
-async function changeVisible() {
+async function changeVisible(frontName) {
     $('#pathCategory').show();
     $('#visibleElement1').hide();
     $('#visibleElement2').show();
     $('#visibleElement3').show();
-    return true;
+
+    switch(frontName) {
+        case 'used-car':  testFunction(frontName);
+            break
+
+        case 'new-car':  testFunction(frontName);
+            break;
+
+        default: alert("notFOUND")
+            break;
+    }
+
 }
 
 $('#pathCategoryButton').on('click', function () {
@@ -98,3 +110,14 @@ $('#pathCategoryButton').on('click', function () {
     $('#visibleElement1').show();
     $('#visibleElement3').hide();
 });
+
+async function sendPosting(body) {
+    await fetch('/api/posting/new', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: body
+    });
+}
