@@ -1,13 +1,29 @@
 .description-label {
-    color: red;
-    font-size: 14px;
+    /*color: red;*/
+    font-size: 16px;
 }
 
 .fieldset-label-icon {
     color: gray;
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .videoUrl{
     width: 100%;
 }
+
+.info-text-small{
+    font-size: 12px;
+    color: gray;
+}
+
+
+
+
+
+
+
+
+
+
+

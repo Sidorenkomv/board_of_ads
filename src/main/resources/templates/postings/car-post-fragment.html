@@ -197,7 +197,7 @@
                         <div class="container no-gutters border" style="padding: 0">
                             <div class="row no-gutters">
                                 <div class="col-4 no-gutters">
-                                    <div>
+
                                         <div>
                                             <label class="category-head-text" for="typeOfUsedCarPosting">Усилитель
                                                 руля</label>
@@ -209,6 +209,7 @@
                                                         th:utext="${ps_type}"></option>
                                             </select>
                                         </div>
+
                                         <div>
                                             <label for="typeOfUsedCarPosting">Управление климатом</label>
                                             <select id="climateControlType" name="climateControlType"
@@ -219,6 +220,7 @@
                                                         th:utext="${cc_type}"></option>
                                             </select>
                                         </div>
+
                                         <div class="custom-control custom-checkbox">
                                             <input type="checkbox" class="custom-control-input" id="onWheelControl"
                                                    th:field="${carPostObject.onWheelControl}">
@@ -359,7 +361,7 @@
                                             <label class="custom-control-label" for="steeringWheelRegulationMemory">Рулевой
                                                 колонки</label>
                                         </div>
-                                    </div>
+
                                 </div>
                                 <!--                                            ======= 2/3 ================-->
                                 <div class="col-4 no-gutters">
