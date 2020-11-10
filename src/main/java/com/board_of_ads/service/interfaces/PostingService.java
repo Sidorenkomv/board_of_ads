@@ -31,8 +31,6 @@ public interface PostingService {
 
     List<ReportUserPostingDto> getPostBetweenDates(String date);
 
-    void saveNewPostingCar(PostingCar postingCar);
-
     List<PostingDto> getFavDtosFromUser(User user);
 
     List<Long> getFavIDFromUser(User user);
