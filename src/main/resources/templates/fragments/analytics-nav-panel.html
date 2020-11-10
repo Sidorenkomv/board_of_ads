@@ -13,23 +13,21 @@
                                 <div class="dropdown-menu">
                                     <h6 class="dropdown-header">Варианты отчетов</h6>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" data-toggle="modal" data-target="#anal-by-user-modal" href="#" th:text="#{adminPanelUsers}"></a>
-                                    <a class="dropdown-item" data-toggle="modal" data-target="#anal-by-region-modal" href="#" th:text="#{adminPanelRegions}">Другие отчеты</a>
+                                    <a id="user-analytics" class="dropdown-item" data-toggle="modal" data-target="#analytics-modal" href="#" th:text="#{adminPanelUsers}"></a>
+                                    <a id="region-analytics" class="dropdown-item" data-toggle="modal" data-target="#analytics-modal" href="#" th:text="#{adminPanelRegions}"></a>
+                                    <a id="city-analytics" class="dropdown-item" data-toggle="modal" data-target="#analytics-modal" href="#" th:text="#{adminPanelCities}"></a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="#">Something else here</a>
                                 </div>
                             </li>
                         </ul>
                         <div class="dropdown-divider"></div>
-                        <table class="table table-bordered" id="userAnalPost">
-                            <tbody id="analyzeTBody">
-                            </tbody>
+                        <table class="table table-bordered" id="analyticsContent">
                         </table>
                     </div>
                 </div>
             </main>
         </div>
     </div>
-    <div th:insert="fragments/analytics-ads-by-user::ads-by-user-seach"></div>
-    <div th:insert="fragments/analytics-ads-by-user::ads-by-region-seach"></div>
+    <div th:insert="fragments/analytics-ads-by-user::ads-search"></div>
 </div>

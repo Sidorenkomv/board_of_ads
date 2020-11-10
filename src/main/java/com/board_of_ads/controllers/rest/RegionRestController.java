@@ -1,5 +1,6 @@
 package com.board_of_ads.controllers.rest;
 
+import com.board_of_ads.models.dto.analytics.ReportRegionPostingDto;
 import com.board_of_ads.service.interfaces.RegionService;
 import com.board_of_ads.util.Error;
 import com.board_of_ads.util.ErrorResponse;
@@ -22,7 +23,7 @@ public class RegionRestController {
     private RegionService regionService;
 
     @PostMapping("/date")
-    public Response<List<Map>> findByDate(@RequestBody String date) {
+    public Response<List<ReportRegionPostingDto>> findByDate(@RequestBody String date) {
         var postings = regionService.getNumberOfPostings(date);
         return (postings.size() > 0)
                 ? Response.ok(postings)

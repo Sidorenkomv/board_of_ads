@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    getPostingInfo($("#postingId").text().valueOf());
+    getPostingInfo(Number.parseInt($("#postingId").text().valueOf()));
 });
 
 async function getPostingDto(id) {
@@ -33,9 +33,20 @@ async function getPostingInfo(id) {
     let liCity = `<li><a href="#">${postingDto.city}</a></li>`;
     let liDot = `<li>·</li>`;
     let li;
+    let favorite = await isFavorite();
 
     categoriesLine.append(liCity);
     categoriesLine.append(liDot);
+
+    if (favorite) {
+        $("#imgAdd" + id).hide()
+        $("#imgDel" + id).show()
+        $("#buttonFav_txt" + id).text("В избранном");
+    } else {
+        $("#imgAdd" + id).show();
+        $("#imgDel" + id).hide();
+        $("#buttonFav_txt" + id).text("Добавить в избранное");
+    }
 
     while (true) {
         li = `<li><a href="#">${categoryDto.name}</a></li>`;
@@ -106,5 +117,69 @@ async function getPostingInfo(id) {
     $("#contactNumber").append(`<br>${postingDto.contact}`);
     $("#address").append(`${postingDto.city}`);
     $("#description").append(`${postingDto.description}`);
+    $("#viewNumber").append(`${postingDto.viewNumber}`);
 
 }
+
+
+async function onClickFav() {
+    if (await isFavorite() === true) {
+        deleteFromFavorites();
+    } else {
+        addToFavorites();
+    }
+}
+
+async function addToFavorites() {
+    let postingId = $("#postingId").text().valueOf();
+
+    $("#imgAdd" + postingId).hide()
+    $("#imgDel" + postingId).show()
+
+    $("#buttonFav_txt" + postingId).text("В избранном");
+    fetch(`/api/favorite/add/` + postingId, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json, text/plain, */*',
+            'Content-type': 'application/json'
+        }
+    });
+}
+
+async function deleteFromFavorites() {
+    let postingId = $("#postingId").text().valueOf();
+    $("#imgAdd" + postingId).show()
+    $("#imgDel" + postingId).hide()
+
+    $("#buttonFav_txt" + postingId).text("Добавить в избранное");
+    fetch(`/api/favorite/delete/` + postingId, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+    });
+}
+
+async function isFavorite() {
+    let response = await fetch("/api/favorite/get", {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+    });
+    let favorites = (await response.json()).data;
+
+    if (favorites === "undefined") {
+        return false;
+    }
+    let postingid = Number.parseInt($("#postingId").text().valueOf());
+    for (let i = 0; i < favorites.length; i++) {
+        if (favorites[i] === postingid) {
+            return true;
+        }
+    }
+    return false;
+}
+

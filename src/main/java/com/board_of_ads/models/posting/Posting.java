@@ -25,22 +25,6 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "postings")
 public class Posting {
-
-    public Posting(User user, Category category, String title, String description, Long price, String contact, Boolean isActive) {
-        this.user = user;
-        this.category = category;
-        this.title = title;
-        this.description = description;
-        this.price = price;
-        this.contact = contact;
-        this.isActive = isActive;
-    }
-
-    public Posting(User user, Category category, String title, String description, Long price, String contact, City city, Boolean isActive) {
-        this(user, category, title, description, price, contact, isActive);
-        this.city = city;
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
@@ -77,15 +61,36 @@ public class Posting {
     private Boolean isActive;
 
     @Column
+    private Integer viewNumber;
+
+    @Column
     private LocalDateTime datePosting = LocalDateTime.now();
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    @JoinTable(name="posting_images",
-            joinColumns=@JoinColumn (name="posting_id"),
-            inverseJoinColumns=@JoinColumn(name="image_id"))
+    @JoinTable(name = "posting_images",
+            joinColumns = @JoinColumn(name = "posting_id"),
+            inverseJoinColumns = @JoinColumn(name = "image_id"))
     private List<Image> images;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "city_id", referencedColumnName = "id")
     private City city;
+
+    public Posting(User user, Category category, String title, String description, Long price, String contact, Boolean isActive) {
+        this.user = user;
+        this.category = category;
+        this.title = title;
+        this.description = description;
+        this.price = price;
+        this.contact = contact;
+        this.isActive = isActive;
+        this.viewNumber = viewNumber;
+    }
+
+    public Posting(User user, Category category, String title, String description, Long price, String contact, City city, Boolean isActive, Integer viewNumber) {
+        this(user, category, title, description, price, contact, isActive);
+        this.city = city;
+        this.viewNumber = viewNumber;
+    }
+
 }

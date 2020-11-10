@@ -2,6 +2,7 @@ package com.board_of_ads.service.impl;
 
 import com.board_of_ads.models.Category;
 import com.board_of_ads.models.dto.CategoryDto;
+import com.board_of_ads.models.dto.CategoryDtoMenu;
 import com.board_of_ads.repository.CategoryRepository;
 import com.board_of_ads.service.interfaces.CategoryService;
 import lombok.AllArgsConstructor;
@@ -120,7 +121,20 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository.save(new Category(category.getName(), categoryParentFromDB, categoryParentFromDB.getLayer() + 1));
     }
 
+    @Override
+    public List<CategoryDtoMenu> allParentCategory() {
+        return categoryRepository.findAllParentCategories();
+    }
+
+    @Override
+    public List<CategoryDtoMenu> findChildCatById(Long id) {
+        return categoryRepository.findAllChildCategoriesByParentId(id);
+    }
+
     private List<Category> findParentByName(String name) {
         return categoryRepository.findParentLikeName("%" + name);
     }
+
+
+
 }

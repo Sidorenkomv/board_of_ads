@@ -34,7 +34,7 @@ public class AuthController {
         return "redirect:/";
     }
 
-    @GetMapping("/ ")
+    @GetMapping("/auth_facebook")
     public String facebookAuth() {
         return "redirect:/oauth2/authorization/facebook";
     }

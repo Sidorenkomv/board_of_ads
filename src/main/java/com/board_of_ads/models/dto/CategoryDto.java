@@ -12,6 +12,7 @@ public class CategoryDto {
     private String name;
     private boolean parent;
     private int layer;
+    private String frontName;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String parentName;
@@ -26,5 +27,11 @@ public class CategoryDto {
         this.name = name;
         this.parentName = parentName;
         this.layer = layer;
+    }
+
+    public CategoryDto(Long id, String name, String frontName) {
+        this.id = id;
+        this.name = name;
+        this.frontName = frontName;
     }
 }

@@ -24,7 +24,6 @@ function getAllUserMess() {
                 let tdPrice = document.createElement('td');
                 let tdMeeting = document.createElement('td');
                 let tdTitleHref = document.createElement('a');
-
                 let title = document.createTextNode(mess.postingAuthorFirstName + ' ' + mess.postingAuthorLastName);
                 let price = document.createTextNode(mess.postingTitle + ' - ' +  mess.postingPrice  + ' ₽');
                 let meeting = document.createTextNode(mess.messageText);
@@ -43,9 +42,6 @@ function getAllUserMess() {
                 li.setAttribute('class', 'dropdown-divider');
                 li.setAttribute('width', '500');
                 imgName.setAttribute('src', 'http://s2.ucoz.net/sm/3/eyes.gif');
-
-
-
 
                 tr.setAttribute('id', "userPosting");
                 td.setAttribute('rowspan', "3");
@@ -67,25 +63,23 @@ function getAllUserMess() {
                 trPrice.appendChild(tdPrice);
                 trMeeting.appendChild(tdMeeting);
 
-
-                    let liIndic = document.createElement('li');
-                    liIndic.setAttribute('data-slide-to', '' + 1);
-                    liIndic.setAttribute('style', 'border-bottom: 5px solid gray;margin:1px;height: 130px;\n' +
+                let liIndic = document.createElement('li');
+                liIndic.setAttribute('data-slide-to', '' + 1);
+                liIndic.setAttribute('style', 'border-bottom: 5px solid gray;margin:1px;height: 130px;\n' +
                         '    background: transparent;')
 
-                    let img = document.createElement('img');
-                    img.setAttribute('class', 'img-fluid');
-                    img.setAttribute('src', '/images/numbers/0.jpg');
-                    img.setAttribute('style', 'height: 70px; width: 70;');
+                let img = document.createElement('img');
+                img.setAttribute('class', 'img-fluid');
+                img.setAttribute('src', '/images/numbers/0.jpg');
+                img.setAttribute('style', 'height: 70px; width: 70;');
 
-                    let divInner = document.createElement('div');
-                    divInner.appendChild(img);
-                    divImg.appendChild(img);
-                    td.appendChild(divImg);
-
-                    olIndicSlider.appendChild(liIndic)
-                    divInner.setAttribute('class', 'carousel-item');
-                    divInnerSlider.appendChild(divInner);
+                let divInner = document.createElement('div');
+                divInner.appendChild(img);
+                divImg.appendChild(img);
+                td.appendChild(divImg);
+                olIndicSlider.appendChild(liIndic)
+                divInner.setAttribute('class', 'carousel-item');
+                divInnerSlider.appendChild(divInner);
 
                 usersProfileMessages.append(tr).append(trPrice).append(trMeeting).append(li);
                 break;

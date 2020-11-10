@@ -1,7 +1,8 @@
 package com.board_of_ads.controllers.rest;
 
 import com.board_of_ads.models.dto.PostingDto;
-import com.board_of_ads.models.dto.ReportUserPostingDto;
+import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
+import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.service.interfaces.CityService;
 import com.board_of_ads.service.interfaces.PostingService;
 import com.board_of_ads.util.Error;
@@ -9,6 +10,7 @@ import com.board_of_ads.util.ErrorResponse;
 import com.board_of_ads.util.Response;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/posting")
@@ -48,17 +49,13 @@ public class PostingRestController {
     @GetMapping("/city/{name}")
     public Response<List<PostingDto>> findPostingsByCityName(@PathVariable String name) {
         var postings = postingService.getPostingByCity(cityService.findCityByName(name).get());
-        return (postings.size() > 0)
-                ? Response.ok(postings)
-                : new ErrorResponse<>(new Error(204, "No found postings"));
+        return Response.ok(postings);
     }
 
     @GetMapping("/region/{name}")
     public Response<List<PostingDto>> findPostingsByRegionName(@PathVariable String name) {
         var postings = postingService.getPostingByFullRegionName(name);
-        return (postings.size() > 0)
-                ? Response.ok(postings)
-                : new ErrorResponse<>(new Error(204, "No found postings"));
+        return Response.ok(postings);
     }
 
     @GetMapping("/userpost/{id}")
@@ -76,6 +73,7 @@ public class PostingRestController {
                                                       @RequestParam(name="phOpt",required = false) String photoOption) {
         log.info("Use this default logger");
         var postings = postingService
+
                 .searchPostings(categorySelect, citySelect, searchText, photoOption);
         return (postings != null)
                 ? Response.ok(postings)
@@ -85,5 +83,11 @@ public class PostingRestController {
     @PostMapping("/date")
     public Response<List<ReportUserPostingDto>> findByDate(@RequestBody String date) {
         return Response.ok(postingService.getPostBetweenDates(date));
+    }
+
+    @PostMapping("/new")
+    public Response<Void> createPosting(@RequestBody Posting posting) {
+        //postingService.save(posting);
+        return Response.ok().build();
     }
 }

@@ -2,7 +2,9 @@ package com.board_of_ads.service.interfaces;
 
 import com.board_of_ads.models.Category;
 import com.board_of_ads.models.dto.CategoryDto;
+import com.board_of_ads.models.dto.CategoryDtoMenu;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -23,4 +25,8 @@ public interface CategoryService {
     void deleteCategory(Long id);
 
     Category createCategory(CategoryDto category);
+
+    List<CategoryDtoMenu> allParentCategory();
+
+    List<CategoryDtoMenu> findChildCatById(Long id);
 }
