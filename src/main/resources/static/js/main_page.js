@@ -5,24 +5,25 @@ $("#region, #category-select-city").click(function () {
 });
 
 async function addCategories() {
-    let categoriesResponse = await userService.findAllCategories();
-    let categories = categoriesResponse.json();
+
     let categorySelect = $('.categoriesSelect');
-    categorySelect.append('<option th:text="Любая категория">Любая категория</option>');
-    categories.then(categories => {
-        categories.data.forEach((cat) => {
-            if (cat.parentName == null) {
-                let option = `<option class="category-parent" th:text="` + cat.name + `">` + cat.name + `</option>`;
-                categorySelect.append(option);
-            } else {
-                if(cat.layer === 2) {
-                    let option = `<option th:text="` + cat.name.substring(cat.parentName.length + 1) + `">`
-                        + cat.name.substring(cat.parentName.length + 1) + `</option>`;
-                    categorySelect.append(option);
-                }
-            }
-        })
-    });
+    await categorySelect.append('<option id="anyCategory">Любая категория</option>');
+
+    let parentCategories = await getCategories('/api/category/allParentCategory');
+
+    for (let i = 0; i < parentCategories.length; i++) {
+        let parentCat = parentCategories[i];
+
+        categorySelect.append(`<option id="categoryId${parentCat.id}" class="category-parent">${parentCat.name.toUpperCase()}</option>`);
+
+        let childCategories = await getCategories('/api/category/allChildCategories/' + parentCat.id);
+
+        for (let i = 0; i < childCategories.length; i++) {
+            let childCat = childCategories[i];
+
+            categorySelect.append(`<option id="categoryId${childCat.id}">${childCat.name}</option>`);
+        }
+    }
 }
 
 let changedCityName;
@@ -242,8 +243,16 @@ const userService = {
     },
     findAllPostings: async () => {
         return await httpHeaders.fetch('/api/posting/');
-    },
-    findAllCategories: async () => {
-        return await httpHeaders.fetch("/api/category")
     }
+}
+
+async function getCategories(url) {
+    let response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    });
+    return (await response.json()).data;
 }
