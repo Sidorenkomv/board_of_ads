@@ -6,17 +6,29 @@ textInput = $("#search-main-text").val();
 photoOption = $("#image-select option:selected").val();
 
 function getPostingsTable(posts, favorites) {
-    if(posts === "undefined") {
+
+    let options = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        timezone: 'UTC',
+        hour: 'numeric',
+        minute: 'numeric'
+    };
+
+    if (posts === "undefined") {
 
     } else {
         for (let step = 0; step < posts.length; step++) {
 
             let postingDTO = posts[step];
 
-            let date = postingDTO.datePosting.toString().substring(8, 10) + "-" +
-                postingDTO.datePosting.toString().substring(5, 7) + "-" +
-                postingDTO.datePosting.toString().substring(0, 4) + " " +
-                postingDTO.datePosting.toString().substring(11, 16);
+            let date = new Intl.DateTimeFormat("ru-RU", options)
+                .format(new Date(postingDTO.datePosting[0],
+                    postingDTO.datePosting[1] - 1,
+                    postingDTO.datePosting[2],
+                    postingDTO.datePosting[3],
+                    postingDTO.datePosting[4]));
 
             document.getElementById('mainPageBody').innerHTML +=
                 `<div id="main_page_posting" class="col-md-3">
