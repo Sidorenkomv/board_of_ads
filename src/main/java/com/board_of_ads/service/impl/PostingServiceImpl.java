@@ -5,7 +5,9 @@ import com.board_of_ads.models.User;
 import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
+import com.board_of_ads.models.posting.autoTransport.cars.PostingCar;
 import com.board_of_ads.repository.CityRepository;
+import com.board_of_ads.repository.PostingCarRepository;
 import com.board_of_ads.repository.PostingRepository;
 import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.service.interfaces.PostingService;
@@ -32,6 +34,7 @@ public class PostingServiceImpl implements PostingService {
     private final CategoryService categoryService;
     private final RegionService regionService;
     private final CityRepository cityRepository;
+    private final PostingCarRepository postingCarRepository;
 
     @Override
     public void save(Posting posting) {
@@ -192,6 +195,7 @@ public class PostingServiceImpl implements PostingService {
     public void saveNewPostingCar(PostingCar postingCar) {
         postingCarRepository.save(postingCar);
     }
+
 
     public List<PostingDto> getFavDtosFromUser(User user) {
         List<Long> listfavoritsid = new ArrayList<>();

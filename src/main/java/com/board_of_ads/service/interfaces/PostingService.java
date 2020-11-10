@@ -5,6 +5,7 @@ import com.board_of_ads.models.User;
 import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
+import com.board_of_ads.models.posting.autoTransport.cars.PostingCar;
 
 import java.util.List;
 import java.util.Optional;
