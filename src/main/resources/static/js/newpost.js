@@ -25,7 +25,7 @@ async function getCategoryColumn(parentID, selectLayer, frontName) {
             let frontName = "\'" + category.frontName + "\'";
             document.getElementById('cascadeTableColumn' + displayLayer).innerHTML +=
                 `<div id="${id}" onMouseOver="hoverOnMouseOver()" 
-                        class="category-table-button inactive-category-table-button layer${displayLayer}"  
+                        class="category-table-button inactive-category-table-button layer-${displayLayer}"  
                         onclick="clickOnCategoryButton(this, ${category.id}, ${displayLayer}, ${frontName})">
                 ${category.name}
             </div>`
@@ -93,10 +93,9 @@ async function changeVisible(frontName) {
     $('#visibleElement3').show();
 
     switch(frontName) {
-        case 'used-car':  testFunction(frontName);
-            break
-
-        case 'new-car':  testFunction(frontName);
+        case 'used-car':  carPostingFunction(frontName);
+            break;
+        case 'new-car':  carPostingFunction(frontName);
             break;
 
         default: alert("notFOUND")
@@ -111,8 +110,8 @@ $('#pathCategoryButton').on('click', function () {
     $('#visibleElement3').hide();
 });
 
-async function sendPosting(body) {
-    await fetch('/api/posting/new', {
+async function sendPosting(body, frontName) {
+    await fetch('/api/posting/new/' + frontName, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',

@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" href="../static/css/user-info-menu.css" th:href="@{/css/user-info-menu.css}"/>
     <link rel="stylesheet" type="text/css" href="../static/css/main_page_posting.css" th:href="@{/css/main_page_posting.css}"/>
     <link rel="stylesheet" type="text/css" href="../static/css/recovery-pswd.css" th:href="@{/css/recovery-pswd.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/posting-car.css" th:href="@{/css/posting-car.css}"/>
 
     <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
@@ -27,7 +28,7 @@
         <div class="col-2 category-head-text">Категория</div>
         <div id="pathCategory" class="col-10" style="display: none">
             <button id="pathCategoryButton" type="button" class="btn btn-link">
-                <h4>Изменить категорию</h4>
+                <h4 id="thisCategoryText">Изменить категорию</h4>
             </button>
         </div>
     </div>
@@ -37,13 +38,15 @@
 </div>
 
 <div id="visibleElement2" style="display: block">
+<!--    ======  -->
+
 </div>
 
 <div id="visibleElement3" style="display: none">
 
     <div id="dealAddress" class="main-container">
         <div class="category-head-container">
-            <div class="category-head-text">Место сделки</div>
+            <div id="meetingPlace" class="category-head-text">Место сделки</div>
         </div>
         <div>
             <p>
@@ -116,7 +119,7 @@
 </div>
 
 <script src="../static/js/newpost.js" th:src="@{/js/newpost.js}"></script>
-<script src="../static/js/posting-car.js" th:src="@{/js/posting-car.js}"></script>
+<script src="../static/js/new_posting_forms/nurlan-posting-car.js" th:src="@{/js/new_posting_forms/nurlan-posting-car.js}"></script>
 <script src="../static/js/new_posting_forms/test.js"
         th:src="@{/js/new_posting_forms/test.js}"></script>
 </body>

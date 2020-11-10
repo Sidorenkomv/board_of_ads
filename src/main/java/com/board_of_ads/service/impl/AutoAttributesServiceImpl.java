@@ -36,7 +36,6 @@ public class AutoAttributesServiceImpl implements AutoAttributesService {
 
     @Override
     public void saveNewAutoColor(AutoColor autoColor) {
-        System.out.println("Hello Color " + autoColor.getColorName());
         autoColorRepository.save(autoColor);
     }
 
@@ -161,7 +160,7 @@ public class AutoAttributesServiceImpl implements AutoAttributesService {
             }
 
             auto.setYearEnd(yearEnd);
-            System.out.println("Added car: " + brand + " - " + model + " start: " + yearStart + " end: " + yearEnd);
+       //     System.out.println("Added car: " + brand + " - " + model + " start: " + yearStart + " end: " + yearEnd);
 
 
             autoModelRepository.save(auto);

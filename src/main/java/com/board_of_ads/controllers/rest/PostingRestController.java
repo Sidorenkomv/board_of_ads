@@ -3,6 +3,7 @@ package com.board_of_ads.controllers.rest;
 import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
+import com.board_of_ads.models.posting.autoTransport.cars.PostingCar;
 import com.board_of_ads.service.interfaces.CityService;
 import com.board_of_ads.service.interfaces.PostingService;
 import com.board_of_ads.util.Error;
@@ -87,6 +88,18 @@ public class PostingRestController {
 
     @PostMapping("/new")
     public Response<Void> createPosting(@RequestBody Posting posting) {
+        //postingService.save(posting);
+        return Response.ok().build();
+    }
+
+    @PostMapping("/new/used-car")
+    public Response<Void> createUsedCarPosting(@RequestBody PostingCar posting) {
+        //postingService.save(posting);
+        return Response.ok().build();
+    }
+
+    @PostMapping("/new/new-car")
+    public Response<Void> createNewCarPosting(@RequestBody PostingCar posting) {
         //postingService.save(posting);
         return Response.ok().build();
     }

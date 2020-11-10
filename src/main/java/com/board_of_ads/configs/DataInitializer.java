@@ -710,12 +710,8 @@ public class DataInitializer {
     private void initCarAttributes() throws IOException {
         addCarColors();
         autoAttributesService.getDataFromAutoCatalogueExcel();
-        Set<String> brandSet = autoAttributesService.getBrandsSet();
-        System.out.println(" ==============  Brands List =================");
-        for (String str : brandSet) {
-            System.out.println("brand: " + str);
-        }
     }
+
     public void addCarColors() {
         autoAttributesService.saveNewAutoColor(new AutoColor("White", "Белый", "#FFFFFF"));
         autoAttributesService.saveNewAutoColor(new AutoColor("Black", "Черный", "#000000"));
