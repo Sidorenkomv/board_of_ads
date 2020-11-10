@@ -14,9 +14,9 @@ spring:
 
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/test_db
-    username: newuser
-    password: password
+    url: jdbc:postgresql://localhost:5432/board_of_ads
+    username: root
+    password: root
     initialization-mode: always
 
   jpa:
