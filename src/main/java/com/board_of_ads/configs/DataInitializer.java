@@ -2,11 +2,13 @@ package com.board_of_ads.configs;
 
 import com.board_of_ads.models.Category;
 import com.board_of_ads.models.Image;
+import com.board_of_ads.models.Message;
 import com.board_of_ads.models.Notification;
 import com.board_of_ads.models.Role;
 import com.board_of_ads.models.User;
 import com.board_of_ads.models.UserNotification;
 import com.board_of_ads.models.posting.Posting;
+import com.board_of_ads.service.interfaces.MessageService;
 import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.service.interfaces.CityService;
 import com.board_of_ads.service.interfaces.ImageService;
@@ -40,6 +42,8 @@ public class DataInitializer {
     private final CityService cityService;
     private final ImageService imageService;
     private final NotificationService notificationService;
+    private final MessageService messageService;
+
 
     @PostConstruct
     private void init() throws IOException {
@@ -50,6 +54,7 @@ public class DataInitializer {
         initCategories();
         initPosting();
         initNotifications();
+        initMessages();
     }
 
     private void initUsers() {
@@ -704,6 +709,22 @@ public class DataInitializer {
         if (un2 != null) {
             un2.setUrgentLevel(2);
             notificationService.updateUserNotificationFields(un2);
+        }
+    }
+    private void initMessages() {
+        List<Message> messages = new ArrayList<>();
+        messages.add(new Message(1L, "привет", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1600L)));
+        messages.add(new Message(2L, "можно обсудить скидку?", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1601L)));
+        messages.add(new Message(4L, "здравствуйте", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1602L)));
+        messages.add(new Message(5L, "еще актуально?", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1603L)));
+        messages.add(new Message(6L, "приеду завтра", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1604L)));
+        messages.add(new Message(7L, "подумаю", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1605L)));
+        messages.add(new Message(8L, "предложу другу", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1606L)));
+        messages.add(new Message(9L, "приеду сегодня вечером", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1607L)));
+        messages.add(new Message(10L, "спасибо!", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1608L)));
+
+        for (Message message : messages) {
+            messageService.save(message);
         }
     }
 }

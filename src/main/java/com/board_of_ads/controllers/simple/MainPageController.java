@@ -63,4 +63,9 @@ public class MainPageController {
         model.addAttribute("user", user != null ? user : new User());
         return "favorite";
     }
+    @GetMapping("/messenger")
+    public String messenger(@AuthenticationPrincipal User user, Model model) {
+        model.addAttribute(user);
+        return "messenger";
+    }
 }

@@ -3,7 +3,6 @@
         <li class="dropdown-divider"></li>
         <div class="row">
             <div class="col-md-3">
-                <!--/*@thymesVar id="user" type="com.board_of_ads.models.User"*/-->
                 <div th:if="${user.getAvatar()}">
                     <img class="user-profile-avatar" id="avatar" th:src="${user.getAvatar().getPathURL()}"><br>
                     <div class="user-profile-name" id="name" th:text="${user.getFirstName() + ' ' + user.getLastName()}">
@@ -31,12 +30,12 @@
                 </a>
                 <li class="dropdown-divider"></li>
                 <div class="profile-menu-font">
-                    <strong th:text="#{myAds}">Мои объявления</strong><br>
+                    <a th:text="#{myAds}" href="/ads">Мои объявления</a><br>
                     <a th:text="#{myOrders}" href="#">Заказы</a><br>
                     <a th:text="#{MyReviews}" href="#">Мои отзывы</a><br>
                     <a th:text="#{Favourites}" href="#">Избранное</a><br>
                     <li class="dropdown-divider"></li>
-                    <a th:text="#{messages}" href="/messenger" >Сообщения</a><br>
+                    <strong a th:text="#{messages}" href="/messenger">Сообщения</a></strong><br>
                     <a th:text="#{Notifications}" href="/notifications" id="noteCallLeft">Уведомления</a><br>
                     <li class="dropdown-divider"></li>
                     <a th:text="#{Wallet}" href="#">Кошелек</a><br>
@@ -46,9 +45,32 @@
                 </div>
             </div>
 
-            <div class="col-md-9" id="posts_block">
-                <div id="profile-posts-content" th:insert="fragments/posts_block_fragments::profile-posts-block"></div>
+            <div class="col-md-9">
+                <h3 style="height:45px"><b>Сообщения</b></h3>
+                <div class="row" style="height:45px">
+                    <div class="col-2"><p style="font-size:12px"><a th:text="#{allMessages}" href="#"></a></p></div>
+                    <div class="col-2"><p style="font-size:12px"><a th:text="#{messagesFilter}"href="#"></a></p></div>
+                    <div class="col-md-3"><span class="pull-right">
+                        <div class="form-group input-sm has-search">
+
+    <input type="text" class="form-control form-control-sm" placeholder="Поиск по сообщениям">
+  </div>
+                    </span>
+                    </div>
+                    <div class="col-9 first">
+                    </div>
+                    <li class="dropdown-divider"></li>
+                    <div class="tab-content" id="pills-tabContent">
+                        <div class="tab-pane fade show active" id="active-ads" role="tabpanel"
+                             aria-labelledby="active-ads-tab">
+                            <table class="table table-borderless" id="userMess">
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </div>
     </div>
-</div>
 </div>
