@@ -20,4 +20,5 @@ public interface AutoAttributesService {
     void saveModel(AutoModel auto);
     void getDataFromAutoCatalogueExcel() throws IOException;
     Set<String> getBrandsSet();
+    Set<String> getModelsSet(String brand);
 }

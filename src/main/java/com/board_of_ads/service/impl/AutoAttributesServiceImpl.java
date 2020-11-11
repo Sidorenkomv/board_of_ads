@@ -42,7 +42,7 @@ public class AutoAttributesServiceImpl implements AutoAttributesService {
     @Override
     public Set<String> getAllAutoColorsRusNames() {
         List<AutoColor> acList = autoColorRepository.findAll();
-        Set<String> autoColorsSet = new HashSet<>();
+        Set<String> autoColorsSet = new TreeSet<>();
         for (AutoColor ac: acList) {
             autoColorsSet.add(ac.getColorRusName());
         }
@@ -179,6 +179,18 @@ public class AutoAttributesServiceImpl implements AutoAttributesService {
         return brandsSet;
     }
 
+    @Override
+    public Set<String> getModelsSet(String brand){
+        Set<String> modelsSet = new TreeSet<>();
+        List<AutoModel> autoModelList = autoModelRepository.findAll();
+        for (AutoModel am : autoModelList) {
+            if (am.getBrand().equals(brand)) {
+                modelsSet.add(am.getModel());
+                System.out.println("Added model - " + am.getModel());
+            }
+        }
+        return modelsSet;
+    }
 
 
 }

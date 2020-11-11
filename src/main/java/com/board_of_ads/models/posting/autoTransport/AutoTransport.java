@@ -21,7 +21,7 @@ public class AutoTransport extends Posting {
     @Column
     private String condition;
     @Column
-    private String videoURL;
+    private String videoURL = "";
     @Column
     private String contactEmail;
 

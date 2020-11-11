@@ -1,9 +1,13 @@
 let frontName;
+let pco;
+let colorsSetGlobal;
+let carBrandsGlobal;
 
-function carPostingFunction(fName) {
+async function carPostingFunction(fName) {
     frontName = fName;
-    // fillNewCarPostingFields();
-    getPostingCarMap();
+    colorsSetGlobal = await getColorsSet();
+    carBrandsGlobal = await getCarBrandsSet();
+    await getPostingCarMap();
 }
 
 const requestURL = '/api/posting/car/';
@@ -26,27 +30,43 @@ const postingCarService = {
     }
 }
 
-function getPostingCarMap() {
-
-    postingCarService.getPostingCarMap(frontName).then((pc => {
-                console.log(pc);
-        fillNewCarPostingFields(pc);
-
+async function getPostingCarMap() {
+    postingCarService.getPostingCarMap(frontName).then((async pc => {
+            console.log(pc);
+            await fillNewCarPostingFields(pc.data);
         })
     )
 }
 
+async function getColorsSet() {
+    let url = requestURL + 'colors';
+    return await getResponseData(url).then((responseData) => {
+        return responseData.data;
+    });
+}
 
+async function getCarBrandsSet() {
+    let url = requestURL + 'brands';
+    return await getResponseData(url).then((responseData) => {
+        return responseData.data;
+    });
+}
 
+function getResponseData(url) {
+    return fetch(url, {method: 'GET'})
+        .then(response => response.json())
+        .then(data => {
+            return data;
+        })
+}
 
-
-function fillNewCarPostingFields(pc) {
-
+async function fillNewCarPostingFields(pc) {
+    pco = pc;
 
     // Вызвать объект
 
     let mainDiv = document.createElement('div');
-    mainDiv.setAttribute('id','car-post-fields-main-container');
+    mainDiv.setAttribute('id', 'car-post-fields-main-container');
     document.getElementById('visibleElement2').appendChild(mainDiv);
 
     changePathCategory();
@@ -66,14 +86,14 @@ function fillNewCarPostingFields(pc) {
     let div6 = makeMainAndTitleFields('6', "Описание");
     mainDiv.appendChild(div6);
 
-    div1.appendChild(createDiv1Photo());
-    div1.appendChild(createDiv1Colors());
-    div1.appendChild(createDiv1YouTube());
+    createDiv1Photo(div1);
+    createDiv1Colors(div1);
+    createDiv1YouTube(div1);
 
-    div2.appendChild(createDiv2VinFields());
-    div2.appendChild(createDiv2PlateFields());
+    createDiv2VinFields(div2);
+    createDiv2PlateFields(div2);
 
-    div3.appendChild(createDiv3CarBrandFields());
+    createDiv3CarBrandFields(div3);
 
     div4.appendChild(createDiv4Mileage());
     div4.appendChild(createDiv4Conditions());
@@ -89,64 +109,62 @@ function fillNewCarPostingFields(pc) {
 
 }
 
-function createDiv1Photo(){
+function createDiv1Photo(div1) {
     let div = document.createElement('div');
-    div.setAttribute('id','photoDiv' );
+    div.setAttribute('id', 'photoDiv');
     div.setAttribute('class', 'row');
     div.setAttribute('data-marker', 'images');
 
     let div1_1 = document.createElement('div');
-    div1_1.setAttribute('class','col-3');
+    div1_1.setAttribute('class', 'col-3');
     div.appendChild(div1_1);
 
     let label1 = document.createElement('label');
     label1.setAttribute('class', 'fieldset-label');
     label1.setAttribute('data-marker', 'label');
-        let span1 = document.createElement('span');
-        span1.setAttribute('class', 'description-label');
-        span1.innerText = "Фотографии";
-        label1.appendChild(span1);
-        let div1_1_l_1 = document.createElement('div');
-        div1_1_l_1.setAttribute('class','fieldset-label-icon');
-        div1_1_l_1.setAttribute('data-marker', 'icon');
-        div1_1_l_1.innerText = "Не более 40";
-        label1.appendChild(div1_1_l_1);
+    let span1 = document.createElement('span');
+    span1.setAttribute('class', 'description-label');
+    span1.innerText = "Фотографии";
+    label1.appendChild(span1);
+    let div1_1_l_1 = document.createElement('div');
+    div1_1_l_1.setAttribute('class', 'fieldset-label-icon');
+    div1_1_l_1.setAttribute('data-marker', 'icon');
+    div1_1_l_1.innerText = "Не более 40";
+    label1.appendChild(div1_1_l_1);
     div1_1.appendChild(label1);
 
     let div1_2 = document.createElement('div');
-    div1_2.setAttribute('class','col-5');
+    div1_2.setAttribute('class', 'col-5');
     div.appendChild(div1_2);
     let div1_2_1 = document.createElement('div');
-    div1_2_1.setAttribute('class','fieldset-field-21qUq');
-    div1_2_1.setAttribute('data-marker','field');
+    div1_2_1.setAttribute('class', 'fieldset-field-21qUq');
+    div1_2_1.setAttribute('data-marker', 'field');
     div1_2.appendChild(div1_2_1);
 
     let div1_2_1_1 = document.createElement('div');
-    div1_2_1_1.setAttribute('class','uploader-root-2eaHO uploader-root_design-photo-7MGKB uploader-size-s-2Ecqw');
+    div1_2_1_1.setAttribute('class', 'uploader-root-2eaHO uploader-root_design-photo-7MGKB uploader-size-s-2Ecqw');
     div1_2_1.appendChild(div1_2_1_1);
 
     let div1_2_1_1_last = document.createElement('div');
-    div1_2_1_1_last.setAttribute('class','uploader-list');
+    div1_2_1_1_last.setAttribute('class', 'uploader-list');
     div1_2_1_1.appendChild(div1_2_1_1_last);
 
     let label2 = document.createElement('label');
-    label2.setAttribute('class','uploader-item uploader-item_add-_sMoP button-button-2JBTe button-size-s-2RLvz button-default-szBWv');
+    label2.setAttribute('class', 'uploader-item uploader-item_add-_sMoP button-button-2JBTe button-size-s-2RLvz button-default-szBWv');
     label2.setAttribute('data-marker', 'add');
     div1_2_1_1_last.appendChild(label2);
-        let input = document.createElement('input');
-        input.setAttribute('class', 'uploader-input-file');
-        input.setAttribute('type', 'file');
-        input.setAttribute('accept', 'image/gif,image/png,image/jpeg');
-        input.setAttribute('multiple', '');
-        input.setAttribute('data-marker', 'add/input');
-        input.setAttribute('value', '');
-        label2.appendChild(input);
- return div;
+    let input = document.createElement('input');
+    input.setAttribute('class', 'uploader-input-file');
+    input.setAttribute('type', 'file');
+    input.setAttribute('accept', 'image/gif,image/png,image/jpeg');
+    input.setAttribute('multiple', '');
+    input.setAttribute('data-marker', 'add/input');
+    input.setAttribute('value', '');
+    label2.appendChild(input);
+    div1.appendChild(div);
 }
 
-
-
-function createDiv1Colors(){
+function createDiv1Colors(div1) {
     let row = document.createElement('div');
     row.setAttribute('class', 'row');
 
@@ -157,27 +175,31 @@ function createDiv1Colors(){
 
     let col9 = document.createElement('div');
     col9.setAttribute('class', 'col-9');
-        let label = document.createElement('label');
-        label.setAttribute('for', 'car-color');
+    let label = document.createElement('label');
+    label.setAttribute('for', 'car-color');
 
-        let select = document.createElement('select');
-        select.setAttribute('id', 'car-color');
-        select.setAttribute('name', 'car-color');
-            let option1 = document.createElement("option");
-            option1.text = "Kiwi";
-            let option2 = document.createElement("option");
-            option2.text = "Mango";
-            select.add(option1);
-            select.add(option2);
+    let options = colorsSetGlobal;
 
-        col9.appendChild(label);
-        col9.appendChild(select);
+    let select = document.createElement('select');
+    select.setAttribute('id', 'car-color');
+    select.setAttribute('name', 'car-color');
+
+    for (let i = 0; i < options.length; i++) {
+        let optionDiv = document.createElement("option");
+        optionDiv.setAttribute('value', options[i]);
+        optionDiv.text = options[i];
+        select.add(optionDiv);
+    }
+
+    col9.appendChild(select);
+    col9.appendChild(label);
+    col9.appendChild(select);
 
     row.appendChild(col9);
-    return row;
+    div1.appendChild(row);
 }
 
-function createDiv1YouTube() {
+function createDiv1YouTube(div1) {
     let row = document.createElement('div');
     row.setAttribute('class', 'row');
 
@@ -191,6 +213,7 @@ function createDiv1YouTube() {
     let input = document.createElement('input');
     input.setAttribute('class', 'input-input');
     input.setAttribute('id', 'videoUrl');
+   // input.setAttribute('value', pco.videoUrl);
     input.setAttribute('name', 'videoUrl');
     input.setAttribute('placeholder', 'Например: https://www.youtube.com/watch?v=qPeVoi6OmRc');
     input.setAttribute('autocomplete', 'disabled');
@@ -198,15 +221,15 @@ function createDiv1YouTube() {
     col9.appendChild(input);
 
     row.appendChild(col9);
-    return row;
+    div1.appendChild(row);
 }
 
-function createDiv2VinFields() {
+function createDiv2VinFields(div2) {
     let div = document.createElement('div');
     let span = document.createElement('span');
     span.setAttribute('class', 'info-text-small');
     span.innerText =
-    "Технические характеристики автоматически определятся по VIN — мы покажем в объявлении лишь часть цифр. Госномер пользователи не увидят.";
+        "Технические характеристики автоматически определятся по VIN — мы покажем в объявлении лишь часть цифр. Госномер пользователи не увидят.";
     div.appendChild(span);
 
     let row = document.createElement('div');
@@ -220,23 +243,20 @@ function createDiv2VinFields() {
     let col9 = document.createElement('div');
     col9.setAttribute('class', 'col-9');
     let label = document.createElement('label');
-    label.setAttribute('class', 'input-layout-input-layout-rvz9R input-layout-size-s-2aQXN input-layout-text-align-left-FW0s6 width-width-6-1e4fV');
+
     let input = document.createElement('input');
-    input.setAttribute('id', 'vinInput');
-    input.setAttribute('name', 'vinInput');
-    input.setAttribute('class', 'input-input-WqoUk');
+    input.setAttribute('id', 'vinCode');
+    input.setAttribute('name', 'vinCode');
     input.setAttribute('type', 'text');
-    input.setAttribute('value', '');
     label.appendChild(input);
     col9.appendChild(label);
 
     row.appendChild(col9);
     div.appendChild(row);
-    return div;
+    div2.appendChild(div);
 }
 
-function createDiv2PlateFields() {
-
+function createDiv2PlateFields(div2) {
     let row = document.createElement('div');
     row.setAttribute('class', 'row');
 
@@ -247,66 +267,119 @@ function createDiv2PlateFields() {
 
     let col9 = document.createElement('div');
     col9.setAttribute('class', 'col-9');
-        let inCol9Div = document.createElement('div');
-        inCol9Div.setAttribute('class', 'input-auto-number-input-3Y8dP');
-        col9.appendChild(inCol9Div);
-            let label2 = document.createElement('label');
-            label2.setAttribute('class', 'input-auto-number-left-label-2tjY9' );
-            inCol9Div.appendChild(label2);
-                let input2 = document.createElement('input');
-                input2.setAttribute('class','input-auto-number-left-vXXPa' )
-                input2.setAttribute('data-marker', 'numberParamLeft');
-                input2.setAttribute('id','numberParamLeft' );
-                input2.setAttribute('placeholder','о 000 оо' );
-                label2.appendChild(input2);
+    let inCol9Div = document.createElement('div');
+    inCol9Div.setAttribute('class', 'input-auto-number-input-3Y8dP');
+    col9.appendChild(inCol9Div);
+    let label2 = document.createElement('label');
+    label2.setAttribute('class', 'input-auto-number-left-label-2tjY9');
+    inCol9Div.appendChild(label2);
+    let input2 = document.createElement('input');
+    input2.setAttribute('class', 'input-auto-number')
+    input2.setAttribute('data-marker', 'statePlateNumber');
+    input2.setAttribute('id', 'statePlateNumber');
+    input2.setAttribute('placeholder', 'о 000 оо');
+    label2.appendChild(input2);
 
     let label3 = document.createElement('label');
-    label3.setAttribute('class', 'input-auto-number-right-label-iSUZi' );
+    label3.setAttribute('class', 'input-auto-number');
     inCol9Div.appendChild(label3);
-    let input3 = document.createElement('input');
-    input3.setAttribute('class','input-auto-number-right-2vrF1' )
-    input3.setAttribute('data-marker', 'numberParamRight');
-    input3.setAttribute('id','numberParamRight' );
-    input3.setAttribute('placeholder','000' );
-    label3.appendChild(input3);
     let innerDiv = document.createElement('div');
     innerDiv.innerText = 'RUS';
     label3.appendChild(innerDiv);
     row.appendChild(col9);
-    return row;
+    div2.appendChild(row);
 }
 
-function createDiv3CarBrandFields(){
+function createDiv3CarBrandFields(div3) {
     let div = document.createElement('div');
+
     let row = document.createElement('div');
     row.setAttribute('class', 'row');
-
     let col3 = document.createElement('div');
     col3.setAttribute('class', 'col-3');
     col3.appendChild(makeDescriptionText('Марка'));
     row.appendChild(col3);
-
     let col9 = document.createElement('div');
     col9.setAttribute('class', 'col-9');
+    row.appendChild(col9);
+
+
+    let options = carBrandsGlobal;
+    console.log(options[1]);
 
     let select = document.createElement('select');
     select.setAttribute('id', 'car-brand');
     select.setAttribute('name', 'car-brand');
-    let option1 = document.createElement("option");
-    option1.text = "Kiwi";
-    let option2 = document.createElement("option");
-    option2.text = "Mango";
-    select.add(option1);
-    select.add(option2);
-    col9.appendChild(select);
+    select.onchange=(a) => getAutoModel(a.target, div3);
+
+    for (let i = 0; i < options.length; i++) {
+        let optionDiv = document.createElement("option");
+        optionDiv.setAttribute('value', options[i]);
+        optionDiv.text = options[i];
+        optionDiv.value = options[i];
+        select.add(optionDiv);
+    }
+
+
+
+
+
+
 
 // Add model etc....
-    row.appendChild(col9);
+
+    col9.appendChild(select);
     div.appendChild(row);
-    return div;
+    div3.appendChild(div);
 }
 
-function createDiv4Mileage(){
+async function getAutoModel(target, div3) {
+    let brand = target.options[target.selectedIndex].value;
+    console.log('after ' +  brand);
+
+    async function getCarModelsSet() {
+        let url = requestURL + 'models/' + brand;
+        return await getResponseData(url).then((responseData) => {
+            return responseData.data;
+        });
+    }
+
+    let models = await getCarModelsSet();
+    console.log(models[1]);
+
+    let oldDiv = $('#models-set');
+    if (oldDiv.length > 0) {
+        oldDiv.remove();
+    }
+    let divM = document.createElement('div');
+    divM.setAttribute('id', 'models-set');
+    let row = document.createElement('div');
+    row.setAttribute('class', 'row');
+    let col3 = document.createElement('div');
+    col3.setAttribute('class', 'col-3');
+    col3.appendChild(makeDescriptionText('Модель'));
+    row.appendChild(col3);
+    let col9 = document.createElement('div');
+    col9.setAttribute('class', 'col-9');
+    row.appendChild(col9);
+    let select = document.createElement('select');
+    select.setAttribute('id', 'carModel');
+    select.setAttribute('name', 'carModel');
+    // select.onclick(getAutoModel(this.value()));
+    let options = models;
+    for (let i = 0; i < options.length; i++) {
+        let optionDiv = document.createElement("option");
+        optionDiv.setAttribute('value', options[i]);
+        optionDiv.text = options[i];
+        optionDiv.value = options[i];
+        select.add(optionDiv);
+    }
+    col9.appendChild(select);
+    divM.appendChild(row);
+    div3.appendChild(divM);
+}
+
+function createDiv4Mileage() {
     let div = document.createElement('div');
     let row = document.createElement('div');
     row.setAttribute('class', 'row');
@@ -338,7 +411,7 @@ function createDiv4Mileage(){
     return div;
 }
 
-function createDiv4Conditions(){
+function createDiv4Conditions() {
     let div = document.createElement('div');
     let row = document.createElement('div');
     row.setAttribute('class', 'row');
@@ -367,7 +440,7 @@ function createDiv4Conditions(){
     return div;
 }
 
-function createDiv4CountOfOwners(){
+function createDiv4CountOfOwners() {
     let div = document.createElement('div');
     let row = document.createElement('div');
     row.setAttribute('class', 'row');
@@ -396,7 +469,7 @@ function createDiv4CountOfOwners(){
     return div;
 }
 
-function createDiv4ServicingInfo(){
+function createDiv4ServicingInfo() {
     let div = document.createElement('div');
     let row = document.createElement('div');
     row.setAttribute('class', 'row');
@@ -408,11 +481,10 @@ function createDiv4ServicingInfo(){
 
     let col9 = document.createElement('div');
     col9.setAttribute('class', 'col-9');
-        let cbDiv = document.createElement('div');
+    let cbDiv = document.createElement('div');
     cbDiv.appendChild(makeCheckbox('hasServiceBook', 'Есть Сервисная книжка'));
     cbDiv.appendChild(makeCheckbox('dealerServiced', 'Обслуживался у дилера'));
     cbDiv.appendChild(makeCheckbox('underWarranty', 'На гаранти'));
-
 
 
     col9.appendChild(cbDiv);
@@ -422,11 +494,11 @@ function createDiv4ServicingInfo(){
     return div;
 }
 
-function createDiv5AllInOne(){
+function createDiv5AllInOne() {
     let div = document.createElement('div');
     div.setAttribute('id', 'car-options');
     div.setAttribute('class', 'container no-gutters ');
-  //  div.setAttribute('style', 'padding: 10');
+    //  div.setAttribute('style', 'padding: 10');
 
     let div2 = document.createElement('div');
     div2.setAttribute('class', 'row no-gutters');
@@ -445,7 +517,7 @@ function createDiv5AllInOne(){
     column_left.appendChild(makeCheckbox('param5', 'Кожаный руль'));
     column_left.appendChild(makeCheckbox('param6', 'Люк'));
 
-    column_left.appendChild(makeDescriptionText( 'Обогрев'));
+    column_left.appendChild(makeDescriptionText('Обогрев'));
     column_left.appendChild(makeCheckbox('param7', 'Передних сидений'));
     column_left.appendChild(makeCheckbox('param8', 'Задних сидений'));
     column_left.appendChild(makeCheckbox('param15', 'Зеркал'));
@@ -454,14 +526,14 @@ function createDiv5AllInOne(){
 
     column_left.appendChild(makeOptionsVsTitle('param23', 'Электростеклоподъемники', option));
 
-    column_left.appendChild(makeDescriptionText( 'Электропривод'));
+    column_left.appendChild(makeDescriptionText('Электропривод'));
     column_left.appendChild(makeCheckbox('param22', 'Передних сидений'));
     column_left.appendChild(makeCheckbox('param18', 'Задних сидений'));
     column_left.appendChild(makeCheckbox('param19', 'Зеркал'));
     column_left.appendChild(makeCheckbox('param20', 'Рулевой колонки'));
     column_left.appendChild(makeCheckbox('param21', 'Складывания зеркал'));
 
-    column_left.appendChild(makeDescriptionText( 'Память настроек'));
+    column_left.appendChild(makeDescriptionText('Память настроек'));
     column_left.appendChild(makeCheckbox('param30', 'Передних сидений'));
     column_left.appendChild(makeCheckbox('param31', 'Задних сидений'));
     column_left.appendChild(makeCheckbox('param32', 'Зеркал'));
@@ -470,7 +542,7 @@ function createDiv5AllInOne(){
     let column_center = document.createElement('div'); // ====== center column
     column_center.setAttribute('class', 'col-4 no-gutters');
     div2.appendChild(column_center);
-    column_center.appendChild(makeDescriptionText( 'Помощь при вождении'));
+    column_center.appendChild(makeDescriptionText('Помощь при вождении'));
     column_center.appendChild(makeCheckbox('param40', 'Автоматический парковщик'));
     column_center.appendChild(makeCheckbox('param41', 'Датчик дождя'));
     column_center.appendChild(makeCheckbox('param42', 'Датчик света'));
@@ -481,20 +553,20 @@ function createDiv5AllInOne(){
     column_center.appendChild(makeCheckbox('param47', 'Круиз-контроль'));
     column_center.appendChild(makeCheckbox('param48', 'Бортовой компьютер'));
 
-    column_center.appendChild(makeDescriptionText( 'Противоугонная система'));
+    column_center.appendChild(makeDescriptionText('Противоугонная система'));
     column_center.appendChild(makeCheckbox('param50', 'Сигнализация'));
     column_center.appendChild(makeCheckbox('param51', 'Центральный замок'));
     column_center.appendChild(makeCheckbox('param52', 'Иммобилайзер'));
     column_center.appendChild(makeCheckbox('param53', 'Спутник'));
 
-    column_center.appendChild(makeDescriptionText( 'Подушки безопасности'));
+    column_center.appendChild(makeDescriptionText('Подушки безопасности'));
     column_center.appendChild(makeCheckbox('param55', 'Фронтальные'));
     column_center.appendChild(makeCheckbox('param56', 'Коленные'));
     column_center.appendChild(makeCheckbox('param57', 'Шторки'));
     column_center.appendChild(makeCheckbox('param58', 'Боковые передние'));
     column_center.appendChild(makeCheckbox('param59', 'Боковые задние'));
 
-    column_center.appendChild(makeDescriptionText( 'Активная безопасность'));
+    column_center.appendChild(makeDescriptionText('Активная безопасность'));
     column_center.appendChild(makeCheckbox('param60', 'Антиблокировка тормозов'));
     column_center.appendChild(makeCheckbox('param61', 'Антипробуксовка'));
     column_center.appendChild(makeCheckbox('param62', 'Курсовая устойчивость'));
@@ -504,12 +576,11 @@ function createDiv5AllInOne(){
     column_center.appendChild(makeCheckbox('param66', 'Обнаружение пешеходов'));
 
 
-
     let column_right = document.createElement('div');  // ====== right column
     column_right.setAttribute('class', 'col-4 no-gutters');
     div2.appendChild(column_right);
 
-    column_right.appendChild(makeDescriptionText( 'Мультимедиа и навигация'));
+    column_right.appendChild(makeDescriptionText('Мультимедиа и навигация'));
     column_right.appendChild(makeCheckbox('param70', 'CD/DVD/Blu-ray'));
     column_right.appendChild(makeCheckbox('param71', 'МР3'));
     column_right.appendChild(makeCheckbox('param72', 'Радио'));
@@ -536,7 +607,7 @@ function createDiv5AllInOne(){
 }
 
 
-function createDiv6DescriptionField(){
+function createDiv6DescriptionField() {
     let div = document.createElement('div');
     let row = document.createElement('div');
     row.setAttribute('class', 'row');
@@ -564,7 +635,7 @@ function createDiv6DescriptionField(){
 }
 
 
-function makeOptionsVsTitle(field, text, options){
+function makeOptionsVsTitle(field, text, options) {
     let div = document.createElement('div');
     let label = document.createElement('label');
     label.setAttribute('for', field);
@@ -583,16 +654,14 @@ function makeOptionsVsTitle(field, text, options){
 }
 
 
-
-
-function makeCheckbox(id, text){
+function makeCheckbox(id, text) {
     let div = document.createElement('div');
     div.setAttribute('class', 'custom-control custom-checkbox');
-        let input = document.createElement('input');
-        input.setAttribute('type', 'checkbox');
-        input.setAttribute('class', 'custom-control-input');
-        input.setAttribute('id', id);
-        div.appendChild(input);
+    let input = document.createElement('input');
+    input.setAttribute('type', 'checkbox');
+    input.setAttribute('class', 'custom-control-input');
+    input.setAttribute('id', id);
+    div.appendChild(input);
     let label = document.createElement('label');
     label.setAttribute('class', 'custom-control-label');
     label.setAttribute('for', id);
@@ -602,7 +671,7 @@ function makeCheckbox(id, text){
 }
 
 
-function makeDescriptionText(text){
+function makeDescriptionText(text) {
     let div = document.createElement('span');
     div.setAttribute('class', 'description-label');
     div.innerText = text;
@@ -610,10 +679,10 @@ function makeDescriptionText(text){
 }
 
 
-function make4To8Container1(id_suffix){
+function make4To8Container1(id_suffix) {
     let div = document.createElement('div');
-    div.setAttribute('id','container-' + id_suffix);
-    div.setAttribute('class', 'container' );
+    div.setAttribute('id', 'container-' + id_suffix);
+    div.setAttribute('class', 'container');
     let row = document.createElement('div');
     row.setAttribute('class', 'row category-head-container');
     div.appendChild(row);
@@ -631,16 +700,16 @@ function make4To8Container1(id_suffix){
 }
 
 
-function makeLabelInputFieldsForPrice(id_suffix){
+function makeLabelInputFieldsForPrice(id_suffix) {
     let div = document.createElement('label');
-    div.setAttribute('id','label-' + id_suffix);
-    div.setAttribute('for','carPrice-' + id_suffix);
-   // div.setAttribute('class', 'container' );
-    let input= document.createElement('input');
+    div.setAttribute('id', 'label-' + id_suffix);
+    div.setAttribute('for', 'carPrice-' + id_suffix);
+    // div.setAttribute('class', 'container' );
+    let input = document.createElement('input');
     input.setAttribute('class', 'row category-head-container');
     input.setAttribute('id', 'carPrice-' + id_suffix);
     input.setAttribute('type', 'text');
-  //  input.setAttribute('value', 'text');
+    //  input.setAttribute('value', 'text');
     div.appendChild(input);
 
     return div;
@@ -648,7 +717,7 @@ function makeLabelInputFieldsForPrice(id_suffix){
 }
 
 
-function makeMainAndTitleFields(id_suffix, title){
+function makeMainAndTitleFields(id_suffix, title) {
     let div = makeMainContainer(id_suffix);
     div.appendChild(makeTitleFields(id_suffix, title));
     return div;
@@ -656,23 +725,23 @@ function makeMainAndTitleFields(id_suffix, title){
 
 function makeTitleFields(id_suffix, title) {
     let div = document.createElement('div');
-    div.setAttribute('id','head-title-' + id_suffix);
-    div.setAttribute('class', 'category-head-container' );
+    div.setAttribute('id', 'head-title-' + id_suffix);
+    div.setAttribute('class', 'category-head-container');
     let cht = document.createElement('div');
-    cht.setAttribute('class', 'category-head-text' );
+    cht.setAttribute('class', 'category-head-text');
     cht.innerText = title;
     div.appendChild(cht);
     return div;
 }
 
-function makeMainContainer(id_suffix){
+function makeMainContainer(id_suffix) {
     let div = document.createElement('div');
-    div.setAttribute('id','main-container-' + id_suffix);
-    div.setAttribute('class', 'main-container' );
+    div.setAttribute('id', 'main-container-' + id_suffix);
+    div.setAttribute('class', 'main-container');
     return div;
 }
 
-function changePathCategory(){
+function changePathCategory() {
     let a = document.getElementById('thisCategoryText');
     if (frontName === 'used-car') {
         a.innerText = 'Транспорт / Автомобили / С пробегом';
@@ -681,18 +750,18 @@ function changePathCategory(){
     }
 }
 
-function changeMeetingPlace(){
+function changeMeetingPlace() {
     document.getElementById('meetingPlace').innerText = 'Место осмотра';
 }
 
-function addTypeOfUsedCarPosting(){
+function addTypeOfUsedCarPosting() {
     let a = document.getElementById('pathCategory').parentElement.parentElement;
     a.appendChild(addPostingType());
 
 
 }
 
-function addPostingType(){
+function addPostingType() {
     let div = document.createElement('div');
     let row = document.createElement('div');
     row.setAttribute('class', 'row');
@@ -705,16 +774,30 @@ function addPostingType(){
     let col9 = document.createElement('div');
     col9.setAttribute('class', 'col-9');
 
+    let divInCol9 = document.createElement('div');
+    col9.appendChild(divInCol9);
     let label = document.createElement('label');
-    label.setAttribute('class', 'input-layout-input-layout-rvz9R input-layout-size-s-2aQXN input-layout-text-align-left-FW0s6 width-width-6-1e4fV');
-    let input = document.createElement('input');
-    input.setAttribute('id', 'mileInput');
-    input.setAttribute('name', 'mileInput');
-    input.setAttribute('class', 'input-input-WqoUk');
-    input.setAttribute('type', 'text');
-    input.setAttribute('value', '');
-    label.appendChild(input);
-    col9.appendChild(label);
+    label.setAttribute('class', 'category-head-text');
+    label.setAttribute('for', 'typeOfUsedCarPosting');
+
+    divInCol9.appendChild(label);
+
+    let options = [];
+    options[0] = 'Продаю личный автомобиль';
+    options[1] = 'Автомобиль приобретен на продажу';
+
+    let select = document.createElement('select');
+    select.setAttribute('id', 'typeOfUsedCarPosting');
+    select.setAttribute('name', 'typeOfUsedCarPosting');
+    select.setAttribute('value', pco.typeOfUsedCarPosting);
+    for (let i = 0; i < options.length; i++) {
+        let optionDiv = document.createElement("option");
+        optionDiv.text = options[i];
+        optionDiv.value = options[i];
+        select.add(optionDiv);
+    }
+    divInCol9.appendChild(select);
+
 
     row.appendChild(col9);
     div.appendChild(row);
@@ -722,7 +805,7 @@ function addPostingType(){
 
 }
 
-submitUsedCarForm = function(){
+submitUsedCarForm = function () {
     let formM = document.getElementById("used-car-posting-form");
     formM.submit();
     let posting = formM.attr('object');
@@ -731,4 +814,48 @@ submitUsedCarForm = function(){
     console.log(posting);
 
     alert("Saved!");
+}
+
+
+
+
+
+function saveFunction() {
+    let e = document.getElementById('car-color');
+    let carColor = e.options[e.selectedIndex].value;
+
+    e = document.getElementById('typeOfUsedCarPosting');
+    let typeOfUsedCarPosting = e.options[e.selectedIndex].value;
+
+    e = document.getElementById('car-brand');
+    let carBrand = e.options[e.selectedIndex].value;
+
+    let posting = {
+        typeOfUsedCarPosting: typeOfUsedCarPosting,
+        carBrand: carBrand,
+        carColor: carColor,
+        vinCode : document.getElementById('vinCode').value,
+        statePlateNumber: document.getElementById('statePlateNumber').value
+
+    }
+
+
+    alert('Point 1 / Saving ... ');
+
+    let json_posting = JSON.stringify(posting);
+    const requestURL = '/api/posting/car/new-save';
+
+    sendRequest('POST', requestURL, json_posting).then(() => {
+        console.log("saved/ may be");
+    }).catch(err => console.log(err))
+
+    async function sendRequest(method, url, body) {
+        await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
+        }).then()
+    }
 }
