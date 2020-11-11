@@ -1,8 +1,12 @@
 let displayLayer = 0;
 let path = [];
-
 $(document).ready(function () {
     getCategoryColumn(0, 0).then();
+
+    $('#buttonAuth').on('click', function () {
+        $('#emailAuth').addClass("redborder");
+        authorization().then();
+    });
 })
 
 async function getCategoryColumn(parentID, selectLayer, frontName) {
@@ -13,6 +17,10 @@ async function getCategoryColumn(parentID, selectLayer, frontName) {
         displayLayer++;
         let temp = document.getElementById('cascadeTableButton_' + parentID);
         let parentName = (temp === null) ? 'Категория' : temp.textContent;
+
+        if (temp !== null) {
+            path.push(temp.textContent + ' / ');
+        }
 
         document.getElementById('cascadeTableContainer').innerHTML +=
             '<div id="cascadeTableColumn' + displayLayer + '" class="cascade-table-column">' +
@@ -32,6 +40,10 @@ async function getCategoryColumn(parentID, selectLayer, frontName) {
         }
         return true;
     } else {
+        let temp;
+        temp = document.getElementById('cascadeTableButton_' + frontName);
+        path.push(temp.textContent);
+        document.getElementById('pathCategoryButton').textContent = await getPath(path);
         return await changeVisible(frontName);
     }
 }
@@ -82,6 +94,7 @@ async function cleanCategoryColumns(selectLayer) {
         for (let i = selectLayer+1; i <= displayLayer; i++) {
             document.getElementById('cascadeTableColumn' + i).remove();
         }
+        path.splice(selectLayer - 1, path.length - selectLayer + 1);
         displayLayer = selectLayer;
     }
 }
@@ -89,17 +102,31 @@ async function cleanCategoryColumns(selectLayer) {
 async function changeVisible(frontName) {
     $('#pathCategory').show();
     $('#visibleElement1').hide();
-    $('#visibleElement2').show();
     $('#visibleElement3').show();
 
     switch(frontName) {
         case 'used-car':  testFunction(frontName);
-            break
+            break;
 
         case 'new-car':  testFunction(frontName);
             break;
 
-        default: alert("notFOUND")
+        case 'houseHoldForHome':  await sendHouseholdAppliances(frontName);
+            break;
+
+        case 'forIndividualCare': await sendHouseholdAppliances(frontName);
+            break;
+
+        case 'forKitchen':  await sendHouseholdAppliances(frontName);
+            break;
+
+        case 'climaticEquipment': await sendHouseholdAppliances(frontName);
+            break;
+
+        case 'otherHouseholdAppliances': await sendHouseholdAppliances(frontName);
+            break;
+
+        default: alert('For frontName="' + frontName + '" not found posting form');
             break;
     }
 
@@ -108,11 +135,10 @@ async function changeVisible(frontName) {
 $('#pathCategoryButton').on('click', function () {
     $('#pathCategory').hide();
     $('#visibleElement1').show();
-    $('#visibleElement3').hide();
 });
 
-async function sendPosting(body) {
-    await fetch('/api/posting/new', {
+async function sendPosting(body, url) {
+    await fetch(url, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -120,4 +146,12 @@ async function sendPosting(body) {
         },
         body: body
     });
+}
+
+async function getPath(arr) {
+    let result = '';
+    arr.forEach(item => {
+        result = result + item;
+    })
+    return result;
 }

@@ -354,7 +354,7 @@ public class DataInitializer {
         secondSubCategory.add(new Category("Услуги", categoryService.getCategoryByName("Красота и здоровье").get(), 3));
 
 
-        secondSubCategory.add(new Category("Для дома", categoryService.getCategoryByName("Бытовая техника").get(), 3, "forHome"));
+        secondSubCategory.add(new Category("Для дома", categoryService.getCategoryByName("Бытовая техника").get(), 3, "houseHoldForHome"));
         secondSubCategory.add(new Category("Для индивидуального ухода", categoryService.getCategoryByName("Бытовая техника").get(), 3, "forIndividualCare"));
         secondSubCategory.add(new Category("Для кухни", categoryService.getCategoryByName("Бытовая техника").get(), 3, "forKitchen"));
         secondSubCategory.add(new Category("Климатическое оборудование", categoryService.getCategoryByName("Бытовая техника").get(), 3, "climaticEquipment"));
