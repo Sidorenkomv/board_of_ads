@@ -115,10 +115,10 @@ public class PostingCarDto {
     private String videoURL;
     private String contactEmail;
 
-    public PostingCarDto(PostingCar pc, User user) {
+    public PostingCarDto(PostingCar pc) {
         vinCode = pc.getVinCode();
         isCarNew = pc.isCarNew();
-        sellerId = user.getId();
+        sellerId = pc.getSellerId();
         typeOfUsedCarPosting = pc.getTypeOfUsedCarPosting();
         statePlateNumber = pc.getStatePlateNumber();
         mileage = pc.getMileage();
@@ -205,19 +205,27 @@ public class PostingCarDto {
         transmission = pc.getTransmission();
         modification = pc.getModification();
         configuration = pc.getConfiguration();
-        category = pc.getCategory().getName();
-        message = pc.getMessage().getText();
         title = pc.getTitle();
         description = pc.getDescription();
-        price = pc.getPrice();
         contact = pc.getContact();
         meetingAddress = pc.getMeetingAddress();
-        isActive = pc.getIsActive();
-        viewNumber = pc.getViewNumber();
         datePosting = pc.getDatePosting().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"));
-        city = pc.getCity().getName();
         condition = pc.getCondition();
         videoURL = pc.getVideoURL();
         contactEmail = pc.getContactEmail();
+
+//        category = pc.getCategory().getName();
+//        message = pc.getMessage().getText();
+//        price = pc.getPrice();
+//        isActive = pc.getIsActive();
+//        viewNumber = pc.getViewNumber();
+//        city = pc.getCity().getName();
+
+
+        message = "Some message in Posting Car";
+        price = 500;
+        isActive = true;
+        viewNumber = 1;
+        city = "Moscow";
     }
 }

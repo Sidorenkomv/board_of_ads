@@ -220,7 +220,8 @@ public class PostingServiceImpl implements PostingService {
         pc.setUser(user);
         pc.setSellerId(userId);
         pc.setCarNew(!isCarNew.equals("used-car"));
-        return new PostingCarDto(pc, user);
+
+        return new PostingCarDto(pc);
     }
 
 }

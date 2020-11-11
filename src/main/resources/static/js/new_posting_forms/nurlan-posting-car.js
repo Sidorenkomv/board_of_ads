@@ -1,22 +1,47 @@
 let frontName;
 
-function carPostingFunction(fn) {
-    frontName = fn;
-    fillNewCarPostingFields();
+function carPostingFunction(fName) {
+    frontName = fName;
+    // fillNewCarPostingFields();
+    getPostingCarMap();
 }
 
-submitUsedCarForm = function(){
-    let formM = document.getElementById("used-car-posting-form");
-    formM.submit();
-    let posting = formM.attr('object');
+const requestURL = '/api/posting/car/';
 
-    console.log("function is called");
-    console.log(posting);
-
-    alert("Saved!");
+const httpHeader = {
+    fetchData: async function (url) {
+        const response = await fetch(url, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        });
+        return response.json();
+    }
 }
 
-function fillNewCarPostingFields() {
+const postingCarService = {
+    getPostingCarMap: async (isCarNew) => {
+        return await httpHeader.fetchData(requestURL + isCarNew);
+    }
+}
+
+function getPostingCarMap() {
+
+    postingCarService.getPostingCarMap(frontName).then((pc => {
+                console.log(pc);
+        fillNewCarPostingFields(pc);
+
+        })
+    )
+}
+
+
+
+
+
+function fillNewCarPostingFields(pc) {
+
 
     // Вызвать объект
 
@@ -297,8 +322,8 @@ function createDiv4Mileage(){
     let label = document.createElement('label');
     label.setAttribute('class', 'input-layout-input-layout-rvz9R input-layout-size-s-2aQXN input-layout-text-align-left-FW0s6 width-width-6-1e4fV');
     let input = document.createElement('input');
-    input.setAttribute('id', 'mileInput');
-    input.setAttribute('name', 'mileInput');
+    input.setAttribute('id', 'mileageInput');
+    input.setAttribute('name', 'mileageInput');
     input.setAttribute('class', 'input-input-WqoUk');
     input.setAttribute('type', 'text');
     input.setAttribute('value', '');
@@ -695,4 +720,15 @@ function addPostingType(){
     div.appendChild(row);
     return div;
 
+}
+
+submitUsedCarForm = function(){
+    let formM = document.getElementById("used-car-posting-form");
+    formM.submit();
+    let posting = formM.attr('object');
+
+    console.log("function is called");
+    console.log(posting);
+
+    alert("Saved!");
 }
