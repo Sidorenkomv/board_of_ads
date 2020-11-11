@@ -53,6 +53,74 @@
     color: gold;
 }
 
+.profile-content-header {
+    margin: 0 0 0 16px;
+    box-sizing: border-box;
+    line-height: 1.375;
+    font-size: 32px;
+    font-weight: 600;
+    display: inline;
+}
+
+.empty-order-list {
+    padding: 32px;
+    box-sizing: border-box;
+    -webkit-box-align: center;
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+}
+
+.empty-order-header {
+    margin: 32px 0px 0px;
+    box-sizing: border-box;
+    line-height: 1.375;
+    font-size: 25px;
+    font-weight: 600;
+    display: inline;
+}
+
+.tabs-root-wrapper {
+    display: flex;
+    -webkit-box-pack: start;
+    justify-content: flex-start;
+    margin: 0;
+    padding: 10px 0 21px;
+    box-sizing: border-box;
+    flex-wrap: wrap;
+    list-style: none;
+}
+
+.tab-root-element {
+    padding-left: 18px;
+    padding-right: 18px;
+    border-radius: 18px;
+    font-size: 16px;
+    line-height: 36px;
+    white-space: nowrap;
+    color: #0098e5;
+}
+
+.tab-root-active {
+    background-color: #f5f5f5;
+    color: black;
+}
+
+.review-avatar {
+    width: 96px;
+    height: 96px;
+}
+
+.new-orders {
+    margin: 0 8px;
+    padding: 5px;
+    border-radius: 2px;
+    background-color: #ff6163;
+    color: #fff;
+    font-size: 11px;
+    line-height: 16px;
+}
+
 .profile-user-id {
     display: none;
 }
@@ -61,4 +129,3 @@
     padding: 0;
     margin: 0;
 }
-

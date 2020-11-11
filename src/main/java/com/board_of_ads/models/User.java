@@ -1,10 +1,11 @@
 package com.board_of_ads.models;
 
 
+import com.board_of_ads.models.dto.order.Order;
+import com.board_of_ads.models.dto.review.Review;
 import com.board_of_ads.models.posting.Posting;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
@@ -35,8 +36,7 @@ import java.util.List;
 import java.util.Set;
 
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -90,6 +90,12 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private Set<Role> roles;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private Set<Order> orders;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private Set<Review> reviews;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
