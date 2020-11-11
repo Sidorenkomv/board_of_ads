@@ -18,6 +18,8 @@ function getPostingsTable(posts, favorites) {
                 postingDTO.datePosting.toString().substring(0, 4) + " " +
                 postingDTO.datePosting.toString().substring(11, 16);
 
+            let price = new Intl.NumberFormat('ru-RU').format(postingDTO.price);
+
             document.getElementById('mainPageBody').innerHTML +=
                 `<div id="main_page_posting" class="col-md-3">
                         <div id="cardPosting" class="card">
@@ -37,7 +39,7 @@ function getPostingsTable(posts, favorites) {
                             <div id="postingCardBody" class="card-body">
                                 <a id="postingTitle" class="text-primary" href="/${postingDTO.id}">${postingDTO.title}</a>
                                 <strong>
-                                    <div id="price">${postingDTO.price} ₽</div>
+                                    <div id="price">${price} ₽</div>
                                 </strong>
                                 <div class="card-text text-muted">
                                     <div id="meetingPlace">${postingDTO.city}</div>
