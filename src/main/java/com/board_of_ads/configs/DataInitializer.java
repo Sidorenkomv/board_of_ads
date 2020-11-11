@@ -585,7 +585,11 @@ public class DataInitializer {
     private void initOrders(){
         List<Order> orderList = new ArrayList<>();
 
-        orderList.add(new Order(userService.getUserByEmail("user@mail.ru"), postingService.getPostingByTitle("Сыграю в лото").get(), "Почта России", DeliveryStatus.IN_PROCESS));
+        orderList.add(new Order(
+                userService.getUserByEmail("user@mail.ru"),
+                postingService.getPostingByTitle("Сыграю в лото").get(),
+                "Почта России", DeliveryStatus.IN_PROCESS)
+        );
 
         for (Order order: orderList){
             orderService.save(order);
@@ -595,7 +599,12 @@ public class DataInitializer {
     private void initReviews(){
         List<Review> reviewList = new ArrayList<>();
 
-        reviewList.add(new Review(userService.getUserByEmail("admin@mail.ru"), postingService.getPostingByTitle("Сыграю в лото").get(), (byte) 1, "Проиграл"));
+        reviewList.add(new Review(
+                userService.getUserByEmail("admin@mail.ru"),
+                postingService.getPostingByTitle("Сыграю в лото").get(),
+                (byte) 1,
+                "Проиграл")
+        );
 
         for (Review review: reviewList){
             reviewService.save(review);

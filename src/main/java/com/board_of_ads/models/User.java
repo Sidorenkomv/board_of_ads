@@ -5,9 +5,8 @@ import com.board_of_ads.models.dto.order.Order;
 import com.board_of_ads.models.dto.review.Review;
 import com.board_of_ads.models.posting.Posting;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -32,8 +31,7 @@ import java.util.Collection;
 import java.util.Set;
 
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
