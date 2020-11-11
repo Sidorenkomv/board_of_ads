@@ -2,6 +2,7 @@ package com.board_of_ads.service.interfaces;
 
 import com.board_of_ads.models.City;
 import com.board_of_ads.models.User;
+import com.board_of_ads.models.dto.PostingCarDto;
 import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
@@ -37,4 +38,6 @@ public interface PostingService {
     List<PostingDto> getFavDtosFromUser(User user);
 
     List<Long> getFavIDFromUser(User user);
+
+    PostingCarDto getNewPostingCarDto(Long userId, String isCarNew);
 }

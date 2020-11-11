@@ -2,6 +2,7 @@ package com.board_of_ads.service.impl;
 
 import com.board_of_ads.models.City;
 import com.board_of_ads.models.User;
+import com.board_of_ads.models.dto.PostingCarDto;
 import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
@@ -12,6 +13,7 @@ import com.board_of_ads.repository.PostingRepository;
 import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.service.interfaces.PostingService;
 import com.board_of_ads.service.interfaces.RegionService;
+import com.board_of_ads.service.interfaces.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class PostingServiceImpl implements PostingService {
 
+    private final UserService userService;
     private final PostingRepository postingRepository;
     private final CategoryService categoryService;
     private final RegionService regionService;
@@ -196,16 +199,28 @@ public class PostingServiceImpl implements PostingService {
         postingCarRepository.save(postingCar);
     }
 
-
+    @Override
     public List<PostingDto> getFavDtosFromUser(User user) {
         List<Long> listfavoritsid = new ArrayList<>();
         user.getFavorites().forEach(x ->listfavoritsid.add(x.getId()));
         return postingRepository.findUserFavorites(listfavoritsid);
     }
 
+    @Override
     public List<Long> getFavIDFromUser(User user) {
         List<Long> listfavoritsid = new ArrayList<>();
         user.getFavorites().forEach(x ->listfavoritsid.add(x.getId()));
         return listfavoritsid;
     }
+
+    @Override
+    public PostingCarDto getNewPostingCarDto(Long userId, String isCarNew) {
+        User user = userService.getUserById(userId);
+        PostingCar pc = new PostingCar();
+        pc.setUser(user);
+        pc.setSellerId(userId);
+        pc.setCarNew(!isCarNew.equals("used-car"));
+        return new PostingCarDto(pc, user);
+    }
+
 }
