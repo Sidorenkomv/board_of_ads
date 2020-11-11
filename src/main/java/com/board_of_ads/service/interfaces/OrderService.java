@@ -2,6 +2,7 @@ package com.board_of_ads.service.interfaces;
 
 import com.board_of_ads.models.User;
 import com.board_of_ads.models.dto.order.Order;
+import com.board_of_ads.models.dto.order.OrderDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,4 +19,7 @@ public interface OrderService {
     Long countOrdersByUser(User user);
     Long countOrdersByOwner(User user);
     Long countUncheckedByUser(User user);
+
+    Set<OrderDto> getOrdersByUserEmail(String email);
+    void removeById(Long id);
 }

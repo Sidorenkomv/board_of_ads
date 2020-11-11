@@ -166,7 +166,7 @@
                 <div th:text="${review.getComment()}"></div>
                 <div>
                     <span th:text="${review.getDateTime().getDayOfMonth() + '-' + review.getDateTime().getMonthValue() + '-' + review.getDateTime().getYear()}"></span>
-                    <span th:text="${review.getPosting().getUser().getFirstName()}"></span>
+                    <span th:text="${review.getPosting().getUser().getFirsName()}"></span>
                 </div>
             </li>
         </ul>
@@ -202,7 +202,7 @@
                 <div th:text="${review.getComment()}"></div>
                 <div>
                     <span th:text="${review.getDateTime().getDayOfMonth() + '-' + review.getDateTime().getMonthValue()}"></span>
-                    <span th:text="${review.getPosting().getUser().getFirstName()}"></span>
+                    <span th:text="${review.getPosting().getUser().getFirsName()}"></span>
                 </div>
             </li>
         </ul>

@@ -2,6 +2,7 @@ package com.board_of_ads.service.impl;
 
 import com.board_of_ads.models.User;
 import com.board_of_ads.models.dto.order.Order;
+import com.board_of_ads.models.dto.order.OrderDto;
 import com.board_of_ads.repository.OrderRepository;
 import com.board_of_ads.repository.UserRepository;
 import com.board_of_ads.service.interfaces.OrderService;
@@ -64,4 +65,10 @@ public class OrderServiceImpl implements OrderService {
     public Long countOrdersByOwner(User user) {
         return orderRepository.countOrdersByPostingUser(user);
     }
+
+    @Override
+    public Set<OrderDto> getOrdersByUserEmail(String email) { return orderRepository.findAllByUser_EmailDto(email); }
+
+    @Override
+    public void removeById(Long id) { orderRepository.removeById(id); }
 }

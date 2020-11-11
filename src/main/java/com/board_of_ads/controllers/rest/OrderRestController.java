@@ -7,6 +7,7 @@ import com.board_of_ads.service.interfaces.UserService;
 import com.board_of_ads.util.Error;
 import com.board_of_ads.util.ErrorResponse;
 import com.board_of_ads.util.Response;
+import com.board_of_ads.util.SuccessResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,24 +25,18 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("api/order")
+@RequestMapping("/api/order")
 @AllArgsConstructor
 @Slf4j
 public class OrderRestController {
 
-    private OrderService orderService;
-    private UserService userService;
+    private final OrderService orderService;
 
     @GetMapping("/all")
     public Response<Set<OrderDto>> getAll(Principal principal){
-        Set<Order> orders = orderService.getOrdersByUser(
-                userService.getUserByEmail(
-                    principal.getName()
-                )
-        );
-        Set<OrderDto> ordersDto = orders.stream().map(OrderDto::new).collect(Collectors.toSet());
-        if (ordersDto.size() > 0)
-            return Response.ok(ordersDto);
+        Set<OrderDto> orders = orderService.getOrdersByUserEmail(principal.getName());
+        if (!orders.isEmpty())
+            return Response.ok(orders);
         else
             return new ErrorResponse<>(new Error(204, "No found orders"));
     }
@@ -56,19 +51,14 @@ public class OrderRestController {
     }
 
     @PostMapping
-    public Response<OrderDto> addOrder(@RequestBody @Valid Order order){
+    public Response<Void> addOrder(@RequestBody @Valid Order order){
         orderService.save(order);
-        return Response.ok(new OrderDto(order));
+        return new SuccessResponse<>();
     }
 
     @DeleteMapping("/{id}")
     public Response<Void> deleteOrder(@PathVariable Long id){
-        Optional<Order> order = orderService.getOrderById(id);
-        if (order.isPresent()) {
-            orderService.deleteOrder(order.get());
-            return new Response<>();
-        } else {
-            return new ErrorResponse<>(new Error(204, "Order not found"));
-        }
+        orderService.removeById(id);
+        return new SuccessResponse<>();
     }
 }
