@@ -1,7 +1,39 @@
 .second-header {
     margin: 0 auto;
     min-width: 800px;
-    max-width: 1230px;
+    max-width: 1250px;
+    background-color: white;
+
+}
+
+.redborder {
+    border: 1px solid red;
 }
 
 .redborder { border: 1px solid red; }
+
+.bell_icons {
+    type: text/css;
+    enable-background: new 0 0 32 32;
+}
+
+.note_bell_active {
+    fill: red;
+    stroke: red;
+    stroke-width: 3;
+    stroke-linejoin: round;
+    stroke-miterlimit: 10;
+}
+
+.note_bell_inactive {
+    fill: #ccc;
+    stroke: #ccc;
+    stroke-width: 3;
+    stroke-linejoin: round;
+    stroke-miterlimit: 10;
+}
+
+.note_bell_count {
+    font-weight: bold;
+}
+

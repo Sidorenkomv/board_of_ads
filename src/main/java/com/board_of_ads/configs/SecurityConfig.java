@@ -30,6 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers(
                 "/css/*.css",
                 "/js/*.js",
+                "/images/**",
                 "/images/*.jpg",
                 "/images/*.png"
         );
@@ -41,7 +42,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .antMatcher("/**")
                 .authorizeRequests()
-                .antMatchers("/", "/auth", "/social/**","/new_post", "/login**","/mail_auth", "/ok_auth", "/webjars/**", "/error**", "/api/**", "/confirm/*").permitAll()
+                .antMatchers("/", "/auth", "/social/**","/new_post", "/login**","/mail_auth",
+                        "/ok_auth", "/webjars/**", "/error**", "/api/**", "/confirm/*","/{id}", "/favorite").permitAll()
                 .antMatchers("/admin_page").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
                 .and()

@@ -23,15 +23,16 @@ let stringToColor = function stringToColor(str) {
     return color;
 };
 
-let name = document.getElementById('name').innerText;
-let letter = name.substr(0, 1);
-let backgroundColor = stringToColor(name);
-let elementAvatar = document.getElementById('avatar');
-let elementName = document.getElementById('name');
+if ($("#reguserid").val()) {
+    name = document.getElementById('name').innerText;
+    letter = name.substr(0, 1);
+    backgroundColor = stringToColor(name);
+    elementAvatar = document.getElementById('avatar');
+    elementName = document.getElementById('name');
+    elementName.innerHTML = name;
 
-
-elementName.innerHTML = name;
-if (elementAvatar.innerHTML.length === 0) {
-    elementAvatar.innerHTML = letter;
-    elementAvatar.style.backgroundColor = backgroundColor;
+    if (elementAvatar.innerHTML.length === 0) {
+        elementAvatar.innerHTML = letter;
+        elementAvatar.style.backgroundColor = backgroundColor;
+    }
 }

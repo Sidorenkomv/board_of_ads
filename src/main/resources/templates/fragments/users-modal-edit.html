@@ -43,6 +43,11 @@
                             <p id="emailErrorsUS"></p>
                         </div>
                         <div class="form-group">
+                            <label for="updUserPhone" th:text="#{adminPanelUserPhone}"></label>
+                            <input type="text" class="form-control"
+                                   id="updUserPhone" name="datareg">
+                        </div>
+                        <div class="form-group">
                             <label for="updUserDataReg" th:text="#{adminPanelUserDataReg}"></label>
                             <input type="text" class="form-control"
                                    id="updUserDataReg" name="datareg"
@@ -52,8 +57,7 @@
                             <label for="userUpdRoles">Role</label>
                             <select multiple size="2" id="userUpdRoles" name="roles"
                                     class="form-control">
-                                <option value="ADMIN">Role Admin</option>
-                                <option value="USER">Role User</option>
+
                             </select>
                             <p id="rolesErrorsUS"></p>
                         </div>
@@ -62,7 +66,7 @@
                         <div>
                         </div>
                         <button id="closeUpdateModal" type="button" class="btn btn-secondary"
-                                data-dismiss="modal">Close
+                                data-dismiss="modal" th:text="#{adminPanelCloseButton}">
                         </button><br>
                         <p id="updateUserResult"></p>
                     </div>

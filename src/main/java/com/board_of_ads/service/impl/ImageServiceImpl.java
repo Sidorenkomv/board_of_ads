@@ -16,4 +16,12 @@ public class ImageServiceImpl implements ImageService {
     public Image getPathById(Long id) {
         return imageRepository.getById(id);
     }
+
+    @Override
+    public void save(Image image) {imageRepository.save(image);}
+
+    @Override
+    public Image getByPathURL(String url) {
+        return imageRepository.getByPathURL(url);
+    }
 }

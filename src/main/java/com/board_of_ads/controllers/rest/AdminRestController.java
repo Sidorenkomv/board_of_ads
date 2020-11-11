@@ -1,15 +1,15 @@
 package com.board_of_ads.controllers.rest;
 
 import com.board_of_ads.models.User;
+import com.board_of_ads.models.dto.RoleDto;
+import com.board_of_ads.service.interfaces.RoleService;
 import com.board_of_ads.service.interfaces.UserService;
 import com.board_of_ads.util.BindingResultLogs;
-import com.board_of_ads.util.Error;
-import com.board_of_ads.util.ErrorResponse;
 import com.board_of_ads.util.Response;
 import com.board_of_ads.util.SuccessResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +31,7 @@ public class AdminRestController {
 
     private final UserService userService;
     private final BindingResultLogs bindingResultLogs;
+    private final RoleService roleService;
 
     @PostMapping(value = "/newUser")
     public Response<User> createUser(@RequestBody @Valid User user, BindingResult bindingResult) {
@@ -39,15 +40,15 @@ public class AdminRestController {
         if (bindingResultLogs.checkUserFields(bindingResult, log)) {
             return new SuccessResponse<>(userService.saveUser(user));
         }
-        return new ErrorResponse<>(new Error(204, "Incorrect Data"));
+        return Response.error().code(HttpStatus.NOT_MODIFIED).text("Incorrect Data").build();
     }
 
     @PutMapping("/newUserData")
-    public Response<User> updateUser(@RequestBody @Valid  User user, BindingResult bindingResult) {
+    public Response<User> updateUser(@RequestBody @Valid User user, BindingResult bindingResult) {
         if (bindingResultLogs.checkUserFields(bindingResult, log)) {
             return new SuccessResponse<>(userService.saveUser(user));
         }
-        return new ErrorResponse<>(new Error(204, "Incorrect Data"));
+        return Response.error().code(HttpStatus.NOT_MODIFIED).text("Incorrect Data").build();
     }
 
     @GetMapping("/allUsers")
@@ -55,7 +56,7 @@ public class AdminRestController {
         List<User> userList = userService.getAllUsers();
         return (userList.size() > 0)
                 ? Response.ok(userList)
-                : new ErrorResponse<>(new Error(204, "No users in table"));
+                : Response.error().code(HttpStatus.NOT_FOUND).text("Incorrect Data").build();
     }
 
     @GetMapping("/user/{id}")
@@ -63,13 +64,21 @@ public class AdminRestController {
         User user = userService.getUserById(id);
         return (user != null)
                 ? Response.ok(user)
-                : new ErrorResponse<>(new Error(204, "No user with such ID"));
+                : Response.error().code(HttpStatus.NOT_FOUND).text("Incorrect Data").build();
     }
 
     @DeleteMapping("/user/{id}")
     public Response<Void> deleteUserById(@PathVariable(name = "id") Long id) {
         userService.deleteUser(id);
         return new Response<>();
+    }
+
+    @GetMapping("/allRoles")
+    public Response<List<RoleDto>> getAllRolesFromDB() {
+        List<RoleDto> roleList = roleService.rolesFromBaseToDto();
+        return (roleList.size() != 0)
+                ? Response.ok(roleList)
+                : Response.error().code(HttpStatus.NOT_FOUND).text("Incorrect Data").build();
     }
 
 }

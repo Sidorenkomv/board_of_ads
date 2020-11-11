@@ -3,18 +3,22 @@ body {
 }
 
 .header-line {
-    font: 13px/1.5 Arial,'Helvetica Neue',Helvetica,sans-serif;
+    font: 13px/1.5 Arial, 'Helvetica Neue', Helvetica, sans-serif;
     width: 100%;
     height: 40px;
     border-bottom: 1px solid #d8d8d8;
     background-color: #f7f7f7;
+
+
 }
+
 
 .header-container {
     margin: 0 auto;
     min-width: 800px;
     max-width: 1230px;
     display: flex;
+
 }
 
 .header-menu-left ul {
@@ -38,6 +42,7 @@ body {
     margin-right: 5px; /* Отступ слева */
     color: #a1a1a1;
 }
+
 .header-link-item {
     color: #a1a1a1;
     font-size: 14px;
@@ -64,7 +69,7 @@ body {
 }
 
 .header-button-sign {
-    color:#009cf0;
+    color: #009cf0;
 }
 
 .header-button-new-ads {

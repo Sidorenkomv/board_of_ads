@@ -5,21 +5,25 @@ $("#region, #category-select-city").click(function () {
 });
 
 async function addCategories() {
-    let categoriesResponse = await userService.findAllCategories();
-    let categories = categoriesResponse.json();
+
     let categorySelect = $('.categoriesSelect');
-    categorySelect.append('<option th:text="Любая категория">Любая категория</option>');
-    categories.then(categories => {
-        categories.data.forEach((cat) => {
-            if (cat.parentName == null) {
-                let option = `<option class="category-parent" th:text="` + cat.name + `">` + cat.name + `</option>`;
-                categorySelect.append(option);
-            } else {
-                let option = `<option th:text="` + cat.name + `">` + cat.name + `</option>`;
-                categorySelect.append(option);
-            }
-        })
-    });
+    await categorySelect.append('<option id="anyCategory">Любая категория</option>');
+
+    let parentCategories = await getCategories('/api/category/allParentCategory');
+
+    for (let i = 0; i < parentCategories.length; i++) {
+        let parentCat = parentCategories[i];
+
+        categorySelect.append(`<option id="categoryId${parentCat.id}" class="category-parent">${parentCat.name.toUpperCase()}</option>`);
+
+        let childCategories = await getCategories('/api/category/allChildCategories/' + parentCat.id);
+
+        for (let i = 0; i < childCategories.length; i++) {
+            let childCat = childCategories[i];
+
+            categorySelect.append(`<option id="categoryId${childCat.id}">${childCat.name}</option>`);
+        }
+    }
 }
 
 let changedCityName;
@@ -91,6 +95,7 @@ async function onClickOpt(id) {
     regionPosts = (await posts).data;
 }
 
+
 $(document).ready(function () {
     viewCities();
     addCategories();
@@ -98,8 +103,23 @@ $(document).ready(function () {
         $('#emailAuth').addClass("redborder");
         authorization();
     });
-});
 
+    const button = document.getElementById('buttonAuth');
+
+    $('#emailAuth').keyup(function(e) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if (code == 13) { //Enter keycode
+            button.click();
+        }
+    });
+
+    $('#passwordAuth').keyup(function(e) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if (code == 13) { //Enter keycode
+            button.click();
+        }
+    });
+});
 
 async function authorization() {
     $('#emailAuth').removeClass("redborder");
@@ -109,7 +129,7 @@ async function authorization() {
         password: $("#passwordAuth").val()
     };
     try {
-        const authResponse = await fetch('http://localhost:5556/api/auth', {
+        const authResponse = await fetch('/api/auth', {
             method: "POST",
             credentials: 'same-origin',
             body: JSON.stringify(userAuth),
@@ -216,21 +236,23 @@ const userService = {
         return await httpHeaders.fetch('/api/city');
     },
     findPostingByCityName: async (name) => {
-        return await httpHeaders.fetch('api/posting/city/' + name);
+        return await httpHeaders.fetch('/api/posting/city/' + name);
     },
     findPostingByRegionName: async (name) => {
-        return await httpHeaders.fetch('api/posting/region/' + name);
+        return await httpHeaders.fetch('/api/posting/region/' + name);
     },
     findAllPostings: async () => {
-        return await httpHeaders.fetch('api/posting/');
-    },
-    findAllCategories: async () => {
-        return await httpHeaders.fetch("api/category")
+        return await httpHeaders.fetch('/api/posting/');
     }
 }
 
-// $.get("/user", function (data) {
-//     $("#user").html(data.userAuthentication.details.name);
-//     $(".unauthenticated").hide()
-//     $(".authenticated").show()
-// });
+async function getCategories(url) {
+    let response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    });
+    return (await response.json()).data;
+}

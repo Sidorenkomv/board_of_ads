@@ -9,4 +9,6 @@ public interface ImageRepository extends JpaRepository<Image, Long> {
 
     Image getById(Long id);
 
+    Image getByPathURL(String url);
+
 }

@@ -1,4 +1,4 @@
-let newUserUrl = 'http://localhost:5556/api/user/modal-reg';
+let newUserUrl = '/api/user/modal-reg';
 let elementCreateUser = document.getElementById('createUser');
 
 $(document).ready(function () {
@@ -12,7 +12,7 @@ elementCreateUser.onclick = function () {
 async function regNewUser() {
     let data = {
 
-        firsName: $('#userNameReg').val(),
+        firstName: $('#userNameReg').val(),
         password: $('#userPasswordReg').val(),
         email: $('#userEmailReg').val(),
 

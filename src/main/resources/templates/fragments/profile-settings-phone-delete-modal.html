@@ -1,0 +1,40 @@
+<div th:fragment="delete-phone" xmlns:th="http://www.w3.org/1999/xhtml">
+    <div class="modal"
+         id="phoneDeleteModal"
+         tabindex="-1"
+         role="dialog">
+        <div class="modal-dialog"
+             role="document">
+            <div class="modal-content modal-settings-email-confirm center-block" style="height: 290px;">
+                <div class="modal-body" id="editPhoneBlock">
+                    <div class="h4 font-weight-bold">
+                        <span>Удаление номера телефона</span>
+                        <br>
+                        <span id="phoneDeleteModalTitle"></span>
+                        <br>
+                        <span class="h6 font-weight-normal" style="font-size: 15px;">Выберите замену для удаляемого номера, чтобы ваши объявления не остались без телефона.</span>
+                    </div>
+                    <button class="close modal-email-confirm-close"
+                            style="position: relative; top: -135px;"
+                            data-dismiss="modal"
+                            data-marker="popup-location/close-button">X</button>
+                    <div>
+                        <span class="text-muted" style="font-size: 15px;">На телефон</span>
+                        <input id="phoneDeleteInput"
+                               class="form-control form-control-sm w-50"
+                               type="text">
+                        <span class="text-muted" style="font-size: 14px;">Только мобильные номера телефонов</span>
+                    </div>
+                    <input class="mt-4 btn btn-outline-dark btn-sm"
+                           id="savePhoneButton"
+                           type="submit"
+                           th:value="Сохранить">
+                    <input class="mt-4 btn btn-link btn-sm"
+                           id="cancelPhoneDeleteButton"
+                           type="submit"
+                           th:value="Отмена">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
