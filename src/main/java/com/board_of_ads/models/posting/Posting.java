@@ -1,6 +1,8 @@
 package com.board_of_ads.models.posting;
 
 import com.board_of_ads.models.*;
+import com.board_of_ads.models.dto.order.Order;
+import com.board_of_ads.models.dto.review.Review;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,6 +14,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -71,6 +74,12 @@ public class Posting {
             joinColumns = @JoinColumn(name = "posting_id"),
             inverseJoinColumns = @JoinColumn(name = "image_id"))
     private List<Image> images;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private Set<Order> orders;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private Set<Review> reviews;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "city_id", referencedColumnName = "id")
