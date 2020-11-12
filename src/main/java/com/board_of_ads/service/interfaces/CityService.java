@@ -16,4 +16,6 @@ public interface CityService {
     Optional<City> findCityById(Long id);
 
     List<ReportCityPostingDto> getNumberOfPostings(String date);
+
+    Optional<City> findCityByNameContainName(String name);
 }

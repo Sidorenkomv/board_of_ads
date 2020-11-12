@@ -5,6 +5,7 @@ import com.board_of_ads.models.User;
 import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
+import com.board_of_ads.models.posting.personalBelongings.Clothes;
 import com.board_of_ads.repository.CityRepository;
 import com.board_of_ads.repository.PostingRepository;
 import com.board_of_ads.service.interfaces.CategoryService;
@@ -199,4 +200,8 @@ public class PostingServiceImpl implements PostingService {
         user.getFavorites().forEach(x ->listfavoritsid.add(x.getId()));
         return listfavoritsid;
     }
+
+
+
+
 }

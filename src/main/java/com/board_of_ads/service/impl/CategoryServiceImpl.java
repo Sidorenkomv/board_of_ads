@@ -136,5 +136,10 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
 
+    public Optional<Category> getCategoryByFrontName(String frontName) {
+        return Optional.ofNullable(categoryRepository.findCategoryByFrontName(frontName));
+    }
+
+
 
 }

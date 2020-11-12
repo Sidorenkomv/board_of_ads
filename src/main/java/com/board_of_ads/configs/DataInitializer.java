@@ -320,7 +320,7 @@ public class DataInitializer {
 
         secondSubCategory.add(new Category("Женская одежда", categoryService.getCategoryByName("Одежда, обувь, аксессуары").get(), 3));
         secondSubCategory.add(new Category("Мужская одежда", categoryService.getCategoryByName("Одежда, обувь, аксессуары").get(), 3));
-        secondSubCategory.add(new Category("Аксессуары", categoryService.getCategoryByName("Одежда, обувь, аксессуары").get(), 3));
+        secondSubCategory.add(new Category("Аксесуары", categoryService.getCategoryByName("Одежда, обувь, аксессуары").get(), 3));
 
         secondSubCategory.add(new Category("Для девочек", categoryService.getCategoryByName("Детская одежда и обувь").get(), 3));
         secondSubCategory.add(new Category("Для мальчиков", categoryService.getCategoryByName("Детская одежда и обувь").get(), 3));
@@ -517,6 +517,38 @@ public class DataInitializer {
             if (categoryService.getCategoryByName(category.getName()).isEmpty()) {
                 categoryService.saveCategory(category);
             }
+        }
+
+        List<Category> thirdSubCategory = new ArrayList<>();
+
+        thirdSubCategory.add(new Category("Брюки", categoryService.getCategoryByName("Женская одежда").get(), 4));
+        thirdSubCategory.add(new Category("Верхняя одежда", categoryService.getCategoryByName("Женская одежда").get(), 4));
+        thirdSubCategory.add(new Category("Джинсы", categoryService.getCategoryByName("Женская одежда").get(), 4));
+        thirdSubCategory.add(new Category("Купальники", categoryService.getCategoryByName("Женская одежда").get(), 4));
+        thirdSubCategory.add(new Category("Нижнее белье", categoryService.getCategoryByName("Женская одежда").get(), 4));
+        thirdSubCategory.add(new Category("Обувь", categoryService.getCategoryByName("Женская одежда").get(), 4));
+        thirdSubCategory.add(new Category("Пиджаки и костюмы", categoryService.getCategoryByName("Женская одежда").get(), 4));
+        thirdSubCategory.add(new Category("Платья и юбки", categoryService.getCategoryByName("Женская одежда").get(), 4));
+        thirdSubCategory.add(new Category("Рубашки и блузки", categoryService.getCategoryByName("Женская одежда").get(), 4));
+        thirdSubCategory.add(new Category("Свадебные платья", categoryService.getCategoryByName("Женская одежда").get(), 4));
+        thirdSubCategory.add(new Category("Топы и футболки", categoryService.getCategoryByName("Женская одежда").get(), 4));
+        thirdSubCategory.add(new Category("Трикотаж", categoryService.getCategoryByName("Женская одежда").get(), 4));
+        thirdSubCategory.add(new Category("Другое", categoryService.getCategoryByName("Женская одежда").get(), 4));
+
+
+        thirdSubCategory.add(new Category("Брюки", categoryService.getCategoryByName("Мужская одежда").get(), 4,"men-trousers"));
+        thirdSubCategory.add(new Category("Верхняя одежда", categoryService.getCategoryByName("Мужская одежда").get(), 4));
+        thirdSubCategory.add(new Category("Джинсы", categoryService.getCategoryByName("Мужская одежда").get(), 4));
+        thirdSubCategory.add(new Category("Обувь", categoryService.getCategoryByName("Мужская одежда").get(), 4));
+        thirdSubCategory.add(new Category("Пиджаки и костюмы", categoryService.getCategoryByName("Мужская одежда").get(), 4));
+        thirdSubCategory.add(new Category("Рубашки", categoryService.getCategoryByName("Мужская одежда").get(), 4));
+        thirdSubCategory.add(new Category("Трикотаж и футболки", categoryService.getCategoryByName("Мужская одежда").get(), 4));
+        thirdSubCategory.add(new Category("Другое", categoryService.getCategoryByName("Мужская одежда").get(), 4));
+
+        for (Category category : thirdSubCategory) {
+//            if (categoryService.getCategoryByName(category.getName()).isEmpty()) {
+            categoryService.saveCategory(category);
+//            }
         }
     }
 

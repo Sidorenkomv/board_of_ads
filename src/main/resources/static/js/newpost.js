@@ -1,6 +1,7 @@
 let displayLayer = 0;
 let path = [];
 
+
 $(document).ready(function () {
     getCategoryColumn(0, 0).then();
 })
@@ -16,18 +17,21 @@ async function getCategoryColumn(parentID, selectLayer, frontName) {
 
         document.getElementById('cascadeTableContainer').innerHTML +=
             '<div id="cascadeTableColumn' + displayLayer + '" class="cascade-table-column">' +
-            '   <div class="category-table-title">'+parentName+'</div>' +
+            '   <div class="category-table-title">' + parentName + '</div>' +
             '</div>';
 
         for (let i = 0; i < categories.length; i++) {
             let category = categories[i];
+
             let id = 'cascadeTableButton_' + (category.frontName === null ? category.id : category.frontName);
             let frontName = "\'" + category.frontName + "\'";
+
+
             document.getElementById('cascadeTableColumn' + displayLayer).innerHTML +=
                 `<div id="${id}" onMouseOver="hoverOnMouseOver()" 
                         class="category-table-button inactive-category-table-button layer${displayLayer}"  
                         onclick="clickOnCategoryButton(this, ${category.id}, ${displayLayer}, ${frontName})">
-                ${category.name}
+              ${category.name}
             </div>`
         }
         return true;
@@ -79,7 +83,7 @@ async function getURL(parentID) {
 
 async function cleanCategoryColumns(selectLayer) {
     if (selectLayer <= displayLayer) {
-        for (let i = selectLayer+1; i <= displayLayer; i++) {
+        for (let i = selectLayer + 1; i <= displayLayer; i++) {
             document.getElementById('cascadeTableColumn' + i).remove();
         }
         displayLayer = selectLayer;
@@ -92,14 +96,21 @@ async function changeVisible(frontName) {
     $('#visibleElement2').show();
     $('#visibleElement3').show();
 
-    switch(frontName) {
-        case 'used-car':  testFunction(frontName);
-            break
-
-        case 'new-car':  testFunction(frontName);
+    switch (frontName) {
+        case 'used-car':
+            testFunction(frontName);
             break;
 
-        default: alert("notFOUND")
+        case 'new-car':
+            testFunction(frontName);
+            break;
+
+        case 'men-trousers':
+            showForm(frontName);
+            break;
+
+        default:
+            alert("notFOUND")
             break;
     }
 

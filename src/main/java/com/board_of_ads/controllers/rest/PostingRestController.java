@@ -1,8 +1,11 @@
 package com.board_of_ads.controllers.rest;
 
+import com.board_of_ads.models.User;
 import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
+import com.board_of_ads.models.posting.personalBelongings.Clothes;
+import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.service.interfaces.CityService;
 import com.board_of_ads.service.interfaces.PostingService;
 import com.board_of_ads.util.Error;
@@ -11,6 +14,7 @@ import com.board_of_ads.util.Response;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,6 +34,9 @@ public class PostingRestController {
     private final CityService cityService;
     private final PostingService postingService;
 
+    private final CategoryService categoryService;
+
+
     @GetMapping
     public Response<List<PostingDto>> findAllPosts() {
         log.info("Use this default logger");
@@ -38,6 +45,7 @@ public class PostingRestController {
                 ? Response.ok(postings)
                 : new ErrorResponse<>(new Error(204, "No found postings"));
     }
+
     @GetMapping("/{id}")
     public Response<PostingDto> findPostingDto(@PathVariable Long id) {
         var postingDto = postingService.getPostingDtoById(id);
@@ -67,10 +75,10 @@ public class PostingRestController {
     }
 
     @GetMapping("/search")
-    public Response<List<PostingDto>> findAllPostings(@RequestParam(name="catSel") String categorySelect,
-                                                      @RequestParam(name="citSel",required = false)String citySelect,
-                                                      @RequestParam(name="searchT",required = false) String searchText,
-                                                      @RequestParam(name="phOpt",required = false) String photoOption) {
+    public Response<List<PostingDto>> findAllPostings(@RequestParam(name = "catSel") String categorySelect,
+                                                      @RequestParam(name = "citSel", required = false) String citySelect,
+                                                      @RequestParam(name = "searchT", required = false) String searchText,
+                                                      @RequestParam(name = "phOpt", required = false) String photoOption) {
         log.info("Use this default logger");
         var postings = postingService
 
@@ -88,6 +96,19 @@ public class PostingRestController {
     @PostMapping("/new")
     public Response<Void> createPosting(@RequestBody Posting posting) {
         //postingService.save(posting);
+        return Response.ok().build();
+    }
+
+
+    @PostMapping("/clothes/{frontName}")
+    public Response<Void> createPostingClothes(@AuthenticationPrincipal User user, @RequestBody Clothes clothes, @PathVariable String frontName) {
+        log.info("Create posting clothes");
+
+        clothes.setCategory(categoryService.getCategoryByFrontName(frontName).get());
+        //clothes.setCity(cityService.findCityByNameContainName(clothes.getMeetingAddress()).orElseThrow());
+        clothes.setUser(user);
+
+        postingService.save(clothes);
         return Response.ok().build();
     }
 }

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div id="contacts" class="main-container">
+    <div class="category-head-container">
+        <div class="category-head-text">Параметры</div>
+    </div>
+    <div>
+        <form id="contactsForm">
+            <div class="form-group row">
+                <label for="size" class="col-sm-2 col-form-label">Размер</label>
+                <div class="col-sm-10">
+                    <select id = "size" class="custom-select">
+                        <option selected>-</option>
+                        <option value="42-44">42-44</option>
+                        <option value="46-48">44-46</option>
+                        <option value="48-50">48-50</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPhone" class="col-sm-2 col-form-label">Телефон</label>
+                <div class="col-sm-10">
+                    <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+                        <button type="button" class="btn btn-secondary">Left</button>
+                        <button type="button" class="btn btn-secondary">Middle</button>
+                        <button type="button" class="btn btn-secondary">Right</button>
+                    </div>
+                </div>
+            </div>
+            <fieldset class="form-group">
+                <div class="row">
+                    <legend class="col-form-label col-sm-2 pt-0">Способ связи</legend>
+                    <div class="col-sm-10">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="phoneAndMessages" checked>
+                            <label class="form-check-label" for="gridRadios1">По телефону и в сообщениях</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="phone">
+                            <label class="form-check-label" for="gridRadios2">По телефону</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="messages">
+                            <label class="form-check-label" for="gridRadios3">В сообщениях</label>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

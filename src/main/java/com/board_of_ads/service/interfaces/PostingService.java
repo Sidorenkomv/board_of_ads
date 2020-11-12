@@ -34,4 +34,6 @@ public interface PostingService {
     List<PostingDto> getFavDtosFromUser(User user);
 
     List<Long> getFavIDFromUser(User user);
+
+
 }

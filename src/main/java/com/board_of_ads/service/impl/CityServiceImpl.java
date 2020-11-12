@@ -69,6 +69,12 @@ public class CityServiceImpl implements CityService {
         return cityRepository.findAllByDatePostingBetween(localDateTimes.get(0), localDateTimes.get(1));
     }
 
+    @Override
+    public Optional<City> findCityByNameContainName(String name) {
+        return cityRepository.findCityByNameContainName(name);
+    }
+
+
     private List<LocalDateTime> dateConvertation(String date) {
 
         String[] arr = date.split("\\D+");
