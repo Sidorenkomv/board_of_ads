@@ -2,8 +2,9 @@ let frontName;
 let pco;
 let colorsSetGlobal;
 let carBrandsGlobal;
+let modelChosen;
 
-async function carPostingFunction(fName) {
+async function carPostingFunction(fName, id) {
     frontName = fName;
     colorsSetGlobal = await getColorsSet();
     carBrandsGlobal = await getCarBrandsSet();
@@ -159,11 +160,11 @@ function createDiv1Photo(div1) {
 function createDiv1Colors(div1) {
     let inCol9Div = document.createElement('div');
     let label = document.createElement('label');
-    label.setAttribute('for', 'car-color');
+    label.setAttribute('for', 'carColor');
     let row = makeRowCol3Col9('colors-div', 'Цвет', inCol9Div);
     let select = document.createElement('select');
-    select.setAttribute('id', 'car-color');
-    select.setAttribute('name', 'car-color');
+    select.setAttribute('id', 'carColor');
+    select.setAttribute('name', 'carColor');
     select.value = pco.carColor;
     makeSelectOptionsElement(select, colorsSetGlobal);
 
@@ -246,10 +247,11 @@ function makeRowCol3Col9(id, text, innerDiv) {
     return div;
 }
 
+
 function createDiv3CarBrandFields(div3) {
     let select = document.createElement('select');
-    select.setAttribute('id', 'car-brand');
-    select.setAttribute('name', 'car-brand');
+    select.setAttribute('id', 'carBrand');
+    select.setAttribute('name', 'carBrand');
     select.onchange = (a) => getAutoModel(a.target, div3);
     let div = makeRowCol3Col9('brands-set', 'Марка', select);
     makeSelectOptionsElement(select, carBrandsGlobal);
@@ -259,7 +261,6 @@ function createDiv3CarBrandFields(div3) {
 
 async function getAutoModel(target, div3) {
     let brand = target.options[target.selectedIndex].value;
-    console.log('after ' + brand);
 
     async function getCarModelsSet() {
         let url = requestURL + 'models/' + brand;
@@ -276,7 +277,7 @@ async function getAutoModel(target, div3) {
     let select = document.createElement('select');
     select.setAttribute('id', 'carModel');
     select.setAttribute('name', 'carModel');
-    select.onchange = (a) => getAutoYear(a.target, div3);
+    select.onchange = (a) => getAutoYear(brand, a.target, div3);
     let divM = makeRowCol3Col9('models-set', 'Модель', select);
     makeSelectOptionsElement(select, models);
     div3.appendChild(divM);
@@ -292,7 +293,26 @@ function makeSelectOptionsElement(select, options) {
     }
 }
 
-async function getAutoYear(target, div3) {
+async function getAutoYear(brand, target, div3) {
+    let model = target.options[target.selectedIndex].value;
+    async function getBrandAndModelsYears() {
+        let url = requestURL + 'models/' + brand + '/' + model;
+        return await getResponseData(url).then((responseData) => {
+            return responseData.data;
+        });
+    }
+
+    let years = await getBrandAndModelsYears();
+    let oldDiv = $('#years-set');
+    if (oldDiv.length > 0) {
+        oldDiv.remove();
+    }
+    let select = document.createElement('select');
+    select.setAttribute('id', 'carYear');
+    select.setAttribute('name', 'carYear');
+    let divM = makeRowCol3Col9('years-set', 'Год выпуска', select);
+    makeSelectOptionsElement(select, years);
+    div3.appendChild(divM);
 }
 
 function createDiv4Mileage(div4) {
@@ -302,8 +322,7 @@ function createDiv4Mileage(div4) {
     input.setAttribute('id', 'mileageInput');
     input.setAttribute('name', 'mileageInput');
     input.setAttribute('class', 'input');
-    input.setAttribute('type', 'text');
-    input.setAttribute('value', '');
+    input.setAttribute('type', 'number');
     label.appendChild(input);
     let span = document.createElement('span');
     span.innerText = 'км';
@@ -317,7 +336,7 @@ function createDiv4Conditions(div4) {
     divInCol9.setAttribute('class', 'btn-group mr-2');
     divInCol9.setAttribute('role', 'group');
     divInCol9.setAttribute('aria-label', 'Second group');
-    divInCol9.setAttribute('id', 'conditionValue');
+    divInCol9.setAttribute('id', 'wasInAccident');
 
     let buttonLeft = document.createElement('button');
     buttonLeft.setAttribute('class', 'btn btn-outline-secondary');
@@ -364,7 +383,7 @@ function createDiv4ServicingInfo(div4) {
     let cbDiv = document.createElement('div');
     cbDiv.appendChild(makeCheckbox('hasServiceBook', 'Есть Сервисная книжка'));
     cbDiv.appendChild(makeCheckbox('dealerServiced', 'Обслуживался у дилера'));
-    cbDiv.appendChild(makeCheckbox('underWarranty', 'На гаранти'));
+    cbDiv.appendChild(makeCheckbox('underWarranty', 'На гарантии'));
     let div = makeRowCol3Col9('serviced-info-row', 'Данные о ТО', cbDiv);
     div4.appendChild(div);
 }
@@ -383,117 +402,117 @@ function createDiv5AllInOne(div5) {
     let option = ["Гидро-",
         "Электро-",
         "Электрогидро-"];
-    column_left.appendChild(makeOptionsVsTitle('climateControlType', 'Усилитель руля', option));
+    column_left.appendChild(makeOptionsVsTitle('powerSteeringType', 'Усилитель руля', option));
     option = ["Кондиционер",
         "Климат-контроль однозонный", "Климат-контроль двузонный",
         "Климат-контроль трехзонный"];
-    column_left.appendChild(makeOptionsVsTitle('param1', 'Управление климатом', option));
-    column_left.appendChild(makeCheckbox('param2', 'Управление на руле'));
-    column_left.appendChild(makeCheckbox('param3', 'Атермальное остекление'));
+    column_left.appendChild(makeOptionsVsTitle('climateControlType', 'Управление климатом', option));
+    column_left.appendChild(makeCheckbox('onWheelControl', 'Управление на руле'));
+    column_left.appendChild(makeCheckbox('thermalGlass', 'Атермальное остекление'));
     option = ["Кожа",
         "Ткань",
         "Велюр",
         "Комбинированный"];
-    column_left.appendChild(makeOptionsVsTitle('param4', 'Салон', option));
-    column_left.appendChild(makeCheckbox('param5', 'Кожаный руль'));
-    column_left.appendChild(makeCheckbox('param6', 'Люк'));
+    column_left.appendChild(makeOptionsVsTitle('interiorType', 'Салон', option));
+    column_left.appendChild(makeCheckbox('leatherWheel', 'Кожаный руль'));
+    column_left.appendChild(makeCheckbox('sunroof', 'Люк'));
 
     column_left.appendChild(makeDescriptionText('Обогрев'));
-    column_left.appendChild(makeCheckbox('param7', 'Передних сидений'));
-    column_left.appendChild(makeCheckbox('param8', 'Задних сидений'));
-    column_left.appendChild(makeCheckbox('param15', 'Зеркал'));
-    column_left.appendChild(makeCheckbox('param16', 'Заднего стекла'));
-    column_left.appendChild(makeCheckbox('param17', 'Руля'));
+    column_left.appendChild(makeCheckbox('heatedFrontSeats', 'Передних сидений'));
+    column_left.appendChild(makeCheckbox('heatedRearSeats', 'Задних сидений'));
+    column_left.appendChild(makeCheckbox('heatedMirrors', 'Зеркал'));
+    column_left.appendChild(makeCheckbox('heatedRearWindow', 'Заднего стекла'));
+    column_left.appendChild(makeCheckbox('heatedWheel', 'Руля'));
 
     option = ["Только передние",
         "Передние и задние"];
-    column_left.appendChild(makeOptionsVsTitle('param23', 'Электростеклоподъемники', option));
+    column_left.appendChild(makeOptionsVsTitle('powerWindowsType', 'Электростеклоподъемники', option));
 
     column_left.appendChild(makeDescriptionText('Электропривод'));
-    column_left.appendChild(makeCheckbox('param22', 'Передних сидений'));
-    column_left.appendChild(makeCheckbox('param18', 'Задних сидений'));
-    column_left.appendChild(makeCheckbox('param19', 'Зеркал'));
-    column_left.appendChild(makeCheckbox('param20', 'Рулевой колонки'));
-    column_left.appendChild(makeCheckbox('param21', 'Складывания зеркал'));
+    column_left.appendChild(makeCheckbox('powerFrontSeats', 'Передних сидений'));
+    column_left.appendChild(makeCheckbox('powerRearSeats', 'Задних сидений'));
+    column_left.appendChild(makeCheckbox('powerMirrorRegulation', 'Зеркал'));
+    column_left.appendChild(makeCheckbox('powerSteeringWheelRegulation', 'Рулевой колонки'));
+    column_left.appendChild(makeCheckbox('powerMirrorClose', 'Складывания зеркал'));
 
     column_left.appendChild(makeDescriptionText('Память настроек'));
-    column_left.appendChild(makeCheckbox('param30', 'Передних сидений'));
-    column_left.appendChild(makeCheckbox('param31', 'Задних сидений'));
-    column_left.appendChild(makeCheckbox('param32', 'Зеркал'));
-    column_left.appendChild(makeCheckbox('param33', 'Рулевой колонки'));
+    column_left.appendChild(makeCheckbox('frontSeatsMemory', 'Передних сидений'));
+    column_left.appendChild(makeCheckbox('rearSeatsMemory', 'Задних сидений'));
+    column_left.appendChild(makeCheckbox('mirrorRegulationMemory', 'Зеркал'));
+    column_left.appendChild(makeCheckbox('steeringWheelRegulationMemory', 'Рулевой колонки'));
 
     let column_center = document.createElement('div'); // ====== center column
     column_center.setAttribute('class', 'col-4 no-gutters');
     div2.appendChild(column_center);
     column_center.appendChild(makeDescriptionText('Помощь при вождении'));
-    column_center.appendChild(makeCheckbox('param40', 'Автоматический парковщик'));
-    column_center.appendChild(makeCheckbox('param41', 'Датчик дождя'));
-    column_center.appendChild(makeCheckbox('param42', 'Датчик света'));
-    column_center.appendChild(makeCheckbox('param43', 'Парктроник задний'));
-    column_center.appendChild(makeCheckbox('param44', 'Парктроник передний'));
-    column_center.appendChild(makeCheckbox('param45', 'Система контроля слепых зон'));
-    column_center.appendChild(makeCheckbox('param46', 'Камера заднего вида'));
-    column_center.appendChild(makeCheckbox('param47', 'Круиз-контроль'));
-    column_center.appendChild(makeCheckbox('param48', 'Бортовой компьютер'));
+    column_center.appendChild(makeCheckbox('parkingAssist', 'Автоматический парковщик'));
+    column_center.appendChild(makeCheckbox('rainSensor', 'Датчик дождя'));
+    column_center.appendChild(makeCheckbox('lightSensor', 'Датчик света'));
+    column_center.appendChild(makeCheckbox('rearParkingSensor', 'Парктроник задний'));
+    column_center.appendChild(makeCheckbox('frontParkingSensor', 'Парктроник передний'));
+    column_center.appendChild(makeCheckbox('blindSpotZoneControl', 'Система контроля слепых зон'));
+    column_center.appendChild(makeCheckbox('rearCamera', 'Камера заднего вида'));
+    column_center.appendChild(makeCheckbox('cruiseControl', 'Круиз-контроль'));
+    column_center.appendChild(makeCheckbox('onBoardComp', 'Бортовой компьютер'));
 
     column_center.appendChild(makeDescriptionText('Противоугонная система'));
-    column_center.appendChild(makeCheckbox('param50', 'Сигнализация'));
-    column_center.appendChild(makeCheckbox('param51', 'Центральный замок'));
-    column_center.appendChild(makeCheckbox('param52', 'Иммобилайзер'));
-    column_center.appendChild(makeCheckbox('param53', 'Спутник'));
+    column_center.appendChild(makeCheckbox('alarmSystem', 'Сигнализация'));
+    column_center.appendChild(makeCheckbox('powerDoorBlocking', 'Центральный замок'));
+    column_center.appendChild(makeCheckbox('immobilizer', 'Иммобилайзер'));
+    column_center.appendChild(makeCheckbox('satelliteAlarmControl', 'Спутник'));
 
     column_center.appendChild(makeDescriptionText('Подушки безопасности'));
-    column_center.appendChild(makeCheckbox('param55', 'Фронтальные'));
-    column_center.appendChild(makeCheckbox('param56', 'Коленные'));
-    column_center.appendChild(makeCheckbox('param57', 'Шторки'));
-    column_center.appendChild(makeCheckbox('param58', 'Боковые передние'));
-    column_center.appendChild(makeCheckbox('param59', 'Боковые задние'));
+    column_center.appendChild(makeCheckbox('frontalAirbags', 'Фронтальные'));
+    column_center.appendChild(makeCheckbox('kneeAirbags', 'Коленные'));
+    column_center.appendChild(makeCheckbox('sideWindowAirbags', 'Шторки'));
+    column_center.appendChild(makeCheckbox('frontSideAirbags', 'Боковые передние'));
+    column_center.appendChild(makeCheckbox('rearSideAirbags', 'Боковые задние'));
 
     column_center.appendChild(makeDescriptionText('Активная безопасность'));
     column_center.appendChild(makeCheckbox('param60', 'Антиблокировка тормозов'));
-    column_center.appendChild(makeCheckbox('param61', 'Антипробуксовка'));
-    column_center.appendChild(makeCheckbox('param62', 'Курсовая устойчивость'));
-    column_center.appendChild(makeCheckbox('param63', 'Распред. тормозных усилий'));
-    column_center.appendChild(makeCheckbox('param64', 'Экстренное торможение'));
-    column_center.appendChild(makeCheckbox('param65', 'Блок. дифференциала'));
-    column_center.appendChild(makeCheckbox('param66', 'Обнаружение пешеходов'));
+    column_center.appendChild(makeCheckbox('dtcSystem', 'Антипробуксовка'));
+    column_center.appendChild(makeCheckbox('trackingControl', 'Курсовая устойчивость'));
+    column_center.appendChild(makeCheckbox('breakAssistSystem', 'Распред. тормозных усилий'));
+    column_center.appendChild(makeCheckbox('emergencyBreakSystem', 'Экстренное торможение'));
+    column_center.appendChild(makeCheckbox('diffLockSystem', 'Блок. дифференциала'));
+    column_center.appendChild(makeCheckbox('pedestrianDetectSystem', 'Обнаружение пешеходов'));
 
     let column_right = document.createElement('div');  // ====== right column
     column_right.setAttribute('class', 'col-4 no-gutters');
     div2.appendChild(column_right);
 
     column_right.appendChild(makeDescriptionText('Мультимедиа и навигация'));
-    column_right.appendChild(makeCheckbox('param70', 'CD/DVD/Blu-ray'));
-    column_right.appendChild(makeCheckbox('param71', 'МР3'));
-    column_right.appendChild(makeCheckbox('param72', 'Радио'));
-    column_right.appendChild(makeCheckbox('param73', 'ТВ'));
-    column_right.appendChild(makeCheckbox('param74', 'Видео'));
-    column_right.appendChild(makeCheckbox('param75', 'Управление на руле'));
-    column_right.appendChild(makeCheckbox('param76', 'USB'));
-    column_right.appendChild(makeCheckbox('param77', 'AUX'));
-    column_right.appendChild(makeCheckbox('param78', 'Bluetooth'));
-    column_right.appendChild(makeCheckbox('param79', 'GPS-навигатор'));
+    column_right.appendChild(makeCheckbox('cdDvdBluRay', 'CD/DVD/Blu-ray'));
+    column_right.appendChild(makeCheckbox('mp3', 'МР3'));
+    column_right.appendChild(makeCheckbox('radio', 'Радио'));
+    column_right.appendChild(makeCheckbox('tvSystem', 'ТВ'));
+    column_right.appendChild(makeCheckbox('videoSystem', 'Видео'));
+    column_right.appendChild(makeCheckbox('mediaOnWheelControl', 'Управление на руле'));
+    column_right.appendChild(makeCheckbox('usb', 'USB'));
+    column_right.appendChild(makeCheckbox('aux', 'AUX'));
+    column_right.appendChild(makeCheckbox('bluetooth', 'Bluetooth'));
+    column_right.appendChild(makeCheckbox('gpsNavigation', 'GPS-навигатор'));
 
     option = ["2 колонки",
         "4 колонки",
         "6 колонок",
         "8+ колонок"];
-    column_right.appendChild(makeOptionsVsTitle('param80', 'Аудиосистема', option));
-    column_right.appendChild(makeCheckbox('param81', 'Сабвуфер'));
+    column_right.appendChild(makeOptionsVsTitle('audioSystemType', 'Аудиосистема', option));
+    column_right.appendChild(makeCheckbox('subwoofer', 'Сабвуфер'));
 
     option = ["Галогенные",
         "Ксеноновые",
         "Светодиодные"];
-    column_right.appendChild(makeOptionsVsTitle('param83', 'Фары', option));
-    column_right.appendChild(makeCheckbox('param84', 'Противотуманные'));
-    column_right.appendChild(makeCheckbox('param85', 'Омыватели фар'));
-    column_right.appendChild(makeCheckbox('param86', 'Адаптивное освещение'));
+    column_right.appendChild(makeOptionsVsTitle('frontLightType', 'Фары', option));
+    column_right.appendChild(makeCheckbox('antifogLights', 'Противотуманные'));
+    column_right.appendChild(makeCheckbox('frontLightCleaning', 'Омыватели фар'));
+    column_right.appendChild(makeCheckbox('adaptiveLights', 'Адаптивное освещение'));
 
     option = ['1\"', '2\"', '3\"', '4\"', '5\"', '6\"', '7\"', '8\"', '9\"',
         '10\"', '11\"', '12\"', '13\"', '14\"', '15\"', '16\"', '17\"', '18\"', '19\"',
         '20\"', '21\"', '22\"', '23\"', '24\"', '25\"', '26\"', '27\"', '28\"', '29\"', '30\"'];
-    column_right.appendChild(makeOptionsVsTitle('param87', 'Шины и диски', option));
-    column_right.appendChild(makeCheckbox('param88', 'Зимние шины в комплекте'));
+    column_right.appendChild(makeOptionsVsTitle('tyreSize', 'Шины и диски', option));
+    column_right.appendChild(makeCheckbox('winterTyreSetIncluded', 'Зимние шины в комплекте'));
     div5.appendChild(div);
 }
 
@@ -505,7 +524,6 @@ function createDiv6DescriptionField(div6) {
 
     let col10 = document.createElement('div');
     col10.setAttribute('class', 'col-10');
-    // col10.appendChild(makeDescriptionText('Описание'));
     row.appendChild(col10);
 
     let divIn = document.createElement('div');
@@ -582,8 +600,8 @@ function createDiv7PriceFields(div7) {
     row.appendChild(col4);
     row.appendChild(col8);
     let input = document.createElement('input');
-    input.setAttribute('id', 'carPrice-');
-    input.setAttribute('type', 'text');
+    input.setAttribute('id', 'carPrice');
+    input.setAttribute('type', 'number');
 
     col4.appendChild(input);
     div7.appendChild(row);
@@ -634,57 +652,21 @@ function addTypeOfUsedCarPosting() {
 }
 
 function addPostingType() {
-    let div = document.createElement('div');
-    let row = document.createElement('div');
-    row.setAttribute('class', 'row');
-
-    let col3 = document.createElement('div');
-    col3.setAttribute('class', 'col-3');
-    col3.appendChild(makeDescriptionText('Вид объявления'));
-    row.appendChild(col3);
-
-    let col9 = document.createElement('div');
-    col9.setAttribute('class', 'col-9');
-
     let divInCol9 = document.createElement('div');
-    col9.appendChild(divInCol9);
-    let label = document.createElement('label');
-    label.setAttribute('class', 'category-head-text');
-    label.setAttribute('for', 'typeOfUsedCarPosting');
+    let div = makeRowCol3Col9('type-of-usp', 'Вид объявления', divInCol9);
 
-    divInCol9.appendChild(label);
-
-    let options = [];
-    options[0] = 'Продаю личный автомобиль';
-    options[1] = 'Автомобиль приобретен на продажу';
-
+    let options = [ 'Продаю личный автомобиль',
+                    'Автомобиль приобретен на продажу'    ];
     let select = document.createElement('select');
     select.setAttribute('id', 'typeOfUsedCarPosting');
     select.setAttribute('name', 'typeOfUsedCarPosting');
     select.setAttribute('value', pco.typeOfUsedCarPosting);
-    for (let i = 0; i < options.length; i++) {
-        let optionDiv = document.createElement("option");
-        optionDiv.text = options[i];
-        optionDiv.value = options[i];
-        select.add(optionDiv);
-    }
+    makeSelectOptionsElement(select, options);
     divInCol9.appendChild(select);
-
-
-    row.appendChild(col9);
-    div.appendChild(row);
     return div;
-
 }
 
-submitUsedCarForm = function () {
-    let formM = document.getElementById("used-car-posting-form");
-    formM.submit();
-    let posting = formM.attr('object');
-
-    console.log("function is called");
-    console.log(posting);
-
+savedSuccess = function () {
     alert("Saved!");
 }
 
@@ -692,27 +674,130 @@ submitUsedCarForm = function () {
 let submitAndSavePostingButton = document.getElementById('saveButton');
 submitAndSavePostingButton.onclick = () => saveFunction();
 
+function collectAllFields(){
+    function getValueFromSelectElement(divId){
+        let e = document.getElementById(divId);
+        return e.options[e.selectedIndex].value;
+    }
+    function getValueFromInputElement(divId){
+        return  document.getElementById(divId).value;
+    }
+    function checkCarIsNew(){
+        return (frontName ==='new-car');
+    }
+
+
+    return {
+        vinCode: getValueFromInputElement('vinCode'),
+        carIsNew: checkCarIsNew(),
+        sellerId: pco.sellerId,
+        typeOfUsedCarPosting: getValueFromSelectElement('typeOfUsedCarPosting'),
+        statePlateNumber: getValueFromInputElement('statePlateNumber'),
+        mileage: getValueFromInputElement('mileageInput'),
+        numberOfOwners: getValueFromInputElement('ownerCount'),
+        modelIdInAutoCatalogue: 0,
+        carColor: getValueFromSelectElement('carColor'),
+        carBrand: getValueFromSelectElement('carBrand'),
+        carModel: getValueFromSelectElement('carModel'),
+        carYear: getValueFromInputElement('carYear'),
+        carBodyType: 'Sedan',
+        numberOfDoors: 4,
+        wasInAccident: getValueFromInputElement('wasInAccident'),
+        dealerServiced: getValueFromInputElement('dealerServiced'),
+        underWarranty: getValueFromInputElement('underWarranty'),
+        hasServiceBook: getValueFromInputElement('hasServiceBook'),
+        powerSteeringType: getValueFromSelectElement('powerSteeringType'),
+        climateControlType: getValueFromSelectElement('climateControlType'),
+        onWheelControl: getValueFromInputElement('onWheelControl'),
+        thermalGlass: getValueFromInputElement('thermalGlass'),
+        interiorType:  getValueFromSelectElement('interiorType'),
+        leatherWheel: getValueFromInputElement('leatherWheel'),
+        sunroof: getValueFromInputElement('sunroof'),
+        heatedFrontSeats: getValueFromInputElement('heatedFrontSeats'),
+        heatedRearSeats: getValueFromInputElement('heatedRearSeats'),
+        heatedMirrors: getValueFromInputElement('heatedMirrors'),
+        heatedRearWindow : getValueFromInputElement('heatedRearWindow'),
+        heatedWheel: getValueFromInputElement('heatedWheel'),
+        powerWindowsType: getValueFromSelectElement('powerWindowsType'),
+        powerFrontSeats: getValueFromInputElement('powerFrontSeats'),
+        powerRearSeats: getValueFromInputElement('powerRearSeats'),
+        powerMirrorRegulation: getValueFromInputElement('powerMirrorRegulation'),
+        powerSteeringWheelRegulation: getValueFromInputElement('powerSteeringWheelRegulation'),
+        powerMirrorClose: getValueFromInputElement('powerMirrorClose'),
+        frontSeatsMemory : getValueFromInputElement('frontSeatsMemory'),
+        rearSeatsMemory: getValueFromInputElement('rearSeatsMemory'),
+        mirrorRegulationMemory : getValueFromInputElement('mirrorRegulationMemory'),
+        steeringWheelRegulationMemory: getValueFromInputElement('steeringWheelRegulationMemory'),
+        parkingAssist: getValueFromInputElement('parkingAssist'),
+        rainSensor: getValueFromInputElement('rainSensor'),
+        lightSensor: getValueFromInputElement('lightSensor'),
+        rearParkingSensor : getValueFromInputElement('rearParkingSensor'),
+        frontParkingSensor: getValueFromInputElement('frontParkingSensor'),
+        blindSpotZoneControl: getValueFromInputElement('blindSpotZoneControl'),
+        rearCamera: getValueFromInputElement('rearCamera'),
+        cruiseControl: getValueFromInputElement('cruiseControl'),
+        onBoardComp: getValueFromInputElement('onBoardComp'),
+        alarmSystem: getValueFromInputElement('alarmSystem'),
+        powerDoorBlocking: getValueFromInputElement('powerDoorBlocking'),
+        immobilizer: getValueFromInputElement('immobilizer'),
+        satelliteAlarmControl: getValueFromInputElement('satelliteAlarmControl'),
+        frontalAirbags: getValueFromInputElement('frontalAirbags'),
+        kneeAirbags: getValueFromInputElement('kneeAirbags'),
+        sideWindowAirbags: getValueFromInputElement('sideWindowAirbags'),
+        frontSideAirbags: getValueFromInputElement('frontSideAirbags'),
+        rearSideAirbags: getValueFromInputElement('rearSideAirbags'),
+        absSystem: getValueFromInputElement('absSystem'),
+        dtcSystem: getValueFromInputElement('dtcSystem'),
+        trackingControl: getValueFromInputElement('trackingControl'),
+        breakAssistSystem: getValueFromInputElement('breakAssistSystem'),
+        emergencyBreakSystem: getValueFromInputElement('emergencyBreakSystem'),
+        diffLockSystem: getValueFromInputElement('diffLockSystem'),
+        pedestrianDetectSystem: getValueFromInputElement('pedestrianDetectSystem'),
+        cdDvdBluRay: getValueFromInputElement('cdDvdBluRay'),
+        mp3: getValueFromInputElement('mp3'),
+        radio: getValueFromInputElement('radio'),
+        tvSystem: getValueFromInputElement('tvSystem'),
+        videoSystem: getValueFromInputElement('videoSystem'),
+        mediaOnWheelControl: getValueFromInputElement('mediaOnWheelControl'),
+        usb: getValueFromInputElement('usb'),
+        aux: getValueFromInputElement('aux'),
+        bluetooth: getValueFromInputElement('bluetooth'),
+        gpsNavigation: getValueFromInputElement('gpsNavigation'),
+        audioSystemType: getValueFromSelectElement('audioSystemType'),
+        subwoofer: getValueFromInputElement('subwoofer'),
+        frontLightType: getValueFromSelectElement('frontLightType'),
+        antifogLights: getValueFromInputElement('antifogLights'),
+        frontLightCleaning: getValueFromInputElement('frontLightCleaning'),
+        adaptiveLights: getValueFromInputElement('adaptiveLights'),
+        howToContactVsSeller: '',
+        tyreSize: getValueFromSelectElement('tyreSize'),
+        winterTyreSetIncluded: getValueFromInputElement('winterTyreSetIncluded'),
+        typeOfEngine: '',
+        wheelDrive: '',
+        transmission: '',
+        modification: '',
+        configuration: '',
+        title: 'Тачки титул',
+        description: getValueFromInputElement('description'),
+        contact: getValueFromInputElement('inputPhone'),
+        meetingAddress: '',
+        datePosting: '',
+        condition: '',
+        videoURL: 'https://youtube.com/',
+        contactEmail: '',
+        message: '',
+        price: getValueFromInputElement('carPrice'),
+        isActive: true,
+        viewNumber: 0,
+        city: 'Moscow'
+    }
+
+}
 
 function saveFunction() {
     alert('Save is ok! ))))')
-    let e = document.getElementById('car-color');
-    let carColor = e.options[e.selectedIndex].value;
 
-    e = document.getElementById('typeOfUsedCarPosting');
-    let typeOfUsedCarPosting = e.options[e.selectedIndex].value;
-
-    e = document.getElementById('car-brand');
-    let carBrand = e.options[e.selectedIndex].value;
-
-    let posting = {
-        typeOfUsedCarPosting: typeOfUsedCarPosting,
-        carBrand: carBrand,
-        carColor: carColor,
-        vinCode: document.getElementById('vinCode').value,
-        statePlateNumber: document.getElementById('statePlateNumber').value
-
-    }
-
+    let posting = collectAllFields();
 
     alert('Point 1 / Saving ... ');
 
@@ -721,6 +806,7 @@ function saveFunction() {
 
     sendRequest('POST', requestURL, json_posting).then(() => {
         console.log("saved/ may be");
+          savedSuccess();
     }).catch(err => console.log(err))
 
     async function sendRequest(method, url, body) {

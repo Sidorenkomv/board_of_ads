@@ -35,7 +35,7 @@ public class PostingCar extends AutoTransport {
     private String carBrand;
     @Size(max=50)
     private String carModel;
-    private Short carYear;
+    private short carYear;
     @Size(max=20)
     private String carBodyType;
     private byte numberOfDoors;

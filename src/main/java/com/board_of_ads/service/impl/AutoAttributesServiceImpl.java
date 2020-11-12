@@ -50,70 +50,6 @@ public class AutoAttributesServiceImpl implements AutoAttributesService {
     }
 
     @Override
-    public Set<String> getTypeOfUsedCarPostingSet(){
-        Set<String> typeOfUsedCarPostingSet = new TreeSet<>();
-        typeOfUsedCarPostingSet.add("Продаю личный автомобиль");
-        typeOfUsedCarPostingSet.add("Автомобиль приобретен на продажу");
-        return typeOfUsedCarPostingSet;
-    }
-
-    @Override
-    public Set<String> getPowerSteeringTypes(){
-        Set<String> types = new TreeSet<>();
-        types.add("Гидро-");
-        types.add("Электро-");
-        types.add("Электрогидро-");
-        return types;
-    }
-
-    @Override
-    public Set<String> getClimateControlTypes(){
-        Set<String> types = new TreeSet<>();
-        types.add("Кондиционер");
-        types.add("Климат-контроль однозонный");
-        types.add("Климат-контроль двузонный");
-        types.add("Климат-контроль трехзонный");
-        return types;
-    }
-
-    @Override
-    public Set<String> getAllInteriorTypes(){
-        Set<String> types = new HashSet<>();
-        types.add("Кожа");
-        types.add("Ткань");
-        types.add("Велюр");
-        types.add("Комбинированный");
-        return types;
-    }
-
-    @Override
-    public Set<String> getPowerWindowTypes(){
-        Set<String> types = new HashSet<>();
-        types.add("Только передние");
-        types.add("Передние и задние");
-        return types;
-    }
-
-    @Override
-    public Set<String> getAudioSystemTypes(){
-        Set<String> types = new TreeSet<>();
-        types.add("2 колонки");
-        types.add("4 колонки");
-        types.add("6 колонок");
-        types.add("8+ колонок");
-        return types;
-    }
-
-    @Override
-    public Set<String> getFrontLightTypes(){
-        Set<String> types = new HashSet<>();
-        types.add("Галогенные");
-        types.add("Ксеноновые");
-        types.add("Светодиодные");
-        return types;
-    }
-
-    @Override
     public void saveModel(AutoModel auto) {
         autoModelRepository.save(auto);
     }
@@ -141,20 +77,20 @@ public class AutoAttributesServiceImpl implements AutoAttributesService {
             }
             auto.setModel(model);
 
-            int yearStart;
+            short yearStart;
             cellType = row.getCell(2).getCellType();
             if (cellType.equals(CellType.NUMERIC)) {
-                yearStart = (int) row.getCell(2).getNumericCellValue();
+                yearStart = (short) row.getCell(2).getNumericCellValue();
             } else {
                 yearStart = 1990;
             }
             auto.setYearStart(yearStart);
 
-            int yearEnd;
+            short yearEnd;
 
             cellType = row.getCell(3).getCellType();
             if (cellType.equals(CellType.NUMERIC)) {
-                yearEnd = (int) row.getCell(3).getNumericCellValue();
+                yearEnd = (short) row.getCell(3).getNumericCellValue();
             } else {
                 yearEnd = 2020;
             }
@@ -174,7 +110,6 @@ public class AutoAttributesServiceImpl implements AutoAttributesService {
         List<AutoModel> autoModelList = autoModelRepository.findAll();
         for (AutoModel am : autoModelList) {
             brandsSet.add(am.getBrand());
-            //  System.out.println("Added brand - " + am.getBrand());
         }
         return brandsSet;
     }
@@ -182,15 +117,28 @@ public class AutoAttributesServiceImpl implements AutoAttributesService {
     @Override
     public Set<String> getModelsSet(String brand){
         Set<String> modelsSet = new TreeSet<>();
-        List<AutoModel> autoModelList = autoModelRepository.findAll();
+        List<AutoModel> autoModelList = autoModelRepository.findAllByBrand(brand);
         for (AutoModel am : autoModelList) {
             if (am.getBrand().equals(brand)) {
                 modelsSet.add(am.getModel());
-                System.out.println("Added model - " + am.getModel());
             }
         }
         return modelsSet;
     }
 
+    @Override
+    public Set<Short> getYearsByBrandAndModel(String brand, String model){
+        AutoModel am = autoModelRepository.findAutoModelByBrandAndModel(brand, model);
+        Set<Short> years = new TreeSet<>();
+        for (short year = am.getYearStart(); year <= am.getYearEnd(); year++) {
+            years.add(year);
+        }
+        return years;
+    }
+
+    @Override
+    public AutoModel getAutoModelByBrandAndModel(String brand, String model){
+        return autoModelRepository.findAutoModelByBrandAndModel(brand, model);
+    }
 
 }

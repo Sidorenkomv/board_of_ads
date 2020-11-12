@@ -26,8 +26,8 @@ public class AutoModel {
     private String bodyType;
     private String engineType;
     private String generation;
-    private int yearStart;
-    private int yearEnd;
+    private Short yearStart;
+    private Short yearEnd;
 
 }
 

@@ -124,8 +124,7 @@ public class PostingCarDto {
         mileage = pc.getMileage();
         numberOfOwners = pc.getNumberOfOwners();
         modelIdInAutoCatalogue = pc.getModelIdInAutoCatalogue();
-      //  carColor = pc.getCarColor();
-        carColor = "Orange";
+        carColor = pc.getCarColor();
         carBrand = pc.getCarBrand();
         carModel = pc.getCarModel();
         carYear = pc.getCarYear();

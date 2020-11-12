@@ -8,6 +8,7 @@ import com.board_of_ads.models.User;
 import com.board_of_ads.models.UserNotification;
 import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.models.posting.autoTransport.cars.car_attributes.AutoColor;
+import com.board_of_ads.models.posting.autoTransport.cars.car_attributes.AutoModel;
 import com.board_of_ads.service.interfaces.AutoAttributesService;
 import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.service.interfaces.CityService;
