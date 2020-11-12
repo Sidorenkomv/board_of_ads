@@ -93,9 +93,9 @@ async function changeVisible(frontName) {
     $('#visibleElement3').show();
 
     switch(frontName) {
-        case 'used-car':  await carPostingFunction(frontName, id);
+        case 'used-car':  await carPostingFunction(frontName);
             break;
-        case 'new-car':  await carPostingFunction(frontName, id);
+        case 'new-car':  await carPostingFunction(frontName);
             break;
 
         default: alert("notFOUND")

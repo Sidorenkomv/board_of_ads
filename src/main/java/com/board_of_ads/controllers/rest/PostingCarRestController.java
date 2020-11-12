@@ -10,12 +10,9 @@ import com.board_of_ads.util.Error;
 import com.board_of_ads.util.ErrorResponse;
 import com.board_of_ads.util.Response;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,9 +22,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -71,75 +65,17 @@ public class PostingCarRestController {
         return  Response.ok(autoAttributesService.getYearsByBrandAndModel(brand, model));
     }
 
-    @PostMapping("/car/new-saveA")
-    public Response<Void> createUsedCarPostingDtoA(@RequestBody JSONObject json) throws JSONException {
-        log.info("In POST createUsedCarPosting Controller");
-        String color = json.getString("carColor");
-        String type = json.getString("typeOfUsedCarPosting");
-        String carB = json.getString("carBrand");
-        String carM = json.getString("carModel");
-        String vin = json.getString("vinCode");
-//        String carIsNew = json.getString("carIsNew");
-//        String carPrice = json.getString("price");
-//        String plate = json.getString("statePlateNumber");
-     //   System.out.println("carColor: " + postingCar.getCarColor());
-    //   System.out.println("type: " + postingCar.getTypeOfUsedCarPosting());
-//       System.out.println("Brand : " + carB);
-//      System.out.println("Model : " + carM );
-//       System.out.println("vin : " + vin);
-//        System.out.println("plate : " + plate);
-//       System.out.println("carIsNew : " + carIsNew);
-//        System.out.println("carPrice : " + carPrice);
-//
-//        ObjectMapper mapper = new ObjectMapper();
-//        TypeReference<PostingCarDto> typeReference = new TypeReference<PostingCarDto>(){};
-
-//        try {
-//            PostingCarDto user = mapper.readValue(json, typeReference);
-//            postingService.save(user);
-//            System.out.println("Users Saved!");
-//        } catch (IOException e){
-//            System.out.println("Unable to save users: " + e.getMessage());
-//        }
-
-
-       // postingService.save(postingCar);
-        return Response.ok().build();
-    }
-
     @PostMapping("/car/new-save")
-    public Response<Void> createUsedCarPostingDto(@RequestBody PostingCar postingCar) throws JSONException {
+    public Response<Void> createUsedCarPostingDto(@RequestBody JSONObject json) {
         log.info("In POST createUsedCarPosting Controller");
-//        String color = json.getString("carColor");
-//        String type = json.getString("typeOfUsedCarPosting");
-//        String carB = json.getString("carBrand");
-//        String carM = json.getString("carModel");
-//        String vin = json.getString("vinCode");
-//        String carIsNew = json.getString("carIsNew");
-//        String carPrice = json.getString("price");
-//        String plate = json.getString("statePlateNumber");
-        System.out.println("carColor: " + postingCar.getCarColor());
-        System.out.println("type: " + postingCar.getTypeOfUsedCarPosting());
-//       System.out.println("Brand : " + carB);
-//      System.out.println("Model : " + carM );
-//       System.out.println("vin : " + vin);
-//        System.out.println("plate : " + plate);
-//       System.out.println("carIsNew : " + carIsNew);
-//        System.out.println("carPrice : " + carPrice);
-
-
-
-//        try {
-//            PostingCarDto user = mapper.readValue(json, typeReference);
-//            postingService.save(user);
-//            System.out.println("Users Saved!");
-//        } catch (IOException e){
-//            System.out.println("Unable to save users: " + e.getMessage());
-//        }
-
-
-        // postingService.save(postingCar);
-        return Response.ok().build();
+        try {
+            PostingCar postingCar = postingService.convertJsonToPostingCar(json);
+            postingService.save(postingCar);
+            System.out.println("Posting  Saved!");
+            return Response.ok().build();
+        } catch (Exception e){
+            System.out.println("Unable to save Posting : " + e.getMessage());
+            return new ErrorResponse<>(new Error(204, "Error of saving post"));
+        }
     }
-
 }

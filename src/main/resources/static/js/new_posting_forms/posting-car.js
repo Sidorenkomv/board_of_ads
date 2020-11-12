@@ -4,7 +4,7 @@ let colorsSetGlobal;
 let carBrandsGlobal;
 let modelChosen;
 
-async function carPostingFunction(fName, id) {
+async function carPostingFunction(fName) {
     frontName = fName;
     colorsSetGlobal = await getColorsSet();
     carBrandsGlobal = await getCarBrandsSet();
@@ -361,6 +361,7 @@ function createDiv4CountOfOwners(div4) {
     divInCol9.setAttribute('aria-label', 'First group');
     divInCol9.setAttribute('id', 'ownerCount');
     divInCol9.setAttribute('name', 'ownerCount');
+    divInCol9.value = 1;
 
     divInCol9.appendChild(makeButtonForOwnersCount('1'));
     divInCol9.appendChild(makeButtonForOwnersCount('2'));
@@ -469,7 +470,7 @@ function createDiv5AllInOne(div5) {
     column_center.appendChild(makeCheckbox('rearSideAirbags', 'Боковые задние'));
 
     column_center.appendChild(makeDescriptionText('Активная безопасность'));
-    column_center.appendChild(makeCheckbox('param60', 'Антиблокировка тормозов'));
+    column_center.appendChild(makeCheckbox('absSystem', 'Антиблокировка тормозов'));
     column_center.appendChild(makeCheckbox('dtcSystem', 'Антипробуксовка'));
     column_center.appendChild(makeCheckbox('trackingControl', 'Курсовая устойчивость'));
     column_center.appendChild(makeCheckbox('breakAssistSystem', 'Распред. тормозных усилий'));
@@ -679,12 +680,34 @@ function collectAllFields(){
         let e = document.getElementById(divId);
         return e.options[e.selectedIndex].value;
     }
+    function getValueFromSelectElementVsCheck(divId){
+        let oldDiv = $('#' + divId);
+        if (oldDiv.length === 0) {
+            return 'not initialized';
+        }
+        let e = document.getElementById(divId);
+        return e.options[e.selectedIndex].value;
+    }
+    function checkCarYear(divId){
+        let oldDiv = $('#' + divId);
+        if (oldDiv.length === 0) {
+            return 2021;
+        }
+        let e = document.getElementById(divId);
+        let stringValue = e.options[e.selectedIndex].value;
+        return parseInt(stringValue);
+    }
+
     function getValueFromInputElement(divId){
         return  document.getElementById(divId).value;
     }
     function checkCarIsNew(){
         return (frontName ==='new-car');
     }
+    function getValueOfCheckBox(elementId) {
+        return document.getElementById(elementId).checked;
+    }
+
 
 
     return {
@@ -698,80 +721,82 @@ function collectAllFields(){
         modelIdInAutoCatalogue: 0,
         carColor: getValueFromSelectElement('carColor'),
         carBrand: getValueFromSelectElement('carBrand'),
-        carModel: getValueFromSelectElement('carModel'),
-        carYear: getValueFromInputElement('carYear'),
+        carModel: getValueFromSelectElementVsCheck('carModel'),
+        carYear: checkCarYear('carYear'),
         carBodyType: 'Sedan',
         numberOfDoors: 4,
-        wasInAccident: getValueFromInputElement('wasInAccident'),
-        dealerServiced: getValueFromInputElement('dealerServiced'),
-        underWarranty: getValueFromInputElement('underWarranty'),
-        hasServiceBook: getValueFromInputElement('hasServiceBook'),
+       // wasInAccident: getValueOfCheckBox('wasInAccident'),
+        wasInAccident: false,
+        dealerServiced: getValueOfCheckBox('dealerServiced'),
+        underWarranty:getValueOfCheckBox('underWarranty'),
+        hasServiceBook: getValueOfCheckBox('hasServiceBook'),
         powerSteeringType: getValueFromSelectElement('powerSteeringType'),
         climateControlType: getValueFromSelectElement('climateControlType'),
-        onWheelControl: getValueFromInputElement('onWheelControl'),
-        thermalGlass: getValueFromInputElement('thermalGlass'),
+        onWheelControl: getValueOfCheckBox('onWheelControl'),
+        thermalGlass: getValueOfCheckBox('thermalGlass'),
         interiorType:  getValueFromSelectElement('interiorType'),
-        leatherWheel: getValueFromInputElement('leatherWheel'),
-        sunroof: getValueFromInputElement('sunroof'),
-        heatedFrontSeats: getValueFromInputElement('heatedFrontSeats'),
-        heatedRearSeats: getValueFromInputElement('heatedRearSeats'),
-        heatedMirrors: getValueFromInputElement('heatedMirrors'),
-        heatedRearWindow : getValueFromInputElement('heatedRearWindow'),
-        heatedWheel: getValueFromInputElement('heatedWheel'),
+        leatherWheel: getValueOfCheckBox('leatherWheel'),
+        sunroof: getValueOfCheckBox('sunroof'),
+        heatedFrontSeats:getValueOfCheckBox('heatedFrontSeats'),
+        heatedRearSeats: getValueOfCheckBox('heatedRearSeats'),
+        heatedMirrors: getValueOfCheckBox('heatedMirrors'),
+        heatedRearWindow : getValueOfCheckBox('heatedRearWindow'),
+        heatedWheel: getValueOfCheckBox('heatedWheel'),
         powerWindowsType: getValueFromSelectElement('powerWindowsType'),
-        powerFrontSeats: getValueFromInputElement('powerFrontSeats'),
-        powerRearSeats: getValueFromInputElement('powerRearSeats'),
-        powerMirrorRegulation: getValueFromInputElement('powerMirrorRegulation'),
-        powerSteeringWheelRegulation: getValueFromInputElement('powerSteeringWheelRegulation'),
-        powerMirrorClose: getValueFromInputElement('powerMirrorClose'),
-        frontSeatsMemory : getValueFromInputElement('frontSeatsMemory'),
-        rearSeatsMemory: getValueFromInputElement('rearSeatsMemory'),
-        mirrorRegulationMemory : getValueFromInputElement('mirrorRegulationMemory'),
-        steeringWheelRegulationMemory: getValueFromInputElement('steeringWheelRegulationMemory'),
-        parkingAssist: getValueFromInputElement('parkingAssist'),
-        rainSensor: getValueFromInputElement('rainSensor'),
-        lightSensor: getValueFromInputElement('lightSensor'),
-        rearParkingSensor : getValueFromInputElement('rearParkingSensor'),
-        frontParkingSensor: getValueFromInputElement('frontParkingSensor'),
-        blindSpotZoneControl: getValueFromInputElement('blindSpotZoneControl'),
-        rearCamera: getValueFromInputElement('rearCamera'),
-        cruiseControl: getValueFromInputElement('cruiseControl'),
-        onBoardComp: getValueFromInputElement('onBoardComp'),
-        alarmSystem: getValueFromInputElement('alarmSystem'),
-        powerDoorBlocking: getValueFromInputElement('powerDoorBlocking'),
-        immobilizer: getValueFromInputElement('immobilizer'),
-        satelliteAlarmControl: getValueFromInputElement('satelliteAlarmControl'),
-        frontalAirbags: getValueFromInputElement('frontalAirbags'),
-        kneeAirbags: getValueFromInputElement('kneeAirbags'),
-        sideWindowAirbags: getValueFromInputElement('sideWindowAirbags'),
-        frontSideAirbags: getValueFromInputElement('frontSideAirbags'),
-        rearSideAirbags: getValueFromInputElement('rearSideAirbags'),
-        absSystem: getValueFromInputElement('absSystem'),
-        dtcSystem: getValueFromInputElement('dtcSystem'),
-        trackingControl: getValueFromInputElement('trackingControl'),
-        breakAssistSystem: getValueFromInputElement('breakAssistSystem'),
-        emergencyBreakSystem: getValueFromInputElement('emergencyBreakSystem'),
-        diffLockSystem: getValueFromInputElement('diffLockSystem'),
-        pedestrianDetectSystem: getValueFromInputElement('pedestrianDetectSystem'),
-        cdDvdBluRay: getValueFromInputElement('cdDvdBluRay'),
-        mp3: getValueFromInputElement('mp3'),
-        radio: getValueFromInputElement('radio'),
-        tvSystem: getValueFromInputElement('tvSystem'),
-        videoSystem: getValueFromInputElement('videoSystem'),
-        mediaOnWheelControl: getValueFromInputElement('mediaOnWheelControl'),
-        usb: getValueFromInputElement('usb'),
-        aux: getValueFromInputElement('aux'),
-        bluetooth: getValueFromInputElement('bluetooth'),
-        gpsNavigation: getValueFromInputElement('gpsNavigation'),
+        powerFrontSeats: getValueOfCheckBox('powerFrontSeats'),
+        powerRearSeats: getValueOfCheckBox('powerRearSeats'),
+        powerMirrorRegulation: getValueOfCheckBox('powerMirrorRegulation'),
+        powerSteeringWheelRegulation: getValueOfCheckBox('powerSteeringWheelRegulation'),
+        powerMirrorClose: getValueOfCheckBox('powerMirrorClose'),
+        frontSeatsMemory : getValueOfCheckBox('frontSeatsMemory'),
+        rearSeatsMemory: getValueOfCheckBox('rearSeatsMemory'),
+        mirrorRegulationMemory : getValueOfCheckBox('mirrorRegulationMemory'),
+        steeringWheelRegulationMemory: getValueOfCheckBox('steeringWheelRegulationMemory'),
+        parkingAssist: getValueOfCheckBox('parkingAssist'),
+        rainSensor: getValueOfCheckBox('rainSensor'),
+        lightSensor: getValueOfCheckBox('lightSensor'),
+        rearParkingSensor : getValueOfCheckBox('rearParkingSensor'),
+        frontParkingSensor:getValueOfCheckBox('frontParkingSensor'),
+        blindSpotZoneControl: getValueOfCheckBox('blindSpotZoneControl'),
+        rearCamera: getValueOfCheckBox('rearCamera'),
+        cruiseControl: getValueOfCheckBox('cruiseControl'),
+        onBoardComp: getValueOfCheckBox('onBoardComp'),
+        alarmSystem: getValueOfCheckBox('alarmSystem'),
+        powerDoorBlocking: getValueOfCheckBox('powerDoorBlocking'),
+        immobilizer: getValueOfCheckBox('immobilizer'),
+        satelliteAlarmControl: getValueOfCheckBox('satelliteAlarmControl'),
+        frontalAirbags: getValueOfCheckBox('frontalAirbags'),
+        kneeAirbags: getValueOfCheckBox('kneeAirbags'),
+        sideWindowAirbags: getValueOfCheckBox('sideWindowAirbags'),
+        frontSideAirbags: getValueOfCheckBox('frontSideAirbags'),
+        rearSideAirbags: getValueOfCheckBox('rearSideAirbags'),
+        absSystem: getValueOfCheckBox('absSystem'),
+        dtcSystem: getValueOfCheckBox('dtcSystem'),
+        trackingControl: getValueOfCheckBox('trackingControl'),
+        breakAssistSystem: getValueOfCheckBox('breakAssistSystem'),
+        emergencyBreakSystem: getValueOfCheckBox('emergencyBreakSystem'),
+        diffLockSystem: getValueOfCheckBox('diffLockSystem'),
+        pedestrianDetectSystem: getValueOfCheckBox('pedestrianDetectSystem'),
+        cdDvdBluRay:getValueOfCheckBox('cdDvdBluRay'),
+        mp3: getValueOfCheckBox('mp3'),
+        radio: getValueOfCheckBox('radio'),
+        tvSystem: getValueOfCheckBox('tvSystem'),
+        videoSystem: getValueOfCheckBox('videoSystem'),
+        mediaOnWheelControl: getValueOfCheckBox('mediaOnWheelControl'),
+        usb: getValueOfCheckBox('usb'),
+        aux: getValueOfCheckBox('aux'),
+        bluetooth: getValueOfCheckBox('bluetooth'),
+        gpsNavigation: getValueOfCheckBox('gpsNavigation'),
+
         audioSystemType: getValueFromSelectElement('audioSystemType'),
-        subwoofer: getValueFromInputElement('subwoofer'),
+        subwoofer: getValueOfCheckBox('subwoofer'),
         frontLightType: getValueFromSelectElement('frontLightType'),
-        antifogLights: getValueFromInputElement('antifogLights'),
-        frontLightCleaning: getValueFromInputElement('frontLightCleaning'),
-        adaptiveLights: getValueFromInputElement('adaptiveLights'),
+        antifogLights: getValueOfCheckBox('antifogLights'),
+        frontLightCleaning: getValueOfCheckBox('frontLightCleaning'),
+        adaptiveLights: getValueOfCheckBox('adaptiveLights'),
         howToContactVsSeller: '',
         tyreSize: getValueFromSelectElement('tyreSize'),
-        winterTyreSetIncluded: getValueFromInputElement('winterTyreSetIncluded'),
+        winterTyreSetIncluded: getValueOfCheckBox('winterTyreSetIncluded'),
         typeOfEngine: '',
         wheelDrive: '',
         transmission: '',
@@ -799,9 +824,11 @@ function saveFunction() {
 
     let posting = collectAllFields();
 
-    alert('Point 1 / Saving ... ');
+    console.log(posting);
 
     let json_posting = JSON.stringify(posting);
+    console.log(json_posting);
+
     const requestURL = '/api/posting/car/new-save';
 
     sendRequest('POST', requestURL, json_posting).then(() => {

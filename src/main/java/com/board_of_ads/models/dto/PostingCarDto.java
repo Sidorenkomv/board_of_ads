@@ -9,7 +9,6 @@ import java.time.format.DateTimeFormatter;
 @Data
 @AllArgsConstructor
 public class PostingCarDto {
-
     private String vinCode;
     private boolean carIsNew;
     private Long sellerId;
