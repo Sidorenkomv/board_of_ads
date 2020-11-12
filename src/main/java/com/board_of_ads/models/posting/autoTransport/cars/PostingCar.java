@@ -20,7 +20,7 @@ import javax.validation.constraints.Size;
 public class PostingCar extends AutoTransport {
 
     private String vinCode;
-    private boolean isCarNew;
+    private boolean carIsNew;
     private Long sellerId;
     @Size(max=120)
     private String typeOfUsedCarPosting;

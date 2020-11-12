@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter;
 public class PostingCarDto {
 
     private String vinCode;
-    private boolean isCarNew;
+    private boolean carIsNew;
     private Long sellerId;
     private String typeOfUsedCarPosting;
     private String statePlateNumber;
@@ -117,14 +117,15 @@ public class PostingCarDto {
 
     public PostingCarDto(PostingCar pc) {
         vinCode = pc.getVinCode();
-        isCarNew = pc.isCarNew();
+        carIsNew = pc.isCarIsNew();
         sellerId = pc.getSellerId();
         typeOfUsedCarPosting = pc.getTypeOfUsedCarPosting();
         statePlateNumber = pc.getStatePlateNumber();
         mileage = pc.getMileage();
         numberOfOwners = pc.getNumberOfOwners();
         modelIdInAutoCatalogue = pc.getModelIdInAutoCatalogue();
-        carColor = pc.getCarColor();
+      //  carColor = pc.getCarColor();
+        carColor = "Orange";
         carBrand = pc.getCarBrand();
         carModel = pc.getCarModel();
         carYear = pc.getCarYear();
