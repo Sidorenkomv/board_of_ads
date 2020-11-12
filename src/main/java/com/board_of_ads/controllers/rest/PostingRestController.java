@@ -3,6 +3,7 @@ package com.board_of_ads.controllers.rest;
 import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
+import com.board_of_ads.models.posting.forHomeAndGarden.HouseholdAppliancesPosting;
 import com.board_of_ads.service.interfaces.CityService;
 import com.board_of_ads.service.interfaces.PostingService;
 import com.board_of_ads.util.Error;
@@ -86,6 +87,13 @@ public class PostingRestController {
 
     @PostMapping("/new")
     public Response<Void> createPosting(@RequestBody Posting posting) {
+        //postingService.save(posting);
+        return Response.ok().build();
+    }
+
+    @PostMapping("/new/householdAppliances/{id}")
+    public Response<Void> createHouseholdAppliancesPosting(@RequestParam Long id
+                                                           /*@RequestBody HouseholdAppliancesPosting posting*/) {
         //postingService.save(posting);
         return Response.ok().build();
     }

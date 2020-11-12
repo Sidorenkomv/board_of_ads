@@ -1,26 +1,31 @@
 let postingForm = document.getElementById('visibleElement2');
+let saveButton = document.getElementById('saveButton');
+let frontName = '';
+let photos;
 
-async function sentHouseHoldForHome(frontName) {
-    let url = '';
-    let body = {
+async function sentHouseholdAppliancesPosting(selectedCategoryId) {
+    let url = '/new/householdAppliances/' + selectedCategoryId;
+    photos = document.getElementById('photos').files;
+    photos = document.getElementById('uploadPhotos').setAttribute('src', '/images/upload-photo.svg');
 
+    /*alert(`File name: ${photos[0].name}`); // например, my.png
+    alert(`File name: ${photos[1].name}`); // например, my.png
+    alert(`File name: ${photos[2].name}`); // например, my.png*/
+    /*let body = {
+        name: window.photos.value,
+        lastName: window.formNewUser.newLastName.value,
+        age: window.formNewUser.newAge.value,
+        email: window.formNewUser.newEmail.value,
+        password: window.formNewUser.newPassword.value,
+        roles: window.formNewUser.newRoles.value
     };
-    //await sendPosting(body, url);
+    await sendPosting(body, url);*/
 }
 
-async function sendForIndividualCare(frontName) {
+async function getHouseholdAppliancesForm(frontName, selectedCategoryId) {
+    this.frontName = frontName;
+    saveButton.onclick = () => sentHouseholdAppliancesPosting(selectedCategoryId);
 
-}
-
-async function sendForKitchen(frontName) {
-
-}
-
-async function sendClimaticEquipment(frontName) {
-
-}
-
-async function sendHouseholdAppliances(frontName) {
     postingForm.innerHTML = '<div id="parameters" class="main-container">\n' +
         '        <div class="category-head-container">\n' +
         '            <div class="category-head-text">Параметры</div>\n' +
@@ -81,7 +86,8 @@ async function sendHouseholdAppliances(frontName) {
         '\n' +
         '                    <div class="col-sm-2 d-flex">\n' +
         '                        <label class="photo-upload" data-marker="add">\n' +
-        '                            <input id="photos" type="file" value="" multiple="" style="display: none" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input">\n' +
+        '                            <input id="photos" type="file" value="" multiple style="display: none" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input">\n' +
+        '                            <div id="uploadPhotos"></div>' +
         '                        </label>\n' +
         '                    </div>\n' +
         '                </div>\n' +
