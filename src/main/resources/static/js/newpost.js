@@ -108,8 +108,14 @@ async function changeVisible(frontName, id) {
 
     switch (frontName) {
 
-        case 'men-trousers':
-            showForm(frontName, id);
+        case 'clothes':
+            showClothesForm(frontName, id);
+            break;
+        case 'shoes':
+            showShoesForm(frontName, id);
+            break;
+        case 'other-clothes':
+            showOtherClothesForm(frontName, id);
             break;
         default:
             alert('For frontName="' + frontName + '" not found posting form');

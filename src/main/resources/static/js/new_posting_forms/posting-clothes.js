@@ -1,7 +1,7 @@
 let frontName;
 let id;
 
-function showForm(fName, ident) {
+function showClothesForm(fName, ident) {
 
     frontName = fName;
     id = ident;
