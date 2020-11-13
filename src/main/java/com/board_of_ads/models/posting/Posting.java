@@ -79,7 +79,7 @@ public class Posting {
     private Boolean isActive;
 
     @Column
-    private Integer viewNumber;
+    private Integer viewNumber = 0;
 
     @Column
     private LocalDateTime datePosting = LocalDateTime.now();
