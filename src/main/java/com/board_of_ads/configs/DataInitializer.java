@@ -369,29 +369,29 @@ public class DataInitializer {
         secondSubCategory.add(new Category("Климатическое оборудование", categoryService.getCategoryByName("Бытовая техника").get(), 3, "householdAppliances"));
         secondSubCategory.add(new Category("Другое", categoryService.getCategoryByName("Бытовая техника").get(), 3, "householdAppliances"));
 
-        secondSubCategory.add(new Category("Компьютерные столы и кресла", categoryService.getCategoryByName("Мебель и интерьер").get(), 3));
-        secondSubCategory.add(new Category("Кровати, диваны и кресла", categoryService.getCategoryByName("Мебель и интерьер").get(), 3));
-        secondSubCategory.add(new Category("Кухонные гарнитуры", categoryService.getCategoryByName("Мебель и интерьер").get(), 3));
-        secondSubCategory.add(new Category("Освещение", categoryService.getCategoryByName("Мебель и интерьер").get(), 3));
-        secondSubCategory.add(new Category("Подставки и тумбы", categoryService.getCategoryByName("Мебель и интерьер").get(), 3));
-        secondSubCategory.add(new Category("Предметы интерьера, искусство", categoryService.getCategoryByName("Мебель и интерьер").get(), 3));
-        secondSubCategory.add(new Category("Столы и стулья", categoryService.getCategoryByName("Мебель и интерьер").get(), 3));
-        secondSubCategory.add(new Category("Текстиль и ковры", categoryService.getCategoryByName("Мебель и интерьер").get(), 3));
-        secondSubCategory.add(new Category("Шкафы и комоды", categoryService.getCategoryByName("Мебель и интерьер").get(), 3));
-        secondSubCategory.add(new Category("Другое", categoryService.getCategoryByName("Мебель и интерьер").get(), 3));
+        secondSubCategory.add(new Category("Компьютерные столы и кресла", categoryService.getCategoryByName("Мебель и интерьер").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Кровати, диваны и кресла", categoryService.getCategoryByName("Мебель и интерьер").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Кухонные гарнитуры", categoryService.getCategoryByName("Мебель и интерьер").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Освещение", categoryService.getCategoryByName("Мебель и интерьер").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Подставки и тумбы", categoryService.getCategoryByName("Мебель и интерьер").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Предметы интерьера, искусство", categoryService.getCategoryByName("Мебель и интерьер").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Столы и стулья", categoryService.getCategoryByName("Мебель и интерьер").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Текстиль и ковры", categoryService.getCategoryByName("Мебель и интерьер").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Шкафы и комоды", categoryService.getCategoryByName("Мебель и интерьер").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Другое", categoryService.getCategoryByName("Мебель и интерьер").get(), 3, "householdAppliances"));
 
-        secondSubCategory.add(new Category("Посуда", categoryService.getCategoryByName("Посуда и товары для кухни").get(), 3));
-        secondSubCategory.add(new Category("Товары для кухни", categoryService.getCategoryByName("Посуда и товары для кухни").get(), 3));
+        secondSubCategory.add(new Category("Посуда", categoryService.getCategoryByName("Посуда и товары для кухни").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Товары для кухни", categoryService.getCategoryByName("Посуда и товары для кухни").get(), 3, "householdAppliances"));
 
-        secondSubCategory.add(new Category("Двери", categoryService.getCategoryByName("Ремонт и строительство").get(), 3));
-        secondSubCategory.add(new Category("Инструменты", categoryService.getCategoryByName("Ремонт и строительство").get(), 3));
-        secondSubCategory.add(new Category("Камины и обогреватели", categoryService.getCategoryByName("Ремонт и строительство").get(), 3));
-        secondSubCategory.add(new Category("Окна и балконы", categoryService.getCategoryByName("Ремонт и строительство").get(), 3));
-        secondSubCategory.add(new Category("Потолки", categoryService.getCategoryByName("Ремонт и строительство").get(), 3));
-        secondSubCategory.add(new Category("Садовая техника", categoryService.getCategoryByName("Ремонт и строительство").get(), 3));
-        secondSubCategory.add(new Category("Сантехника и сауна", categoryService.getCategoryByName("Ремонт и строительство").get(), 3));
-        secondSubCategory.add(new Category("Стройматериалы", categoryService.getCategoryByName("Ремонт и строительство").get(), 3));
-        secondSubCategory.add(new Category("Услуги", categoryService.getCategoryByName("Ремонт и строительство").get(), 3));
+        secondSubCategory.add(new Category("Двери", categoryService.getCategoryByName("Ремонт и строительство").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Инструменты", categoryService.getCategoryByName("Ремонт и строительство").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Камины и обогреватели", categoryService.getCategoryByName("Ремонт и строительство").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Окна и балконы", categoryService.getCategoryByName("Ремонт и строительство").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Потолки", categoryService.getCategoryByName("Ремонт и строительство").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Садовая техника", categoryService.getCategoryByName("Ремонт и строительство").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Сантехника и сауна", categoryService.getCategoryByName("Ремонт и строительство").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Стройматериалы", categoryService.getCategoryByName("Ремонт и строительство").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Услуги", categoryService.getCategoryByName("Ремонт и строительство").get(), 3, "householdAppliances"));
 
 
         secondSubCategory.add(new Category("MP3 плееры", categoryService.getCategoryByName("Аудио и видео").get(), 3));
