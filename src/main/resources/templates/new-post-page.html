@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="https://www.thymeleaf.org">
+<html lang="ru" xmlns:th="https://www.thymeleaf.org",   xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
@@ -12,18 +12,32 @@
     <link rel="stylesheet" type="text/css" href="../static/css/user-info-menu.css" th:href="@{/css/user-info-menu.css}"/>
     <link rel="stylesheet" type="text/css" href="../static/css/main_page_posting.css" th:href="@{/css/main_page_posting.css}"/>
     <link rel="stylesheet" type="text/css" href="../static/css/recovery-pswd.css" th:href="@{/css/recovery-pswd.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/fragment-navigate-panel-style.css" th:href="@{/css/fragment-navigate-panel-style.css}"/>
 
     <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
 </head>
 <body>
-<header th:insert="fragments/header::main-header"></header>
+<div class="main-header">
+    <header th:insert="fragments/header::main-header"></header>
+    <div class="second-header">
+        <!--<div th:insert="fragments/navigate-panel::navigate-header"></div>-->
+        <div th:insert="fragments/authorization-button::authorization-button"></div>
+        <div th:insert="fragments/pswd-recovery-modal-window::password-recovery"></div>
+        <div th:insert="fragments/new-password-modal::new-password"></div>
+    </div>
+</div>
 <div class="main-container">
     <div class="head-container">
-        <a><img class="main-logo" th:src="@{images/logo.jpg}"></a>
-        <div class="text-in-logo-header">Новое объявление</div>
+        <nav style="display: flex;">
+            <a class="navbar-brand" title="Board of ads - сайт объявлений" href="/" id="ids">
+                <img class="logo-not-avito" src="images/logo.jpg">
+            </a>
+            <div sec:authorize="isAuthenticated()" class="text-in-logo-header">Новое объявление</div>
+            <div sec:authorize="!isAuthenticated()" class="text-in-logo-header">Авторизуйтесь, чтобы подать объявление</div>
+        </nav>
     </div>
-    <div class="row category-head-container">
+    <div sec:authorize="isAuthenticated()" class="row category-head-container">
         <div class="col-2 category-head-text">Категория</div>
         <div id="pathCategory" class="col-10" style="display: none">
             <button id="pathCategoryButton" type="button" class="btn btn-link">
@@ -31,13 +45,12 @@
             </button>
         </div>
     </div>
-    <div id="visibleElement1" style="display: block">
+    <div sec:authorize="isAuthenticated()" id="visibleElement1" style="display: block">
         <div class="cascade-table-container" id="cascadeTableContainer"></div>
     </div>
 </div>
 
-<div id="visibleElement2" style="display: block">
-</div>
+<div id="visibleElement2" style="display: block"></div>
 
 <div id="visibleElement3" style="display: none">
 
@@ -47,7 +60,7 @@
         </div>
         <div>
             <p>
-                <input name="dealAddress" placeholder="Начните вводить адрес, а потом выберите из списка" maxlength="150"
+                <input  id="inputAddress" name="dealAddress" placeholder="Начните вводить адрес, а потом выберите из списка" maxlength="150"
                        autocomplete="none" type="text" class="form-control" value="">
             </p>
             <p class="text-muted" data-toggle="tooltip" data-placement="top" title="Зачем указывать точный адрес.
@@ -69,30 +82,30 @@
             <form id="contactsForm">
                 <div class="form-group row">
                     <label for="inputEmail" class="col-sm-2 col-form-label">Электронная почта</label>
-                    <div class="col-sm-10">
-                        <input type="email" class="form-control" id="inputEmail">
+                    <div class="col-sm-3">
+                        <input type="email" class="form-control form-control-sm" id="inputEmail">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="inputPhone" class="col-sm-2 col-form-label">Телефон</label>
-                    <div class="col-sm-10">
-                        <input class="form-control" id="inputPhone" placeholder="8 ___ ___-__-__" inputmode="tel" autocomplete="off" data-marker="phone/input" value im-insert="true">
+                    <div class="col-sm-3">
+                        <input class="form-control form-control-sm" id="inputPhone" placeholder="8 ___ ___-__-__" inputmode="tel" autocomplete="off" data-marker="phone/input" value im-insert="true">
                     </div>
                 </div>
-                <fieldset class="form-group">
+                <fieldset id="wayOfCommunication" class="form-group">
                     <div class="row">
                         <legend class="col-form-label col-sm-2 pt-0">Способ связи</legend>
                         <div class="col-sm-10">
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="phoneAndMessages" checked>
+                                <input class="form-check-input" type="radio" name="communication" id="gridRadios1" value="По телефону и в сообщениях" checked>
                                 <label class="form-check-label" for="gridRadios1">По телефону и в сообщениях</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="phone">
+                                <input class="form-check-input" type="radio" name="communication" id="gridRadios2" value="По телефону">
                                 <label class="form-check-label" for="gridRadios2">По телефону</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="messages">
+                                <input class="form-check-input" type="radio" name="communication" id="gridRadios3" value="В сообщениях">
                                 <label class="form-check-label" for="gridRadios3">В сообщениях</label>
                             </div>
                         </div>
@@ -114,9 +127,16 @@
     </div>
 
 </div>
+<script type="text/javascript" src="../static/js/user-info-menu.js" th:src="@{/js/user-info-menu.js}"></script>
+<script type="text/javascript" src="../static/js/authorization.js" th:src="@{/js/authorization.js}"></script>
+<script src="../static/js/recovery_password.js" th:src="@{/js/recovery_password.js}"></script>
+<script src="../static/js/create_new_user_page.js" th:src="@{/js/create_new_user_page.js}"></script>
+<script src="../static/js/new_post_page.js" th:src="@{/js/new_post_page.js}"></script>
 
-<script src="../static/js/newpost.js" th:src="@{/js/newpost.js}"></script>
+            <!--СКРИПТЫ ОТРИСОВКИ ФОРМ ОБЪЯВЛЕНИЙ-->
 <script src="../static/js/new_posting_forms/test.js" th:src="@{/js/new_posting_forms/test.js}"></script>
 <script src="../static/js/header.js" th:src="@{/js/header.js}"></script>
+<script src="../static/js/new_posting_forms/test.js" th:src="@{/js/new_posting_forms/test.js}"></script>
+<script src="../static/js/new_posting_forms/household-appliances.js" th:src="@{/js/new_posting_forms/household-appliances.js}"></script>
 </body>
 </html>
