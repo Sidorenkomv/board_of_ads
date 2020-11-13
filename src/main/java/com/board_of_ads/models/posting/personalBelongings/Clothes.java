@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 
 @Data
@@ -19,7 +20,7 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-
+@Table(name = "posting_clothes")
 public class Clothes extends Posting {
 
     private String size;

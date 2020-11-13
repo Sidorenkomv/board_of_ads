@@ -15,6 +15,7 @@ function showForm(fName, ident) {
         '        </div>\n' +
         '        <div>\n' +
         '            <form id="parametersForm">\n' +
+
         '                <div class="form-group row">\n' +
         '                    <label for="size" class="col-sm-2 col-form-label">Размер</label>\n' +
         '                    <div class="col-sm-3">\n' +
