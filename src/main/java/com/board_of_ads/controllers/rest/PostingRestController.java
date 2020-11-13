@@ -5,6 +5,7 @@ import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.models.posting.personalBelongings.Clothes;
+import com.board_of_ads.repository.CategoryRepository;
 import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.service.interfaces.CityService;
 import com.board_of_ads.service.interfaces.PostingService;
@@ -35,6 +36,7 @@ public class PostingRestController {
     private final PostingService postingService;
 
     private final CategoryService categoryService;
+    private final CategoryRepository categoryRepository;
 
 
     @GetMapping
@@ -100,11 +102,11 @@ public class PostingRestController {
     }
 
 
-    @PostMapping("/clothes/{frontName}")
-    public Response<Void> createPostingClothes(@AuthenticationPrincipal User user, @RequestBody Clothes clothes, @PathVariable String frontName) {
+    @PostMapping("/clothes/{id}")
+    public Response<Void> createPostingClothes(@AuthenticationPrincipal User user, @RequestBody Clothes clothes, @PathVariable Long id) {
         log.info("Create posting clothes");
 
-        clothes.setCategory(categoryService.getCategoryByFrontName(frontName).get());
+        clothes.setCategory(categoryRepository.findCategoryById(id));
         //clothes.setCity(cityService.findCityByNameContainName(clothes.getMeetingAddress()).orElseThrow());
         clothes.setUser(user);
 

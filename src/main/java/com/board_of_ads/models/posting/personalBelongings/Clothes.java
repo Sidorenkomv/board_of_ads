@@ -23,9 +23,9 @@ import javax.persistence.Entity;
 public class Clothes extends Posting {
 
     private String size;
-    private String condition;
-    private String typeOfAd;
-    private String youtubeLink;
+    private String state;
+    private String typeAd;
+    private String linkYouTube;
 
 
 
