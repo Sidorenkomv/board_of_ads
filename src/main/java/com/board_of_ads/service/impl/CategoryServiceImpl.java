@@ -49,6 +49,11 @@ public class CategoryServiceImpl implements CategoryService {
         return category;
     }
 
+    @Override
+    public Category getCategoryById(Long catId){
+      return   categoryRepository.findCategoryById(catId);
+    }
+
     private void collectChild(Category categoryWithChildren, Set<CategoryDto> collect) {
         categoryRepository.findCategoriesByCategory(categoryWithChildren.getId())
                 .stream()

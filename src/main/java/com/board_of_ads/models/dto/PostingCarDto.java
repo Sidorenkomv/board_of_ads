@@ -1,12 +1,14 @@
 package com.board_of_ads.models.dto;
 
-import com.board_of_ads.models.User;
 import com.board_of_ads.models.posting.autoTransport.cars.PostingCar;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.format.DateTimeFormatter;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class PostingCarDto {
     private String vinCode;

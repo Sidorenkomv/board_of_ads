@@ -233,7 +233,6 @@ public class PostingServiceImpl implements PostingService {
 
         pc.setVinCode(json.getString("vinCode"));
         pc.setCarIsNew(json.getBoolean("carIsNew"));
-        pc.setSellerId(json.getLong("sellerId"));
         pc.setTypeOfUsedCarPosting(json.getString("typeOfUsedCarPosting"));
         pc.setStatePlateNumber(json.getString("statePlateNumber"));
         pc.setMileage(json.getInt("mileage"));
@@ -332,8 +331,10 @@ public class PostingServiceImpl implements PostingService {
       //  pc.setMessage(json.getString("message"));
         pc.setPrice(json.getLong("price"));
         pc.setIsActive(json.getBoolean("isActive"));
-        pc.setViewNumber(json.getInt("viewNumber"));
-
+       // pc.setViewNumber(json.getInt("viewNumber"));
+        pc.setViewNumber(1);
+        long catId =  json.getInt("categoryId");
+        pc.setCategory(categoryService.getCategoryById(catId));
         return pc;
     }
 

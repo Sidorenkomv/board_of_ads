@@ -29,4 +29,6 @@ public interface CategoryService {
     List<CategoryDtoMenu> allParentCategory();
 
     List<CategoryDtoMenu> findChildCatById(Long id);
+
+    Category getCategoryById(Long catId);
 }

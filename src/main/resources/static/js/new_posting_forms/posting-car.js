@@ -2,10 +2,14 @@ let frontName;
 let pco;
 let colorsSetGlobal;
 let carBrandsGlobal;
-let modelChosen;
+let categoryId;
+let isUsedCarPosting;
 
-async function carPostingFunction(fName) {
+
+async function carPostingFunction(fName, id) {
     frontName = fName;
+    isUsedCarPosting = (frontName === 'used-car');
+    categoryId = id;
     colorsSetGlobal = await getColorsSet();
     carBrandsGlobal = await getCarBrandsSet();
     await getPostingCarMap();
@@ -68,7 +72,7 @@ async function fillNewCarPostingFields(pc) {
     mainDiv.setAttribute('id', 'car-post-fields-main-container');
     document.getElementById('visibleElement2').appendChild(mainDiv);
 
-    changePathCategory();
+    // changePathCategory();
     changeMeetingPlace();
     addTypeOfUsedCarPosting()
 
@@ -91,11 +95,15 @@ async function fillNewCarPostingFields(pc) {
     createDiv1Colors(div1);
     createDiv1YouTube(div1);
     createDiv2VinFields(div2);
-    createDiv2PlateFields(div2);
+    if (isUsedCarPosting) {
+        createDiv2PlateFields(div2);
+    }
     createDiv3CarBrandFields(div3);
-    createDiv4Mileage(div4);
-    createDiv4Conditions(div4);
-    createDiv4CountOfOwners(div4);
+    if (isUsedCarPosting) {
+        createDiv4Mileage(div4);
+        createDiv4Conditions(div4);
+        createDiv4CountOfOwners(div4);
+    }
     createDiv4ServicingInfo(div4);
     createDiv5AllInOne(div5);
     createDiv6DescriptionField(div6);
@@ -295,6 +303,7 @@ function makeSelectOptionsElement(select, options) {
 
 async function getAutoYear(brand, target, div3) {
     let model = target.options[target.selectedIndex].value;
+
     async function getBrandAndModelsYears() {
         let url = requestURL + 'models/' + brand + '/' + model;
         return await getResponseData(url).then((responseData) => {
@@ -632,15 +641,6 @@ function makeMainContainer(id_suffix) {
     return div;
 }
 
-function changePathCategory() {
-    let a = document.getElementById('thisCategoryText');
-    if (frontName === 'used-car') {
-        a.innerText = 'Транспорт / Автомобили / С пробегом';
-    } else {
-        a.innerText = 'Транспорт / Автомобили / Новые';
-    }
-}
-
 function changeMeetingPlace() {
     document.getElementById('meetingPlace').innerText = 'Место осмотра';
 }
@@ -656,8 +656,8 @@ function addPostingType() {
     let divInCol9 = document.createElement('div');
     let div = makeRowCol3Col9('type-of-usp', 'Вид объявления', divInCol9);
 
-    let options = [ 'Продаю личный автомобиль',
-                    'Автомобиль приобретен на продажу'    ];
+    let options = ['Продаю личный автомобиль',
+        'Автомобиль приобретен на продажу'];
     let select = document.createElement('select');
     select.setAttribute('id', 'typeOfUsedCarPosting');
     select.setAttribute('name', 'typeOfUsedCarPosting');
@@ -672,15 +672,15 @@ savedSuccess = function () {
 }
 
 
-let submitAndSavePostingButton = document.getElementById('saveButton');
-submitAndSavePostingButton.onclick = () => saveFunction();
 
-function collectAllFields(){
-    function getValueFromSelectElement(divId){
+
+function collectAllFields() {
+    function getValueFromSelectElement(divId) {
         let e = document.getElementById(divId);
         return e.options[e.selectedIndex].value;
     }
-    function getValueFromSelectElementVsCheck(divId){
+
+    function getValueFromSelectElementVsCheck(divId) {
         let oldDiv = $('#' + divId);
         if (oldDiv.length === 0) {
             return 'not initialized';
@@ -688,7 +688,8 @@ function collectAllFields(){
         let e = document.getElementById(divId);
         return e.options[e.selectedIndex].value;
     }
-    function checkCarYear(divId){
+
+    function checkCarYear(divId) {
         let oldDiv = $('#' + divId);
         if (oldDiv.length === 0) {
             return 2021;
@@ -698,26 +699,66 @@ function collectAllFields(){
         return parseInt(stringValue);
     }
 
-    function getValueFromInputElement(divId){
-        return  document.getElementById(divId).value;
+    function getValueFromInputElement(divId) {
+        return document.getElementById(divId).value;
     }
-    function checkCarIsNew(){
-        return (frontName ==='new-car');
+
+    function getNumberValueFromInputElement(divId) {
+        let val = document.getElementById(divId).value;
+        if (val ==="") { val = 0 }
+        return val;
     }
+
+    function checkCarIsNew() {
+        return (frontName === 'new-car');
+    }
+
     function getValueOfCheckBox(elementId) {
         return document.getElementById(elementId).checked;
     }
 
+    function getPlateValueByCarType() {
+        let plate = '';
+        if (isUsedCarPosting) {
+            plate = getValueFromInputElement('statePlateNumber');
+        }
+        return plate;
+    }
 
+    function getValueByCarType(elementId) {
+        let value = 0;
+        if (isUsedCarPosting) {
+            let mayBeNotExistDiv = $('#' + elementId);
+            if (mayBeNotExistDiv.length > 0) {
+                value = getValueFromInputElement(elementId)
+            }
+        }
+        return value;
+    }
+
+    function getMileageValueByCarType() {
+        let value = 0;
+        if (isUsedCarPosting) {
+                value = getNumberValueFromInputElement('mileageInput');
+        }
+        return value;
+    }
+
+    function getConditionValueByCarType() {
+        let value = 'perfect new car';
+        if (isUsedCarPosting) {
+            value = 'in nice condition';
+        }
+        return value;
+    }
 
     return {
         vinCode: getValueFromInputElement('vinCode'),
         carIsNew: checkCarIsNew(),
-        sellerId: pco.sellerId,
         typeOfUsedCarPosting: getValueFromSelectElement('typeOfUsedCarPosting'),
-        statePlateNumber: getValueFromInputElement('statePlateNumber'),
-        mileage: getValueFromInputElement('mileageInput'),
-        numberOfOwners: getValueFromInputElement('ownerCount'),
+        statePlateNumber: getPlateValueByCarType(),
+        mileage: getMileageValueByCarType(),
+        numberOfOwners: getValueByCarType('ownerCount'),
         modelIdInAutoCatalogue: 0,
         carColor: getValueFromSelectElement('carColor'),
         carBrand: getValueFromSelectElement('carBrand'),
@@ -725,22 +766,22 @@ function collectAllFields(){
         carYear: checkCarYear('carYear'),
         carBodyType: 'Sedan',
         numberOfDoors: 4,
-       // wasInAccident: getValueOfCheckBox('wasInAccident'),
+        // wasInAccident: getValueOfCheckBox('wasInAccident'),
         wasInAccident: false,
         dealerServiced: getValueOfCheckBox('dealerServiced'),
-        underWarranty:getValueOfCheckBox('underWarranty'),
+        underWarranty: getValueOfCheckBox('underWarranty'),
         hasServiceBook: getValueOfCheckBox('hasServiceBook'),
         powerSteeringType: getValueFromSelectElement('powerSteeringType'),
         climateControlType: getValueFromSelectElement('climateControlType'),
         onWheelControl: getValueOfCheckBox('onWheelControl'),
         thermalGlass: getValueOfCheckBox('thermalGlass'),
-        interiorType:  getValueFromSelectElement('interiorType'),
+        interiorType: getValueFromSelectElement('interiorType'),
         leatherWheel: getValueOfCheckBox('leatherWheel'),
         sunroof: getValueOfCheckBox('sunroof'),
-        heatedFrontSeats:getValueOfCheckBox('heatedFrontSeats'),
+        heatedFrontSeats: getValueOfCheckBox('heatedFrontSeats'),
         heatedRearSeats: getValueOfCheckBox('heatedRearSeats'),
         heatedMirrors: getValueOfCheckBox('heatedMirrors'),
-        heatedRearWindow : getValueOfCheckBox('heatedRearWindow'),
+        heatedRearWindow: getValueOfCheckBox('heatedRearWindow'),
         heatedWheel: getValueOfCheckBox('heatedWheel'),
         powerWindowsType: getValueFromSelectElement('powerWindowsType'),
         powerFrontSeats: getValueOfCheckBox('powerFrontSeats'),
@@ -748,15 +789,15 @@ function collectAllFields(){
         powerMirrorRegulation: getValueOfCheckBox('powerMirrorRegulation'),
         powerSteeringWheelRegulation: getValueOfCheckBox('powerSteeringWheelRegulation'),
         powerMirrorClose: getValueOfCheckBox('powerMirrorClose'),
-        frontSeatsMemory : getValueOfCheckBox('frontSeatsMemory'),
+        frontSeatsMemory: getValueOfCheckBox('frontSeatsMemory'),
         rearSeatsMemory: getValueOfCheckBox('rearSeatsMemory'),
-        mirrorRegulationMemory : getValueOfCheckBox('mirrorRegulationMemory'),
+        mirrorRegulationMemory: getValueOfCheckBox('mirrorRegulationMemory'),
         steeringWheelRegulationMemory: getValueOfCheckBox('steeringWheelRegulationMemory'),
         parkingAssist: getValueOfCheckBox('parkingAssist'),
         rainSensor: getValueOfCheckBox('rainSensor'),
         lightSensor: getValueOfCheckBox('lightSensor'),
-        rearParkingSensor : getValueOfCheckBox('rearParkingSensor'),
-        frontParkingSensor:getValueOfCheckBox('frontParkingSensor'),
+        rearParkingSensor: getValueOfCheckBox('rearParkingSensor'),
+        frontParkingSensor: getValueOfCheckBox('frontParkingSensor'),
         blindSpotZoneControl: getValueOfCheckBox('blindSpotZoneControl'),
         rearCamera: getValueOfCheckBox('rearCamera'),
         cruiseControl: getValueOfCheckBox('cruiseControl'),
@@ -777,7 +818,7 @@ function collectAllFields(){
         emergencyBreakSystem: getValueOfCheckBox('emergencyBreakSystem'),
         diffLockSystem: getValueOfCheckBox('diffLockSystem'),
         pedestrianDetectSystem: getValueOfCheckBox('pedestrianDetectSystem'),
-        cdDvdBluRay:getValueOfCheckBox('cdDvdBluRay'),
+        cdDvdBluRay: getValueOfCheckBox('cdDvdBluRay'),
         mp3: getValueOfCheckBox('mp3'),
         radio: getValueOfCheckBox('radio'),
         tvSystem: getValueOfCheckBox('tvSystem'),
@@ -787,7 +828,6 @@ function collectAllFields(){
         aux: getValueOfCheckBox('aux'),
         bluetooth: getValueOfCheckBox('bluetooth'),
         gpsNavigation: getValueOfCheckBox('gpsNavigation'),
-
         audioSystemType: getValueFromSelectElement('audioSystemType'),
         subwoofer: getValueOfCheckBox('subwoofer'),
         frontLightType: getValueFromSelectElement('frontLightType'),
@@ -807,33 +847,30 @@ function collectAllFields(){
         contact: getValueFromInputElement('inputPhone'),
         meetingAddress: '',
         datePosting: '',
-        condition: '',
+        condition: getConditionValueByCarType(),
         videoURL: 'https://youtube.com/',
-        contactEmail: '',
+        contactEmail: getValueFromInputElement('inputEmail'),
         message: '',
-        price: getValueFromInputElement('carPrice'),
+        price: getNumberValueFromInputElement('carPrice'),
         isActive: true,
         viewNumber: 0,
-        city: 'Moscow'
+        city: 'Moscow',
+        categoryId: categoryId
     }
 
 }
 
+let submitAndSavePostingButton = document.getElementById('saveButton');
+submitAndSavePostingButton.onclick = () => saveFunction();
+
 function saveFunction() {
-    alert('Save is ok! ))))')
-
     let posting = collectAllFields();
-
     console.log(posting);
-
     let json_posting = JSON.stringify(posting);
     console.log(json_posting);
-
     const requestURL = '/api/posting/car/new-save';
-
     sendRequest('POST', requestURL, json_posting).then(() => {
-        console.log("saved/ may be");
-          savedSuccess();
+        savedSuccess();
     }).catch(err => console.log(err))
 
     async function sendRequest(method, url, body) {
