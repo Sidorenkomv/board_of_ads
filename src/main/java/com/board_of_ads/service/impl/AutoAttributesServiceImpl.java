@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -43,7 +42,7 @@ public class AutoAttributesServiceImpl implements AutoAttributesService {
     public Set<String> getAllAutoColorsRusNames() {
         List<AutoColor> acList = autoColorRepository.findAll();
         Set<String> autoColorsSet = new TreeSet<>();
-        for (AutoColor ac: acList) {
+        for (AutoColor ac : acList) {
             autoColorsSet.add(ac.getColorRusName());
         }
         return autoColorsSet;
@@ -56,16 +55,13 @@ public class AutoAttributesServiceImpl implements AutoAttributesService {
 
     @Override
     public void getDataFromAutoCatalogueExcel() throws IOException {
-
         FileInputStream fileInputStream = new FileInputStream("src/main/resources/auto_catalogue/auto_catalogue.xls");
-
         BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
         Workbook workbook = new HSSFWorkbook(bufferedInputStream);
         Sheet sheet = workbook.getSheetAt(0);
-
         for (Row row : sheet) {
             AutoModel auto = new AutoModel();
-            String brand =row.getCell(0).getStringCellValue();
+            String brand = row.getCell(0).getStringCellValue();
             auto.setBrand(brand);
             CellType cellType = row.getCell(1).getCellType();
             String model;
@@ -76,7 +72,6 @@ public class AutoAttributesServiceImpl implements AutoAttributesService {
                 model = Integer.toString(m);
             }
             auto.setModel(model);
-
             short yearStart;
             cellType = row.getCell(2).getCellType();
             if (cellType.equals(CellType.NUMERIC)) {
@@ -85,27 +80,21 @@ public class AutoAttributesServiceImpl implements AutoAttributesService {
                 yearStart = 1990;
             }
             auto.setYearStart(yearStart);
-
             short yearEnd;
-
             cellType = row.getCell(3).getCellType();
             if (cellType.equals(CellType.NUMERIC)) {
                 yearEnd = (short) row.getCell(3).getNumericCellValue();
             } else {
                 yearEnd = 2020;
             }
-
             auto.setYearEnd(yearEnd);
-       //     System.out.println("Added car: " + brand + " - " + model + " start: " + yearStart + " end: " + yearEnd);
-
-
             autoModelRepository.save(auto);
         }
         fileInputStream.close();
     }
 
     @Override
-    public Set<String> getBrandsSet(){
+    public Set<String> getBrandsSet() {
         Set<String> brandsSet = new TreeSet<>();
         List<AutoModel> autoModelList = autoModelRepository.findAll();
         for (AutoModel am : autoModelList) {
@@ -115,7 +104,7 @@ public class AutoAttributesServiceImpl implements AutoAttributesService {
     }
 
     @Override
-    public Set<String> getModelsSet(String brand){
+    public Set<String> getModelsSet(String brand) {
         Set<String> modelsSet = new TreeSet<>();
         List<AutoModel> autoModelList = autoModelRepository.findAllByBrand(brand);
         for (AutoModel am : autoModelList) {
@@ -127,7 +116,7 @@ public class AutoAttributesServiceImpl implements AutoAttributesService {
     }
 
     @Override
-    public Set<Short> getYearsByBrandAndModel(String brand, String model){
+    public Set<Short> getYearsByBrandAndModel(String brand, String model) {
         AutoModel am = autoModelRepository.findAutoModelByBrandAndModel(brand, model);
         Set<Short> years = new TreeSet<>();
         for (short year = am.getYearStart(); year <= am.getYearEnd(); year++) {
@@ -137,8 +126,7 @@ public class AutoAttributesServiceImpl implements AutoAttributesService {
     }
 
     @Override
-    public AutoModel getAutoModelByBrandAndModel(String brand, String model){
+    public AutoModel getAutoModelByBrandAndModel(String brand, String model) {
         return autoModelRepository.findAutoModelByBrandAndModel(brand, model);
     }
-
 }
