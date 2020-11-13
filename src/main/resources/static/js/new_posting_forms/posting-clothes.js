@@ -1,9 +1,9 @@
-let frontName;
+
 let id;
 
 function showClothesForm(fName, ident) {
 
-    frontName = fName;
+
     id = ident;
 
 
