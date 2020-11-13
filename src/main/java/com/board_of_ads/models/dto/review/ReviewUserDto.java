@@ -12,7 +12,7 @@ public class ReviewUserDto {
     private String avatarUrl;
 
     public ReviewUserDto(User user){
-        this.firstName = user.getFirsName();
+        this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.avatarUrl = user.getAvatar().getPathURL();
     }

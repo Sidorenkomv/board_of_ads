@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="https://www.thymeleaf.org">
+<html lang="ru" xmlns:th="https://www.thymeleaf.org",   xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
@@ -33,10 +33,11 @@
             <a class="navbar-brand" title="Board of ads - сайт объявлений" href="/" id="ids">
                 <img class="logo-not-avito" src="images/logo.jpg">
             </a>
-            <div class="text-in-logo-header">Новое объявление</div>
+            <div sec:authorize="isAuthenticated()" class="text-in-logo-header">Новое объявление</div>
+            <div sec:authorize="!isAuthenticated()" class="text-in-logo-header">Авторизуйтесь, чтобы подать объявление</div>
         </nav>
     </div>
-    <div class="row category-head-container">
+    <div sec:authorize="isAuthenticated()" class="row category-head-container">
         <div class="col-2 category-head-text">Категория</div>
         <div id="pathCategory" class="col-10" style="display: none">
             <button id="pathCategoryButton" type="button" class="btn btn-link">
@@ -44,7 +45,7 @@
             </button>
         </div>
     </div>
-    <div id="visibleElement1" style="display: block">
+    <div sec:authorize="isAuthenticated()" id="visibleElement1" style="display: block">
         <div class="cascade-table-container" id="cascadeTableContainer"></div>
     </div>
 </div>
@@ -91,20 +92,20 @@
                         <input class="form-control form-control-sm" id="inputPhone" placeholder="8 ___ ___-__-__" inputmode="tel" autocomplete="off" data-marker="phone/input" value im-insert="true">
                     </div>
                 </div>
-                <fieldset class="form-group">
+                <fieldset id="wayOfCommunication" class="form-group">
                     <div class="row">
                         <legend class="col-form-label col-sm-2 pt-0">Способ связи</legend>
                         <div class="col-sm-10">
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="phoneAndMessages" checked>
+                                <input class="form-check-input" type="radio" name="communication" id="gridRadios1" value="По телефону и в сообщениях" checked>
                                 <label class="form-check-label" for="gridRadios1">По телефону и в сообщениях</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="phone">
+                                <input class="form-check-input" type="radio" name="communication" id="gridRadios2" value="По телефону">
                                 <label class="form-check-label" for="gridRadios2">По телефону</label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios3" value="messages">
+                                <input class="form-check-input" type="radio" name="communication" id="gridRadios3" value="В сообщениях">
                                 <label class="form-check-label" for="gridRadios3">В сообщениях</label>
                             </div>
                         </div>
