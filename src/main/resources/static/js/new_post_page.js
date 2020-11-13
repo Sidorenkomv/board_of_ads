@@ -1,7 +1,9 @@
 let displayLayer = 0;
 let path = [];
 $(document).ready(function () {
-    getCategoryColumn(0, 0).then();
+    if ($("#reguserid").val()) {
+        getCategoryColumn(0, 0).then();
+    }
 
     $('#buttonAuth').on('click', function () {
         $('#emailAuth').addClass("redborder");

@@ -4,23 +4,13 @@ let frontName = '';
 let postPhotos;
 
 async function sentHouseholdAppliancesPosting(selectedCategoryId) {
-    let url = '/new/householdAppliances/' + selectedCategoryId;
+    let url = '/api/posting/new/householdAppliances/' + selectedCategoryId;
     //postPhotos = document.getElementById('photos').files;
     //document.getElementById('uploadPhotos').setAttribute('src', '/images/upload-photo.svg');
 
     /*alert(`File name: ${photos[0].name}`); // например, my.png
     alert(`File name: ${photos[1].name}`); // например, my.png
     alert(`File name: ${photos[2].name}`); // например, my.png*/
-    console.log('title = ' + window.postTitle.value);
-    console.log('postState = ' + document.querySelector('input[name="state"]:checked').value);
-    console.log('postType = ' + window.postType.value);
-    console.log('postDescription = ' + window.postDescription.value);
-    console.log('postPrice = ' + window.postPrice.value);
-    console.log('postLinkYouTube = ' + window.postLinkYouTube.value);
-    console.log('inputAddress = ' + window.inputAddress.value);
-    console.log('inputEmail = ' + window.inputEmail.value);
-    console.log('inputPhone = ' + window.inputPhone.value);
-    console.log('wayOfCommunication = ' + document.querySelector('input[name="communication"]:checked').value,);
 
     let body = {
         title: window.postTitle.value,
@@ -34,7 +24,7 @@ async function sentHouseholdAppliancesPosting(selectedCategoryId) {
         contact: window.inputPhone.value,
         communicationType: document.querySelector('input[name="communication"]:checked').value,
     };
-    //await sendPosting(body, url);
+    await sendPosting(body, url);
 }
 
 async function getHouseholdAppliancesForm(frontName, selectedCategoryId) {

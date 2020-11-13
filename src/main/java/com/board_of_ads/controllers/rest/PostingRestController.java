@@ -1,16 +1,20 @@
 package com.board_of_ads.controllers.rest;
 
+import com.board_of_ads.models.User;
 import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.models.posting.forHomeAndGarden.HouseholdAppliancesPosting;
+import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.service.interfaces.CityService;
 import com.board_of_ads.service.interfaces.PostingService;
+import com.board_of_ads.service.interfaces.UserService;
 import com.board_of_ads.util.Error;
 import com.board_of_ads.util.ErrorResponse;
 import com.board_of_ads.util.Response;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +33,8 @@ public class PostingRestController {
 
     private final CityService cityService;
     private final PostingService postingService;
+    private final CategoryService categoryService;
+    private final UserService userService;
 
     @GetMapping
     public Response<List<PostingDto>> findAllPosts() {
@@ -92,9 +98,14 @@ public class PostingRestController {
     }
 
     @PostMapping("/new/householdAppliances/{id}")
-    public Response<Void> createHouseholdAppliancesPosting(@RequestParam Long id
-                                                           /*@RequestBody HouseholdAppliancesPosting posting*/) {
-        //postingService.save(posting);
+    public Response<Void> createHouseholdAppliancesPosting(@PathVariable Long id,
+                                                           @RequestBody HouseholdAppliancesPosting posting,
+                                                           @AuthenticationPrincipal User user) {
+        posting.setCategory(categoryService.getCategoryById(id));
+        posting.setUser(userService.getUserById(user.getId()));
+        posting.setIsActive(true);
+        posting.setViewNumber(0);
+        postingService.save(posting);
         return Response.ok().build();
     }
 }
