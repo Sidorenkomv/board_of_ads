@@ -320,7 +320,7 @@ public class DataInitializer {
 
         secondSubCategory.add(new Category("Женская одежда", categoryService.getCategoryByName("Одежда, обувь, аксессуары").get(), 3));
         secondSubCategory.add(new Category("Мужская одежда", categoryService.getCategoryByName("Одежда, обувь, аксессуары").get(), 3));
-        secondSubCategory.add(new Category("Аксесуары", categoryService.getCategoryByName("Одежда, обувь, аксессуары").get(), 3));
+        secondSubCategory.add(new Category("Аксесуары", categoryService.getCategoryByName("Одежда, обувь, аксессуары").get(), 3, "other-clothes"));
 
         secondSubCategory.add(new Category("Для девочек", categoryService.getCategoryByName("Детская одежда и обувь").get(), 3));
         secondSubCategory.add(new Category("Для мальчиков", categoryService.getCategoryByName("Детская одежда и обувь").get(), 3));

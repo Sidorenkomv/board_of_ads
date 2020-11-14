@@ -104,7 +104,6 @@ async function changeVisible(frontName, id) {
     $('#visibleElement1').hide();
     $('#visibleElement3').show();
 
-    console.log(frontName, id)
 
     switch (frontName) {
 
