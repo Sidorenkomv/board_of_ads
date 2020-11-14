@@ -1,18 +1,26 @@
 let displayLayer = 0;
 let path = [];
-
 $(document).ready(function () {
     getCategoryColumn(0, 0).then();
+
+    $('#buttonAuth').on('click', function () {
+        $('#emailAuth').addClass("redborder");
+        authorization().then();
+    });
 })
 
-async function getCategoryColumn(parentID, selectLayer, frontName) {
-    let categories = await getCategories(await getURL(parentID));
+async function getCategoryColumn(selectedCategoryId, selectLayer, frontName) {
+    let categories = await getCategories(await getURL(selectedCategoryId));
     await cleanCategoryColumns(selectLayer);
 
     if (categories.length !== 0) {
         displayLayer++;
-        let temp = document.getElementById('cascadeTableButton_' + parentID);
+        let temp = document.getElementById('cascadeTableButton_' + selectedCategoryId);
         let parentName = (temp === null) ? 'Категория' : temp.textContent;
+
+        if (temp !== null) {
+            path.push(temp.textContent + ' / ');
+        }
 
         document.getElementById('cascadeTableContainer').innerHTML +=
             '<div id="cascadeTableColumn' + displayLayer + '" class="cascade-table-column">' +
@@ -21,18 +29,22 @@ async function getCategoryColumn(parentID, selectLayer, frontName) {
 
         for (let i = 0; i < categories.length; i++) {
             let category = categories[i];
-            let id = 'cascadeTableButton_' + (category.frontName === null ? category.id : category.frontName);
+            let id = 'cascadeTableButton_' + category.id;
             let frontName = "\'" + category.frontName + "\'";
             document.getElementById('cascadeTableColumn' + displayLayer).innerHTML +=
                 `<div id="${id}" onMouseOver="hoverOnMouseOver()" 
-                        class="category-table-button inactive-category-table-button layer-${displayLayer}"  
+                        class="category-table-button inactive-category-table-button layer${displayLayer}"  
                         onclick="clickOnCategoryButton(this, ${category.id}, ${displayLayer}, ${frontName})">
                 ${category.name}
             </div>`
         }
         return true;
     } else {
-        return await changeVisible(frontName);
+        let temp;
+        temp = document.getElementById('cascadeTableButton_' + selectedCategoryId);
+        path.push(temp.textContent);
+        document.getElementById('pathCategoryButton').textContent = await getPath(path);
+        return await changeVisible(frontName, selectedCategoryId);
     }
 }
 
@@ -82,23 +94,24 @@ async function cleanCategoryColumns(selectLayer) {
         for (let i = selectLayer+1; i <= displayLayer; i++) {
             document.getElementById('cascadeTableColumn' + i).remove();
         }
+        path.splice(selectLayer - 1, path.length - selectLayer + 1);
         displayLayer = selectLayer;
     }
 }
 
-async function changeVisible(frontName) {
+async function changeVisible(frontName, id) {
     $('#pathCategory').show();
     $('#visibleElement1').hide();
-    $('#visibleElement2').show();
     $('#visibleElement3').show();
 
     switch(frontName) {
-        case 'used-car':  await carPostingFunction(frontName);
+        case 'used-car':  carPostingFunction(frontName, id);
             break;
-        case 'new-car':  await carPostingFunction(frontName);
+        case 'new-car':  carPostingFunction(frontName, id);
             break;
-
-        default: alert("notFOUND")
+        case 'householdAppliances': await getHouseholdAppliancesForm(frontName, id);
+            break;
+        default: alert('For frontName="' + frontName + '" not found posting form');
             break;
     }
 
@@ -107,16 +120,23 @@ async function changeVisible(frontName) {
 $('#pathCategoryButton').on('click', function () {
     $('#pathCategory').hide();
     $('#visibleElement1').show();
-    $('#visibleElement3').hide();
 });
 
-async function sendPosting(body, frontName) {
-    await fetch('/api/posting/new/' + frontName, {
+async function sendPosting(body, url) {
+    await fetch(url, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: body
+        body: JSON.stringify(body)
     });
+}
+
+async function getPath(arr) {
+    let result = '';
+    arr.forEach(item => {
+        result = result + item;
+    })
+    return result;
 }

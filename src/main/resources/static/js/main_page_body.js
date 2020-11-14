@@ -6,17 +6,31 @@ textInput = $("#search-main-text").val();
 photoOption = $("#image-select option:selected").val();
 
 function getPostingsTable(posts, favorites) {
-    if(posts === "undefined") {
+
+    let options = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        timezone: 'UTC',
+        hour: 'numeric',
+        minute: 'numeric'
+    };
+
+    if (posts === "undefined") {
 
     } else {
         for (let step = 0; step < posts.length; step++) {
 
             let postingDTO = posts[step];
 
-            let date = postingDTO.datePosting.toString().substring(8, 10) + "-" +
-                postingDTO.datePosting.toString().substring(5, 7) + "-" +
-                postingDTO.datePosting.toString().substring(0, 4) + " " +
-                postingDTO.datePosting.toString().substring(11, 16);
+            let date = new Intl.DateTimeFormat("ru-RU", options)
+                .format(new Date(postingDTO.datePosting[0],
+                    postingDTO.datePosting[1] - 1,
+                    postingDTO.datePosting[2],
+                    postingDTO.datePosting[3],
+                    postingDTO.datePosting[4]));
+
+            let price = new Intl.NumberFormat('ru-RU').format(postingDTO.price);
 
             document.getElementById('mainPageBody').innerHTML +=
                 `<div id="main_page_posting" class="col-md-3">
@@ -37,7 +51,7 @@ function getPostingsTable(posts, favorites) {
                             <div id="postingCardBody" class="card-body">
                                 <a id="postingTitle" class="text-primary" href="/${postingDTO.id}">${postingDTO.title}</a>
                                 <strong>
-                                    <div id="price">${postingDTO.price} ₽</div>
+                                    <div id="price">${price} ₽</div>
                                 </strong>
                                 <div class="card-text text-muted">
                                     <div id="meetingPlace">${postingDTO.city}</div>
@@ -59,7 +73,6 @@ function getPostingsTable(posts, favorites) {
             $(".addToWish").on('click', function (event) {
                 event.preventDefault();
 
-                let userid = $("#reguserid").val();
                 let postingId = this.dataset.id;
 
                 $("#add" + postingId).hide()
@@ -79,7 +92,6 @@ function getPostingsTable(posts, favorites) {
 
                 event.preventDefault();
 
-                let userid = $("#reguserid").val();
                 let postingId = this.dataset.id;
 
                 $("#delete" + postingId).hide()
@@ -129,14 +141,6 @@ function getPostingsTable(posts, favorites) {
                                 </div>`
             }
         }
-
-
-        if ($("#reguserid").val()) {
-            fetch(`/api/favorite/addregid/` + $("#reguserid").val())
-            fetch(`/api/favorite/addregipafter/` + $("#reguserid").val())
-        }
-
-
     }
 }
 

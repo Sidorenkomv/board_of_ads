@@ -5,6 +5,7 @@ import com.board_of_ads.models.dto.PostingCarDto;
 import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
+import com.board_of_ads.models.posting.forHomeAndGarden.HouseholdAppliancesPosting;
 import com.board_of_ads.models.posting.autoTransport.cars.PostingCar;
 import com.board_of_ads.service.interfaces.AutoAttributesService;
 import com.board_of_ads.service.interfaces.CityService;
@@ -148,4 +149,11 @@ public class PostingRestController {
         }
     }
 
+
+    @PostMapping("/new/householdAppliances/{id}")
+    public Response<Void> createHouseholdAppliancesPosting(@RequestParam Long id
+                                                           /*@RequestBody HouseholdAppliancesPosting posting*/) {
+        //postingService.save(posting);
+        return Response.ok().build();
+    }
 }
