@@ -24,4 +24,6 @@ public interface UserService {
     boolean checkUserDataBeforeReg(User user, BindingResult bindingResult, Logger logger);
 
     User update(User principal, UserDto user) throws Exception;
+
+    List<UserDto> getAllUsersDto();
 }
