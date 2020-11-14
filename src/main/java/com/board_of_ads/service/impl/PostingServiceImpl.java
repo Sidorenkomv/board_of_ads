@@ -198,11 +198,6 @@ public class PostingServiceImpl implements PostingService {
     }
 
     @Override
-    public void saveNewPostingCar(PostingCar postingCar) {
-        postingCarRepository.save(postingCar);
-    }
-
-    @Override
     public List<PostingDto> getFavDtosFromUser(User user) {
         List<Long> listfavoritsid = new ArrayList<>();
         user.getFavorites().forEach(x ->listfavoritsid.add(x.getId()));

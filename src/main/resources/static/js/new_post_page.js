@@ -105,9 +105,9 @@ async function changeVisible(frontName, id) {
     $('#visibleElement3').show();
 
     switch(frontName) {
-        case 'used-car':  carPostingFunction(frontName, id);
+        case 'used-car':  await carPostingFunction(frontName, id);
             break;
-        case 'new-car':  carPostingFunction(frontName, id);
+        case 'new-car':  await carPostingFunction(frontName, id);
             break;
         case 'householdAppliances': await getHouseholdAppliancesForm(frontName, id);
             break;

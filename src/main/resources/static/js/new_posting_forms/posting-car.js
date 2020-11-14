@@ -1,4 +1,4 @@
-let frontName;
+let carFN;
 let pco;
 let colorsSetGlobal;
 let carBrandsGlobal;
@@ -7,8 +7,8 @@ let isUsedCarPosting;
 
 
 async function carPostingFunction(fName, id) {
-    frontName = fName;
-    isUsedCarPosting = (frontName === 'used-car');
+    carFN = fName;
+    isUsedCarPosting = (carFN === 'used-car');
     categoryId = id;
     colorsSetGlobal = await getColorsSet();
     carBrandsGlobal = await getCarBrandsSet();
@@ -36,7 +36,7 @@ const postingCarService = {
 }
 
 async function getPostingCarMap() {
-    postingCarService.getPostingCarMap(frontName).then((async pc => {
+    postingCarService.getPostingCarMap(carFN).then((async pc => {
             console.log(pc);
             await fillNewCarPostingFields(pc.data);
         })
@@ -254,7 +254,6 @@ function makeRowCol3Col9(id, text, innerDiv) {
     div.appendChild(row);
     return div;
 }
-
 
 function createDiv3CarBrandFields(div3) {
     let select = document.createElement('select');
@@ -526,7 +525,6 @@ function createDiv5AllInOne(div5) {
     div5.appendChild(div);
 }
 
-
 function createDiv6DescriptionField(div6) {
     let div = document.createElement('div');
     let row = document.createElement('div');
@@ -554,7 +552,6 @@ function createDiv6DescriptionField(div6) {
     div6.appendChild(div);
 }
 
-
 function makeOptionsVsTitle(field, text, options) {
     let div = document.createElement('div');
     let div1 = document.createElement('div');
@@ -573,7 +570,6 @@ function makeOptionsVsTitle(field, text, options) {
     return div;
 }
 
-
 function makeCheckbox(id, text) {
     let div = document.createElement('div');
     div.setAttribute('class', 'custom-control custom-checkbox');
@@ -590,14 +586,12 @@ function makeCheckbox(id, text) {
     return div;
 }
 
-
 function makeDescriptionText(text) {
     let div = document.createElement('span');
     div.setAttribute('class', 'description-label');
     div.innerText = text;
     return div;
 }
-
 
 function createDiv7PriceFields(div7) {
     let row = document.createElement('div');
@@ -648,8 +642,6 @@ function changeMeetingPlace() {
 function addTypeOfUsedCarPosting() {
     let a = document.getElementById('pathCategory').parentElement.parentElement;
     a.appendChild(addPostingType());
-
-
 }
 
 function addPostingType() {
@@ -670,9 +662,6 @@ function addPostingType() {
 savedSuccess = function () {
     alert("Saved!");
 }
-
-
-
 
 function collectAllFields() {
     function getValueFromSelectElement(divId) {
@@ -710,7 +699,7 @@ function collectAllFields() {
     }
 
     function checkCarIsNew() {
-        return (frontName === 'new-car');
+        return (carFN === 'new-car');
     }
 
     function getValueOfCheckBox(elementId) {
