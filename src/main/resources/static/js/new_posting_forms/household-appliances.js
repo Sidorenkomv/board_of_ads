@@ -21,8 +21,8 @@ async function sentForHomeAndGardenPosting(frontName, selectedCategoryId) {
     formData.append('contact', window.inputPhone.value);
     formData.append('communicationType', document.querySelector('input[name="communication"]:checked').value);
 
-    //document.getElementById('uploadPhotos').setAttribute('src', '/images/upload-photo.svg');
     await sendFile(formData, url);
+    window.location.href = '/';
 }
 
 async function sendFile(body, url) {
