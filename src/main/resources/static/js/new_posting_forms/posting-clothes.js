@@ -77,14 +77,15 @@ function showClothesForm(fName, ident) {
         '                </div>\n' +
         '\n' +
         '                <div class="form-group row">\n' +
-        '                    <label for="photos" class="col-sm-2 col-form-label">Фотографии</label>\n' +
-        '\n' +
+        '                    <label for="postPhotos" class="col-sm-2 col-form-label">Фотографии</label>\n' +
         '                    <div class="col-sm-2 d-flex">\n' +
-        '                        <label class="photo-upload" data-marker="add">\n' +
-        '                            <input id="photos" type="file" value="" multiple="" style="display: none" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input">\n' +
+        '                        <label class="" data-marker="add">\n' +
+        '                            <input id="postPhotos" type="file" value="" multiple style="display: block" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input">\n' +
+        '                            <div id="uploadPhotos"></div>' +
         '                        </label>\n' +
         '                    </div>\n' +
         '                </div>\n' +
+
         '\n' +
         '                <div class="form-group row">\n' +
         '                    <label for="linkYouTube" class="col-sm-2 col-form-label">Видео c YouTube</label>\n' +
@@ -288,27 +289,45 @@ function showOtherClothesForm(fName, ident) {
 let btn = document.getElementById("saveButton");
 btn.addEventListener("click", () => {
 
-    let posting = {
-        size: $('#size').val(),
-        state: document.querySelector('input[name="state"]:checked').value,
-        typeAd: $('#typeAd').val(),
-        title: $('#title').val(),
-        description: $('#description').val(),
-        price: $('#price').val(),
-        linkYouTube: $('#linkYouTube').val(),
-        meetingAddress: $('#meetingAddress').val(),
-        contact: $('#inputPhone').val()
+    // let posting = {
+    //     size: $('#size').val(),
+    //     state: document.querySelector('input[name="state"]:checked').value,
+    //     typeAd: $('#typeAd').val(),
+    //     title: $('#title').val(),
+    //     description: $('#description').val(),
+    //     price: $('#price').val(),
+    //     linkYouTube: $('#linkYouTube').val(),
+    //     meetingAddress: $('#meetingAddress').val(),
+    //     contact: $('#inputPhone').val()
+    //
+    // };
 
-    };
+    const formData = new FormData();
+    const fileField = document.querySelector('input[type="file"][multiple]');
+
+    for (let i = 0; i < fileField.files.length; i++) {
+        formData.append('photos', fileField.files[i]);
+    }
+    let price = window.price.value;
+    formData.append('title', window.title.value);
+    formData.append('state', document.querySelector('input[name="state"]:checked').value);
+    formData.append('type', window.typeAd.value);
+    formData.append('description', window.description.value);
+    formData.append('price', price === "" ? 0 : price);
+    formData.append('linkYouTube', window.linkYouTube.value);
+    formData.append('meetingAddress', window.meetingAddress.value);
+ //   formData.append('contactEmail', window.inputEmail.value);
+//    formData.append('contact', window.inputPhone.value);
+  //  formData.append('communicationType', document.querySelector('input[name="communication"]:checked').value);
 
     fetch('/api/posting/clothes/' + id, {
 
         method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(posting)
+        // headers: {
+        //     'Accept': 'application/json',
+        //     'Content-Type': 'application/json'
+        // },
+        body: formData
     });
 
 })
