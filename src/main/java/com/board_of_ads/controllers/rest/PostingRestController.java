@@ -11,6 +11,7 @@ import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.service.interfaces.CityService;
 import com.board_of_ads.service.interfaces.ImageService;
 import com.board_of_ads.service.interfaces.PostingService;
+import com.board_of_ads.service.interfaces.UserService;
 import com.board_of_ads.util.Error;
 import com.board_of_ads.util.ErrorResponse;
 import com.board_of_ads.util.Response;
@@ -48,6 +49,7 @@ public class PostingRestController {
     private final CategoryService categoryService;
     private final CategoryRepository categoryRepository;
     private final ImageService imageService;
+    private final UserService userService;
 
 
     @GetMapping
@@ -128,16 +130,16 @@ public class PostingRestController {
     @PostMapping("/clothes/{id}")
     public Response<Void> createPersonalClothesPosting(@PathVariable Long id,
                                                        @AuthenticationPrincipal User user,
-                                                       @RequestBody Clothes clothes,
+                                                       @RequestParam Map<String, String> map,
                                                        @RequestParam(value = "photos") List<MultipartFile> photos) {
         log.info("Create posting clothes");
 
-
+        Clothes posting;
         try {
 
-            clothes.setCategory(categoryRepository.findCategoryById(id));
-            clothes.setUser(user);
-
+            posting = new Clothes(userService.getUserById(user.getId()), categoryService.getCategoryById(id),
+                    map.get("title"), map.get("description"), Long.parseLong(map.get("price")), map.get("contact"),
+                    true, map.get("linkYouTube"), map.get("state"));
 
             List<Image> images = new ArrayList<>();
             String time = new SimpleDateFormat("yyyy'-'MM'-'dd'_'HHmmss'_'").format(new Date());
@@ -164,8 +166,8 @@ public class PostingRestController {
                 log.info("Вам не удалось загрузить фотографии => " + ex.getMessage());
                 return new ErrorResponse<>(new Error(400, "Posting is not created"));
             }
-            clothes.setImages(images);
-            postingService.save(clothes);
+            posting.setImages(images);
+            postingService.save(posting);
             log.info("Объявление успешно создано пользователем " + user.getEmail());
             return Response.ok().build();
         } catch (Exception ex) {
