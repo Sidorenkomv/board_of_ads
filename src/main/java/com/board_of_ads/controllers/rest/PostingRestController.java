@@ -1,5 +1,6 @@
 package com.board_of_ads.controllers.rest;
 
+import com.board_of_ads.models.Image;
 import com.board_of_ads.models.User;
 import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
@@ -8,6 +9,7 @@ import com.board_of_ads.models.posting.personalBelongings.Clothes;
 import com.board_of_ads.repository.CategoryRepository;
 import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.service.interfaces.CityService;
+import com.board_of_ads.service.interfaces.ImageService;
 import com.board_of_ads.service.interfaces.PostingService;
 import com.board_of_ads.util.Error;
 import com.board_of_ads.util.ErrorResponse;
@@ -23,8 +25,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/posting")
@@ -37,6 +47,7 @@ public class PostingRestController {
 
     private final CategoryService categoryService;
     private final CategoryRepository categoryRepository;
+    private final ImageService imageService;
 
 
     @GetMapping
@@ -102,7 +113,7 @@ public class PostingRestController {
     }
 
 
-    @PostMapping("/clothes/{id}")
+    // @PostMapping("/clothes/{id}")
     public Response<Void> createPostingClothes(@AuthenticationPrincipal User user, @RequestBody Clothes clothes, @PathVariable Long id) {
         log.info("Create posting clothes");
 
@@ -112,5 +123,54 @@ public class PostingRestController {
 
         postingService.save(clothes);
         return Response.ok().build();
+    }
+
+    @PostMapping("/clothes/{id}")
+    public Response<Void> createPersonalClothesPosting(@PathVariable Long id,
+                                                       @AuthenticationPrincipal User user,
+                                                       @RequestBody Clothes clothes,
+                                                       @RequestParam(value = "photos") List<MultipartFile> photos) {
+        log.info("Create posting clothes");
+
+
+        try {
+
+            clothes.setCategory(categoryRepository.findCategoryById(id));
+            clothes.setUser(user);
+
+
+            List<Image> images = new ArrayList<>();
+            String time = new SimpleDateFormat("yyyy'-'MM'-'dd'_'HHmmss'_'").format(new Date());
+            try {
+                for (int i = 0; i < photos.size(); i++) {
+                    if (!photos.get(i).isEmpty()) {
+                        byte[] bytes = photos.get(i).getBytes();
+                        File dir = new File("uploaded_files/userID_" + user.getId());
+                        dir.mkdirs();
+                        File file = new File(dir, time + photos.get(i).getOriginalFilename());
+                        BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(file));
+
+                        stream.write(bytes);
+                        stream.close();
+                        Image image = new Image(dir.toString() + file.toString());
+                        imageService.save(image);
+                        images.add(imageService.getByPathURL(dir.toString() + file.toString()));
+                        log.info("Файл '" + time + photos.get(i).getOriginalFilename() + "' успешно загружен.");
+                    } else {
+                        log.info("Вам не удалось загрузить файл, потому что он пустой.");
+                    }
+                }
+            } catch (Exception ex) {
+                log.info("Вам не удалось загрузить фотографии => " + ex.getMessage());
+                return new ErrorResponse<>(new Error(400, "Posting is not created"));
+            }
+            clothes.setImages(images);
+            postingService.save(clothes);
+            log.info("Объявление успешно создано пользователем " + user.getEmail());
+            return Response.ok().build();
+        } catch (Exception ex) {
+            log.info("Не удалось создать объявление => " + ex.getMessage());
+            return new ErrorResponse<>(new Error(400, "Posting is not created"));
+        }
     }
 }

@@ -2,6 +2,7 @@ package com.board_of_ads.models;
 
 import com.board_of_ads.models.posting.Posting;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -39,14 +40,18 @@ public class Image {
     private String pathURL;
 
     @ManyToMany
-    @JoinTable(name="posting_images",
-            joinColumns=@JoinColumn (name="posting_id"),
-            inverseJoinColumns=@JoinColumn(name="image_id"))
+    @JoinTable(name = "posting_images",
+            joinColumns = @JoinColumn(name = "posting_id"),
+            inverseJoinColumns = @JoinColumn(name = "image_id"))
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Posting> postings;
 
     public Image(Long id, String pathURL) {
         this.id = id;
+        this.pathURL = pathURL;
+    }
+
+    public Image(String pathURL) {
         this.pathURL = pathURL;
     }
 }
