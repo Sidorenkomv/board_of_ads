@@ -116,9 +116,10 @@ function showAllUsersTable() {
 
                     tr.setAttribute('id', "userDataTable");
 
-                    const userRoles = user.roles.map(role => {
-                        return role.name;
-                    }).join(", ");
+                    // const userRoles = user.roles.map(role => {
+                    //     return role.name;
+                    // }).join(", ");
+                    let userRoles = user.roles;
 
                     //создаем поля таблицы
                     let tdId = document.createElement('td');

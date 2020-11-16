@@ -2,6 +2,7 @@ package com.board_of_ads.controllers.rest;
 
 import com.board_of_ads.models.User;
 import com.board_of_ads.models.dto.RoleDto;
+import com.board_of_ads.models.dto.UserDto;
 import com.board_of_ads.service.interfaces.RoleService;
 import com.board_of_ads.service.interfaces.UserService;
 import com.board_of_ads.util.BindingResultLogs;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -52,8 +54,13 @@ public class AdminRestController {
     }
 
     @GetMapping("/allUsers")
-    public Response<List<User>> getAllUsersList() {
-        List<User> userList = userService.getAllUsers();
+    public Response<List<UserDto>> getAllUsersList() {
+        List<UserDto> userList = new ArrayList<>();
+        userService.getAllUsersDto().forEach(e -> {
+            e.setRoles(userService.getUserById(e.getId()).getRoles());
+            userList.add(e);
+        });
+
         return (userList.size() > 0)
                 ? Response.ok(userList)
                 : Response.error().code(HttpStatus.NOT_FOUND).text("Incorrect Data").build();
