@@ -11,6 +11,8 @@ import com.board_of_ads.models.dto.order.DeliveryStatus;
 import com.board_of_ads.models.dto.review.Review;
 import com.board_of_ads.models.UserNotification;
 import com.board_of_ads.models.posting.Posting;
+import com.board_of_ads.models.posting.autoTransport.cars.car_attributes.AutoColor;
+import com.board_of_ads.service.interfaces.AutoAttributesService;
 import com.board_of_ads.service.interfaces.MessageService;
 import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.service.interfaces.CityService;
@@ -49,9 +51,10 @@ public class DataInitializer {
     private final ReviewService reviewService;
     private final ImageService imageService;
     private final NotificationService notificationService;
+    private final AutoAttributesService autoAttributesService;
     private final MessageService messageService;
 
-  
+
     @PostConstruct
     private void init() throws IOException {
         initUsers();
@@ -63,6 +66,7 @@ public class DataInitializer {
         initOrders();
         initReviews();
         initNotifications();
+        initCarAttributes();
         initMessages();
     }
 
@@ -192,9 +196,6 @@ public class DataInitializer {
         List<Category> secondSubCategory = new ArrayList<>();
         Category myUsedCarCategory = new Category("С пробегом", categoryService.getCategoryByName("Автомобили").get(), 3, "used-car");
         Category myNewCarCategory = new Category("Новые", categoryService.getCategoryByName("Автомобили").get(), 3, "new-car");
-
-//        secondSubCategory.add(new Category("С пробегом", categoryService.getCategoryByName("Транспорт:Автомобили").get(), 3));
-//        secondSubCategory.add(new Category("Новые", categoryService.getCategoryByName("Транспорт:Автомобили").get(), 3));
 
         secondSubCategory.add(myNewCarCategory);
         secondSubCategory.add(myUsedCarCategory);
@@ -656,7 +657,7 @@ public class DataInitializer {
             reviewService.save(review);
         }
     }
-  
+
     private void initMoreUsers() {
 
         if (userService.getUserByEmail("super@mail.ru") == null) {
@@ -742,13 +743,37 @@ public class DataInitializer {
             un.setStatus("read");
             notificationService.updateUserNotificationFields(un);
         }
-
         UserNotification un2 = notificationService.findByNoteIdAndUserId(1694L, adminId);
         if (un2 != null) {
             un2.setUrgentLevel(2);
             notificationService.updateUserNotificationFields(un2);
         }
     }
+
+    private void initCarAttributes() throws IOException {
+        addCarColors();
+        autoAttributesService.getDataFromAutoCatalogueExcel();
+    }
+
+    public void addCarColors() {
+        autoAttributesService.saveNewAutoColor(new AutoColor("White", "Белый", "#FFFFFF"));
+        autoAttributesService.saveNewAutoColor(new AutoColor("Black", "Черный", "#000000"));
+        autoAttributesService.saveNewAutoColor(new AutoColor("Red", "Красный", "#FF0000"));
+        autoAttributesService.saveNewAutoColor(new AutoColor("Silver", "Серебряный", "#C0C0C0"));
+        autoAttributesService.saveNewAutoColor(new AutoColor("Gray", "Серый", "#808080"));
+        autoAttributesService.saveNewAutoColor(new AutoColor("Brown", "Коричневый", "#A52A2A"));
+        autoAttributesService.saveNewAutoColor(new AutoColor("Gold", "Золотой", "#FFD700"));
+        autoAttributesService.saveNewAutoColor(new AutoColor("Beige", "Бежевый", "#F5F5DC"));
+        autoAttributesService.saveNewAutoColor(new AutoColor("Orange", "Оранжевый", "#FFA500"));
+        autoAttributesService.saveNewAutoColor(new AutoColor("Yellow", "Желтый", "#FFFF00"));
+        autoAttributesService.saveNewAutoColor(new AutoColor("Green", "Зеленый", "#008000"));
+        autoAttributesService.saveNewAutoColor(new AutoColor("Cyan", "Голубой", "#00FFFF"));
+        autoAttributesService.saveNewAutoColor(new AutoColor("Blue", "Синий", "#0000FF"));
+        autoAttributesService.saveNewAutoColor(new AutoColor("Purple", "Фиолетовый", "#800080"));
+        autoAttributesService.saveNewAutoColor(new AutoColor("Magenta", "Пурпурный", "#FF00FF"));
+        autoAttributesService.saveNewAutoColor(new AutoColor("Pink", "Розовый", "#FFC0CB"));
+    }
+
     private void initMessages() {
         List<Message> messages = new ArrayList<>();
         messages.add(new Message(1L, "привет", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1600L)));

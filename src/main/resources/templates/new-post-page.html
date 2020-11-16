@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" href="../static/css/user-info-menu.css" th:href="@{/css/user-info-menu.css}"/>
     <link rel="stylesheet" type="text/css" href="../static/css/main_page_posting.css" th:href="@{/css/main_page_posting.css}"/>
     <link rel="stylesheet" type="text/css" href="../static/css/recovery-pswd.css" th:href="@{/css/recovery-pswd.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/posting-car.css" th:href="@{/css/posting-car.css}"/>
     <link rel="stylesheet" type="text/css" href="../static/css/fragment-navigate-panel-style.css" th:href="@{/css/fragment-navigate-panel-style.css}"/>
 
     <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
@@ -56,7 +57,7 @@
 
     <div id="dealAddress" class="main-container">
         <div class="category-head-container">
-            <div class="category-head-text">Место сделки</div>
+            <div id="meetingPlace" class="category-head-text">Место сделки</div>
         </div>
         <div>
             <p>
@@ -137,5 +138,10 @@
 <script sec:authorize="isAuthenticated()" src="../static/js/new_posting_forms/test.js" th:src="@{/js/new_posting_forms/test.js}"></script>
 <script src="../static/js/header.js" th:src="@{/js/header.js}"></script>
 <script sec:authorize="isAuthenticated()"  src="../static/js/new_posting_forms/household-appliances.js" th:src="@{/js/new_posting_forms/household-appliances.js}"></script>
+<script src="../static/js/new_posting_forms/test.js" th:src="@{/js/new_posting_forms/test.js}"></script>
+<script src="../static/js/new_posting_forms/household-appliances.js" th:src="@{/js/new_posting_forms/household-appliances.js}"></script>
+<script src="../static/js/new_posting_forms/posting-car.js" th:src="@{/js/new_posting_forms/posting-car.js}"></script>
+<script src="../static/js/new_posting_forms/test.js"
+        th:src="@{/js/new_posting_forms/test.js}"></script>
 </body>
 </html>

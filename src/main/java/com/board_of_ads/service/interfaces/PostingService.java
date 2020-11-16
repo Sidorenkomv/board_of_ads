@@ -2,9 +2,13 @@ package com.board_of_ads.service.interfaces;
 
 import com.board_of_ads.models.City;
 import com.board_of_ads.models.User;
+import com.board_of_ads.models.dto.PostingCarDto;
 import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
+import com.board_of_ads.models.posting.autoTransport.cars.PostingCar;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,4 +38,8 @@ public interface PostingService {
     List<PostingDto> getFavDtosFromUser(User user);
 
     List<Long> getFavIDFromUser(User user);
+
+    PostingCarDto getNewPostingCarDto(Long userId, String isCarNew);
+
+    PostingCar convertJsonToPostingCar(JSONObject json) throws JSONException;
 }
