@@ -27,8 +27,19 @@ public class Clothes extends Posting {
     private String state;
     private String typeAd;
     private String linkYouTube;
+    private String contactEmail;
+    private String communicationType;
 
-
-
-
+    public Clothes(User user, Category category, String title, String description, Long price, String contact, Boolean isActive,
+                   String contactEmail, String linkYouTube, String communicationType, String state) {
+        super(user, category, title, description, price, contact, isActive);
+        this.contactEmail = contactEmail;
+        this.linkYouTube = linkYouTube;
+        this.communicationType = communicationType;
+        this.state = state;
+    }
 }
+
+
+
+

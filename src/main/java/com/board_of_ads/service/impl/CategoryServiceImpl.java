@@ -141,8 +141,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Optional<Category> getCategoryById(Long id) {
-        return Optional.ofNullable(categoryRepository.findCategoryById(id));
+    public Category getCategoryById(Long id) {
+        return categoryRepository.findCategoryById(id);
     }
 
 

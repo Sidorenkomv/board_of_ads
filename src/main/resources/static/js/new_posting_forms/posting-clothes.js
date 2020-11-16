@@ -1,5 +1,6 @@
 let id;
 
+
 function showClothesForm(fName, ident) {
     id = ident;
     document.getElementById('visibleElement2').innerHTML =
@@ -13,7 +14,7 @@ function showClothesForm(fName, ident) {
         '                <div class="form-group row">\n' +
         '                    <label for="size" class="col-sm-2 col-form-label">Размер</label>\n' +
         '                    <div class="col-sm-3">\n' +
-        '                        <select id="size" name="size" class="custom-select custom-select-sm" required>\n' +
+        '                        <select id="size" name="size" class="custom-select custom-select-sm"  >\n' +
         '                            <option value="" data-marker="option">—</option>\n' +
         '                            <option value="44-46(S)">44-46(S)</option>\n' +
         '                            <option value="46-48(M)">46-48(M)</option>\n' +
@@ -43,7 +44,7 @@ function showClothesForm(fName, ident) {
         '                <div class="form-group row">\n' +
         '                    <label for="typeAd" class="col-sm-2 col-form-label">Вид объявления</label>\n' +
         '                    <div class="col-sm-3">\n' +
-        '                        <select id="typeAd" name="typeAd" class="custom-select custom-select-sm" required>\n' +
+        '                        <select id="typeAd" name="typeAd" class="custom-select custom-select-sm"  >\n' +
         '                            <option value="" data-marker="option">—</option>\n' +
         '                            <option value="Продаю своё">Продаю своё</option>\n' +
         '                            <option value="Товар приобретён на продажу">Товар приобретён на продажу</option>\n' +
@@ -56,7 +57,7 @@ function showClothesForm(fName, ident) {
         '                <div class="form-group row">\n' +
         '                    <label for="title" class="col-sm-2 col-form-label">Название объявления</label>\n' +
         '                    <div class="col-sm-6">\n' +
-        '                        <input  id="title" maxlength="100" type="text" class="form-control form-control-sm" value="Другое">\n' +
+        '                        <input  id="title" maxlength="100" type="text" class="form-control form-control-sm" value="Другое"  >\n' +
         '                        <p class="text-muted" data-toggle="tooltip" data-placement="top">Например, «Комбинезон зимний Reima 104 см» или «Apple Watch 3 стальной ремешок»</p>\n' +
         '                    </div>\n' +
         '                </div>\n' +
@@ -64,7 +65,7 @@ function showClothesForm(fName, ident) {
         '                <div class="form-group row">\n' +
         '                    <label for="description" class="col-sm-2 col-form-label">Описание объявления</label>\n' +
         '                    <div class="col-sm-6">\n' +
-        '                        <textarea id="description" name="description" rows="6" maxlength="5000" style="height: 130px;" class="form-control"></textarea>\n' +
+        '                        <textarea id="description" name="description"   rows="6" maxlength="5000" style="height: 130px;" class="form-control"></textarea>\n' +
         '                        <p class="text-muted">Не указывайте в описании телефон и e-mail — для этого есть отдельные поля</p>\n' +
         '                    </div>\n' +
         '                </div>\n' +
@@ -80,7 +81,7 @@ function showClothesForm(fName, ident) {
         '                    <label for="postPhotos" class="col-sm-2 col-form-label">Фотографии</label>\n' +
         '                    <div class="col-sm-2 d-flex">\n' +
         '                        <label class="" data-marker="add">\n' +
-        '                            <input id="postPhotos" type="file" value="" multiple style="display: block" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input">\n' +
+        '                            <input id="postPhotos" type="file" value="" multiple style="display: block" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input" >\n' +
         '                            <div id="uploadPhotos"></div>' +
         '                        </label>\n' +
         '                    </div>\n' +
@@ -112,7 +113,7 @@ function showShoesForm(fName, ident) {
         '                <div class="form-group row">\n' +
         '                    <label for="size" class="col-sm-2 col-form-label">Размер</label>\n' +
         '                    <div class="col-sm-3">\n' +
-        '                        <select id="size" name="size" class="custom-select custom-select-sm" required>\n' +
+        '                        <select id="size" name="size" class="custom-select custom-select-sm" >\n' +
         '                            <option value="" data-marker="option">—</option>\n' +
         '                            <option value="35"><35</option>\n' +
         '                            <option value="36">36</option>\n' +
@@ -147,7 +148,7 @@ function showShoesForm(fName, ident) {
         '                <div class="form-group row">\n' +
         '                    <label for="typeAd" class="col-sm-2 col-form-label">Вид объявления</label>\n' +
         '                    <div class="col-sm-3">\n' +
-        '                        <select id="typeAd" name="typeAd" class="custom-select custom-select-sm" required>\n' +
+        '                        <select id="typeAd" name="typeAd" class="custom-select custom-select-sm" >\n' +
         '                            <option value="" data-marker="option">—</option>\n' +
         '                            <option value="Продаю своё">Продаю своё</option>\n' +
         '                            <option value="Товар приобретён на продажу">Товар приобретён на продажу</option>\n' +
@@ -230,7 +231,7 @@ function showOtherClothesForm(fName, ident) {
         '                <div class="form-group row">\n' +
         '                    <label for="typeAd" class="col-sm-2 col-form-label">Вид объявления</label>\n' +
         '                    <div class="col-sm-3">\n' +
-        '                        <select id="typeAd" name="typeAd" class="custom-select custom-select-sm" required>\n' +
+        '                        <select id="typeAd" name="typeAd" class="custom-select custom-select-sm" >\n' +
         '                            <option value="" data-marker="option">—</option>\n' +
         '                            <option value="Продаю своё">Продаю своё</option>\n' +
         '                            <option value="Товар приобретён на продажу">Товар приобретён на продажу</option>\n' +
@@ -316,9 +317,9 @@ btn.addEventListener("click", () => {
     formData.append('price', price === "" ? 0 : price);
     formData.append('linkYouTube', window.linkYouTube.value);
     formData.append('meetingAddress', window.meetingAddress.value);
- //   formData.append('contactEmail', window.inputEmail.value);
+    //   formData.append('contactEmail', window.inputEmail.value);
 //    formData.append('contact', window.inputPhone.value);
-  //  formData.append('communicationType', document.querySelector('input[name="communication"]:checked').value);
+    //  formData.append('communicationType', document.querySelector('input[name="communication"]:checked').value);
 
     fetch('/api/posting/clothes/' + id, {
 
