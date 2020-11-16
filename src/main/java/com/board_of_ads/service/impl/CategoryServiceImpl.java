@@ -72,6 +72,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public Category getCategoryById(Long id) {
+        return categoryRepository.findCategoryById(id);
+    }
+
+    @Override
     public Optional<CategoryDto> getCategoryDtoByName(String name) {
         var category = categoryRepository.findCategoryByName(name);
         var categoryDto = new CategoryDto(

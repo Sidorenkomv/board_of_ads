@@ -4,11 +4,13 @@ import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import org.apache.catalina.connector.Connector;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.util.unit.DataSize;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -20,6 +22,7 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
+import javax.servlet.MultipartConfigElement;
 import java.util.Locale;
 
 @Configuration
@@ -105,5 +108,14 @@ public class WebConfig implements WebMvcConfigurer {
         connector.setSecure(false);
         connector.setRedirectPort(portHttps);
         return connector;
+    }
+
+    // Для загрузки файлов на сервер
+    @Bean
+    MultipartConfigElement multipartConfigElement() {
+        MultipartConfigFactory factory = new MultipartConfigFactory();
+        factory.setMaxFileSize(DataSize.ofMegabytes(10L));
+        factory.setMaxRequestSize(DataSize.ofMegabytes(10L));
+        return factory.createMultipartConfig();
     }
 }
