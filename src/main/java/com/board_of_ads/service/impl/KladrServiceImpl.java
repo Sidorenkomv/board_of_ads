@@ -7,16 +7,17 @@ import com.board_of_ads.repository.RegionRepository;
 import com.board_of_ads.service.interfaces.KladrService;
 import lombok.AllArgsConstructor;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -55,9 +56,11 @@ public class KladrServiceImpl implements KladrService {
         return regionRepository.existsRegionByName(regionName);
     }
 
+
+
     @Override
     public void streamKladr() throws IOException {
-        Set<FileInputStream> streamKLADR = new HashSet<>();
+        Set<FileInputStream> streamKLADR = new LinkedHashSet<>();
         FileInputStream fileInputStream_1 = new FileInputStream("src/main/resources/kladr/KLADR_1.xls");
         streamKLADR.add(fileInputStream_1);
         FileInputStream fileInputStream_2 = new FileInputStream("src/main/resources/kladr/KLADR_2.xls");
@@ -66,10 +69,13 @@ public class KladrServiceImpl implements KladrService {
         streamKLADR.add(fileInputStream_3);
         FileInputStream fileInputStream_4 = new FileInputStream("src/main/resources/kladr/KLADR_4.xls");
         streamKLADR.add(fileInputStream_4);
+
+
         for (FileInputStream fileInputStream : streamKLADR) {
             BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
             Workbook workbook = new HSSFWorkbook(bufferedInputStream);
             Sheet sheet = workbook.getSheetAt(0);
+
             for (Row row : sheet) {
                 if (row.getCell(1).getStringCellValue().equals("обл")
                         || row.getCell(1).getStringCellValue().equals("Респ")
@@ -106,16 +112,18 @@ public class KladrServiceImpl implements KladrService {
                         regionRepository.save(new Region(row.getCell(0).getStringCellValue(), row.getCell(2).getStringCellValue().substring(0, 2), regionFormSubject));
                     }
                 }
-                if (row.getCell(1).getStringCellValue().equals("г")
-                        & !(row.getCell(0).getStringCellValue().equals("Москва")
-                        || row.getCell(0).getStringCellValue().equals("Санкт-Петербург")
-                        || row.getCell(0).getStringCellValue().equals("Байконур")
-                        || row.getCell(0).getStringCellValue().equals("Севастополь"))) {
+                if (row.getCell(1).getStringCellValue().equals("г")) {
 
-                    if (!cityRepository.existsCityByNameAndRegion(row.getCell(0).getStringCellValue(), regionRepository.findRegionByRegionNumber(row.getCell(2).getStringCellValue().substring(0, 2)))) {
-                        cityRepository.save(new City(row.getCell(0).getStringCellValue(), regionRepository.findRegionByRegionNumber(row.getCell(2).getStringCellValue().substring(0, 2)), "Город"));
+                if (!cityRepository.existsCityByNameAndRegion(row.getCell(0).getStringCellValue(), regionRepository.findRegionByRegionNumber(row.getCell(2).getStringCellValue().substring(0, 2)))) {
+                    if (row.getCell(8) == null) {
+                        cityRepository.save(new City(row.getCell(0).getStringCellValue(), regionRepository.findRegionByRegionNumber(row.getCell(2).getStringCellValue().substring(0, 2)), "Город", false));
+                    }
+                    else if (row.getCell(8).getNumericCellValue() == 1) {
+                        cityRepository.save(new City(row.getCell(0).getStringCellValue(), regionRepository.findRegionByRegionNumber(row.getCell(2).getStringCellValue().substring(0, 2)), "Город", true));
+                    }
                     }
                 }
+
             }
             fileInputStream.close();
         }

@@ -1,22 +1,14 @@
 package com.board_of_ads.models;
 
 import com.board_of_ads.models.posting.Posting;
+import com.board_of_ads.repository.CityRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,14 +32,17 @@ public class City {
     @Column(name = "city_form_subject")
     private String regionFormSubject;
 
+    @Column(name = "million_city")
+    private boolean millionCity;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Region region;
 
     @OneToMany(fetch = FetchType.LAZY)
     private List<Posting> posts;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    private User user;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "city")
+    private List<User> users;
 
     public City(String name, Region region, String regionFormSubject) {
         this.regionFormSubject = regionFormSubject;
@@ -64,6 +59,13 @@ public class City {
                 Objects.equals(name, city.name);
     }
 
+    public City(String name, Region region, String regionFormSubject, boolean mil) {
+        this.regionFormSubject = regionFormSubject;
+        this.name = name;
+        this.region = region;
+        this.millionCity = mil;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(id, name);
@@ -77,4 +79,9 @@ public class City {
                 ", regionFormSubject='" + regionFormSubject + '\'' +
                 '}';
     }
+
+    public void setMillionCity(boolean millionCity) {
+        this.millionCity = millionCity;
+    }
+
 }

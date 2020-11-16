@@ -1,4 +1,31 @@
-$('#profileSettings, #profile-settings-from-header').on('click', async function() {
+
+$(document).ready(function () {
+    let selcity = document.getElementById("selectedCity");
+
+sendRequest('GET', '/api/city/userCity').then(data => data.data.name).then(city => {
+    selcity.textContent = city
+    document.getElementById("selectCity").selectedIndex = 0;
+
+}).catch(err => selcity.textContent = "Выберите город");
+
+})
+
+
+function sendMillionRequest(method, url, body = null) {
+    return fetch(url).then(response => {
+        return response.json()
+    })
+}
+
+
+function sendRequest(method, url, body = null) {
+    return fetch(url).then(response => {
+        return response.json()
+    })
+}
+
+
+$('#profileSettings, #profile-settings-from-header').on('click', async function () {
     $('#myPosts').addClass("d-none");
     document.getElementById('nav-settings').className = "tab-pane fade active show";
     let userResponse = await userService.getUserInfo();
@@ -15,12 +42,14 @@ $('#profileSettings, #profile-settings-from-header').on('click', async function(
                     } else {
                         $('#phoneTd').addClass("d-none");
                     }
-            })
             $('#userEmail').text(principal.data.principal.email);
             $('#userId').text(principal.data.principal.id);
             $('#fld_name').val(principal.data.principal.firsName);
-            $('#selectedCity').text(principal.data.principal.city != null ? principal.data.principal.city.name : '');
-            $('#selectedCity').val(principal.data.principal.city != null ? principal.data.principal.city.id : 0);
+               })
+
+            $('#userEmail').text(principal.data.principal.email);
+            $('#userId').text(principal.data.principal.id);
+            $('#fld_name').val(principal.data.principal.firsName);
         }
     );
 })
@@ -108,9 +137,100 @@ $('#changePasswordButton').on('click', function() {
         });
 })
 
+
 $('#selectCity').on('change', function() {
     $('#chooseCityModal').modal('show');
 })
+
+let idOfSelectedCity;
+
+
+$("#cityListM a").on('click', function () {
+    let value = $(this).data("value");
+    let option = document.getElementById("selectedCity");
+    option.textContent = value;
+    document.getElementById("selectCity").selectedIndex = 0;
+    idOfSelectedCity = $(this).attr('id')
+
+});
+
+$("#cityList a").on('click', function () {
+    let value = $(this).html();
+    let option = document.getElementById("selectedCity");
+    option.textContent = value;
+    document.getElementById("selectCity").selectedIndex = 0;
+    idOfSelectedCity = $(this).attr('id')
+
+});
+
+$("#cityList1 a").on('click', function () {
+    let value = $(this).html();
+    let option = document.getElementById("selectedCity");
+    option.textContent = value;
+    document.getElementById("selectCity").selectedIndex = 0;
+    idOfSelectedCity = $(this).attr('id')
+
+});
+
+$("#cityList2 a").on('click', function () {
+    let value = $(this).html();
+    let option = document.getElementById("selectedCity");
+    option.textContent = value;
+    document.getElementById("selectCity").selectedIndex = 0;
+    idOfSelectedCity = $(this).attr('id')
+
+});
+
+
+$("#saveCityOrNameButton").on('click', function () {
+    let data = {
+        email: '',
+        password: '',
+        newPassword: '',
+        firstName: $("#fld_name").val(),
+        cityId: idOfSelectedCity.toString()
+
+    };
+    userService.changeUserData(data)
+        .then(userResponse => userResponse.json())
+        .then(userResponse => {
+            if (userResponse.success === true) {
+                $('#SuccessMessage').removeClass("d-none");
+                $('#SuccessMessage').addClass("bg-success text-dark py-2 d-block");
+                $('#SuccessMessage').text("");
+                $('#SuccessMessage').append('Контактная информация успешно сохранена');
+            }
+        });
+})
+
+
+$('.js-regions-link').on('click', function () {
+    $('#chooseCityModal').modal('hide');
+})
+
+otherCities.onclick = function () {
+    showChooseCityModal();
+}
+
+$('#selectCity').on('change', function () {
+    showChooseCityModal();
+})
+
+
+async function showChooseCityModal() {
+    sendMillionRequest('GET', '/api/city/millionCities').then(data => {
+        let cid = 5001;
+        for (i = 0; i < 5029; i++) {
+            let millionCity = data.data[i];
+            document.getElementById(cid.toString()).style.fontSize = '12px';
+            document.getElementById(cid.toString()).innerHTML = millionCity.name;
+            document.getElementById(cid.toString()).id = millionCity.id;
+            cid++;
+        }
+    });
+    $('#chooseCityModal').modal('show');
+}
+
 
 $('#tooltip').tooltip();
 
@@ -206,8 +326,21 @@ const userService = {
             method: 'PUT'
         });
     },
-    getPostingCount: async (id) => {
-        return await http.fetch('/api/posting/userpost/' + id, {
+
+    getPostingCount: (id) => {
+        return http.fetch('/api/posting/userpost/' + id, {
+            method: 'GET'
+        });
+    },
+
+    findAllMillionCities: () => {
+        return http.fetch('/api/city', {
+            method: 'GET'
+        });
+    },
+
+    getUserCity: () => {
+        return http.fetch('/api/city', {
             method: 'GET'
         });
     }

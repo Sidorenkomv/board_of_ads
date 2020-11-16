@@ -6,6 +6,9 @@ import com.board_of_ads.repository.CityRepository;
 import com.board_of_ads.service.interfaces.CityService;
 import com.board_of_ads.service.interfaces.RegionService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -32,16 +35,16 @@ public class CityServiceImpl implements CityService {
                         regionName = city.getRegion().getName() == null ? "" : city.getRegion().getName();
                         formSubject = city.getRegion().getFormSubject() == null ? "" : city.getRegion().getFormSubject();
                     }
-                    cities.add(new City(city.getName(), new Region(), regionName + " " + formSubject));
+                    cities.add(new City(city.getName(), new Region(), regionName + " " + formSubject, false));
                 });
         regionService.findAll()
                 .forEach(region -> {
                     String regionName = region.getName();
                     String formSubject = region.getFormSubject();
                     if (formSubject.equals("Республика") || formSubject.equals("Город")) {
-                        cities.add(new City(formSubject + " " + regionName, new Region(), ""));
+                        cities.add(new City(formSubject + " " + regionName, new Region(), "", false));
                     } else {
-                        cities.add(new City(regionName + " " + formSubject, new Region(), ""));
+                        cities.add(new City(regionName + " " + formSubject, new Region(), "", false));
                     }
                 });
         return cities;
@@ -56,4 +59,5 @@ public class CityServiceImpl implements CityService {
     public Optional<City> findCityById(Long id) {
         return Optional.of(cityRepository.getOne(id));
     }
+
 }

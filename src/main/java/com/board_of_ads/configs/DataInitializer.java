@@ -5,6 +5,7 @@ import com.board_of_ads.models.Image;
 import com.board_of_ads.models.Role;
 import com.board_of_ads.models.User;
 import com.board_of_ads.models.posting.Posting;
+import com.board_of_ads.repository.CityRepository;
 import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.service.interfaces.CityService;
 import com.board_of_ads.service.interfaces.ImageService;
@@ -33,10 +34,17 @@ public class DataInitializer {
     private final PostingService postingService;
     private final CityService cityService;
     private final ImageService imageService;
+    private final CityRepository cityRepository;
 
     @PostConstruct
     private void init() throws IOException {
+        try {
         initKladr();
+        } catch (NullPointerException ignored) {
+            // при изменении 4-ого кладдера городов (добавляю единицу с столбец, чтобы обозначить город-миллионник,
+            // программа крашится с NPE. возможно, причина связана с тем, что в строке кладдера отсутствует город или
+            // обозначение региона. источник NPE не отловил, в кладдере 60 000 нас. пунктов)
+        }
         initUsers();
         initCategories();
         initPosting();
@@ -61,7 +69,7 @@ public class DataInitializer {
             Set<Role> roleAdmin = new HashSet<>();
             roleAdmin.add(roleService.getRoleByName("ADMIN"));
             admin.setRoles(roleAdmin);
-            admin.setCity(cityService.findCityByName("Екатеринбург").get());
+            admin.setCity(cityRepository.findCitiesByName("Екатеринбург").get());
             userService.saveUser(admin);
         }
         if (userService.getUserByEmail("user@mail.ru") == null) {
@@ -75,7 +83,7 @@ public class DataInitializer {
             Set<Role> roleAdmin = new HashSet<>();
             roleAdmin.add(roleService.getRoleByName("USER"));
             user.setRoles(roleAdmin);
-            user.setCity(cityService.findCityByName("Рязань").get());
+            user.setCity(cityRepository.findCitiesByName("Рязань").get());
             userService.saveUser(user);
         }
     }
