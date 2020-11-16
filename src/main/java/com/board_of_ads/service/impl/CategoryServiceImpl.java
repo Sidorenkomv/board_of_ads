@@ -76,10 +76,6 @@ public class CategoryServiceImpl implements CategoryService {
         return Optional.of(categoryDto);
     }
 
-    @Override
-    public Category getCategoryById(Long id) {
-        return categoryRepository.findCategoryById(id);
-    }
 
     @Override
     public Optional<CategoryDto> getCategoryDtoByName(String name) {

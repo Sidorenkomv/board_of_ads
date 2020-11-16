@@ -32,5 +32,4 @@ public interface CategoryService {
 
     List<CategoryDtoMenu> findChildCatById(Long id);
 
-    Category getCategoryById(Long catId);
 }
