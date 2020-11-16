@@ -1,6 +1,10 @@
 package com.board_of_ads.models.posting;
 
-import com.board_of_ads.models.*;
+import com.board_of_ads.models.Category;
+import com.board_of_ads.models.City;
+import com.board_of_ads.models.Image;
+import com.board_of_ads.models.Message;
+import com.board_of_ads.models.User;
 import com.board_of_ads.models.dto.order.Order;
 import com.board_of_ads.models.dto.review.Review;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -8,14 +12,25 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
-
 
 /**
  * Суперкласс для объявлений
@@ -64,7 +79,7 @@ public class Posting {
     private Boolean isActive;
 
     @Column
-    private Integer viewNumber;
+    private Integer viewNumber = 0;
 
     @Column
     private LocalDateTime datePosting = LocalDateTime.now();
@@ -93,7 +108,6 @@ public class Posting {
         this.price = price;
         this.contact = contact;
         this.isActive = isActive;
-        this.viewNumber = viewNumber;
     }
 
     public Posting(User user, Category category, String title, String description, Long price, String contact, City city, Boolean isActive, Integer viewNumber) {

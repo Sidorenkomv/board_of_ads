@@ -6,6 +6,7 @@ import com.board_of_ads.models.dto.review.Review;
 import com.board_of_ads.models.posting.Posting;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
@@ -40,6 +41,8 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Getter
+@Setter
 @Table(name = "users")
 public class User implements UserDetails {
 
@@ -107,7 +110,7 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "posting_id", referencedColumnName = "id"))
     private Set<Posting> favorites;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true  )
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserNotification> notifications = new ArrayList<>();
 
     public User(String sessionID) {
@@ -151,4 +154,12 @@ public class User implements UserDetails {
         return true;
     }
 
+    public String getRoles() {
+        StringBuilder strRoles = new StringBuilder();
+        roles.forEach(role -> strRoles.append(role).append(", "));
+        if (strRoles.length() > 0) {
+            strRoles.delete(strRoles.length() - 2, strRoles.length());
+        }
+        return strRoles.toString();
+    }
 }

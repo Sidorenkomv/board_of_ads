@@ -18,6 +18,8 @@ public interface CategoryService {
 
     Optional<CategoryDto> getCategoryDtoById(Long id);
 
+    Category getCategoryById(Long id);
+
     Optional<CategoryDto> getCategoryDtoByName(String name);
 
     Category updateCategory(String name, CategoryDto category);

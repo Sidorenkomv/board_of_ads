@@ -1,45 +1,46 @@
 let postingForm = document.getElementById('visibleElement2');
 let saveButton = document.getElementById('saveButton');
-let frontName = '';
-let postPhotos;
 
-async function sentHouseholdAppliancesPosting(selectedCategoryId) {
-    let url = '/new/householdAppliances/' + selectedCategoryId;
-    //postPhotos = document.getElementById('photos').files;
-    //document.getElementById('uploadPhotos').setAttribute('src', '/images/upload-photo.svg');
+async function sentForHomeAndGardenPosting(frontName, selectedCategoryId) {
+    let url = '/api/posting/new/' + frontName + '/' + selectedCategoryId;
+    const formData = new FormData();
+    const fileField = document.querySelector('input[type="file"][multiple]');
 
-    /*alert(`File name: ${photos[0].name}`); // например, my.png
-    alert(`File name: ${photos[1].name}`); // например, my.png
-    alert(`File name: ${photos[2].name}`); // например, my.png*/
-    console.log('title = ' + window.postTitle.value);
-    console.log('postState = ' + document.querySelector('input[name="state"]:checked').value);
-    console.log('postType = ' + window.postType.value);
-    console.log('postDescription = ' + window.postDescription.value);
-    console.log('postPrice = ' + window.postPrice.value);
-    console.log('postLinkYouTube = ' + window.postLinkYouTube.value);
-    console.log('inputAddress = ' + window.inputAddress.value);
-    console.log('inputEmail = ' + window.inputEmail.value);
-    console.log('inputPhone = ' + window.inputPhone.value);
-    console.log('wayOfCommunication = ' + document.querySelector('input[name="communication"]:checked').value,);
+    for (let i = 0; i < fileField.files.length; i++) {
+        formData.append('photos', fileField.files[i]);
+    }
+    let price = window.postPrice.value;
+    formData.append('title', window.postTitle.value);
+    formData.append('state', document.querySelector('input[name="state"]:checked').value);
+    formData.append('type', window.postType.value);
+    formData.append('description', window.postDescription.value);
+    formData.append('price', price === "" ? 0 : price);
+    formData.append('linkYouTube', window.postLinkYouTube.value);
+    formData.append('meetingAddress', window.inputAddress.value);
+    formData.append('contactEmail', window.inputEmail.value);
+    formData.append('contact', window.inputPhone.value);
+    formData.append('communicationType', document.querySelector('input[name="communication"]:checked').value);
 
-    let body = {
-        title: window.postTitle.value,
-        state: document.querySelector('input[name="state"]:checked').value,
-        type: window.postType.value,
-        description: window.postDescription.value,
-        price: window.postPrice.value,
-        linkYouTube: window.postLinkYouTube.value,
-        meetingAddress: window.inputAddress.value,
-        contactEmail: window.inputEmail.value,
-        contact: window.inputPhone.value,
-        communicationType: document.querySelector('input[name="communication"]:checked').value,
-    };
-    //await sendPosting(body, url);
+    await sendFile(formData, url);
+    window.location.href = '/';
+}
+
+async function sendFile(body, url) {
+
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            body: body
+        });
+        const result = await response.json();
+        console.log(JSON.stringify(result));
+    } catch (error) {
+        console.error('Ошибка:', error);
+    }
 }
 
 async function getHouseholdAppliancesForm(frontName, selectedCategoryId) {
-    this.frontName = frontName;
-    saveButton.onclick = () => sentHouseholdAppliancesPosting(selectedCategoryId);
+    saveButton.onclick = () => sentForHomeAndGardenPosting(frontName, selectedCategoryId);
 
     postingForm.innerHTML = '<div id="parameters" class="main-container">\n' +
         '        <div class="category-head-container">\n' +
@@ -60,9 +61,9 @@ async function getHouseholdAppliancesForm(frontName, selectedCategoryId) {
         '                    <div class="col-sm-10">\n' +
         '                        <div id="postState" class="btn-group btn-group-toggle" data-toggle="buttons">\n' +
         '                            <label class="btn btn-sm btn-outline-secondary">\n' +
-        '                                <input type="radio" name="state" id="noInUsage" value="Новое">Новое' +
+        '                                <input type="radio" name="state" id="noInUsage" value="Новое" checked>Новое' +
         '                            </label>\n' +
-        '                            <label class="btn btn-sm btn-outline-secondary">\n' +
+        '                            <label class="btn btn-sm btn-outline-secondary active">\n' +
         '                                <input type="radio" name="state" id="pastInUsage" value="Б/у">Б/у' +
         '                            </label>\n' +
         '                        </div>\n' +
@@ -91,7 +92,7 @@ async function getHouseholdAppliancesForm(frontName, selectedCategoryId) {
         '                <div class="form-group row">\n' +
         '                    <label for="postPrice" class="col-sm-2 col-form-label">Цена</label>\n' +
         '                    <div class="col-sm-2 d-flex">\n' +
-        '                        <input id="postPrice" inputmode="numeric" placeholder="₽" type="text" class="form-control form-control-sm" value="">\n' +
+        '                        <input id="postPrice" inputmode="numeric" placeholder="₽" type="number" class="form-control form-control-sm" value="">\n' +
         '                    </div>\n' +
         '                </div>\n' +
         '\n' +
@@ -99,8 +100,8 @@ async function getHouseholdAppliancesForm(frontName, selectedCategoryId) {
         '                    <label for="postPhotos" class="col-sm-2 col-form-label">Фотографии</label>\n' +
         '\n' +
         '                    <div class="col-sm-2 d-flex">\n' +
-        '                        <label class="photo-upload" data-marker="add">\n' +
-        '                            <input id="postPhotos" type="file" value="" multiple style="display: none" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input">\n' +
+        '                        <label class="" data-marker="add">\n' +
+        '                            <input id="postPhotos" type="file" value="" multiple style="display: block" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input">\n' +
         '                            <div id="uploadPhotos"></div>' +
         '                        </label>\n' +
         '                    </div>\n' +

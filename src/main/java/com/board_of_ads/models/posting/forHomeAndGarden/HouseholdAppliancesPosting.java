@@ -1,5 +1,7 @@
 package com.board_of_ads.models.posting.forHomeAndGarden;
 
+import com.board_of_ads.models.Category;
+import com.board_of_ads.models.User;
 import com.board_of_ads.models.posting.Posting;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,4 +35,13 @@ public class HouseholdAppliancesPosting extends Posting {
 
     @Column
     private String state;
+
+    public HouseholdAppliancesPosting (User user, Category category, String title, String description, Long price, String contact, Boolean isActive,
+                                       String contactEmail, String linkYouTube, String communicationType, String state) {
+        super(user, category, title, description, price, contact, isActive);
+        this.contactEmail = contactEmail;
+        this.linkYouTube = linkYouTube;
+        this.communicationType = communicationType;
+        this.state = state;
+    }
 }

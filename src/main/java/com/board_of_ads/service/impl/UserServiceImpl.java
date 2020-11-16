@@ -52,6 +52,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<UserDto> getAllUsersDto() {
+        List<UserDto> userDtoList = userRepository.findAllDto();
+        return userDtoList;
+    }
+
+    @Override
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
