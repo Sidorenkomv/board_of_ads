@@ -1,14 +1,13 @@
 package com.board_of_ads.controllers.rest;
 
-import com.board_of_ads.models.User;
-import com.board_of_ads.models.dto.PostingCarDto;
 import com.board_of_ads.models.Image;
 import com.board_of_ads.models.User;
+import com.board_of_ads.models.dto.PostingCarDto;
 import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
-import com.board_of_ads.models.posting.forHomeAndGarden.HouseholdAppliancesPosting;
 import com.board_of_ads.models.posting.autoTransport.cars.PostingCar;
+import com.board_of_ads.models.posting.forHomeAndGarden.HouseholdAppliancesPosting;
 import com.board_of_ads.service.interfaces.AutoAttributesService;
 import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.service.interfaces.CityService;
@@ -22,8 +21,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,8 +38,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/posting")
@@ -212,5 +209,14 @@ public class PostingRestController {
             log.info("Не удалось создать объявление => " + ex.getMessage());
             return new ErrorResponse<>(new Error(400, "Posting is not created"));
         }
+    }
+
+    @PostMapping("/new/vacancy")
+    public Response<Void> saveNewVacancyPosting(@AuthenticationPrincipal User user,
+                                                @RequestParam Map<String,String> obj,
+                                                @RequestParam(value = "photos") List<MultipartFile> photos) {
+        log.debug(user.toString());
+        log.debug(obj.toString());
+        return Response.ok().build();
     }
 }
