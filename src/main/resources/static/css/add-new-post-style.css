@@ -68,5 +68,9 @@
     background-color: #0af;
 }
 
+#fill_description, #fill_size, #fill_typeAd, #fill_title, #fill_photo, #fill_address, #fill_phone {
+    color: red;
+}
+
 
 
