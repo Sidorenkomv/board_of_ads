@@ -15,6 +15,7 @@
 
     <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+
 </head>
 <body>
 <header th:insert="fragments/header::main-header"></header>
@@ -77,7 +78,7 @@
                 <div class="form-group row">
                     <label for="inputPhone" class="col-sm-2 col-form-label">Телефон</label>
                     <div class="col-sm-10">
-                        <input class="form-control" id="inputPhone" placeholder="8 ___ ___-__-__" inputmode="tel" autocomplete="off" data-marker="phone/input" value im-insert="true"  >
+                        <input class="form-control" id="inputPhone" placeholder="+7 (999) 99 99 999" inputmode="tel" autocomplete="off" data-marker="phone/input" value im-insert="true"  >
                         <p id="fill_phone"></p>
                     </div>
                 </div>
@@ -117,9 +118,9 @@
 
 </div>
 
-<script src="../static/js/newpost.js" th:src="@{/js/newpost.js}"></script>
+<script src="../static/js/new_post_page.js" th:src="@{/js/new_post_page.js}"></script>
 <script src="../static/js/new_posting_forms/test.js"  th:src="@{/js/new_posting_forms/test.js}"></script>
 <script src="../static/js/new_posting_forms/posting-clothes.js" th:src="@{/js/new_posting_forms/posting-clothes.js}"></script>
-
+<script src="../static/js/jquery.maskedinput.js" th:src="@{/js/jquery.maskedinput.js}"></script>
 </body>
 </html>

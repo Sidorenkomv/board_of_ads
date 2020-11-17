@@ -1,3 +1,7 @@
+$(document).ready(function() {
+    $("#inputPhone").mask("+7 (999) 999-99-99");
+});
+
 let id;
 
 function validateForm() {
@@ -361,6 +365,7 @@ function showOtherClothesForm(fName, ident) {
 
 
 let btn = document.getElementById("saveButton");
+
 btn.addEventListener("click", () => {
 
     if (validateForm()) {
@@ -391,6 +396,7 @@ btn.addEventListener("click", () => {
         formData.append('contact', window.inputPhone.value);
         formData.append('communicationType', document.querySelector('input[name="communication"]:checked').value);
 
+
         fetch('/api/posting/clothes/' + id, {
 
             method: 'POST',
@@ -399,8 +405,8 @@ btn.addEventListener("click", () => {
             //     'Content-Type': 'application/json'
             // },
             body: formData
-        });
+        }).then(() => window.location.href = '/');
 
     }
-})
+});
 
