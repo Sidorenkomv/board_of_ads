@@ -31,12 +31,16 @@ public class Clothes extends Posting {
     private String communicationType;
 
     public Clothes(User user, Category category, String title, String description, Long price, String contact, Boolean isActive,
-                   String contactEmail, String linkYouTube, String communicationType, String state) {
+                   String contactEmail, String linkYouTube, String communicationType, String state, String typeAd, String size) {
         super(user, category, title, description, price, contact, isActive);
+        this.size = size;
+        this.state = state;
+        this.typeAd = typeAd;
+        this.linkYouTube = linkYouTube;
         this.contactEmail = contactEmail;
         this.linkYouTube = linkYouTube;
         this.communicationType = communicationType;
-        this.state = state;
+
     }
 }
 

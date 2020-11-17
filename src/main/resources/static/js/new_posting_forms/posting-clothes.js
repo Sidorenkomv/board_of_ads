@@ -1,7 +1,7 @@
 let id;
 
 function validateForm() {
-    if (document.getElementById("size").options.selectedIndex == 0) {
+    if (document.getElementById("size") !== null && document.getElementById("size").options.selectedIndex == 0) {
         let alert_size = "Выберите значение из списка";
         document.getElementById("fill_size").innerHTML = alert_size;
         document.getElementById("size").focus();
@@ -248,13 +248,12 @@ function showShoesForm(fName, ident) {
         '                </div>\n' +
         '\n' +
         '                <div class="form-group row">\n' +
-        '                    <label for="photos" class="col-sm-2 col-form-label">Фотографии</label>\n' +
-        '\n' +
+        '                    <label for="postPhotos" class="col-sm-2 col-form-label">Фотографии</label>\n' +
         '                    <div class="col-sm-2 d-flex">\n' +
-        '                        <label class="photo-upload" data-marker="add">\n' +
-        '                            <input id="photos" type="file" value="" multiple="" style="display: none" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input">\n' +
+        '                        <label class="" data-marker="add">\n' +
+        '                            <input id="postPhotos" type="file" value="" multiple style="display: block" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input" >\n' +
+        '                            <div id="uploadPhotos"></div>' +
         '                        <p  id="fill_photo"></p>\n' +
-
         '                        </label>\n' +
         '                    </div>\n' +
         '                </div>\n' +
@@ -338,13 +337,12 @@ function showOtherClothesForm(fName, ident) {
         '                </div>\n' +
         '\n' +
         '                <div class="form-group row">\n' +
-        '                    <label for="photos" class="col-sm-2 col-form-label">Фотографии</label>\n' +
-        '\n' +
+        '                    <label for="postPhotos" class="col-sm-2 col-form-label">Фотографии</label>\n' +
         '                    <div class="col-sm-2 d-flex">\n' +
-        '                        <label class="photo-upload" data-marker="add">\n' +
-        '                            <input id="photos" type="file" value="" multiple="" style="display: none" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input">\n' +
+        '                        <label class="" data-marker="add">\n' +
+        '                            <input id="postPhotos" type="file" value="" multiple style="display: block" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input" >\n' +
+        '                            <div id="uploadPhotos"></div>' +
         '                        <p  id="fill_photo"></p>\n' +
-
         '                        </label>\n' +
         '                    </div>\n' +
         '                </div>\n' +
@@ -374,16 +372,24 @@ btn.addEventListener("click", () => {
             formData.append('photos', fileField.files[i]);
         }
         let price = window.price.value;
+        let size;
+        if (document.getElementById("size") !== null) {
+            size = window.size.value;
+        } else {
+            size = "";
+        }
+
         formData.append('title', window.title.value);
         formData.append('state', document.querySelector('input[name="state"]:checked').value);
-        formData.append('type', window.typeAd.value);
+        formData.append('typeAd', window.typeAd.value);
+        formData.append('size', size === "" ? null : size);
         formData.append('description', window.description.value);
         formData.append('price', price === "" ? 0 : price);
         formData.append('linkYouTube', window.linkYouTube.value);
         formData.append('meetingAddress', window.meetingAddress.value);
-        //   formData.append('contactEmail', window.inputEmail.value);
-//    formData.append('contact', window.inputPhone.value);
-        //  formData.append('communicationType', document.querySelector('input[name="communication"]:checked').value);
+        formData.append('contactEmail', window.inputEmail.value);
+        formData.append('contact', window.inputPhone.value);
+        formData.append('communicationType', document.querySelector('input[name="communication"]:checked').value);
 
         fetch('/api/posting/clothes/' + id, {
 

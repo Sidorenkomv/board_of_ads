@@ -139,7 +139,7 @@ public class PostingRestController {
 
             posting = new Clothes(userService.getUserById(user.getId()), categoryService.getCategoryById(id),
                     map.get("title"), map.get("description"), Long.parseLong(map.get("price")), map.get("contact"),
-                    true, map.get("contactEmail"), map.get("linkYouTube"), map.get("communicationType"), map.get("state"));
+                    true, map.get("contactEmail"), map.get("linkYouTube"), map.get("communicationType"), map.get("state"),map.get("typeAd"), map.get("size"));
 
             List<Image> images = new ArrayList<>();
             String time = new SimpleDateFormat("yyyy'-'MM'-'dd'_'HHmmss'_'").format(new Date());
