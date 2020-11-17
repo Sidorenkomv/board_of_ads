@@ -115,64 +115,14 @@ public class PostingRestController {
     }
 
 
-    // @PostMapping("/clothes/{id}")
-    public Response<Void> createPostingClothes(@AuthenticationPrincipal User user, @RequestBody Clothes clothes, @PathVariable Long id) {
-        log.info("Create posting clothes");
-
-        clothes.setCategory(categoryRepository.findCategoryById(id));
-        //clothes.setCity(cityService.findCityByNameContainName(clothes.getMeetingAddress()).orElseThrow());
-        clothes.setUser(user);
-
-        postingService.save(clothes);
-        return Response.ok().build();
-    }
-
     @PostMapping("/clothes/{id}")
     public Response<Void> createPersonalClothesPosting(@PathVariable Long id,
                                                        @AuthenticationPrincipal User user,
                                                        @RequestParam Map<String, String> map,
                                                        @RequestParam(value = "photos") List<MultipartFile> photos) {
+
         log.info("Create posting clothes");
+        return postingService.savePersonalClothesPosting(id, user, map, photos);
 
-        Clothes posting;
-        try {
-
-            posting = new Clothes(userService.getUserById(user.getId()), categoryService.getCategoryById(id),
-                    map.get("title"), map.get("description"), Long.parseLong(map.get("price")), map.get("contact"),
-                    true, map.get("contactEmail"), map.get("linkYouTube"), map.get("communicationType"), map.get("state"),map.get("typeAd"), map.get("size"));
-
-            List<Image> images = new ArrayList<>();
-            String time = new SimpleDateFormat("yyyy'-'MM'-'dd'_'HHmmss'_'").format(new Date());
-            try {
-                for (int i = 0; i < photos.size(); i++) {
-                    if (!photos.get(i).isEmpty()) {
-                        byte[] bytes = photos.get(i).getBytes();
-                        File dir = new File("uploaded_files/userID_" + user.getId());
-                        dir.mkdirs();
-                        File file = new File(dir, time + photos.get(i).getOriginalFilename());
-                        BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(file));
-
-                        stream.write(bytes);
-                        stream.close();
-                        Image image = new Image(dir.toString() + file.toString());
-                        imageService.save(image);
-                        images.add(imageService.getByPathURL(dir.toString() + file.toString()));
-                        log.info("Файл '" + time + photos.get(i).getOriginalFilename() + "' успешно загружен.");
-                    } else {
-                        log.info("Вам не удалось загрузить файл, потому что он пустой.");
-                    }
-                }
-            } catch (Exception ex) {
-                log.info("Вам не удалось загрузить фотографии => " + ex.getMessage());
-                return new ErrorResponse<>(new Error(400, "Posting is not created"));
-            }
-            posting.setImages(images);
-            postingService.save(posting);
-            log.info("Объявление успешно создано пользователем " + user.getEmail());
-            return Response.ok().build();
-        } catch (Exception ex) {
-            log.info("Не удалось создать объявление => " + ex.getMessage());
-            return new ErrorResponse<>(new Error(400, "Posting is not created"));
-        }
     }
 }

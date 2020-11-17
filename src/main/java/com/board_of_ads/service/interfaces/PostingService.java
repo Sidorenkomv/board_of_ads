@@ -5,8 +5,11 @@ import com.board_of_ads.models.User;
 import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
+import com.board_of_ads.util.Response;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface PostingService {
@@ -34,6 +37,9 @@ public interface PostingService {
     List<PostingDto> getFavDtosFromUser(User user);
 
     List<Long> getFavIDFromUser(User user);
+
+    Response<Void> savePersonalClothesPosting(Long id, User user, Map<String,
+            String> map, List<MultipartFile> photos);
 
 
 }

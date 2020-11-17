@@ -1,8 +1,55 @@
-$(document).ready(function() {
+$(document).ready(function () {
     $("#inputPhone").mask("+7 (999) 999-99-99");
 });
 
 let id;
+
+let btn = document.getElementById("saveButton");
+
+btn.addEventListener("click", () => {
+
+    if (validateForm()) {
+
+        const formData = new FormData();
+        const fileField = document.querySelector('input[type="file"][multiple]');
+
+        for (let i = 0; i < fileField.files.length; i++) {
+            formData.append('photos', fileField.files[i]);
+        }
+        let price = window.price.value;
+        let size;
+        if (document.getElementById("size") !== null) {
+            size = window.size.value;
+        } else {
+            size = "";
+        }
+
+        formData.append('title', window.title.value);
+        formData.append('state', document.querySelector('input[name="state"]:checked').value);
+        formData.append('typeAd', window.typeAd.value);
+        formData.append('size', size === "" ? null : size);
+        formData.append('description', window.description.value);
+        formData.append('price', price === "" ? 0 : price);
+        formData.append('linkYouTube', window.linkYouTube.value);
+        formData.append('meetingAddress', window.meetingAddress.value);
+        formData.append('contactEmail', window.inputEmail.value);
+        formData.append('contact', window.inputPhone.value);
+        formData.append('communicationType', document.querySelector('input[name="communication"]:checked').value);
+
+
+        fetch('/api/posting/clothes/' + id, {
+
+            method: 'POST',
+            // headers: {
+            //     'Accept': 'application/json',
+            //     'Content-Type': 'application/json'
+            // },
+            body: formData
+        }).then(() => window.location.href = '/');
+
+    }
+});
+
 
 function validateForm() {
     if (document.getElementById("size") !== null && document.getElementById("size").options.selectedIndex == 0) {
@@ -90,10 +137,10 @@ function showClothesForm(fName, ident) {
         '                    <div class="col-sm-10">\n' +
         '                        <div id="state" class="btn-group btn-group-toggle" data-toggle="buttons">\n' +
         '                            <label class="btn btn-sm btn-outline-secondary">\n' +
-        '                                <input type="radio" name="state" value="Новое" id="noInUsage" autocomplete="off" > Новое\n' +
+        '                                <input type="radio" name="state" value="Новое" id="noInUsage" value="Новое"> Новое\n' +
         '                            </label>\n' +
-        '                            <label class="btn btn-sm btn-outline-secondary">\n' +
-        '                                <input type="radio" name="state" value="Б/у" id="pastInUsage" autocomplete="off"> Б/у\n' +
+        '                            <label class="btn btn-sm btn-outline-secondary active">\n' +
+        '                                <input type="radio" name="state" value="Б/у" id="pastInUsage" value="Б/у" checked> Б/у\n' +
         '                            </label>\n' +
         '                        </div>\n' +
         '                    </div>\n' +
@@ -201,10 +248,10 @@ function showShoesForm(fName, ident) {
         '                    <div class="col-sm-10">\n' +
         '                        <div id="state" class="btn-group btn-group-toggle" data-toggle="buttons">\n' +
         '                            <label class="btn btn-sm btn-outline-secondary">\n' +
-        '                                <input type="radio" name="state" value="Новое" id="noInUsage" autocomplete="off"> Новое\n' +
+        '                                <input type="radio" name="state" value="Новое" id="noInUsage" value="Новое"> Новое\n' +
         '                            </label>\n' +
-        '                            <label class="btn btn-sm btn-outline-secondary">\n' +
-        '                                <input type="radio" name="state" value="Б/у" id="pastInUsage" autocomplete="off"> Б/у\n' +
+        '                            <label class="btn btn-sm btn-outline-secondary active">\n' +
+        '                                <input type="radio" name="state" value="Б/у" id="pastInUsage" value="Б/у" checked> Б/у\n' +
         '                            </label>\n' +
         '                        </div>\n' +
         '                    </div>\n' +
@@ -290,10 +337,10 @@ function showOtherClothesForm(fName, ident) {
         '                    <div class="col-sm-10">\n' +
         '                        <div id="state" class="btn-group btn-group-toggle" data-toggle="buttons">\n' +
         '                            <label class="btn btn-sm btn-outline-secondary">\n' +
-        '                                <input type="radio" name="state" value="Новое" id="noInUsage" autocomplete="off"> Новое\n' +
+        '                                <input type="radio" name="state" value="Новое" id="noInUsage" value="Новое"> Новое\n' +
         '                            </label>\n' +
-        '                            <label class="btn btn-sm btn-outline-secondary">\n' +
-        '                                <input type="radio" name="state" value="Б/у" id="pastInUsage" autocomplete="off"> Б/у\n' +
+        '                            <label class="btn btn-sm btn-outline-secondary active">\n' +
+        '                                <input type="radio" name="state" value="Б/у" id="pastInUsage" value="Б/у" checked> Б/у\n' +
         '                            </label>\n' +
         '                        </div>\n' +
         '                    </div>\n' +
@@ -362,51 +409,3 @@ function showOtherClothesForm(fName, ident) {
         '    </div>'
 
 }
-
-
-let btn = document.getElementById("saveButton");
-
-btn.addEventListener("click", () => {
-
-    if (validateForm()) {
-
-        const formData = new FormData();
-        const fileField = document.querySelector('input[type="file"][multiple]');
-
-        for (let i = 0; i < fileField.files.length; i++) {
-            formData.append('photos', fileField.files[i]);
-        }
-        let price = window.price.value;
-        let size;
-        if (document.getElementById("size") !== null) {
-            size = window.size.value;
-        } else {
-            size = "";
-        }
-
-        formData.append('title', window.title.value);
-        formData.append('state', document.querySelector('input[name="state"]:checked').value);
-        formData.append('typeAd', window.typeAd.value);
-        formData.append('size', size === "" ? null : size);
-        formData.append('description', window.description.value);
-        formData.append('price', price === "" ? 0 : price);
-        formData.append('linkYouTube', window.linkYouTube.value);
-        formData.append('meetingAddress', window.meetingAddress.value);
-        formData.append('contactEmail', window.inputEmail.value);
-        formData.append('contact', window.inputPhone.value);
-        formData.append('communicationType', document.querySelector('input[name="communication"]:checked').value);
-
-
-        fetch('/api/posting/clothes/' + id, {
-
-            method: 'POST',
-            // headers: {
-            //     'Accept': 'application/json',
-            //     'Content-Type': 'application/json'
-            // },
-            body: formData
-        }).then(() => window.location.href = '/');
-
-    }
-});
-
