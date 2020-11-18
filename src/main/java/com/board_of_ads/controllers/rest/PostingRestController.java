@@ -1,5 +1,6 @@
 package com.board_of_ads.controllers.rest;
 
+import com.board_of_ads.models.City;
 import com.board_of_ads.models.Image;
 import com.board_of_ads.models.User;
 import com.board_of_ads.models.dto.PostingCarDto;
@@ -8,6 +9,7 @@ import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.models.posting.autoTransport.cars.PostingCar;
 import com.board_of_ads.models.posting.forHomeAndGarden.HouseholdAppliancesPosting;
+import com.board_of_ads.models.posting.job.Vacancy;
 import com.board_of_ads.service.interfaces.AutoAttributesService;
 import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.service.interfaces.CityService;
@@ -35,6 +37,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -213,10 +216,25 @@ public class PostingRestController {
 
     @PostMapping("/new/vacancy")
     public Response<Void> saveNewVacancyPosting(@AuthenticationPrincipal User user,
-                                                @RequestParam Map<String,String> obj,
+                                                @RequestParam Map<String,String> form,
                                                 @RequestParam(value = "photos") List<MultipartFile> photos) {
-        log.debug(user.toString());
-        log.debug(obj.toString());
+        User userById = userService.getUserById(user.getId());
+        City city = user.getCity() != null ? user.getCity()
+                : cityService.findCityByName(form.get("city")).orElse(null);
+        Vacancy posting = new Vacancy();
+        posting.setUser(userById);
+        posting.setCategory(categoryService.getCategoryById(Long.valueOf(form.get("categoryId"))));
+        posting.setCity(city);
+        posting.setContact(user.getEmail());
+        posting.setDatePosting(LocalDateTime.now());
+        posting.setDescription(form.get("description"));
+        posting.setTitle(form.get("title"));
+        posting.setDuties(form.get("duties"));
+        posting.setExperienceValue(form.get("workExperience"));
+        posting.setLocation(form.get("location"));
+        posting.setPreferences(form.get("olderThan45") + ", " + form.get("olderThan14"));
+        posting.setPrice(Long.valueOf(form.get("price")));
+        postingService.save(posting);
         return Response.ok().build();
     }
 }

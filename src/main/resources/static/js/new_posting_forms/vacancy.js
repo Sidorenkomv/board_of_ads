@@ -1,33 +1,30 @@
 async function sendNewVacancyPosting(selectedCategoryId) {
     let url = "/api/posting/new/vacancy"/* + selectedCategoryId*/;
-    /*console.log('title = ' + window.postTitle.value);
-    console.log('postState = ' + document.querySelector('input[name="state"]:checked').value);
-    console.log('postType = ' + window.postType.value);
-    console.log('postDescription = ' + window.postDescription.value);
-    console.log('postPrice = ' + window.postPrice.value);
-    console.log('postLinkYouTube = ' + window.postLinkYouTube.value);
-    console.log('inputAddress = ' + window.inputAddress.value);
-    console.log('inputEmail = ' + window.inputEmail.value);
-    console.log('inputPhone = ' + window.inputPhone.value);
-    console.log('wayOfCommunication = ' + document.querySelector('input[name="communication"]:checked').value,);*/
 
+    const fileField = document.querySelector('input[type="file"][name="image"][multiple]');
+
+   /* for (let i = 0; i < fileField.files.length; i++) {
+        formData.append('photos', fileField.files[i]);
+    }*/
     let body = new FormData();
     body.set("title", document.getElementById("title").value);
     body.set("schedule", document.getElementById("schedule").value);
     body.set("price", document.getElementById("price").value);
     body.set("payoutFrequency", document.getElementById("payout_frequency").value);
     body.set("location", document.getElementById("location").value);
+    body.set("duties", document.getElementById("duties").value);
     body.set("description", document.getElementById("description").value);
     body.set("workExperience", document.getElementById("workExperience").value);
-    body.set("olderThan45", document.querySelector('input[name="olderThan45"]:checked').value);
-    body.set("olderThan14", document.querySelector('input[name="olderThan14"]:checked').value);
-
+    body.set("olderThan45", "" + document.querySelector('input[name="olderThan45"]:checked').value);
+    body.set("olderThan14", "" + document.querySelector('input[name="olderThan14"]:checked').value);
+    body.set("categoryId", selectedCategoryId);
+    body.set("city", document.getElementById("inputAddress").value);
     await sendFile(body, url);
     window.location.href = '/';
 }
 
 async function buildVacancyForm(frontName, selectedCategoryId) {
-    saveButton.onclick = () => sendNewVacancyPosting(frontName, selectedCategoryId)
+    saveButton.onclick = () => sendNewVacancyPosting(selectedCategoryId)
     postingForm.innerHTML = '<table>\n' +
         '        <tr>\n' +
         '            <td>\n' +
@@ -43,7 +40,7 @@ async function buildVacancyForm(frontName, selectedCategoryId) {
         '                <label for="schedule">График работы</label>\n' +
         '            </td>\n' +
         '            <td>\n' +
-        '                <select name="schedule" id="schedule">\n' +
+        '                <select name="schedule" id="schedule" required>\n' +
         '                    <option value="" selected disabled> -</option>\n' +
         '                    <option value="Вахтовый метод">Вахтовый метод</option>\n' +
         '                    <option value="Неполный день">Неполный день</option>\n' +
@@ -67,6 +64,7 @@ async function buildVacancyForm(frontName, selectedCategoryId) {
         '            </td>\n' +
         '            <td>\n' +
         '                <select name="payoutFrequency" id="payout_frequency">\n' +
+        '                    <option value="">—</option>\n' +
         '                    <option value="Почасовая оплата">Почасовая оплата</option>\n' +
         '                    <option value="Каждый день">Каждый день</option>\n' +
         '                    <option value="Дважды в месяц">Дважды в месяц</option>\n' +
@@ -187,7 +185,7 @@ async function buildVacancyForm(frontName, selectedCategoryId) {
         '                    class="text-text-1PdBw">Логотип или фотография</span></label>\n' +
         '            </td>\n' +
         '            <td>\n' +
-        '                <input type="file" id="image"\n' +
+        '                <input type="file" id="image" multiple\n' +
         '                       accept="image/gif,image/png,image/jpeg,image/pjpeg"\n' +
         '                       value="">\n' +
         '                <div class="ui-icon-image">\n' +
