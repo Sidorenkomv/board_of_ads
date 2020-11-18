@@ -113,6 +113,8 @@ async function changeVisible(frontName, id) {
             break;
         case 'householdAppliances': await getHouseholdAppliancesForm(frontName, id);
             break;
+        case 'audiovideo': await getAudioVideoForm(frontName, id);
+            break;
         default: alert('For frontName="' + frontName + '" not found posting form');
             break;
     }
