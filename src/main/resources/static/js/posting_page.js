@@ -106,5 +106,5 @@ async function getPostingInfo(id) {
     $("#contactNumber").append(`<br>${postingDto.contact}`);
     $("#address").append(`${postingDto.meetingAddress}`);
     $("#description").append(`${postingDto.description}`);
-
+//
 }
