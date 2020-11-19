@@ -2,17 +2,26 @@ package com.board_of_ads.configs;
 
 import com.board_of_ads.models.Category;
 import com.board_of_ads.models.Image;
+import com.board_of_ads.models.Message;
 import com.board_of_ads.models.Notification;
 import com.board_of_ads.models.Role;
 import com.board_of_ads.models.User;
+import com.board_of_ads.models.dto.order.Order;
+import com.board_of_ads.models.dto.order.DeliveryStatus;
+import com.board_of_ads.models.dto.review.Review;
 import com.board_of_ads.models.UserNotification;
 import com.board_of_ads.models.posting.Posting;
+import com.board_of_ads.models.posting.autoTransport.cars.car_attributes.AutoColor;
+import com.board_of_ads.service.interfaces.AutoAttributesService;
+import com.board_of_ads.service.interfaces.MessageService;
 import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.service.interfaces.CityService;
 import com.board_of_ads.service.interfaces.ImageService;
 import com.board_of_ads.service.interfaces.KladrService;
+import com.board_of_ads.service.interfaces.OrderService;
 import com.board_of_ads.service.interfaces.NotificationService;
 import com.board_of_ads.service.interfaces.PostingService;
+import com.board_of_ads.service.interfaces.ReviewService;
 import com.board_of_ads.service.interfaces.RoleService;
 import com.board_of_ads.service.interfaces.UserService;
 import lombok.AllArgsConstructor;
@@ -38,8 +47,13 @@ public class DataInitializer {
     private final CategoryService categoryService;
     private final PostingService postingService;
     private final CityService cityService;
+    private final OrderService orderService;
+    private final ReviewService reviewService;
     private final ImageService imageService;
     private final NotificationService notificationService;
+    private final AutoAttributesService autoAttributesService;
+    private final MessageService messageService;
+
 
     @PostConstruct
     private void init() throws IOException {
@@ -49,7 +63,11 @@ public class DataInitializer {
         initUsers();
         initCategories();
         initPosting();
+        initOrders();
+        initReviews();
         initNotifications();
+        initCarAttributes();
+        initMessages();
     }
 
     private void initUsers() {
@@ -178,9 +196,6 @@ public class DataInitializer {
         List<Category> secondSubCategory = new ArrayList<>();
         Category myUsedCarCategory = new Category("С пробегом", categoryService.getCategoryByName("Автомобили").get(), 3, "used-car");
         Category myNewCarCategory = new Category("Новые", categoryService.getCategoryByName("Автомобили").get(), 3, "new-car");
-
-//        secondSubCategory.add(new Category("С пробегом", categoryService.getCategoryByName("Транспорт:Автомобили").get(), 3));
-//        secondSubCategory.add(new Category("Новые", categoryService.getCategoryByName("Транспорт:Автомобили").get(), 3));
 
         secondSubCategory.add(myNewCarCategory);
         secondSubCategory.add(myUsedCarCategory);
@@ -349,35 +364,35 @@ public class DataInitializer {
         secondSubCategory.add(new Category("Услуги", categoryService.getCategoryByName("Красота и здоровье").get(), 3));
 
 
-        secondSubCategory.add(new Category("Для дома", categoryService.getCategoryByName("Бытовая техника").get(), 3, "forHome"));
-        secondSubCategory.add(new Category("Для индивидуального ухода", categoryService.getCategoryByName("Бытовая техника").get(), 3, "forIndividualCare"));
-        secondSubCategory.add(new Category("Для кухни", categoryService.getCategoryByName("Бытовая техника").get(), 3, "forKitchen"));
-        secondSubCategory.add(new Category("Климатическое оборудование", categoryService.getCategoryByName("Бытовая техника").get(), 3, "climaticEquipment"));
-        secondSubCategory.add(new Category("Другое", categoryService.getCategoryByName("Бытовая техника").get(), 3, "otherHouseholdAppliances"));
+        secondSubCategory.add(new Category("Для дома", categoryService.getCategoryByName("Бытовая техника").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Для индивидуального ухода", categoryService.getCategoryByName("Бытовая техника").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Для кухни", categoryService.getCategoryByName("Бытовая техника").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Климатическое оборудование", categoryService.getCategoryByName("Бытовая техника").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Другое", categoryService.getCategoryByName("Бытовая техника").get(), 3, "householdAppliances"));
 
-        secondSubCategory.add(new Category("Компьютерные столы и кресла", categoryService.getCategoryByName("Мебель и интерьер").get(), 3));
-        secondSubCategory.add(new Category("Кровати, диваны и кресла", categoryService.getCategoryByName("Мебель и интерьер").get(), 3));
-        secondSubCategory.add(new Category("Кухонные гарнитуры", categoryService.getCategoryByName("Мебель и интерьер").get(), 3));
-        secondSubCategory.add(new Category("Освещение", categoryService.getCategoryByName("Мебель и интерьер").get(), 3));
-        secondSubCategory.add(new Category("Подставки и тумбы", categoryService.getCategoryByName("Мебель и интерьер").get(), 3));
-        secondSubCategory.add(new Category("Предметы интерьера, искусство", categoryService.getCategoryByName("Мебель и интерьер").get(), 3));
-        secondSubCategory.add(new Category("Столы и стулья", categoryService.getCategoryByName("Мебель и интерьер").get(), 3));
-        secondSubCategory.add(new Category("Текстиль и ковры", categoryService.getCategoryByName("Мебель и интерьер").get(), 3));
-        secondSubCategory.add(new Category("Шкафы и комоды", categoryService.getCategoryByName("Мебель и интерьер").get(), 3));
-        secondSubCategory.add(new Category("Другое", categoryService.getCategoryByName("Мебель и интерьер").get(), 3));
+        secondSubCategory.add(new Category("Компьютерные столы и кресла", categoryService.getCategoryByName("Мебель и интерьер").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Кровати, диваны и кресла", categoryService.getCategoryByName("Мебель и интерьер").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Кухонные гарнитуры", categoryService.getCategoryByName("Мебель и интерьер").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Освещение", categoryService.getCategoryByName("Мебель и интерьер").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Подставки и тумбы", categoryService.getCategoryByName("Мебель и интерьер").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Предметы интерьера, искусство", categoryService.getCategoryByName("Мебель и интерьер").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Столы и стулья", categoryService.getCategoryByName("Мебель и интерьер").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Текстиль и ковры", categoryService.getCategoryByName("Мебель и интерьер").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Шкафы и комоды", categoryService.getCategoryByName("Мебель и интерьер").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Другое", categoryService.getCategoryByName("Мебель и интерьер").get(), 3, "householdAppliances"));
 
-        secondSubCategory.add(new Category("Посуда", categoryService.getCategoryByName("Посуда и товары для кухни").get(), 3));
-        secondSubCategory.add(new Category("Товары для кухни", categoryService.getCategoryByName("Посуда и товары для кухни").get(), 3));
+        secondSubCategory.add(new Category("Посуда", categoryService.getCategoryByName("Посуда и товары для кухни").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Товары для кухни", categoryService.getCategoryByName("Посуда и товары для кухни").get(), 3, "householdAppliances"));
 
-        secondSubCategory.add(new Category("Двери", categoryService.getCategoryByName("Ремонт и строительство").get(), 3));
-        secondSubCategory.add(new Category("Инструменты", categoryService.getCategoryByName("Ремонт и строительство").get(), 3));
-        secondSubCategory.add(new Category("Камины и обогреватели", categoryService.getCategoryByName("Ремонт и строительство").get(), 3));
-        secondSubCategory.add(new Category("Окна и балконы", categoryService.getCategoryByName("Ремонт и строительство").get(), 3));
-        secondSubCategory.add(new Category("Потолки", categoryService.getCategoryByName("Ремонт и строительство").get(), 3));
-        secondSubCategory.add(new Category("Садовая техника", categoryService.getCategoryByName("Ремонт и строительство").get(), 3));
-        secondSubCategory.add(new Category("Сантехника и сауна", categoryService.getCategoryByName("Ремонт и строительство").get(), 3));
-        secondSubCategory.add(new Category("Стройматериалы", categoryService.getCategoryByName("Ремонт и строительство").get(), 3));
-        secondSubCategory.add(new Category("Услуги", categoryService.getCategoryByName("Ремонт и строительство").get(), 3));
+        secondSubCategory.add(new Category("Двери", categoryService.getCategoryByName("Ремонт и строительство").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Инструменты", categoryService.getCategoryByName("Ремонт и строительство").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Камины и обогреватели", categoryService.getCategoryByName("Ремонт и строительство").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Окна и балконы", categoryService.getCategoryByName("Ремонт и строительство").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Потолки", categoryService.getCategoryByName("Ремонт и строительство").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Садовая техника", categoryService.getCategoryByName("Ремонт и строительство").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Сантехника и сауна", categoryService.getCategoryByName("Ремонт и строительство").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Стройматериалы", categoryService.getCategoryByName("Ремонт и строительство").get(), 3, "householdAppliances"));
+        secondSubCategory.add(new Category("Услуги", categoryService.getCategoryByName("Ремонт и строительство").get(), 3, "householdAppliances"));
 
 
         secondSubCategory.add(new Category("MP3 плееры", categoryService.getCategoryByName("Аудио и видео").get(), 3));
@@ -646,6 +661,35 @@ public class DataInitializer {
         }
     }
 
+    private void initOrders(){
+        List<Order> orderList = new ArrayList<>();
+
+        orderList.add(new Order(
+                userService.getUserByEmail("user@mail.ru"),
+                postingService.getPostingByTitle("Сыграю в лото").get(),
+                "Почта России", DeliveryStatus.IN_PROCESS)
+        );
+
+        for (Order order: orderList){
+            orderService.save(order);
+        }
+    }
+
+    private void initReviews(){
+        List<Review> reviewList = new ArrayList<>();
+
+        reviewList.add(new Review(
+                userService.getUserByEmail("admin@mail.ru"),
+                postingService.getPostingByTitle("Сыграю в лото").get(),
+                (byte) 1,
+                "Проиграл")
+        );
+
+        for (Review review: reviewList){
+            reviewService.save(review);
+        }
+    }
+
     private void initMoreUsers() {
 
         if (userService.getUserByEmail("super@mail.ru") == null) {
@@ -731,11 +775,51 @@ public class DataInitializer {
             un.setStatus("read");
             notificationService.updateUserNotificationFields(un);
         }
-
         UserNotification un2 = notificationService.findByNoteIdAndUserId(1694L, adminId);
         if (un2 != null) {
             un2.setUrgentLevel(2);
             notificationService.updateUserNotificationFields(un2);
+        }
+    }
+
+    private void initCarAttributes() throws IOException {
+        addCarColors();
+        autoAttributesService.getDataFromAutoCatalogueExcel();
+    }
+
+    public void addCarColors() {
+        autoAttributesService.saveNewAutoColor(new AutoColor("White", "Белый", "#FFFFFF"));
+        autoAttributesService.saveNewAutoColor(new AutoColor("Black", "Черный", "#000000"));
+        autoAttributesService.saveNewAutoColor(new AutoColor("Red", "Красный", "#FF0000"));
+        autoAttributesService.saveNewAutoColor(new AutoColor("Silver", "Серебряный", "#C0C0C0"));
+        autoAttributesService.saveNewAutoColor(new AutoColor("Gray", "Серый", "#808080"));
+        autoAttributesService.saveNewAutoColor(new AutoColor("Brown", "Коричневый", "#A52A2A"));
+        autoAttributesService.saveNewAutoColor(new AutoColor("Gold", "Золотой", "#FFD700"));
+        autoAttributesService.saveNewAutoColor(new AutoColor("Beige", "Бежевый", "#F5F5DC"));
+        autoAttributesService.saveNewAutoColor(new AutoColor("Orange", "Оранжевый", "#FFA500"));
+        autoAttributesService.saveNewAutoColor(new AutoColor("Yellow", "Желтый", "#FFFF00"));
+        autoAttributesService.saveNewAutoColor(new AutoColor("Green", "Зеленый", "#008000"));
+        autoAttributesService.saveNewAutoColor(new AutoColor("Cyan", "Голубой", "#00FFFF"));
+        autoAttributesService.saveNewAutoColor(new AutoColor("Blue", "Синий", "#0000FF"));
+        autoAttributesService.saveNewAutoColor(new AutoColor("Purple", "Фиолетовый", "#800080"));
+        autoAttributesService.saveNewAutoColor(new AutoColor("Magenta", "Пурпурный", "#FF00FF"));
+        autoAttributesService.saveNewAutoColor(new AutoColor("Pink", "Розовый", "#FFC0CB"));
+    }
+
+    private void initMessages() {
+        List<Message> messages = new ArrayList<>();
+        messages.add(new Message(1L, "привет", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1600L)));
+        messages.add(new Message(2L, "можно обсудить скидку?", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1601L)));
+        messages.add(new Message(4L, "здравствуйте", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1602L)));
+        messages.add(new Message(5L, "еще актуально?", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1603L)));
+        messages.add(new Message(6L, "приеду завтра", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1604L)));
+        messages.add(new Message(7L, "подумаю", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1605L)));
+        messages.add(new Message(8L, "предложу другу", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1606L)));
+        messages.add(new Message(9L, "приеду сегодня вечером", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1607L)));
+        messages.add(new Message(10L, "спасибо!", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1608L)));
+
+        for (Message message : messages) {
+            messageService.save(message);
         }
     }
 }

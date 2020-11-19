@@ -45,7 +45,7 @@ public class Category {
     @Column
     private int layer;
 
-    @Column//(unique = true)
+    @Column
     private String frontName;
 
     public Category(String name, Category category) {

@@ -1,9 +1,11 @@
 package com.board_of_ads.models;
 
 
+import com.board_of_ads.models.dto.order.Order;
+import com.board_of_ads.models.dto.review.Review;
 import com.board_of_ads.models.posting.Posting;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -35,11 +37,12 @@ import java.util.List;
 import java.util.Set;
 
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Getter
+@Setter
 @Table(name = "users")
 public class User implements UserDetails {
 
@@ -91,6 +94,12 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private Set<Role> roles;
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private Set<Order> orders;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private Set<Review> reviews;
+
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Posting> postings;
@@ -101,7 +110,7 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "posting_id", referencedColumnName = "id"))
     private Set<Posting> favorites;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true  )
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserNotification> notifications = new ArrayList<>();
 
     public User(String sessionID) {
@@ -145,4 +154,12 @@ public class User implements UserDetails {
         return true;
     }
 
+    public String getRoles() {
+        StringBuilder strRoles = new StringBuilder();
+        roles.forEach(role -> strRoles.append(role).append(", "));
+        if (strRoles.length() > 0) {
+            strRoles.delete(strRoles.length() - 2, strRoles.length());
+        }
+        return strRoles.toString();
+    }
 }

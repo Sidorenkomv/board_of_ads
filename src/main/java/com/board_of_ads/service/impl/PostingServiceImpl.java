@@ -3,11 +3,14 @@ package com.board_of_ads.service.impl;
 import com.board_of_ads.models.City;
 import com.board_of_ads.models.Image;
 import com.board_of_ads.models.User;
+import com.board_of_ads.models.dto.PostingCarDto;
 import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.models.posting.personalBelongings.Clothes;
+import com.board_of_ads.models.posting.autoTransport.cars.PostingCar;
 import com.board_of_ads.repository.CityRepository;
+import com.board_of_ads.repository.PostingCarRepository;
 import com.board_of_ads.repository.PostingRepository;
 import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.service.interfaces.ImageService;
@@ -17,9 +20,12 @@ import com.board_of_ads.service.interfaces.UserService;
 import com.board_of_ads.util.Error;
 import com.board_of_ads.util.ErrorResponse;
 import com.board_of_ads.util.Response;
+import com.board_of_ads.service.interfaces.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +37,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -51,6 +58,7 @@ public class PostingServiceImpl implements PostingService {
     private final CityRepository cityRepository;
     private final UserService userService;
     private final ImageService imageService;
+    private final PostingCarRepository postingCarRepository;
 
     @Override
     public void save(Posting posting) {
@@ -74,7 +82,7 @@ public class PostingServiceImpl implements PostingService {
         postingDto.setImages(getPostingById(postingDto.getId()).getImages());
         postingDto.setCategory(categoryService.getCategoryDtoById(
                 getPostingById(postingDto.getId()).getCategory().getId()).get());
-        if (getPostingById(postingDto.getId()).getCity() != null) {
+        if(getPostingById(postingDto.getId()).getCity() != null) {
             postingDto.setCity(getPostingById(postingDto.getId()).getCity().getName());
         }
         return postingDto;
@@ -108,13 +116,13 @@ public class PostingServiceImpl implements PostingService {
     }
 
     private List<PostingDto> getPostingDtos(List<PostingDto> postingDtos) {
-        for (PostingDto dto : postingDtos) {
-            dto.setImages(getPostingById(dto.getId()).getImages());
-            dto.setCategory(categoryService.getCategoryDtoById(
-                    postingRepository.findPostingByTitle(dto.getTitle()).getCategory().getId()).get());
-            if (getPostingById(dto.getId()).getCity() != null) {
-                dto.setCity(getPostingById(dto.getId()).getCity().getName());
-            }
+        for(PostingDto dto : postingDtos) {
+           dto.setImages(getPostingById(dto.getId()).getImages());
+           dto.setCategory(categoryService.getCategoryDtoById(
+                   postingRepository.findPostingByTitle(dto.getTitle()).getCategory().getId()).get());
+           if(getPostingById(dto.getId()).getCity() != null) {
+               dto.setCity(getPostingById(dto.getId()).getCity().getName());
+           }
         }
         return postingDtos;
     }
@@ -123,8 +131,8 @@ public class PostingServiceImpl implements PostingService {
     public List<PostingDto> searchPostings(String categorySelect, String citySelect, String searchText, String photoOption) {
 
         List<PostingDto> postingDtos;
-        if (citySelect != null && !(citySelect.equals("undefined"))) {
-            if (citySelect.matches("(.*)" + "Область" + "(.*)")
+        if(citySelect != null && !(citySelect.equals("undefined"))) {
+            if (citySelect.matches("(.*)" +"Область" + "(.*)")
                     || citySelect.matches("(.*)" + "Край" + "(.*)")
                     || citySelect.matches("(.*)" + "Республика" + "(.*)")
                     || citySelect.matches("(.*)" + "Автономный округ" + "(.*)")
@@ -151,30 +159,30 @@ public class PostingServiceImpl implements PostingService {
             } else if (postingDto.getCategory().equals(categorySelect)) {
                 categoryFlag = true;
             }
-            if (photoOption != null) {
-                if (photoOption.equals("пункт2")) {
-                    if (postingDto.getImages().size() > 0) {
+            if(photoOption != null) {
+                if(photoOption.equals("пункт2")) {
+                    if(postingDto.getImages().size() > 0) {
                         photoFlag = true;
                     }
-                } else if (photoOption.equals("пункт3")) {
-                    if (postingDto.getImages().size() == 0) {
+                } else if(photoOption.equals("пункт3")) {
+                    if(postingDto.getImages().size() == 0) {
                         photoFlag = true;
                     }
-                } else if (photoOption.equals("пункт1")) {
+                } else if(photoOption.equals("пункт1")) {
                     photoFlag = true;
                 }
             } else {
                 photoFlag = true;
             }
-            if (searchText != null && !(searchText.equals("")) && !(searchText.equals("undefined"))) {
-                if (postingDto.getTitle().toLowerCase().matches("(.*)" + searchText.toLowerCase() + "(.*)")) {
+            if(searchText != null && !(searchText.equals("")) && !(searchText.equals("undefined"))) {
+                if(postingDto.getTitle().toLowerCase().matches("(.*)" + searchText.toLowerCase() + "(.*)")) {
                     textFlag = true;
                 }
             } else {
                 textFlag = true;
             }
 
-            if (categoryFlag && photoFlag && textFlag) {
+            if(categoryFlag && photoFlag && textFlag) {
                 resultList.add(postingDto);
             }
         }
@@ -207,15 +215,17 @@ public class PostingServiceImpl implements PostingService {
         return localDateTimeList;
     }
 
+    @Override
     public List<PostingDto> getFavDtosFromUser(User user) {
         List<Long> listfavoritsid = new ArrayList<>();
-        user.getFavorites().forEach(x -> listfavoritsid.add(x.getId()));
+        user.getFavorites().forEach(x ->listfavoritsid.add(x.getId()));
         return postingRepository.findUserFavorites(listfavoritsid);
     }
 
+    @Override
     public List<Long> getFavIDFromUser(User user) {
         List<Long> listfavoritsid = new ArrayList<>();
-        user.getFavorites().forEach(x -> listfavoritsid.add(x.getId()));
+        user.getFavorites().forEach(x ->listfavoritsid.add(x.getId()));
         return listfavoritsid;
     }
 
@@ -264,5 +274,128 @@ public class PostingServiceImpl implements PostingService {
         }
     }
 
+
+
+    @Override
+    public PostingCarDto getNewPostingCarDto(Long userId, String isCarNew) {
+        User user = userService.getUserById(userId);
+        PostingCar pc = new PostingCar();
+        pc.setUser(user);
+        pc.setSellerId(userId);
+        pc.setCarIsNew(!isCarNew.equals("used-car"));
+
+        return new PostingCarDto(pc);
+    }
+
+    @Override
+    public PostingCar convertJsonToPostingCar(JSONObject json) throws JSONException {
+        PostingCar pc = new PostingCar();
+
+        pc.setVinCode(json.getString("vinCode"));
+        pc.setCarIsNew(json.getBoolean("carIsNew"));
+        pc.setTypeOfUsedCarPosting(json.getString("typeOfUsedCarPosting"));
+        pc.setStatePlateNumber(json.getString("statePlateNumber"));
+        pc.setMileage(json.getInt("mileage"));
+        pc.setNumberOfOwners((byte) json.getInt("numberOfOwners"));
+        pc.setModelIdInAutoCatalogue(0); //
+        pc.setCarColor(json.getString("carColor"));
+        pc.setCarBrand(json.getString("carBrand"));
+        pc.setCarModel(json.getString("carModel"));
+        pc.setCarYear((short) json.getInt("carYear"));
+        pc.setCarBodyType(json.getString("carBodyType"));
+        pc.setNumberOfDoors((byte) json.getInt("numberOfDoors"));
+        pc.setWasInAccident(json.getBoolean("wasInAccident"));
+        pc.setDealerServiced(json.getBoolean("dealerServiced"));
+        pc.setUnderWarranty(json.getBoolean("underWarranty"));
+        pc.setHasServiceBook(json.getBoolean("hasServiceBook"));
+        pc.setPowerSteeringType(json.getString("powerSteeringType"));
+        pc.setClimateControlType(json.getString("climateControlType"));
+        pc.setClimateControlType(json.getString("climateControlType"));
+        pc.setOnWheelControl(json.getBoolean("onWheelControl"));
+        pc.setThermalGlass(json.getBoolean("thermalGlass"));
+        pc.setInteriorType(json.getString("interiorType"));
+        pc.setLeatherWheel(json.getBoolean("leatherWheel"));
+        pc.setSunroof(json.getBoolean("sunroof"));
+        pc.setHeatedFrontSeats(json.getBoolean("heatedFrontSeats"));
+        pc.setHeatedRearSeats(json.getBoolean("heatedRearSeats"));
+        pc.setHeatedMirrors(json.getBoolean("heatedMirrors"));
+        pc.setHeatedRearWindow(json.getBoolean("heatedRearWindow"));
+        pc.setHeatedWheel(json.getBoolean("heatedWheel"));
+        pc.setPowerWindowsType(json.getString("powerWindowsType"));
+        pc.setPowerFrontSeats(json.getBoolean("powerFrontSeats"));
+        pc.setPowerRearSeats(json.getBoolean("powerRearSeats"));
+        pc.setPowerMirrorRegulation(json.getBoolean("powerMirrorRegulation"));
+        pc.setPowerSteeringWheelRegulation(json.getBoolean("powerSteeringWheelRegulation"));
+        pc.setPowerMirrorClose(json.getBoolean("powerMirrorClose"));
+        pc.setFrontSeatsMemory(json.getBoolean("frontSeatsMemory"));
+        pc.setRearSeatsMemory(json.getBoolean("rearSeatsMemory"));
+        pc.setMirrorRegulationMemory(json.getBoolean("mirrorRegulationMemory"));
+        pc.setSteeringWheelRegulationMemory(json.getBoolean("steeringWheelRegulationMemory"));
+        pc.setParkingAssist(json.getBoolean("parkingAssist"));
+        pc.setRainSensor(json.getBoolean("rainSensor"));
+        pc.setLightSensor(json.getBoolean("lightSensor"));
+        pc.setRearParkingSensor(json.getBoolean("rearParkingSensor"));
+        pc.setFrontParkingSensor(json.getBoolean("frontParkingSensor"));
+        pc.setBlindSpotZoneControl(json.getBoolean("blindSpotZoneControl"));
+        pc.setRearCamera(json.getBoolean("rearCamera"));
+        pc.setCruiseControl(json.getBoolean("cruiseControl"));
+        pc.setOnBoardComp(json.getBoolean("onBoardComp"));
+        pc.setAlarmSystem(json.getBoolean("alarmSystem"));
+        pc.setPowerDoorBlocking(json.getBoolean("powerDoorBlocking"));
+        pc.setImmobilizer(json.getBoolean("immobilizer"));
+        pc.setSatelliteAlarmControl(json.getBoolean("satelliteAlarmControl"));
+        pc.setFrontalAirbags(json.getBoolean("frontalAirbags"));
+        pc.setKneeAirbags(json.getBoolean("kneeAirbags"));
+        pc.setSideWindowAirbags(json.getBoolean("sideWindowAirbags"));
+        pc.setFrontSideAirbags(json.getBoolean("frontSideAirbags"));
+        pc.setRearSideAirbags(json.getBoolean("rearSideAirbags"));
+        pc.setAbsSystem(json.getBoolean("absSystem"));
+        pc.setDtcSystem(json.getBoolean("dtcSystem"));
+        pc.setTrackingControl(json.getBoolean("trackingControl"));
+        pc.setBreakAssistSystem(json.getBoolean("breakAssistSystem"));
+        pc.setEmergencyBreakSystem(json.getBoolean("emergencyBreakSystem"));
+        pc.setDiffLockSystem(json.getBoolean("diffLockSystem"));
+        pc.setPedestrianDetectSystem(json.getBoolean("pedestrianDetectSystem"));
+        pc.setCdDvdBluRay(json.getBoolean("cdDvdBluRay"));
+        pc.setMp3(json.getBoolean("mp3"));
+        pc.setRadio(json.getBoolean("radio"));
+        pc.setTvSystem(json.getBoolean("tvSystem"));
+        pc.setVideoSystem(json.getBoolean("videoSystem"));
+        pc.setMediaOnWheelControl(json.getBoolean("mediaOnWheelControl"));
+        pc.setUsb(json.getBoolean("usb"));
+        pc.setAux(json.getBoolean("aux"));
+        pc.setBluetooth(json.getBoolean("bluetooth"));
+        pc.setGpsNavigation(json.getBoolean("gpsNavigation"));
+        pc.setAudioSystemType(json.getString("audioSystemType"));
+        pc.setSubwoofer(json.getBoolean("subwoofer"));
+        pc.setFrontLightType(json.getString("frontLightType"));
+        pc.setAntifogLights(json.getBoolean("antifogLights"));
+        pc.setFrontLightCleaning(json.getBoolean("frontLightCleaning"));
+        pc.setAdaptiveLights(json.getBoolean("adaptiveLights"));
+        pc.setHowToContactVsSeller(json.getString("howToContactVsSeller"));
+        pc.setTyreSize(json.getString("winterTyreSetIncluded"));
+        pc.setWinterTyreSetIncluded(json.getBoolean("winterTyreSetIncluded"));
+        pc.setTypeOfEngine("Hybrid");
+        pc.setWheelDrive("4x4");
+        pc.setTransmission("Automatic");
+        pc.setModification("Lux");
+        pc.setConfiguration(json.getString("configuration"));
+        pc.setTitle(json.getString("title"));
+        pc.setDescription(json.getString("description"));
+        pc.setContact(json.getString("contact"));
+        pc.setMeetingAddress(json.getString("meetingAddress"));
+        pc.setDatePosting(LocalDateTime.now());
+        pc.setCondition(json.getString("condition"));
+        pc.setVideoURL(json.getString("videoURL"));
+        pc.setContactEmail(json.getString("contactEmail"));
+      //  pc.setMessage(json.getString("message"));
+        pc.setPrice(json.getLong("price"));
+        pc.setIsActive(json.getBoolean("isActive"));
+       // pc.setViewNumber(json.getInt("viewNumber"));
+        pc.setViewNumber(1);
+        long catId =  json.getInt("categoryId");
+        pc.setCategory(categoryService.getCategoryById(catId));
+        return pc;
+    }
 
 }

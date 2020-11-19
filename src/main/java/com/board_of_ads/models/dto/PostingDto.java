@@ -1,6 +1,8 @@
 package com.board_of_ads.models.dto;
 
 import com.board_of_ads.models.Image;
+import com.board_of_ads.models.posting.Posting;
+import com.board_of_ads.service.interfaces.PostingService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -45,5 +47,15 @@ public class PostingDto {
         this.city = city;
         this.isActive = isActive;
         this.viewNumber = viewNumber;
+    }
+
+    public PostingDto(Posting posting){
+        this.id = posting.getId();
+        this.title = posting.getTitle();
+        this.description = posting.getDescription();
+        this.price = posting.getPrice();
+        this.contact = posting.getContact();
+        this.datePosting = posting.getDatePosting();
+        this.meetingAddress = posting.getMeetingAddress();
     }
 }

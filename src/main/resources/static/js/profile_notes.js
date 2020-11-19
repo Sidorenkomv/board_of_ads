@@ -7,7 +7,7 @@ $(document).ready(function () {
     return getUserAllNotifications();
 });
 
-async function getUserAllNotifications() {
+async function getUserAllNotifications(qualifiedName) {
     document.getElementById('tbody_new').innerHTML = "";
     document.getElementById('tbody_read').innerHTML = "";
 
@@ -106,6 +106,11 @@ async function getUserAllNotifications() {
             newNotesCount = responseData.data[1];
             readNotesCount = responseData.data[2];
 
+            if (newNotesCount !== 0) {
+                document.getElementById('bell_icon').removeAttribute('class');
+                document.getElementById('bell_icon').setAttribute('class', 'note_bell_active');
+            }
+
             document.getElementById('new-notes-tab').innerText = 'Новые ' + ' - ' + newNotesCount;
             document.getElementById('read-notes-tab').innerText = 'Прочитанные ' + ' - ' + readNotesCount;
             return true;
@@ -123,7 +128,8 @@ async function getUserAllNotifications() {
             '</div>';
     } else {
         if (newNotesCount === 0 ) {
-            return document.getElementById('tbody_new').innerHTML = '' +
+
+             document.getElementById('tbody_new').innerHTML = '' +
                 '<div class="text-center align-middle">' +
                 '   <img src="images/ikonka-uvedomlenij.png" class="align-self-center ">' +
                 '   <div class="text-muted">' +
@@ -132,6 +138,9 @@ async function getUserAllNotifications() {
                 '       <div>новые уведомления</div>' +
                 '   </div> ' +
                 '</div>';
+
+             document.getElementById('bell_icon').removeAttribute('class');
+             document.getElementById('bell_icon').setAttribute('class', 'note_bell_inactive');
         }
 
         if (readNotesCount === 0 ) {

@@ -2,7 +2,7 @@
     margin: 0 auto;
     min-width: 800px;
     max-width: 1230px;
-    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-family: Arial,"Helvetica Neue",Helvetica,sans-serif;
 }
 
 .head-container {
@@ -74,3 +74,13 @@
 
 
 
+
+.photo-upload {
+    width: 100px;
+    height: 75px;
+    margin-right: 0;
+    overflow: hidden;
+    border: 1px solid #D6D6D6;
+    border-radius: 2px;
+    background: url("/images/upload-photo.svg") center no-repeat;
+}

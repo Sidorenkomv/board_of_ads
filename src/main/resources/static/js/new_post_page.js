@@ -1,7 +1,10 @@
 let displayLayer = 0;
 let path = [];
+
 $(document).ready(function () {
-    getCategoryColumn(0, 0).then();
+    if ($("#reguserid").val()) {
+        getCategoryColumn(0, 0).then();
+    }
 
     $('#buttonAuth').on('click', function () {
         $('#emailAuth').addClass("redborder");
@@ -9,13 +12,13 @@ $(document).ready(function () {
     });
 })
 
-async function getCategoryColumn(selectedCategoryId, selectLayer, frontName) {
-    let categories = await getCategories(await getURL(selectedCategoryId));
+async function getCategoryColumn(parentID, selectLayer, frontName) {
+    let categories = await getCategories(await getURL(parentID));
     await cleanCategoryColumns(selectLayer);
 
     if (categories.length !== 0) {
         displayLayer++;
-        let temp = document.getElementById('cascadeTableButton_' + selectedCategoryId);
+        let temp = document.getElementById('cascadeTableButton_' + parentID);
         let parentName = (temp === null) ? 'Категория' : temp.textContent;
 
         if (temp !== null) {
@@ -29,7 +32,7 @@ async function getCategoryColumn(selectedCategoryId, selectLayer, frontName) {
 
         for (let i = 0; i < categories.length; i++) {
             let category = categories[i];
-            let id = 'cascadeTableButton_' + category.id;
+            let id = 'cascadeTableButton_' + (category.frontName === null ? category.id : category.frontName);
             let frontName = "\'" + category.frontName + "\'";
             document.getElementById('cascadeTableColumn' + displayLayer).innerHTML +=
                 `<div id="${id}" onMouseOver="hoverOnMouseOver()" 
@@ -40,11 +43,7 @@ async function getCategoryColumn(selectedCategoryId, selectLayer, frontName) {
         }
         return true;
     } else {
-        let temp;
-        temp = document.getElementById('cascadeTableButton_' + selectedCategoryId);
-        path.push(temp.textContent);
-        document.getElementById('pathCategoryButton').textContent = await getPath(path);
-        return await changeVisible(frontName, selectedCategoryId);
+        return await changeVisible(frontName);
     }
 }
 
@@ -99,13 +98,18 @@ async function cleanCategoryColumns(selectLayer) {
     }
 }
 
-async function changeVisible(frontName, id) {
+async function changeVisible(frontName) {
     $('#pathCategory').show();
     $('#visibleElement1').hide();
+    $('#visibleElement2').show();
     $('#visibleElement3').show();
 
-
     switch (frontName) {
+        case 'used-car':
+            await carPostingFunction(frontName, id);
+            break;
+        case 'new-car':
+            await carPostingFunction(frontName, id);
 
         case 'clothes':
             showClothesForm(frontName, id);
@@ -113,6 +117,10 @@ async function changeVisible(frontName, id) {
         case 'shoes':
             showShoesForm(frontName, id);
             break;
+        case 'householdAppliances':
+            await getHouseholdAppliancesForm(frontName, id);
+            break;
+
         case 'other-clothes':
             showOtherClothesForm(frontName, id);
             break;
@@ -126,10 +134,11 @@ async function changeVisible(frontName, id) {
 $('#pathCategoryButton').on('click', function () {
     $('#pathCategory').hide();
     $('#visibleElement1').show();
+    $('#visibleElement3').hide();
 });
 
-async function sendPosting(body, url) {
-    await fetch(url, {
+async function sendPosting(body) {
+    await fetch('/api/posting/new', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
