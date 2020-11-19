@@ -35,6 +35,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -226,33 +228,9 @@ public class PostingRestController {
             posting = new AudioVideoPosting(userService.getUserById(user.getId()), categoryService.getCategoryById(id),
                     obj.get("title"), obj.get("description"), Long.parseLong(obj.get("price")), obj.get("contact"),
                     true, obj.get("contactEmail"), obj.get("linkYouTube"), obj.get("communicationType"), obj.get("state"));
-
-            List<Image> images = new ArrayList<>();
-            String time = new SimpleDateFormat("yyyy'-'MM'-'dd'_'HHmmss'_'").format(new Date());
-            try {
-                for (int i = 0; i < photos.size(); i++) {
-                    if (!photos.get(i).isEmpty()) {
-                        byte[] bytes = photos.get(i).getBytes();
-                        File dir = new File("uploaded_files/userID_" + user.getId());
-                        dir.mkdirs();
-                        File file = new File(dir, time + photos.get(i).getOriginalFilename());
-                        BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(file));
-
-                        stream.write(bytes);
-                        stream.close();
-                        Image image = new Image(dir.toString() + file.toString());
-                        imageService.save(image);
-                        images.add(imageService.getByPathURL(dir.toString() + file.toString()));
-                        log.info("Файл '" + time + photos.get(i).getOriginalFilename() + "' успешно загружен.");
-                    } else {
-                        log.info("Вам не удалось загрузить файл, потому что он пустой.");
-                    }
-                }
-            } catch (Exception ex) {
-                log.info("Вам не удалось загрузить фотографии => " + ex.getMessage());
-                return new ErrorResponse<>(new Error(400, "Posting is not created"));
-            }
+            List<Image> images = imageService.savePhotos(user, photos);
             posting.setImages(images);
+            posting.setCity(cityService.findCityByName("Ростов-на-Дону").get());
             postingService.save(posting);
             log.info("Объявление успешно создано пользователем " + user.getEmail());
             return Response.ok().build();
