@@ -26,7 +26,7 @@ function getPostingsTable(posts, favorites) {
          
                                 </ol>
                                 <div id="carouselInner${step}" class="carousel-inner">
-                                    <div id="add${postingDTO.id}">
+                                        <div id="add${postingDTO.id}">
                                         <img data-id="${postingDTO.id}" class="addToWish" src="../images/heart.jpg" th:src="@{images/heart.jpg}">
                                     </div>
                                     <div id="delete${postingDTO.id}">
