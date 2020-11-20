@@ -36,6 +36,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -66,6 +68,7 @@ public class PostingRestController {
                 ? Response.ok(postings)
                 : new ErrorResponse<>(new Error(204, "No found postings"));
     }
+
     @GetMapping("/{id}")
     public Response<PostingDto> findPostingDto(@PathVariable Long id) {
         var postingDto = postingService.getPostingDtoById(id);
@@ -95,10 +98,10 @@ public class PostingRestController {
     }
 
     @GetMapping("/search")
-    public Response<List<PostingDto>> findAllPostings(@RequestParam(name="catSel") String categorySelect,
-                                                      @RequestParam(name="citSel",required = false)String citySelect,
-                                                      @RequestParam(name="searchT",required = false) String searchText,
-                                                      @RequestParam(name="phOpt",required = false) String photoOption) {
+    public Response<List<PostingDto>> findAllPostings(@RequestParam(name = "catSel") String categorySelect,
+                                                      @RequestParam(name = "citSel", required = false) String citySelect,
+                                                      @RequestParam(name = "searchT", required = false) String searchText,
+                                                      @RequestParam(name = "phOpt", required = false) String photoOption) {
         log.info("Use this default logger");
         var postings = postingService
 
@@ -123,31 +126,31 @@ public class PostingRestController {
     public Response<PostingCarDto> getPostingCarDtoMap(@AuthenticationPrincipal User user, @PathVariable String isCarNew) {
         log.info("In Get PostingCarDTO Controller");
         PostingCarDto postingCarDto = postingService.getNewPostingCarDto(user.getId(), isCarNew);
-        return  Response.ok(postingCarDto);
+        return Response.ok(postingCarDto);
     }
 
     @GetMapping("/car/colors")
     public Response<Set<String>> getCarColorsSet() {
         log.info("In Get Set of Colors Controller");
-        return  Response.ok(autoAttributesService.getAllAutoColorsRusNames());
+        return Response.ok(autoAttributesService.getAllAutoColorsRusNames());
     }
 
     @GetMapping("/car/brands")
     public Response<Set<String>> getCarBrandsSet() {
         log.info("In Get Set of getCarBrands Controller");
-        return  Response.ok(autoAttributesService.getBrandsSet());
+        return Response.ok(autoAttributesService.getBrandsSet());
     }
 
     @GetMapping("/car/models/{brand}")
     public Response<Set<String>> getCarBrandsSet(@PathVariable String brand) {
         log.info("In Get Set of getCar Models Controller brand = {}", brand);
-        return  Response.ok(autoAttributesService.getModelsSet(brand));
+        return Response.ok(autoAttributesService.getModelsSet(brand));
     }
 
     @GetMapping("/car/models/{brand}/{model}")
     public Response<Set<Short>> getYearsByBrandAndModel(@PathVariable String brand, @PathVariable String model) {
         log.info("In Get Set of getCar Models Controller brand = {} model = {}", brand, model);
-        return  Response.ok(autoAttributesService.getYearsByBrandAndModel(brand, model));
+        return Response.ok(autoAttributesService.getYearsByBrandAndModel(brand, model));
     }
 
     @PostMapping("/car/new-save")
@@ -160,7 +163,7 @@ public class PostingRestController {
             postingService.save(postingCar);
             log.info("Posting  Saved!");
             return Response.ok().build();
-        } catch (Exception e){
+        } catch (Exception e) {
             log.info("Unable to save Posting : " + e.getMessage());
             return new ErrorResponse<>(new Error(204, "Error of saving post"));
         }
@@ -170,7 +173,7 @@ public class PostingRestController {
     @PostMapping("/new/householdAppliances/{id}")
     public Response<Void> createHouseholdAppliancesPosting(@PathVariable Long id,
                                                            @AuthenticationPrincipal User user,
-                                                           @RequestParam Map<String,String> obj,
+                                                           @RequestParam Map<String, String> obj,
                                                            @RequestParam(value = "photos") List<MultipartFile> photos) {
         HouseholdAppliancesPosting posting;
 
@@ -216,8 +219,29 @@ public class PostingRestController {
 
     @PostMapping("/new/vacancy")
     public Response<Void> saveNewVacancyPosting(@AuthenticationPrincipal User user,
-                                                @RequestParam Map<String,String> form,
+                                                @RequestParam Map<String, String> form,
                                                 @RequestParam(value = "photos") List<MultipartFile> photos) {
+        List<Image> images = new ArrayList<>();
+        File directory = new File("uploaded_files/userID_" + user.getId());
+        if (!directory.exists()) {
+            try {
+                directory.createNewFile();
+            } catch (IOException e) {
+                log.warn("Ошибка при создании директории для сохранения файлов " + directory, e);
+            }
+        }
+        for (MultipartFile multipartFile : photos) {
+            File file = new File(directory, multipartFile.getOriginalFilename());
+            try {
+                log.info(file.getAbsolutePath());
+                multipartFile.transferTo(Paths.get(file.getAbsolutePath()));
+                images.add(new Image(file.getPath()));
+            } catch (IOException e) {
+                log.error("Ошибка при сохранении файла " + multipartFile.getOriginalFilename(), e);
+            }
+        }
+        images.forEach(image -> image.setPostings(new ArrayList<>()));
+
         User userById = userService.getUserById(user.getId());
         City city = user.getCity() != null ? user.getCity()
                 : cityService.findCityByName(form.get("city")).orElse(null);
@@ -229,11 +253,16 @@ public class PostingRestController {
         posting.setDatePosting(LocalDateTime.now());
         posting.setDescription(form.get("description"));
         posting.setTitle(form.get("title"));
+        posting.setIsActive(true);
+        posting.setSchedule(form.get("schedule"));
         posting.setDuties(form.get("duties"));
         posting.setExperienceValue(form.get("workExperience"));
         posting.setLocation(form.get("location"));
         posting.setPreferences(form.get("olderThan45") + ", " + form.get("olderThan14"));
         posting.setPrice(Long.valueOf(form.get("price")));
+        posting.setImages(images);
+        images.forEach(imageService::save);
+        images.forEach(image -> image.getPostings().add(posting));
         postingService.save(posting);
         return Response.ok().build();
     }

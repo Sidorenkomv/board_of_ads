@@ -3,22 +3,23 @@ async function sendNewVacancyPosting(selectedCategoryId) {
 
     const fileField = document.querySelector('input[type="file"][name="image"][multiple]');
 
-   /* for (let i = 0; i < fileField.files.length; i++) {
-        formData.append('photos', fileField.files[i]);
-    }*/
     let body = new FormData();
-    body.set("title", document.getElementById("title").value);
-    body.set("schedule", document.getElementById("schedule").value);
-    body.set("price", document.getElementById("price").value);
-    body.set("payoutFrequency", document.getElementById("payout_frequency").value);
-    body.set("location", document.getElementById("location").value);
-    body.set("duties", document.getElementById("duties").value);
-    body.set("description", document.getElementById("description").value);
-    body.set("workExperience", document.getElementById("workExperience").value);
-    body.set("olderThan45", "" + document.querySelector('input[name="olderThan45"]:checked').value);
-    body.set("olderThan14", "" + document.querySelector('input[name="olderThan14"]:checked').value);
-    body.set("categoryId", selectedCategoryId);
-    body.set("city", document.getElementById("inputAddress").value);
+
+    for (let i = 0; i < fileField.files.length; i++) {
+        body.append('photos', fileField.files[i], fileField.files[i].name);
+    }
+    body.append("title", document.getElementById("title").value);
+    body.append("schedule", document.getElementById("schedule").value);
+    body.append("price", document.getElementById("price").value);
+    body.append("payoutFrequency", document.getElementById("payout_frequency").value);
+    body.append("location", document.getElementById("location").value);
+    body.append("duties", document.getElementById("duties").value);
+    body.append("description", document.getElementById("description").value);
+    body.append("workExperience", document.getElementById("workExperience").value);
+    body.append("olderThan45", "" + document.querySelector('input[name="olderThan45"]:checked').value);
+    body.append("olderThan14", "" + document.querySelector('input[name="olderThan14"]:checked').value);
+    body.append("categoryId", selectedCategoryId);
+    body.append("city", document.getElementById("inputAddress").value);
     await sendFile(body, url);
     window.location.href = '/';
 }
@@ -41,7 +42,7 @@ async function buildVacancyForm(frontName, selectedCategoryId) {
         '            </td>\n' +
         '            <td>\n' +
         '                <select name="schedule" id="schedule" required>\n' +
-        '                    <option value="" selected disabled> -</option>\n' +
+        '                    <option value="" selected>—</option>\n' +
         '                    <option value="Вахтовый метод">Вахтовый метод</option>\n' +
         '                    <option value="Неполный день">Неполный день</option>\n' +
         '                    <option value="Полный день">Полный день</option>\n' +
@@ -64,7 +65,7 @@ async function buildVacancyForm(frontName, selectedCategoryId) {
         '            </td>\n' +
         '            <td>\n' +
         '                <select name="payoutFrequency" id="payout_frequency">\n' +
-        '                    <option value="">—</option>\n' +
+        '                    <option value="" selected>—</option>\n' +
         '                    <option value="Почасовая оплата">Почасовая оплата</option>\n' +
         '                    <option value="Каждый день">Каждый день</option>\n' +
         '                    <option value="Дважды в месяц">Дважды в месяц</option>\n' +
@@ -185,7 +186,7 @@ async function buildVacancyForm(frontName, selectedCategoryId) {
         '                    class="text-text-1PdBw">Логотип или фотография</span></label>\n' +
         '            </td>\n' +
         '            <td>\n' +
-        '                <input type="file" id="image" multiple\n' +
+        '                <input type="file" id="image" name="image" multiple\n' +
         '                       accept="image/gif,image/png,image/jpeg,image/pjpeg"\n' +
         '                       value="">\n' +
         '                <div class="ui-icon-image">\n' +
