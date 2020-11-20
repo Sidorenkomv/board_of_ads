@@ -188,8 +188,7 @@ $("#saveCityOrNameButton").on('click', function () {
         password: '',
         newPassword: '',
         firstName: $("#fld_name").val(),
-        cityId: idOfSelectedCity.toString()
-
+        cityId: idOfSelectedCity
     };
     userService.changeUserData(data)
         .then(userResponse => userResponse.json())
@@ -220,14 +219,14 @@ $('#selectCity').on('change', function () {
 async function showChooseCityModal() {
     sendMillionRequest('GET', '/api/city/millionCities').then(data => {
         let cid = 5001;
-        for (i = 0; i < 5029; i++) {
+        for (i = 0; i < 28; i++) {
             let millionCity = data.data[i];
             document.getElementById(cid.toString()).style.fontSize = '12px';
             document.getElementById(cid.toString()).innerHTML = millionCity.name;
             document.getElementById(cid.toString()).id = millionCity.id;
             cid++;
         }
-    });
+    }).catch(() => console.log(" "));
     $('#chooseCityModal').modal('show');
 }
 
@@ -279,26 +278,6 @@ $('#editConfirmEmailButton').on('click', function() {
              $('#emailEditConfirmModal').modal('hide');
          }
     });
-})
-
-$("#saveCityOrNameButton").on('click', function() {
-    let data = {
-        email: '',
-        password: '',
-        newPassword: '',
-        firstName: $("#fld_name").val(),
-        cityId: $("#selectCity").val()
-    };
-    userService.changeUserData(data)
-        .then(userResponse => userResponse.json())
-        .then(userResponse => {
-            if (userResponse.success === true) {
-                $('#SuccessMessage').removeClass("d-none");
-                $('#SuccessMessage').addClass("bg-success text-dark py-2 d-block");
-                $('#SuccessMessage').text("");
-                $('#SuccessMessage').append('Контактная информация успешно сохранена');
-            }
-        });
 })
 
 const http = {

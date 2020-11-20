@@ -48,7 +48,6 @@ public class CityRestController {
 
     @GetMapping("/millionCities")
     public Response<Set<City>> findAllMillionCities() {
-        System.out.println("????");
         Set<City> cities = cityRepository.getCitiesByPopulation();
         return (cities.size() > 0)
                 ? Response.ok(cities)
