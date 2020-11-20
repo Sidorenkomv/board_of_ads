@@ -220,8 +220,15 @@ public class PostingRestController {
     @PostMapping("/new/vacancy")
     public Response<Void> saveNewVacancyPosting(@AuthenticationPrincipal User user,
                                                 @RequestParam Map<String, String> form,
-                                                @RequestParam(value = "photos") List<MultipartFile> photos) {
+                                                @RequestParam(value = "photos") List<MultipartFile> photos,
+                                                @RequestParam(value = "preferences") List<String> preferences) {
         List<Image> images = new ArrayList<>();
+        Vacancy posting = new Vacancy();
+
+        StringBuilder options = new StringBuilder();
+
+        preferences.forEach(a -> options.append(a).append("/"));
+
         File directory = new File("uploaded_files/userID_" + user.getId());
         if (!directory.exists()) {
             try {
@@ -245,7 +252,6 @@ public class PostingRestController {
         User userById = userService.getUserById(user.getId());
         City city = user.getCity() != null ? user.getCity()
                 : cityService.findCityByName(form.get("city")).orElse(null);
-        Vacancy posting = new Vacancy();
         posting.setUser(userById);
         posting.setCategory(categoryService.getCategoryById(Long.valueOf(form.get("categoryId"))));
         posting.setCity(city);
@@ -258,7 +264,7 @@ public class PostingRestController {
         posting.setDuties(form.get("duties"));
         posting.setExperienceValue(form.get("workExperience"));
         posting.setLocation(form.get("location"));
-        posting.setPreferences(form.get("olderThan45") + ", " + form.get("olderThan14"));
+        posting.setPreferences(options.toString());
         posting.setPrice(Long.valueOf(form.get("price")));
         posting.setImages(images);
         images.forEach(imageService::save);

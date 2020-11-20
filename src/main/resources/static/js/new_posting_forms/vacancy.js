@@ -5,6 +5,15 @@ async function sendNewVacancyPosting(selectedCategoryId) {
 
     let body = new FormData();
 
+    let checkBoxes = document.querySelectorAll('input[type="checkbox"]');
+
+    for(let i = 0; i < checkBoxes.length; i++) {
+        console.log(checkBoxes[i].checked);
+        if (checkBoxes[i].checked) {
+            body.append("preferences", checkBoxes[i].value)
+        }
+    }
+
     for (let i = 0; i < fileField.files.length; i++) {
         body.append('photos', fileField.files[i], fileField.files[i].name);
     }
@@ -16,8 +25,8 @@ async function sendNewVacancyPosting(selectedCategoryId) {
     body.append("duties", document.getElementById("duties").value);
     body.append("description", document.getElementById("description").value);
     body.append("workExperience", document.getElementById("workExperience").value);
-    body.append("olderThan45", "" + document.querySelector('input[name="olderThan45"]:checked').value);
-    body.append("olderThan14", "" + document.querySelector('input[name="olderThan14"]:checked').value);
+    //body.append("olderThan45", "" + document.querySelector('input[name="olderThan45"]:checked').value);
+    //body.append("olderThan14", "" + document.querySelector('input[name="olderThan14"]:checked').value);
     body.append("categoryId", selectedCategoryId);
     body.append("city", document.getElementById("inputAddress").value);
     await sendFile(body, url);
@@ -99,7 +108,7 @@ async function buildVacancyForm(frontName, selectedCategoryId) {
         '                    border-width: 1px;\n' +
         '                    border-radius: 3px;\n' +
         '                    padding: 6px 10px;\n' +
-        '                    text-align: left;"></textarea>\n' +
+        '                    text-align: left;" required></textarea>\n' +
         '                </fieldset>\n' +
         '            </td>\n' +
         '        </tr>\n' +
@@ -168,7 +177,7 @@ async function buildVacancyForm(frontName, selectedCategoryId) {
         'padding-bottom: 6px;\n' +
         'text-align: left;\n' +
         'min-height: 130px!important;\n' +
-        'height: 158px;"></textarea></span></span></div>\n' +
+        'height: 158px;" required></textarea></span></span></div>\n' +
         '                    </div>\n' +
         '                </div>\n' +
         '                <div class="footer" data-marker="field/hint">Расскажите, что вы предлагаете и\n' +
