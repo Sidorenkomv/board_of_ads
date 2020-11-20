@@ -25,8 +25,6 @@ async function sendNewVacancyPosting(selectedCategoryId) {
     body.append("duties", document.getElementById("duties").value);
     body.append("description", document.getElementById("description").value);
     body.append("workExperience", document.getElementById("workExperience").value);
-    //body.append("olderThan45", "" + document.querySelector('input[name="olderThan45"]:checked').value);
-    //body.append("olderThan14", "" + document.querySelector('input[name="olderThan14"]:checked').value);
     body.append("categoryId", selectedCategoryId);
     body.append("city", document.getElementById("inputAddress").value);
     await sendFile(body, url);
