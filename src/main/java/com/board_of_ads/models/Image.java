@@ -55,7 +55,5 @@ public class Image {
         this.pathURL = pathURL;
     }
 
-    public Image(String pathURL) {
-        this.pathURL = pathURL;
-    }
+
 }

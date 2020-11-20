@@ -146,11 +146,5 @@ public class CategoryServiceImpl implements CategoryService {
         return Optional.ofNullable(categoryRepository.findCategoryByFrontName(frontName));
     }
 
-    @Override
-    public Category getCategoryById(Long id) {
-        return categoryRepository.findCategoryById(id);
-    }
-
-
 
 }
