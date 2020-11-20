@@ -46,9 +46,7 @@ public class Image {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Posting> postings;
 
-    public Image(String pathURL) {
-        this.pathURL = pathURL;
-    }
+
 
     public Image(Long id, String pathURL) {
         this.id = id;
