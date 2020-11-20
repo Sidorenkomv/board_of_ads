@@ -2,6 +2,7 @@ package com.board_of_ads.controllers.rest;
 
 import com.board_of_ads.models.Image;
 import com.board_of_ads.models.User;
+import com.board_of_ads.models.dto.PostingCarDto;
 import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
@@ -60,11 +61,6 @@ public class PostingRestController {
     private final CategoryService categoryService;
     private final UserService userService;
     private final ImageService imageService;
-
-    private final CategoryService categoryService;
-    private final CategoryRepository categoryRepository;
-    private final ImageService imageService;
-    private final UserService userService;
 
 
     @GetMapping
