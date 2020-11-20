@@ -12,6 +12,7 @@ import com.board_of_ads.models.dto.review.Review;
 import com.board_of_ads.models.UserNotification;
 import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.models.posting.autoTransport.cars.car_attributes.AutoColor;
+import com.board_of_ads.models.posting.autoTransport.cars.car_attributes.AutoModel;
 import com.board_of_ads.service.interfaces.AutoAttributesService;
 import com.board_of_ads.service.interfaces.MessageService;
 import com.board_of_ads.service.interfaces.CategoryService;
@@ -103,7 +104,6 @@ public class DataInitializer {
             Set<Role> roleAdmin = new HashSet<>();
             roleAdmin.add(roleService.getRoleByName("USER"));
             user.setRoles(roleAdmin);
-            // user.setCity(cityService.findCityByName("Рязань").get());
             userService.saveUser(user);
         }
     }
@@ -126,7 +126,6 @@ public class DataInitializer {
                 categoryService.saveCategory(category);
             }
         }
-
 
         List<Category> subCategoryList = new ArrayList<>();
         subCategoryList.add(new Category("Автомобили", categoryService.getCategoryByName("Транспорт").get(), 2));
@@ -510,7 +509,6 @@ public class DataInitializer {
         secondSubCategory.add(new Category("Спортивное питание", categoryService.getCategoryByName("Спорт и отдых").get(), 3));
         secondSubCategory.add(new Category("Другое", categoryService.getCategoryByName("Спорт и отдых").get(), 3));
 
-
         secondSubCategory.add(new Category("Интернет-магазин", categoryService.getCategoryByName("Готовый бизнес").get(), 3));
         secondSubCategory.add(new Category("Общественное питание", categoryService.getCategoryByName("Готовый бизнес").get(), 3));
         secondSubCategory.add(new Category("Производство", categoryService.getCategoryByName("Готовый бизнес").get(), 3));
@@ -549,8 +547,6 @@ public class DataInitializer {
         thirdSubCategory.add(new Category("Топы и футболки", categoryService.getCategoryByName("Женская одежда").get(), 4,"clothes"));
         thirdSubCategory.add(new Category("Трикотаж", categoryService.getCategoryByName("Женская одежда").get(), 4,"clothes"));
         thirdSubCategory.add(new Category("Другое", categoryService.getCategoryByName("Женская одежда").get(), 4,"other-clothes"));
-
-
         thirdSubCategory.add(new Category("Брюки", categoryService.getCategoryByName("Мужская одежда").get(), 4,"clothes"));
         thirdSubCategory.add(new Category("Верхняя одежда", categoryService.getCategoryByName("Мужская одежда").get(), 4,"clothes"));
         thirdSubCategory.add(new Category("Джинсы", categoryService.getCategoryByName("Мужская одежда").get(), 4,"clothes"));
@@ -661,7 +657,7 @@ public class DataInitializer {
         }
     }
 
-    private void initOrders(){
+    private void initOrders() {
         List<Order> orderList = new ArrayList<>();
 
         orderList.add(new Order(
@@ -670,12 +666,12 @@ public class DataInitializer {
                 "Почта России", DeliveryStatus.IN_PROCESS)
         );
 
-        for (Order order: orderList){
+        for (Order order : orderList) {
             orderService.save(order);
         }
     }
 
-    private void initReviews(){
+    private void initReviews() {
         List<Review> reviewList = new ArrayList<>();
 
         reviewList.add(new Review(
@@ -685,7 +681,7 @@ public class DataInitializer {
                 "Проиграл")
         );
 
-        for (Review review: reviewList){
+        for (Review review : reviewList) {
             reviewService.save(review);
         }
     }
@@ -808,15 +804,15 @@ public class DataInitializer {
 
     private void initMessages() {
         List<Message> messages = new ArrayList<>();
-        messages.add(new Message(1L, "привет", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1600L)));
-        messages.add(new Message(2L, "можно обсудить скидку?", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1601L)));
-        messages.add(new Message(4L, "здравствуйте", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1602L)));
-        messages.add(new Message(5L, "еще актуально?", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1603L)));
-        messages.add(new Message(6L, "приеду завтра", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1604L)));
-        messages.add(new Message(7L, "подумаю", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1605L)));
-        messages.add(new Message(8L, "предложу другу", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1606L)));
-        messages.add(new Message(9L, "приеду сегодня вечером", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1607L)));
-        messages.add(new Message(10L, "спасибо!", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1608L)));
+        messages.add(new Message(1L, "привет", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1622L)));
+        messages.add(new Message(2L, "можно обсудить скидку?", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1623L)));
+        messages.add(new Message(4L, "здравствуйте", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1624L)));
+        messages.add(new Message(5L, "еще актуально?", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1625L)));
+        messages.add(new Message(6L, "приеду завтра", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1626L)));
+        messages.add(new Message(7L, "подумаю", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1627L)));
+        messages.add(new Message(8L, "предложу другу", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1628L)));
+        messages.add(new Message(9L, "приеду сегодня вечером", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1629L)));
+        messages.add(new Message(10L, "спасибо!", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1630L)));
 
         for (Message message : messages) {
             messageService.save(message);
