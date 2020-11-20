@@ -7,6 +7,7 @@ import com.board_of_ads.models.User;
 import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
+import com.board_of_ads.models.posting.forAudioVideo.AudioVideoPosting;
 import com.board_of_ads.models.posting.forHomeAndGarden.HouseholdAppliancesPosting;
 import com.board_of_ads.models.posting.autoTransport.cars.PostingCar;
 import com.board_of_ads.service.interfaces.AutoAttributesService;
@@ -34,6 +35,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -205,6 +208,29 @@ public class PostingRestController {
                 return new ErrorResponse<>(new Error(400, "Posting is not created"));
             }
             posting.setImages(images);
+            postingService.save(posting);
+            log.info("Объявление успешно создано пользователем " + user.getEmail());
+            return Response.ok().build();
+        } catch (Exception ex) {
+            log.info("Не удалось создать объявление => " + ex.getMessage());
+            return new ErrorResponse<>(new Error(400, "Posting is not created"));
+        }
+    }
+
+    @PostMapping("/new/audiovideo/{id}")
+    public Response<Void> createAudioVideoPosting(@PathVariable Long id,
+                                                           @AuthenticationPrincipal User user,
+                                                           @RequestParam Map<String,String> obj,
+                                                           @RequestParam(value = "photos") List<MultipartFile> photos) {
+        AudioVideoPosting posting;
+
+        try {
+            posting = new AudioVideoPosting(userService.getUserById(user.getId()), categoryService.getCategoryById(id),
+                    obj.get("title"), obj.get("description"), Long.parseLong(obj.get("price")), obj.get("contact"),
+                    true, obj.get("contactEmail"), obj.get("linkYouTube"), obj.get("communicationType"), obj.get("state"));
+            List<Image> images = imageService.savePhotos(user, photos);
+            posting.setImages(images);
+            posting.setCity(cityService.findCityByName("Ростов-на-Дону").get());
             postingService.save(posting);
             log.info("Объявление успешно создано пользователем " + user.getEmail());
             return Response.ok().build();
