@@ -115,6 +115,14 @@ async function changeVisible(frontName, id) {
             break;
         case 'audiovideo': await getAudioVideoForm(frontName, id);
             break;
+        case 'sellEstate' : await getEstate(frontName, id)
+            break;
+        case 'rentAnEstate' : getEstate(frontName, id)
+            break;
+        case 'buyEstate' : getEstate(frontName, id)
+            break;
+        case 'getAnEstate' : getEstate(frontName, id)
+            break;
         default: alert('For frontName="' + frontName + '" not found posting form');
             break;
     }

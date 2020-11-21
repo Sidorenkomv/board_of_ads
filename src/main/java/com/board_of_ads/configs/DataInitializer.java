@@ -244,10 +244,10 @@ public class DataInitializer {
         secondSubCategory.add(new Category("Экипировка", categoryService.getCategoryByName("Запчасти и автоаксессуары").get(), 3));
 
 
-        secondSubCategory.add(new Category("Продам", categoryService.getCategoryByName("Квартиры").get(), 3));
-        secondSubCategory.add(new Category("Сдам", categoryService.getCategoryByName("Квартиры").get(), 3));
-        secondSubCategory.add(new Category("Куплю", categoryService.getCategoryByName("Квартиры").get(), 3));
-        secondSubCategory.add(new Category("Сниму", categoryService.getCategoryByName("Квартиры").get(), 3));
+        secondSubCategory.add(new Category("Продам", categoryService.getCategoryByName("Квартиры").get(), 3, "sellEstate"));
+        secondSubCategory.add(new Category("Сдам", categoryService.getCategoryByName("Квартиры").get(), 3, "rentAnEstate"));
+        secondSubCategory.add(new Category("Куплю", categoryService.getCategoryByName("Квартиры").get(), 3, "buyEstate"));
+        secondSubCategory.add(new Category("Сниму", categoryService.getCategoryByName("Квартиры").get(), 3, "getAnEstate"));
 
         secondSubCategory.add(new Category("Продам", categoryService.getCategoryByName("Комнаты").get(), 3));
         secondSubCategory.add(new Category("Сдам", categoryService.getCategoryByName("Комнаты").get(), 3));

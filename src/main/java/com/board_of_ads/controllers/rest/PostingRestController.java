@@ -1,15 +1,16 @@
 package com.board_of_ads.controllers.rest;
 
+import com.board_of_ads.models.Category;
 import com.board_of_ads.models.User;
 import com.board_of_ads.models.dto.PostingCarDto;
 import com.board_of_ads.models.Image;
-import com.board_of_ads.models.User;
 import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.models.posting.forAudioVideo.AudioVideoPosting;
 import com.board_of_ads.models.posting.forHomeAndGarden.HouseholdAppliancesPosting;
 import com.board_of_ads.models.posting.autoTransport.cars.PostingCar;
+import com.board_of_ads.models.posting.realty.estate.*;
 import com.board_of_ads.service.interfaces.AutoAttributesService;
 import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.service.interfaces.CityService;
@@ -23,8 +24,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -239,4 +238,102 @@ public class PostingRestController {
             return new ErrorResponse<>(new Error(400, "Posting is not created"));
         }
     }
+
+    @PostMapping("/new/sellEstate/{id}")
+    public Response<Void> createEstatePosting(@PathVariable Long id,
+                                              @AuthenticationPrincipal User user,
+                                              @RequestParam Map<String,String> obj,
+                                              @RequestParam(value = "photos") List<MultipartFile> photos) {
+        SellEstatePosting posting = postingService.addSellEstatePosting(obj);
+
+        if (posting == null) {
+            log.info("Не удалось создать объявление => " + Thread.currentThread().getStackTrace()[1]);
+            return new ErrorResponse<>(new Error(400, "Posting is not created"));
+        }
+
+        User myUser = userService.getUserById(user.getId());
+        Category category = categoryService.getCategoryById(id).getCategory();
+        posting.setUser(myUser);
+        posting.setCategory(category);
+        posting.setCity(myUser.getCity());
+        postingService.save(posting);
+        log.info("Объявление успешно создано пользователем " + user.getEmail());
+        return Response.ok().build();
+    }
+
+
+    @PostMapping("/new/buyEstate/{id}")
+    public Response<Void> createBuyEstatePosting(@PathVariable Long id,
+                                              @AuthenticationPrincipal User user,
+                                              @RequestParam Map<String,String> obj) {
+
+        BuyEstatePosting posting = postingService.addBuyEstatePosting(obj);
+
+        if (posting == null) {
+            log.info("Не удалось создать объявление => " + Thread.currentThread().getStackTrace()[1]);
+            return new ErrorResponse<>(new Error(400, "Posting is not created"));
+        }
+
+        User myUser = userService.getUserById(user.getId());
+        Category category = categoryService.getCategoryById(id).getCategory();
+        posting.setUser(myUser);
+        posting.setCategory(category);
+        posting.setCity(myUser.getCity());
+        postingService.save(posting);
+        log.info("Объявление успешно создано пользователем " + user.getEmail());
+        return Response.ok().build();
+    }
+
+
+    @PostMapping("/new/rentAnEstate/{id}")
+    public Response<Void> rentAnEstatePosting(@PathVariable Long id,
+                                              @AuthenticationPrincipal User user,
+                                              @RequestParam Map<String,String> obj,
+                                              @RequestParam(value = "photos") List<MultipartFile> photos) {
+        RentAnEstatePosting posting = postingService.addRentAnEstatePosting(obj);
+
+        if (posting == null) {
+            log.info("Не удалось создать объявление => " + Thread.currentThread().getStackTrace()[1]);
+            return new ErrorResponse<>(new Error(400, "Posting is not created"));
+        }
+        User myUser = userService.getUserById(user.getId());
+        Category category = categoryService.getCategoryById(id).getCategory();
+        List<Image> images =  imageService.savePhotos(user, photos);
+
+        posting.setUser(myUser);
+        posting.setCategory(category);
+        posting.setCity(myUser.getCity());
+        posting.setImages(images);
+        postingService.save(posting);
+
+        log.info("Объявление успешно создано пользователем " + user.getEmail());
+        return Response.ok().build();
+
+    }
+
+    @PostMapping("/new/getAnEstate/{id}")
+    public Response<Void> getAnEstatePosting(@PathVariable Long id,
+                                              @AuthenticationPrincipal User user,
+                                              @RequestParam Map<String,String> obj,
+                                              @RequestParam(value = "photos") List<MultipartFile> photos) {
+
+        GetAnEstatePosting posting = postingService.addGetAnEstatePosting(obj);
+        if (posting == null) {
+            log.info("Не удалось создать объявление => " + Thread.currentThread().getStackTrace()[1]);
+            return new ErrorResponse<>(new Error(400, "Posting is not created"));
+        }
+        User myUser = userService.getUserById(user.getId());
+        Category category = categoryService.getCategoryById(id).getCategory();
+        List<Image> images =  imageService.savePhotos(user, photos);
+
+        posting.setUser(myUser);
+        posting.setCategory(category);
+        posting.setCity(myUser.getCity());
+        posting.setImages(images);
+        postingService.save(posting);
+
+        log.info("Объявление успешно создано пользователем " + user.getEmail());
+        return Response.ok().build();
+    }
+
 }
