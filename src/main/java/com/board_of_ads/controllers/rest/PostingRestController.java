@@ -219,4 +219,15 @@ public class PostingRestController {
         }
     }
 
+    @PostMapping("/clothes/{id}")
+    public Response<Void> createPersonalClothesPosting(@PathVariable Long id,
+                                                       @AuthenticationPrincipal User user,
+                                                       @RequestParam Map<String, String> map,
+                                                       @RequestParam(value = "photos") List<MultipartFile> photos) {
+
+        log.info("Create posting clothes");
+        return postingService.savePersonalClothesPosting(id, user, map, photos);
+
+    }
+
 }
