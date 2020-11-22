@@ -2,7 +2,7 @@ $(document).ready(function () {
     $("#inputPhone").mask("+7 (999) 999-99-99");
 });
 
-let id;
+let id_clothes;
 
 let btn = document.getElementById("saveButton");
 
@@ -31,13 +31,13 @@ btn.addEventListener("click", () => {
         formData.append('description', window.description.value);
         formData.append('price', price === "" ? 0 : price);
         formData.append('linkYouTube', window.linkYouTube.value);
-        formData.append('meetingAddress', window.meetingAddress.value);
+        formData.append('meetingAddress', window.inputAddress.value);
         formData.append('contactEmail', window.inputEmail.value);
         formData.append('contact', window.inputPhone.value);
         formData.append('communicationType', document.querySelector('input[name="communication"]:checked').value);
 
 
-        fetch('/api/posting/clothes/' + id, {
+        fetch('/api/posting/clothes/' + id_clothes, {
 
             method: 'POST',
             // headers: {
@@ -86,11 +86,11 @@ function validateForm() {
         document.getElementById("postPhotos").focus();
         return false;
 
-    } else if (document.getElementById("meetingAddress").value == "") {
+    } else if (document.getElementById("inputAddress").value == "") {
 
         let alert_address = "Укажите место сделки";
         document.getElementById("fill_address").innerHTML = alert_address;
-        document.getElementById("meetingAddress").focus();
+        document.getElementById("inputAddress").focus();
         return false;
 
     } else if (document.getElementById("inputPhone").value == "") {
@@ -106,7 +106,7 @@ function validateForm() {
 
 
 function showClothesForm(fName, ident) {
-    id = ident;
+    id_clothes = ident;
     document.getElementById('visibleElement2').innerHTML =
         '<div id="parameters" class="main-container">\n' +
         '        <div class="category-head-container">\n' +
@@ -210,7 +210,7 @@ function showClothesForm(fName, ident) {
 }
 
 function showShoesForm(fName, ident) {
-    id = ident;
+    id_clothes = ident;
     document.getElementById('visibleElement2').innerHTML =
 
         '<div id="parameters" class="main-container">\n' +
@@ -322,7 +322,7 @@ function showShoesForm(fName, ident) {
 }
 
 function showOtherClothesForm(fName, ident) {
-    id = ident;
+    id_clothes = ident;
     document.getElementById('visibleElement2').innerHTML =
 
         '<div id="parameters" class="main-container">\n' +
