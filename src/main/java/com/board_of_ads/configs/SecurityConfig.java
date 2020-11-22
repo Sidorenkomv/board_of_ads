@@ -32,7 +32,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/js/*.js",
                 "/images/**",
                 "/images/*.jpg",
-                "/images/*.png"
+                "/images/*.png",
+                "/uploaded_files/**",
+                "/uploaded_files/*.jpg",
+                "/Users/User/board_of_ads_av_posting/uploaded_files/**"
         );
     }
 

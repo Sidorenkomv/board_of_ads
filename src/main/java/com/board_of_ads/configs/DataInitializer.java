@@ -394,18 +394,18 @@ public class DataInitializer {
         secondSubCategory.add(new Category("Услуги", categoryService.getCategoryByName("Ремонт и строительство").get(), 3, "householdAppliances"));
 
 
-        secondSubCategory.add(new Category("MP3 плееры", categoryService.getCategoryByName("Аудио и видео").get(), 3));
-        secondSubCategory.add(new Category("Акустика, колонки, сабвуферы", categoryService.getCategoryByName("Аудио и видео").get(), 3));
-        secondSubCategory.add(new Category("Видео, DVD и Blu-Ray плееры", categoryService.getCategoryByName("Аудио и видео").get(), 3));
-        secondSubCategory.add(new Category("Видеокамеры", categoryService.getCategoryByName("Аудио и видео").get(), 3));
-        secondSubCategory.add(new Category("Кабели и адаптеры", categoryService.getCategoryByName("Аудио и видео").get(), 3));
-        secondSubCategory.add(new Category("Микрофоны", categoryService.getCategoryByName("Аудио и видео").get(), 3));
-        secondSubCategory.add(new Category("Музыка и фильмы", categoryService.getCategoryByName("Аудио и видео").get(), 3));
-        secondSubCategory.add(new Category("Музыкальные центры, магнитолы", categoryService.getCategoryByName("Аудио и видео").get(), 3));
-        secondSubCategory.add(new Category("Наушники", categoryService.getCategoryByName("Аудио и видео").get(), 3));
-        secondSubCategory.add(new Category("Телевизоры и проекторы", categoryService.getCategoryByName("Аудио и видео").get(), 3));
-        secondSubCategory.add(new Category("Усилители и ресиверы", categoryService.getCategoryByName("Аудио и видео").get(), 3));
-        secondSubCategory.add(new Category("Аксессуары", categoryService.getCategoryByName("Аудио и видео").get(), 3));
+        secondSubCategory.add(new Category("MP3 плееры", categoryService.getCategoryByName("Аудио и видео").get(), 3, "audiovideo"));
+        secondSubCategory.add(new Category("Акустика, колонки, сабвуферы", categoryService.getCategoryByName("Аудио и видео").get(), 3, "audiovideo"));
+        secondSubCategory.add(new Category("Видео, DVD и Blu-Ray плееры", categoryService.getCategoryByName("Аудио и видео").get(), 3, "audiovideo"));
+        secondSubCategory.add(new Category("Видеокамеры", categoryService.getCategoryByName("Аудио и видео").get(), 3, "audiovideo"));
+        secondSubCategory.add(new Category("Кабели и адаптеры", categoryService.getCategoryByName("Аудио и видео").get(), 3, "audiovideo"));
+        secondSubCategory.add(new Category("Микрофоны", categoryService.getCategoryByName("Аудио и видео").get(), 3, "audiovideo"));
+        secondSubCategory.add(new Category("Музыка и фильмы", categoryService.getCategoryByName("Аудио и видео").get(), 3, "audiovideo"));
+        secondSubCategory.add(new Category("Музыкальные центры, магнитолы", categoryService.getCategoryByName("Аудио и видео").get(), 3, "audiovideo"));
+        secondSubCategory.add(new Category("Наушники", categoryService.getCategoryByName("Аудио и видео").get(), 3, "audiovideo"));
+        secondSubCategory.add(new Category("Телевизоры и проекторы", categoryService.getCategoryByName("Аудио и видео").get(), 3, "audiovideo"));
+        secondSubCategory.add(new Category("Усилители и ресиверы", categoryService.getCategoryByName("Аудио и видео").get(), 3, "audiovideo"));
+        secondSubCategory.add(new Category("Аксессуары", categoryService.getCategoryByName("Аудио и видео").get(), 3, "audiovideo"));
 
         secondSubCategory.add(new Category("Игры для приставок", categoryService.getCategoryByName("Игры, приставки и программы").get(), 3));
         secondSubCategory.add(new Category("Игровые приставки", categoryService.getCategoryByName("Игры, приставки и программы").get(), 3));

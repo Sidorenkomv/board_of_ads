@@ -1,14 +1,16 @@
 package com.board_of_ads.controllers.rest;
 
-import com.board_of_ads.models.Image;
 import com.board_of_ads.models.User;
 import com.board_of_ads.models.dto.PostingCarDto;
+import com.board_of_ads.models.Image;
+import com.board_of_ads.models.User;
 import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.models.posting.personalBelongings.Clothes;
 import com.board_of_ads.repository.CategoryRepository;
 import com.board_of_ads.service.interfaces.CategoryService;
+import com.board_of_ads.models.posting.forAudioVideo.AudioVideoPosting;
 import com.board_of_ads.models.posting.forHomeAndGarden.HouseholdAppliancesPosting;
 import com.board_of_ads.models.posting.autoTransport.cars.PostingCar;
 import com.board_of_ads.service.interfaces.AutoAttributesService;
@@ -27,7 +29,6 @@ import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,7 +45,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.Map;
 
@@ -61,7 +61,6 @@ public class PostingRestController {
     private final CategoryService categoryService;
     private final UserService userService;
     private final ImageService imageService;
-
 
     @GetMapping
     public Response<List<PostingDto>> findAllPosts() {
@@ -122,18 +121,6 @@ public class PostingRestController {
     public Response<Void> createPosting(@RequestBody Posting posting) {
         //postingService.save(posting);
         return Response.ok().build();
-    }
-
-
-    @PostMapping("/clothes/{id}")
-    public Response<Void> createPersonalClothesPosting(@PathVariable Long id,
-                                                       @AuthenticationPrincipal User user,
-                                                       @RequestParam Map<String, String> map,
-                                                       @RequestParam(value = "photos") List<MultipartFile> photos) {
-
-        log.info("Create posting clothes");
-        return postingService.savePersonalClothesPosting(id, user, map, photos);
-
     }
 
     @GetMapping("/car/{isCarNew}")
