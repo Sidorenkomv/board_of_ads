@@ -1,5 +1,5 @@
 async function sendNewVacancyPosting(selectedCategoryId) {
-    let url = "/api/posting/new/vacancy"/* + selectedCategoryId*/;
+    let url = "/api/posting/new/vacancy";
 
     const fileField = document.querySelector('input[type="file"][name="image"][multiple]');
 
@@ -8,9 +8,8 @@ async function sendNewVacancyPosting(selectedCategoryId) {
     let checkBoxes = document.querySelectorAll('input[type="checkbox"]');
 
     for(let i = 0; i < checkBoxes.length; i++) {
-        console.log(checkBoxes[i].checked);
         if (checkBoxes[i].checked) {
-            body.append("preferences", checkBoxes[i].value)
+            body.append("preferences", checkBoxes[i].value);
         }
     }
 
@@ -33,7 +32,7 @@ async function sendNewVacancyPosting(selectedCategoryId) {
 
 async function buildVacancyForm(frontName, selectedCategoryId) {
     saveButton.onclick = () => sendNewVacancyPosting(selectedCategoryId)
-    postingForm.innerHTML = '<table>\n' +
+    postingForm.innerHTML = '<table class="main-container">\n' +
         '        <tr>\n' +
         '            <td>\n' +
         '                <label for="title">Название объявления</label>\n' +
@@ -141,8 +140,8 @@ async function buildVacancyForm(frontName, selectedCategoryId) {
         '                <option value="Суд">Суд</option>\n' +
         '                <option value="Театр">Театр</option>\n' +
         '                <option value="Университет">Университет</option>\n' +
-        '                <option value="Ферма" data-marker="option(457711)">Ферма</option>\n' +
-        '                <option value="Школа" data-marker="option(457697)">Школа</option>\n' +
+        '                <option value="Ферма">Ферма</option>\n' +
+        '                <option value="Школа">Школа</option>\n' +
         '            </select></td>\n' +
         '        </tr>\n' +
         '        <tr>\n' +

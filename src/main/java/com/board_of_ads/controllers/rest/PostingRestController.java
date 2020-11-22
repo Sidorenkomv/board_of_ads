@@ -36,10 +36,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -222,54 +219,21 @@ public class PostingRestController {
                                                 @RequestParam Map<String, String> form,
                                                 @RequestParam(value = "photos") List<MultipartFile> photos,
                                                 @RequestParam(value = "preferences") List<String> preferences) {
-        List<Image> images = new ArrayList<>();
-        Vacancy posting = new Vacancy();
-
-        StringBuilder options = new StringBuilder();
-
-        preferences.forEach(a -> options.append(a).append("/"));
-
-        File directory = new File("uploaded_files/userID_" + user.getId());
-        if (!directory.exists()) {
-            try {
-                directory.createNewFile();
-            } catch (IOException e) {
-                log.warn("Ошибка при создании директории для сохранения файлов " + directory, e);
-            }
-        }
-        for (MultipartFile multipartFile : photos) {
-            File file = new File(directory, multipartFile.getOriginalFilename());
-            try {
-                log.info(file.getAbsolutePath());
-                multipartFile.transferTo(Paths.get(file.getAbsolutePath()));
-                images.add(new Image(file.getPath()));
-            } catch (IOException e) {
-                log.error("Ошибка при сохранении файла " + multipartFile.getOriginalFilename(), e);
-            }
-        }
-        images.forEach(image -> image.setPostings(new ArrayList<>()));
-
+        log.info("Inside saveVacancyPosting (api/posting/new/vacancy). Received incoming data: User.id: " + user.getId()
+                + " / FormData: " + form + " / Photos: " + photos + " / Preferences: " + preferences);
         User userById = userService.getUserById(user.getId());
+        Vacancy posting = new Vacancy();
         City city = user.getCity() != null ? user.getCity()
                 : cityService.findCityByName(form.get("city")).orElse(null);
-        posting.setUser(userById);
-        posting.setCategory(categoryService.getCategoryById(Long.valueOf(form.get("categoryId"))));
-        posting.setCity(city);
-        posting.setContact(user.getEmail());
-        posting.setDatePosting(LocalDateTime.now());
-        posting.setDescription(form.get("description"));
-        posting.setTitle(form.get("title"));
-        posting.setIsActive(true);
-        posting.setSchedule(form.get("schedule"));
-        posting.setDuties(form.get("duties"));
-        posting.setExperienceValue(form.get("workExperience"));
-        posting.setLocation(form.get("location"));
-        posting.setPreferences(options.toString());
-        posting.setPrice(Long.valueOf(form.get("price")));
-        posting.setImages(images);
+        
+        List<Image> images = imageService.savePhotos(userById, photos);
+        images.forEach(image -> image.setPostings(new ArrayList<>()));
+
+        postingService.setVacancyCondition(form, preferences, userById, posting, city, images);
         images.forEach(imageService::save);
         images.forEach(image -> image.getPostings().add(posting));
         postingService.save(posting);
         return Response.ok().build();
     }
+
 }
