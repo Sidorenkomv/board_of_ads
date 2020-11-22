@@ -84,6 +84,9 @@ public class Posting {
     @Column
     private LocalDateTime datePosting = LocalDateTime.now();
 
+    @Column
+    private Integer localNumber;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(name = "posting_images",
             joinColumns = @JoinColumn(name = "posting_id"),
@@ -110,10 +113,11 @@ public class Posting {
         this.isActive = isActive;
     }
 
-    public Posting(User user, Category category, String title, String description, Long price, String contact, City city, Boolean isActive, Integer viewNumber) {
+    public Posting(User user, Category category, String title, String description, Long price, String contact, City city, Boolean isActive, Integer viewNumber, Integer localNumber) {
         this(user, category, title, description, price, contact, isActive);
         this.city = city;
         this.viewNumber = viewNumber;
+        this.localNumber = localNumber;
     }
 
 

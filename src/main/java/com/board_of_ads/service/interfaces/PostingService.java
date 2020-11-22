@@ -50,4 +50,6 @@ public interface PostingService {
     PostingCarDto getNewPostingCarDto(Long userId, String isCarNew);
 
     PostingCar convertJsonToPostingCar(JSONObject json) throws JSONException;
+
+    Posting getPostingByLocalNumber(Integer number);
 }

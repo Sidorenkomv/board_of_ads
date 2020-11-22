@@ -31,7 +31,7 @@ btn.addEventListener("click", () => {
         formData.append('description', window.description.value);
         formData.append('price', price === "" ? 0 : price);
         formData.append('linkYouTube', window.linkYouTube.value);
-        formData.append('meetingAddress', window.meetingAddress.value);
+        formData.append('meetingAddress', window.dealAddress.value);
         formData.append('contactEmail', window.inputEmail.value);
         formData.append('contact', window.inputPhone.value);
         formData.append('communicationType', document.querySelector('input[name="communication"]:checked').value);
@@ -86,7 +86,7 @@ function validateForm() {
         document.getElementById("postPhotos").focus();
         return false;
 
-    } else if (document.getElementById("meetingAddress").value == "") {
+    } else if (document.getElementById("dealAddress").value == "") {
 
         let alert_address = "Укажите место сделки";
         document.getElementById("fill_address").innerHTML = alert_address;

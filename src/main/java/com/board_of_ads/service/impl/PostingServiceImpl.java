@@ -398,4 +398,9 @@ public class PostingServiceImpl implements PostingService {
         return pc;
     }
 
+    @Override
+    public Posting getPostingByLocalNumber(Integer number) {
+        return postingRepository.getPostingByLocalNumber(number);
+    }
+
 }
