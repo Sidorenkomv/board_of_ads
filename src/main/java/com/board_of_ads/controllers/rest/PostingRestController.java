@@ -255,8 +255,7 @@ public class PostingRestController {
                     true, obj.get("contactEmail"), obj.get("linkYouTube"), obj.get("communicationType"), obj.get("state"));
             List<Image> images = imageService.savePhotos(user, photos);
             posting.setImages(images);
-            //тест
-            posting.setCity(null);
+            posting.setCity(cityService.findCityByName("Ростов-на-Дону").get());
             postingService.save(posting);
             log.info("Объявление успешно создано пользователем " + user.getEmail());
             return Response.ok().build();
