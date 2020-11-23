@@ -445,13 +445,13 @@ public class DataInitializer {
         secondSubCategory.add(new Category("Оборудование и аксессуары", categoryService.getCategoryByName("Фототехника").get(), 3));
 
 
-        secondSubCategory.add(new Category("Карты, купоны", categoryService.getCategoryByName("Билеты и путешествия").get(), 3));
-        secondSubCategory.add(new Category("Концерты", categoryService.getCategoryByName("Билеты и путешествия").get(), 3));
-        secondSubCategory.add(new Category("Путешествия", categoryService.getCategoryByName("Билеты и путешествия").get(), 3));
-        secondSubCategory.add(new Category("Спорт", categoryService.getCategoryByName("Билеты и путешествия").get(), 3));
-        secondSubCategory.add(new Category("Театр, опера, балет", categoryService.getCategoryByName("Билеты и путешествия").get(), 3));
-        secondSubCategory.add(new Category("Цирк, кино", categoryService.getCategoryByName("Билеты и путешествия").get(), 3));
-        secondSubCategory.add(new Category("Шоу, мюзикл", categoryService.getCategoryByName("Билеты и путешествия").get(), 3));
+        secondSubCategory.add(new Category("Карты, купоны", categoryService.getCategoryByName("Билеты и путешествия").get(), 3,  "hobbyAndRest"));
+        secondSubCategory.add(new Category("Концерты", categoryService.getCategoryByName("Билеты и путешествия").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Путешествия", categoryService.getCategoryByName("Билеты и путешествия").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Спорт", categoryService.getCategoryByName("Билеты и путешествия").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Театр, опера, балет", categoryService.getCategoryByName("Билеты и путешествия").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Цирк, кино", categoryService.getCategoryByName("Билеты и путешествия").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Шоу, мюзикл", categoryService.getCategoryByName("Билеты и путешествия").get(), 3, "hobbyAndRest"));
 
         secondSubCategory.add(new Category("Горные", categoryService.getCategoryByName("Велосипеды").get(), 3));
         secondSubCategory.add(new Category("Дорожные", categoryService.getCategoryByName("Велосипеды").get(), 3));

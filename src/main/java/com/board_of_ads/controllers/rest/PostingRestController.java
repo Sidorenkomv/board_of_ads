@@ -8,6 +8,7 @@ import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.models.posting.forAudioVideo.AudioVideoPosting;
+import com.board_of_ads.models.posting.forHobbyAndRest.HobbyAndRestPosting;
 import com.board_of_ads.models.posting.forHomeAndGarden.HouseholdAppliancesPosting;
 import com.board_of_ads.models.posting.autoTransport.cars.PostingCar;
 import com.board_of_ads.service.interfaces.AutoAttributesService;
@@ -239,4 +240,30 @@ public class PostingRestController {
             return new ErrorResponse<>(new Error(400, "Posting is not created"));
         }
     }
+
+
+    @PostMapping("/new/hobbyAndRest/{id}")
+    public Response<Void> createHobbyAndRestPosting(@PathVariable Long id,
+                                                  @AuthenticationPrincipal User user,
+                                                  @RequestParam Map<String,String> obj,
+                                                  @RequestParam(value = "photos") List<MultipartFile> photos) {
+        HobbyAndRestPosting posting;
+
+        try {
+            posting = new HobbyAndRestPosting(userService.getUserById(user.getId()), categoryService.getCategoryById(id),
+                    obj.get("title"), obj.get("description"), Long.parseLong(obj.get("price")), obj.get("contact"),
+                    true, obj.get("contactEmail"), obj.get("linkYouTube"), obj.get("communicationType"), obj.get("state"));
+            List<Image> images = imageService.savePhotos(user, photos);
+            posting.setImages(images);
+            //тест
+            posting.setCity(null);
+            postingService.save(posting);
+            log.info("Объявление успешно создано пользователем " + user.getEmail());
+            return Response.ok().build();
+        } catch (Exception ex) {
+            log.info("Не удалось создать объявление => " + ex.getMessage());
+            return new ErrorResponse<>(new Error(400, "Posting is not created"));
+        }
+    }
+
 }

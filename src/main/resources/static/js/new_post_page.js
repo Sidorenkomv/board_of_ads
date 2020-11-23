@@ -115,6 +115,8 @@ async function changeVisible(frontName, id) {
             break;
         case 'audiovideo': await getAudioVideoForm(frontName, id);
             break;
+        case 'hobbyAndRest': await getHobbyAndRestForm(frontName, id);
+            break;
         default: alert('For frontName="' + frontName + '" not found posting form');
             break;
     }
