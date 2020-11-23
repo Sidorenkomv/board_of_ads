@@ -1,6 +1,7 @@
 package com.board_of_ads.service.interfaces;
 
 import com.board_of_ads.models.City;
+import com.board_of_ads.models.Image;
 import com.board_of_ads.models.User;
 import com.board_of_ads.models.dto.PostingCarDto;
 import com.board_of_ads.models.dto.PostingDto;
@@ -9,6 +10,7 @@ import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.util.Response;
 import org.springframework.web.multipart.MultipartFile;
 import com.board_of_ads.models.posting.autoTransport.cars.PostingCar;
+import com.board_of_ads.models.posting.job.Vacancy;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 
@@ -50,6 +52,9 @@ public interface PostingService {
     PostingCarDto getNewPostingCarDto(Long userId, String isCarNew);
 
     PostingCar convertJsonToPostingCar(JSONObject json) throws JSONException;
+
+    void setVacancyCondition(Map<String, String> form, List<String> preferences, User userById,
+                             Vacancy posting, City city, List<Image> images);
 
       List <Posting> findUserPostings(Long id);
 }

@@ -64,7 +64,6 @@
                 <input  id="inputAddress" name="dealAddress" placeholder="Начните вводить адрес, а потом выберите из списка" maxlength="150"
                        autocomplete="none" type="text" class="form-control" value="">
             </p>
-            <p id="fill_address"></p>
             <p class="text-muted" data-toggle="tooltip" data-placement="top" title="Зачем указывать точный адрес.
             Объявление смогут найти покупатели, которые ищут товары в конкретном радиусе или районе.
             Точный адрес не помешает вашему предложению появиться в результатах поиска по городу,
@@ -124,7 +123,7 @@
                 <a class="btn btn-secondary btn-block" href="/new_post" role="button">Отмена</a>
             </div>
             <div class="col-8">
-                <button id="saveButton" type="button"  class="btn btn-primary btn-block">Сохранить</button>
+                <button id="saveButton" type="button" onclick="" class="btn btn-primary btn-block">Сохранить</button>
             </div>
         </div>
     </div>
@@ -141,13 +140,13 @@
 <script src="../static/js/header.js" th:src="@{/js/header.js}"></script>
 <script sec:authorize="isAuthenticated()"  src="../static/js/new_posting_forms/household-appliances.js" th:src="@{/js/new_posting_forms/household-appliances.js}"></script>
 <script src="../static/js/new_posting_forms/test.js" th:src="@{/js/new_posting_forms/test.js}"></script>
-<script src="../static/js/new_posting_forms/household-appliances.js"
-        th:src="@{/js/new_posting_forms/household-appliances.js}"></script>
 <script src="../static/js/new_posting_forms/household-appliances.js" th:src="@{/js/new_posting_forms/household-appliances.js}"></script>
 <script src="../static/js/new_posting_forms/audio-video.js" th:src="@{/js/new_posting_forms/audio-video.js}"></script>
 <script src="../static/js/new_posting_forms/posting-car.js" th:src="@{/js/new_posting_forms/posting-car.js}"></script>
 <script src="../static/js/new_posting_forms/test.js"
         th:src="@{/js/new_posting_forms/test.js}"></script>
 <script src="../static/js/new_posting_forms/posting-clothes.js" th:src="@{/js/new_posting_forms/posting-clothes.js}"></script>
+<script src="../static/js/new_posting_forms/test.js" th:src="@{/js/new_posting_forms/test.js}"></script>
+<script sec:authorize="isAuthenticated()"  src="../static/js/new_posting_forms/vacancy.js" th:src="@{/js/new_posting_forms/vacancy.js}"></script>
 </body>
 </html>
