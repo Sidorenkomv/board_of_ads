@@ -14,6 +14,7 @@ import org.springframework.util.unit.DataSize;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
@@ -117,5 +118,13 @@ public class WebConfig implements WebMvcConfigurer {
         factory.setMaxFileSize(DataSize.ofMegabytes(10L));
         factory.setMaxRequestSize(DataSize.ofMegabytes(10L));
         return factory.createMultipartConfig();
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/uploaded_files/**")
+                .addResourceLocations("file:///Users/User/board_of_ads/uploaded_files/");
+        registry.addResourceHandler("/static/**")
+                .addResourceLocations("classpath:/static/");
     }
 }
