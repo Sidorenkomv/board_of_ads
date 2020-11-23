@@ -123,7 +123,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/uploaded_files/**")
-                .addResourceLocations("file:///Users/User/board_of_ads/uploaded_files/");
+                .addResourceLocations("file:./uploaded_files/");
         registry.addResourceHandler("/static/**")
                 .addResourceLocations("classpath:/static/");
     }
