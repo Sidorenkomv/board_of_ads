@@ -4,8 +4,6 @@ import com.board_of_ads.models.Image;
 import com.board_of_ads.models.User;
 import com.board_of_ads.repository.ImageRepository;
 import com.board_of_ads.service.interfaces.ImageService;
-import com.board_of_ads.util.Error;
-import com.board_of_ads.util.ErrorResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -39,6 +37,7 @@ public class ImageServiceImpl implements ImageService {
         return imageRepository.getByPathURL(url);
     }
 
+    @Override
     public List<Image> savePhotos(User user, List<MultipartFile> photos){
         List<Image> images = new ArrayList<>();
 

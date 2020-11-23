@@ -1,15 +1,15 @@
 package com.board_of_ads.controllers.rest;
 
-import com.board_of_ads.models.User;
-import com.board_of_ads.models.dto.PostingCarDto;
+import com.board_of_ads.models.City;
 import com.board_of_ads.models.Image;
 import com.board_of_ads.models.User;
+import com.board_of_ads.models.dto.PostingCarDto;
 import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
-import com.board_of_ads.models.posting.forAudioVideo.AudioVideoPosting;
-import com.board_of_ads.models.posting.forHomeAndGarden.HouseholdAppliancesPosting;
 import com.board_of_ads.models.posting.autoTransport.cars.PostingCar;
+import com.board_of_ads.models.posting.forHomeAndGarden.HouseholdAppliancesPosting;
+import com.board_of_ads.models.posting.job.Vacancy;
 import com.board_of_ads.service.interfaces.AutoAttributesService;
 import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.service.interfaces.CityService;
@@ -23,8 +23,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,8 +33,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -44,8 +40,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/posting")
@@ -69,6 +65,7 @@ public class PostingRestController {
                 ? Response.ok(postings)
                 : new ErrorResponse<>(new Error(204, "No found postings"));
     }
+
     @GetMapping("/{id}")
     public Response<PostingDto> findPostingDto(@PathVariable Long id) {
         var postingDto = postingService.getPostingDtoById(id);
@@ -98,10 +95,10 @@ public class PostingRestController {
     }
 
     @GetMapping("/search")
-    public Response<List<PostingDto>> findAllPostings(@RequestParam(name="catSel") String categorySelect,
-                                                      @RequestParam(name="citSel",required = false)String citySelect,
-                                                      @RequestParam(name="searchT",required = false) String searchText,
-                                                      @RequestParam(name="phOpt",required = false) String photoOption) {
+    public Response<List<PostingDto>> findAllPostings(@RequestParam(name = "catSel") String categorySelect,
+                                                      @RequestParam(name = "citSel", required = false) String citySelect,
+                                                      @RequestParam(name = "searchT", required = false) String searchText,
+                                                      @RequestParam(name = "phOpt", required = false) String photoOption) {
         log.info("Use this default logger");
         var postings = postingService
 
@@ -126,31 +123,31 @@ public class PostingRestController {
     public Response<PostingCarDto> getPostingCarDtoMap(@AuthenticationPrincipal User user, @PathVariable String isCarNew) {
         log.info("In Get PostingCarDTO Controller");
         PostingCarDto postingCarDto = postingService.getNewPostingCarDto(user.getId(), isCarNew);
-        return  Response.ok(postingCarDto);
+        return Response.ok(postingCarDto);
     }
 
     @GetMapping("/car/colors")
     public Response<Set<String>> getCarColorsSet() {
         log.info("In Get Set of Colors Controller");
-        return  Response.ok(autoAttributesService.getAllAutoColorsRusNames());
+        return Response.ok(autoAttributesService.getAllAutoColorsRusNames());
     }
 
     @GetMapping("/car/brands")
     public Response<Set<String>> getCarBrandsSet() {
         log.info("In Get Set of getCarBrands Controller");
-        return  Response.ok(autoAttributesService.getBrandsSet());
+        return Response.ok(autoAttributesService.getBrandsSet());
     }
 
     @GetMapping("/car/models/{brand}")
     public Response<Set<String>> getCarBrandsSet(@PathVariable String brand) {
         log.info("In Get Set of getCar Models Controller brand = {}", brand);
-        return  Response.ok(autoAttributesService.getModelsSet(brand));
+        return Response.ok(autoAttributesService.getModelsSet(brand));
     }
 
     @GetMapping("/car/models/{brand}/{model}")
     public Response<Set<Short>> getYearsByBrandAndModel(@PathVariable String brand, @PathVariable String model) {
         log.info("In Get Set of getCar Models Controller brand = {} model = {}", brand, model);
-        return  Response.ok(autoAttributesService.getYearsByBrandAndModel(brand, model));
+        return Response.ok(autoAttributesService.getYearsByBrandAndModel(brand, model));
     }
 
     @PostMapping("/car/new-save")
@@ -163,7 +160,7 @@ public class PostingRestController {
             postingService.save(postingCar);
             log.info("Posting  Saved!");
             return Response.ok().build();
-        } catch (Exception e){
+        } catch (Exception e) {
             log.info("Unable to save Posting : " + e.getMessage());
             return new ErrorResponse<>(new Error(204, "Error of saving post"));
         }
@@ -173,7 +170,7 @@ public class PostingRestController {
     @PostMapping("/new/householdAppliances/{id}")
     public Response<Void> createHouseholdAppliancesPosting(@PathVariable Long id,
                                                            @AuthenticationPrincipal User user,
-                                                           @RequestParam Map<String,String> obj,
+                                                           @RequestParam Map<String, String> obj,
                                                            @RequestParam(value = "photos") List<MultipartFile> photos) {
         HouseholdAppliancesPosting posting;
 
@@ -217,26 +214,26 @@ public class PostingRestController {
         }
     }
 
-    @PostMapping("/new/audiovideo/{id}")
-    public Response<Void> createAudioVideoPosting(@PathVariable Long id,
-                                                           @AuthenticationPrincipal User user,
-                                                           @RequestParam Map<String,String> obj,
-                                                           @RequestParam(value = "photos") List<MultipartFile> photos) {
-        AudioVideoPosting posting;
+    @PostMapping("/new/vacancy")
+    public Response<Void> saveNewVacancyPosting(@AuthenticationPrincipal User user,
+                                                @RequestParam Map<String, String> form,
+                                                @RequestParam(value = "photos") List<MultipartFile> photos,
+                                                @RequestParam(value = "preferences") List<String> preferences) {
+        log.info("Inside saveVacancyPosting (api/posting/new/vacancy). Received incoming data: User.id: " + user.getId()
+                + " / FormData: " + form + " / Photos: " + photos + " / Preferences: " + preferences);
+        User userById = userService.getUserById(user.getId());
+        Vacancy posting = new Vacancy();
+        City city = user.getCity() != null ? user.getCity()
+                : cityService.findCityByName(form.get("city")).orElse(null);
+        
+        List<Image> images = imageService.savePhotos(userById, photos);
+        images.forEach(image -> image.setPostings(new ArrayList<>()));
 
-        try {
-            posting = new AudioVideoPosting(userService.getUserById(user.getId()), categoryService.getCategoryById(id),
-                    obj.get("title"), obj.get("description"), Long.parseLong(obj.get("price")), obj.get("contact"),
-                    true, obj.get("contactEmail"), obj.get("linkYouTube"), obj.get("communicationType"), obj.get("state"));
-            List<Image> images = imageService.savePhotos(user, photos);
-            posting.setImages(images);
-            posting.setCity(cityService.findCityByName("Ростов-на-Дону").get());
-            postingService.save(posting);
-            log.info("Объявление успешно создано пользователем " + user.getEmail());
-            return Response.ok().build();
-        } catch (Exception ex) {
-            log.info("Не удалось создать объявление => " + ex.getMessage());
-            return new ErrorResponse<>(new Error(400, "Posting is not created"));
-        }
+        postingService.setVacancyCondition(form, preferences, userById, posting, city, images);
+        images.forEach(imageService::save);
+        images.forEach(image -> image.getPostings().add(posting));
+        postingService.save(posting);
+        return Response.ok().build();
     }
+
 }

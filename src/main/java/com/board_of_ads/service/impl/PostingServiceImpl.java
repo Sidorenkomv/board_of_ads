@@ -1,12 +1,14 @@
 package com.board_of_ads.service.impl;
 
 import com.board_of_ads.models.City;
+import com.board_of_ads.models.Image;
 import com.board_of_ads.models.User;
 import com.board_of_ads.models.dto.PostingCarDto;
 import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.models.posting.autoTransport.cars.PostingCar;
+import com.board_of_ads.models.posting.job.Vacancy;
 import com.board_of_ads.repository.CityRepository;
 import com.board_of_ads.repository.PostingCarRepository;
 import com.board_of_ads.repository.PostingRepository;
@@ -22,10 +24,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -331,6 +333,29 @@ public class PostingServiceImpl implements PostingService {
         long catId =  json.getInt("categoryId");
         pc.setCategory(categoryService.getCategoryById(catId));
         return pc;
+    }
+
+    @Override
+    public void setVacancyCondition(Map<String, String> form, List<String> preferences, User userById,
+                             Vacancy posting, City city, List<Image> images) {
+        StringBuilder options = new StringBuilder();
+        preferences.forEach(a -> options.append(a).append("/"));
+
+        posting.setUser(userById);
+        posting.setCategory(categoryService.getCategoryById(Long.valueOf(form.get("categoryId"))));
+        posting.setCity(city);
+        posting.setContact(userById.getEmail());
+        posting.setDatePosting(LocalDateTime.now());
+        posting.setDescription(form.get("description"));
+        posting.setTitle(form.get("title"));
+        posting.setIsActive(true);
+        posting.setSchedule(form.get("schedule"));
+        posting.setDuties(form.get("duties"));
+        posting.setExperienceValue(form.get("workExperience"));
+        posting.setLocation(form.get("location"));
+        posting.setPreferences(options.toString());
+        posting.setPrice(Long.valueOf(form.get("price")));
+        posting.setImages(images);
     }
 
 }
