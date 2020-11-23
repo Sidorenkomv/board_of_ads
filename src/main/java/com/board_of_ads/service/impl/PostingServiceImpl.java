@@ -82,7 +82,7 @@ public class PostingServiceImpl implements PostingService {
         postingDto.setImages(getPostingById(postingDto.getId()).getImages());
         postingDto.setCategory(categoryService.getCategoryDtoById(
                 getPostingById(postingDto.getId()).getCategory().getId()).get());
-        if(getPostingById(postingDto.getId()).getCity() != null) {
+        if (getPostingById(postingDto.getId()).getCity() != null) {
             postingDto.setCity(getPostingById(postingDto.getId()).getCity().getName());
         }
         return postingDto;
@@ -116,13 +116,13 @@ public class PostingServiceImpl implements PostingService {
     }
 
     private List<PostingDto> getPostingDtos(List<PostingDto> postingDtos) {
-        for(PostingDto dto : postingDtos) {
-           dto.setImages(getPostingById(dto.getId()).getImages());
-           dto.setCategory(categoryService.getCategoryDtoById(
-                   postingRepository.findPostingByTitle(dto.getTitle()).getCategory().getId()).get());
-           if(getPostingById(dto.getId()).getCity() != null) {
-               dto.setCity(getPostingById(dto.getId()).getCity().getName());
-           }
+        for (PostingDto dto : postingDtos) {
+            dto.setImages(getPostingById(dto.getId()).getImages());
+            dto.setCategory(categoryService.getCategoryDtoById(
+                    postingRepository.findPostingByTitle(dto.getTitle()).getCategory().getId()).get());
+            if (getPostingById(dto.getId()).getCity() != null) {
+                dto.setCity(getPostingById(dto.getId()).getCity().getName());
+            }
         }
         return postingDtos;
     }
@@ -131,8 +131,8 @@ public class PostingServiceImpl implements PostingService {
     public List<PostingDto> searchPostings(String categorySelect, String citySelect, String searchText, String photoOption) {
 
         List<PostingDto> postingDtos;
-        if(citySelect != null && !(citySelect.equals("undefined"))) {
-            if (citySelect.matches("(.*)" +"Область" + "(.*)")
+        if (citySelect != null && !(citySelect.equals("undefined"))) {
+            if (citySelect.matches("(.*)" + "Область" + "(.*)")
                     || citySelect.matches("(.*)" + "Край" + "(.*)")
                     || citySelect.matches("(.*)" + "Республика" + "(.*)")
                     || citySelect.matches("(.*)" + "Автономный округ" + "(.*)")
@@ -159,30 +159,30 @@ public class PostingServiceImpl implements PostingService {
             } else if (postingDto.getCategory().equals(categorySelect)) {
                 categoryFlag = true;
             }
-            if(photoOption != null) {
-                if(photoOption.equals("пункт2")) {
-                    if(postingDto.getImages().size() > 0) {
+            if (photoOption != null) {
+                if (photoOption.equals("пункт2")) {
+                    if (postingDto.getImages().size() > 0) {
                         photoFlag = true;
                     }
-                } else if(photoOption.equals("пункт3")) {
-                    if(postingDto.getImages().size() == 0) {
+                } else if (photoOption.equals("пункт3")) {
+                    if (postingDto.getImages().size() == 0) {
                         photoFlag = true;
                     }
-                } else if(photoOption.equals("пункт1")) {
+                } else if (photoOption.equals("пункт1")) {
                     photoFlag = true;
                 }
             } else {
                 photoFlag = true;
             }
-            if(searchText != null && !(searchText.equals("")) && !(searchText.equals("undefined"))) {
-                if(postingDto.getTitle().toLowerCase().matches("(.*)" + searchText.toLowerCase() + "(.*)")) {
+            if (searchText != null && !(searchText.equals("")) && !(searchText.equals("undefined"))) {
+                if (postingDto.getTitle().toLowerCase().matches("(.*)" + searchText.toLowerCase() + "(.*)")) {
                     textFlag = true;
                 }
             } else {
                 textFlag = true;
             }
 
-            if(categoryFlag && photoFlag && textFlag) {
+            if (categoryFlag && photoFlag && textFlag) {
                 resultList.add(postingDto);
             }
         }
@@ -218,14 +218,14 @@ public class PostingServiceImpl implements PostingService {
     @Override
     public List<PostingDto> getFavDtosFromUser(User user) {
         List<Long> listfavoritsid = new ArrayList<>();
-        user.getFavorites().forEach(x ->listfavoritsid.add(x.getId()));
+        user.getFavorites().forEach(x -> listfavoritsid.add(x.getId()));
         return postingRepository.findUserFavorites(listfavoritsid);
     }
 
     @Override
     public List<Long> getFavIDFromUser(User user) {
         List<Long> listfavoritsid = new ArrayList<>();
-        user.getFavorites().forEach(x ->listfavoritsid.add(x.getId()));
+        user.getFavorites().forEach(x -> listfavoritsid.add(x.getId()));
         return listfavoritsid;
     }
 
@@ -387,19 +387,19 @@ public class PostingServiceImpl implements PostingService {
         pc.setCondition(json.getString("condition"));
         pc.setVideoURL(json.getString("videoURL"));
         pc.setContactEmail(json.getString("contactEmail"));
-      //  pc.setMessage(json.getString("message"));
+        //  pc.setMessage(json.getString("message"));
         pc.setPrice(json.getLong("price"));
         pc.setIsActive(json.getBoolean("isActive"));
-       // pc.setViewNumber(json.getInt("viewNumber"));
+        // pc.setViewNumber(json.getInt("viewNumber"));
         pc.setViewNumber(1);
-        long catId =  json.getInt("categoryId");
+        long catId = json.getInt("categoryId");
         pc.setCategory(categoryService.getCategoryById(catId));
         return pc;
     }
 
     @Override
     public void setVacancyCondition(Map<String, String> form, List<String> preferences, User userById,
-                             Vacancy posting, City city, List<Image> images) {
+                                    Vacancy posting, City city, List<Image> images) {
         StringBuilder options = new StringBuilder();
         preferences.forEach(a -> options.append(a).append("/"));
 
@@ -418,11 +418,6 @@ public class PostingServiceImpl implements PostingService {
         posting.setPreferences(options.toString());
         posting.setPrice(Long.valueOf(form.get("price")));
         posting.setImages(images);
-    }
-
-    @Override
-    public List<Posting> findUserPostings(Long id) {
-        return postingRepository.findUserPostings(id);
     }
 
 }

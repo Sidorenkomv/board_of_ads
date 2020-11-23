@@ -55,6 +55,7 @@ public class DataInitializer {
     private final NotificationService notificationService;
     private final AutoAttributesService autoAttributesService;
     private final MessageService messageService;
+    List<Posting> postingList;
 
 
     @PostConstruct
@@ -535,27 +536,27 @@ public class DataInitializer {
 
         List<Category> thirdSubCategory = new ArrayList<>();
 
-        thirdSubCategory.add(new Category("Брюки", categoryService.getCategoryByName("Женская одежда").get(), 4,"clothes"));
-        thirdSubCategory.add(new Category("Верхняя одежда", categoryService.getCategoryByName("Женская одежда").get(), 4,"clothes"));
-        thirdSubCategory.add(new Category("Джинсы", categoryService.getCategoryByName("Женская одежда").get(), 4,"clothes"));
-        thirdSubCategory.add(new Category("Купальники", categoryService.getCategoryByName("Женская одежда").get(), 4,"clothes"));
-        thirdSubCategory.add(new Category("Нижнее белье", categoryService.getCategoryByName("Женская одежда").get(), 4,"clothes"));
-        thirdSubCategory.add(new Category("Обувь", categoryService.getCategoryByName("Женская одежда").get(), 4,"shoes"));
-        thirdSubCategory.add(new Category("Пиджаки и костюмы", categoryService.getCategoryByName("Женская одежда").get(), 4,"clothes"));
-        thirdSubCategory.add(new Category("Платья и юбки", categoryService.getCategoryByName("Женская одежда").get(), 4,"clothes"));
-        thirdSubCategory.add(new Category("Рубашки и блузки", categoryService.getCategoryByName("Женская одежда").get(), 4,"clothes"));
-        thirdSubCategory.add(new Category("Свадебные платья", categoryService.getCategoryByName("Женская одежда").get(), 4,"clothes"));
-        thirdSubCategory.add(new Category("Топы и футболки", categoryService.getCategoryByName("Женская одежда").get(), 4,"clothes"));
-        thirdSubCategory.add(new Category("Трикотаж", categoryService.getCategoryByName("Женская одежда").get(), 4,"clothes"));
-        thirdSubCategory.add(new Category("Другое", categoryService.getCategoryByName("Женская одежда").get(), 4,"other-clothes"));
-        thirdSubCategory.add(new Category("Брюки", categoryService.getCategoryByName("Мужская одежда").get(), 4,"clothes"));
-        thirdSubCategory.add(new Category("Верхняя одежда", categoryService.getCategoryByName("Мужская одежда").get(), 4,"clothes"));
-        thirdSubCategory.add(new Category("Джинсы", categoryService.getCategoryByName("Мужская одежда").get(), 4,"clothes"));
-        thirdSubCategory.add(new Category("Обувь", categoryService.getCategoryByName("Мужская одежда").get(), 4,"shoes"));
-        thirdSubCategory.add(new Category("Пиджаки и костюмы", categoryService.getCategoryByName("Мужская одежда").get(), 4,"clothes"));
-        thirdSubCategory.add(new Category("Рубашки", categoryService.getCategoryByName("Мужская одежда").get(), 4,"clothes"));
-        thirdSubCategory.add(new Category("Трикотаж и футболки", categoryService.getCategoryByName("Мужская одежда").get(), 4,"clothes"));
-        thirdSubCategory.add(new Category("Другое", categoryService.getCategoryByName("Мужская одежда").get(), 4,"other-clothes"));
+        thirdSubCategory.add(new Category("Брюки", categoryService.getCategoryByName("Женская одежда").get(), 4, "clothes"));
+        thirdSubCategory.add(new Category("Верхняя одежда", categoryService.getCategoryByName("Женская одежда").get(), 4, "clothes"));
+        thirdSubCategory.add(new Category("Джинсы", categoryService.getCategoryByName("Женская одежда").get(), 4, "clothes"));
+        thirdSubCategory.add(new Category("Купальники", categoryService.getCategoryByName("Женская одежда").get(), 4, "clothes"));
+        thirdSubCategory.add(new Category("Нижнее белье", categoryService.getCategoryByName("Женская одежда").get(), 4, "clothes"));
+        thirdSubCategory.add(new Category("Обувь", categoryService.getCategoryByName("Женская одежда").get(), 4, "shoes"));
+        thirdSubCategory.add(new Category("Пиджаки и костюмы", categoryService.getCategoryByName("Женская одежда").get(), 4, "clothes"));
+        thirdSubCategory.add(new Category("Платья и юбки", categoryService.getCategoryByName("Женская одежда").get(), 4, "clothes"));
+        thirdSubCategory.add(new Category("Рубашки и блузки", categoryService.getCategoryByName("Женская одежда").get(), 4, "clothes"));
+        thirdSubCategory.add(new Category("Свадебные платья", categoryService.getCategoryByName("Женская одежда").get(), 4, "clothes"));
+        thirdSubCategory.add(new Category("Топы и футболки", categoryService.getCategoryByName("Женская одежда").get(), 4, "clothes"));
+        thirdSubCategory.add(new Category("Трикотаж", categoryService.getCategoryByName("Женская одежда").get(), 4, "clothes"));
+        thirdSubCategory.add(new Category("Другое", categoryService.getCategoryByName("Женская одежда").get(), 4, "other-clothes"));
+        thirdSubCategory.add(new Category("Брюки", categoryService.getCategoryByName("Мужская одежда").get(), 4, "clothes"));
+        thirdSubCategory.add(new Category("Верхняя одежда", categoryService.getCategoryByName("Мужская одежда").get(), 4, "clothes"));
+        thirdSubCategory.add(new Category("Джинсы", categoryService.getCategoryByName("Мужская одежда").get(), 4, "clothes"));
+        thirdSubCategory.add(new Category("Обувь", categoryService.getCategoryByName("Мужская одежда").get(), 4, "shoes"));
+        thirdSubCategory.add(new Category("Пиджаки и костюмы", categoryService.getCategoryByName("Мужская одежда").get(), 4, "clothes"));
+        thirdSubCategory.add(new Category("Рубашки", categoryService.getCategoryByName("Мужская одежда").get(), 4, "clothes"));
+        thirdSubCategory.add(new Category("Трикотаж и футболки", categoryService.getCategoryByName("Мужская одежда").get(), 4, "clothes"));
+        thirdSubCategory.add(new Category("Другое", categoryService.getCategoryByName("Мужская одежда").get(), 4, "other-clothes"));
 
         for (Category category : thirdSubCategory) {
 //            if (categoryService.getCategoryByName(category.getName()).isEmpty()) {
@@ -569,7 +570,7 @@ public class DataInitializer {
     }
 
     private void initPosting() {
-        List<Posting> postingList = new ArrayList<>();
+        postingList = new ArrayList<>();
         postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Услуги").get()
                 , "Поглажу кота", "Очень качественно", 100L, "+79998887766", cityService.findCityByName("Ростов").get(), true, 0));
         postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Транспорт").get()
@@ -805,20 +806,14 @@ public class DataInitializer {
 
     private void initMessages() {
 
-        List<Posting> postings = postingService.findUserPostings(3L);
-        List<Message> messages = new ArrayList<>();
-        messages.add(new Message("привет", userService.getUserByEmail("user@mail.ru"), postings.get(0)));
-        messages.add(new Message( "можно обсудить скидку?", userService.getUserByEmail("user@mail.ru"), postings.get(1)));
-        messages.add(new Message( "здравствуйте", userService.getUserByEmail("user@mail.ru"), postings.get(2)));
-        messages.add(new Message( "еще актуально?", userService.getUserByEmail("user@mail.ru"), postings.get(3)));
-        messages.add(new Message( "приеду завтра", userService.getUserByEmail("user@mail.ru"), postings.get(4)));
-        messages.add(new Message( "подумаю", userService.getUserByEmail("user@mail.ru"), postings.get(5)));
-        messages.add(new Message( "предложу другу", userService.getUserByEmail("user@mail.ru"), postings.get(6)));
-        messages.add(new Message( "приеду сегодня вечером", userService.getUserByEmail("user@mail.ru"), postings.get(7)));
-        messages.add(new Message( "спасибо!", userService.getUserByEmail("user@mail.ru"), postings.get(8)));
+        for (int i = 1; i < 10; i++) {
 
-        for (Message message : messages) {
-            messageService.save(message);
+            List<Message> messages = new ArrayList<>();
+            messages.add(new Message(null,"Message " + i, userService.getUserByEmail("user@mail.ru"), postingList.get(i)));
+
+            for (Message message : messages) {
+                messageService.save(message);
+            }
         }
     }
 }

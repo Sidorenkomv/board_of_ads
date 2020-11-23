@@ -48,7 +48,6 @@ public interface PostingService {
             String> map, List<MultipartFile> photos);
 
 
-
     PostingCarDto getNewPostingCarDto(Long userId, String isCarNew);
 
     PostingCar convertJsonToPostingCar(JSONObject json) throws JSONException;
@@ -56,5 +55,5 @@ public interface PostingService {
     void setVacancyCondition(Map<String, String> form, List<String> preferences, User userById,
                              Vacancy posting, City city, List<Image> images);
 
-      List <Posting> findUserPostings(Long id);
+
 }
