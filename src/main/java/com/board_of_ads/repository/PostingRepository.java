@@ -40,5 +40,6 @@ public interface PostingRepository extends JpaRepository<Posting, Long> {
     @Query("select new com.board_of_ads.models.dto.PostingDto(p.id, p.title, p.description, p.price, p.contact, p.datePosting,p.city.name, p.isActive, p.viewNumber) from Posting p where p.id in :favlist")
     List<PostingDto> findUserFavorites(List<Long> favlist);
 
-    Posting getPostingByLocalNumber(Integer number);
+        @Query("from Posting p where p.user.id = :user_id")
+    List<Posting> findUserPostings(@Param("user_id")Long id);
 }

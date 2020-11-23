@@ -51,5 +51,5 @@ public interface PostingService {
 
     PostingCar convertJsonToPostingCar(JSONObject json) throws JSONException;
 
-    Posting getPostingByLocalNumber(Integer number);
+      List <Posting> findUserPostings(Long id);
 }
