@@ -240,7 +240,7 @@ public class PostingRestController {
     @PostMapping("/new/audiovideo/{id}")
     public Response<Void> createAudioVideoPosting(@PathVariable Long id,
                                                   @AuthenticationPrincipal User user,
-                                                  @RequestParam Map<String,String> obj,
+                                                  @RequestParam Map<String, String> obj,
                                                   @RequestParam(value = "photos") List<MultipartFile> photos) {
         AudioVideoPosting posting;
 
@@ -268,5 +268,15 @@ public class PostingRestController {
 
         log.info("Create posting clothes");
         return postingService.savePersonalClothesPosting(id, user, map, photos);
+    }
+
+    @PostMapping("/business/{id}")
+    public Response<Void> createForBusinessPosting(@PathVariable Long id,
+                                                   @AuthenticationPrincipal User user,
+                                                   @RequestParam Map<String, String> map,
+                                                   @RequestParam(value = "photos") List<MultipartFile> photos) {
+
+        log.info("Create posting for business");
+        return postingService.saveForBusinessPosting(id, user, map, photos);
     }
 }
