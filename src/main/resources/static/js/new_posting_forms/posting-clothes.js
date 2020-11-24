@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $("#inputPhone").mask("+7 (999) 999-99-99");
+    $("#inputPhone").mask("8 (999) 999-99-99");
 });
 
 let id_clothes;
