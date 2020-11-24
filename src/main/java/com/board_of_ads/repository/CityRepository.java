@@ -22,7 +22,6 @@ public interface CityRepository extends JpaRepository<City, Long> {
 
     Optional<City> findCitiesByName(String name);
 
-
     @Query("select new com.board_of_ads.models.dto.analytics.ReportCityPostingDto(" +
             "c.name, count (c.name), sum (case when p.isActive = true then 1 else 0 end), sum (case when p.isActive = true then 0 else 1 end)" +
             ")" +
@@ -34,5 +33,4 @@ public interface CityRepository extends JpaRepository<City, Long> {
             "LIKE '%' || c.name || '%'",
             nativeQuery = true)
     Optional<City> findCityByNameContainName(String name);
-
 }

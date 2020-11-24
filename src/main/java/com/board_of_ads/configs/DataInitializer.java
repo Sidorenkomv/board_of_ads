@@ -805,11 +805,9 @@ public class DataInitializer {
     }
 
     private void initMessages() {
-
         for (int i = 1; i < 10; i++) {
-
             List<Message> messages = new ArrayList<>();
-            messages.add(new Message(null,"Message " + i, userService.getUserByEmail("user@mail.ru"), postingList.get(i)));
+            messages.add(new Message(null, "Message " + i, userService.getUserByEmail("user@mail.ru"), postingList.get(i)));
 
             for (Message message : messages) {
                 messageService.save(message);

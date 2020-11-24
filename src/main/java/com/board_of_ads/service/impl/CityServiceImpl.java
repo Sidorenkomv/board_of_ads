@@ -74,7 +74,6 @@ public class CityServiceImpl implements CityService {
         return cityRepository.findCityByNameContainName(name);
     }
 
-
     private List<LocalDateTime> dateConvertation(String date) {
 
         String[] arr = date.split("\\D+");

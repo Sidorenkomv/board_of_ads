@@ -30,5 +30,4 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     List<CategoryDtoMenu> findAllChildCategoriesByParentId(@Param("id") Long id);
 
     Category findCategoryByFrontName(String frontName);
-
 }

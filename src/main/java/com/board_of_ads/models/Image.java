@@ -50,11 +50,8 @@ public class Image {
         this.pathURL = pathURL;
     }
 
-
     public Image(Long id, String pathURL) {
         this.id = id;
         this.pathURL = pathURL;
     }
-
-
 }

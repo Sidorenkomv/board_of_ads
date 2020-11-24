@@ -84,7 +84,7 @@ public class Posting {
     @Column
     private LocalDateTime datePosting = LocalDateTime.now();
 
-     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(name = "posting_images",
             joinColumns = @JoinColumn(name = "posting_id"),
             inverseJoinColumns = @JoinColumn(name = "image_id"))
@@ -114,8 +114,5 @@ public class Posting {
         this(user, category, title, description, price, contact, isActive);
         this.city = city;
         this.viewNumber = viewNumber;
-
     }
-
-
 }

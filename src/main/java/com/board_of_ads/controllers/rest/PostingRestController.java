@@ -73,6 +73,7 @@ public class PostingRestController {
                 ? Response.ok(postings)
                 : new ErrorResponse<>(new Error(204, "No found postings"));
     }
+
     @GetMapping("/{id}")
     public Response<PostingDto> findPostingDto(@PathVariable Long id) {
         var postingDto = postingService.getPostingDtoById(id);
@@ -102,10 +103,10 @@ public class PostingRestController {
     }
 
     @GetMapping("/search")
-    public Response<List<PostingDto>> findAllPostings(@RequestParam(name="catSel") String categorySelect,
-                                                      @RequestParam(name="citSel",required = false)String citySelect,
-                                                      @RequestParam(name="searchT",required = false) String searchText,
-                                                      @RequestParam(name="phOpt",required = false) String photoOption) {
+    public Response<List<PostingDto>> findAllPostings(@RequestParam(name = "catSel") String categorySelect,
+                                                      @RequestParam(name = "citSel", required = false) String citySelect,
+                                                      @RequestParam(name = "searchT", required = false) String searchText,
+                                                      @RequestParam(name = "phOpt", required = false) String photoOption) {
         log.info("Use this default logger");
         var postings = postingService
 
@@ -130,31 +131,31 @@ public class PostingRestController {
     public Response<PostingCarDto> getPostingCarDtoMap(@AuthenticationPrincipal User user, @PathVariable String isCarNew) {
         log.info("In Get PostingCarDTO Controller");
         PostingCarDto postingCarDto = postingService.getNewPostingCarDto(user.getId(), isCarNew);
-        return  Response.ok(postingCarDto);
+        return Response.ok(postingCarDto);
     }
 
     @GetMapping("/car/colors")
     public Response<Set<String>> getCarColorsSet() {
         log.info("In Get Set of Colors Controller");
-        return  Response.ok(autoAttributesService.getAllAutoColorsRusNames());
+        return Response.ok(autoAttributesService.getAllAutoColorsRusNames());
     }
 
     @GetMapping("/car/brands")
     public Response<Set<String>> getCarBrandsSet() {
         log.info("In Get Set of getCarBrands Controller");
-        return  Response.ok(autoAttributesService.getBrandsSet());
+        return Response.ok(autoAttributesService.getBrandsSet());
     }
 
     @GetMapping("/car/models/{brand}")
     public Response<Set<String>> getCarBrandsSet(@PathVariable String brand) {
         log.info("In Get Set of getCar Models Controller brand = {}", brand);
-        return  Response.ok(autoAttributesService.getModelsSet(brand));
+        return Response.ok(autoAttributesService.getModelsSet(brand));
     }
 
     @GetMapping("/car/models/{brand}/{model}")
     public Response<Set<Short>> getYearsByBrandAndModel(@PathVariable String brand, @PathVariable String model) {
         log.info("In Get Set of getCar Models Controller brand = {} model = {}", brand, model);
-        return  Response.ok(autoAttributesService.getYearsByBrandAndModel(brand, model));
+        return Response.ok(autoAttributesService.getYearsByBrandAndModel(brand, model));
     }
 
     @PostMapping("/car/new-save")
@@ -167,7 +168,7 @@ public class PostingRestController {
             postingService.save(postingCar);
             log.info("Posting  Saved!");
             return Response.ok().build();
-        } catch (Exception e){
+        } catch (Exception e) {
             log.info("Unable to save Posting : " + e.getMessage());
             return new ErrorResponse<>(new Error(204, "Error of saving post"));
         }
@@ -177,7 +178,7 @@ public class PostingRestController {
     @PostMapping("/new/householdAppliances/{id}")
     public Response<Void> createHouseholdAppliancesPosting(@PathVariable Long id,
                                                            @AuthenticationPrincipal User user,
-                                                           @RequestParam Map<String,String> obj,
+                                                           @RequestParam Map<String, String> obj,
                                                            @RequestParam(value = "photos") List<MultipartFile> photos) {
         HouseholdAppliancesPosting posting;
 
@@ -223,9 +224,9 @@ public class PostingRestController {
 
     @PostMapping("/new/audiovideo/{id}")
     public Response<Void> createAudioVideoPosting(@PathVariable Long id,
-                                                           @AuthenticationPrincipal User user,
-                                                           @RequestParam Map<String,String> obj,
-                                                           @RequestParam(value = "photos") List<MultipartFile> photos) {
+                                                  @AuthenticationPrincipal User user,
+                                                  @RequestParam Map<String, String> obj,
+                                                  @RequestParam(value = "photos") List<MultipartFile> photos) {
         AudioVideoPosting posting;
 
         try {

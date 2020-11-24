@@ -40,10 +40,5 @@ public class Clothes extends Posting {
         this.contactEmail = contactEmail;
         this.linkYouTube = linkYouTube;
         this.communicationType = communicationType;
-
     }
 }
-
-
-
-

@@ -274,7 +274,6 @@ public class PostingServiceImpl implements PostingService {
         }
     }
 
-
     @Override
     public PostingCarDto getNewPostingCarDto(Long userId, String isCarNew) {
         User user = userService.getUserById(userId);

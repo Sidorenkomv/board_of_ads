@@ -45,13 +45,13 @@ public class CategoryServiceImpl implements CategoryService {
                         category.add(new CategoryDto(cat.getId(), cat.getName(), null, cat.getLayer()));
                         collectChild(cat, category);
                     }
-        });
+                });
         return category;
     }
 
     @Override
-    public Category getCategoryById(Long catId){
-      return   categoryRepository.findCategoryById(catId);
+    public Category getCategoryById(Long catId) {
+        return categoryRepository.findCategoryById(catId);
     }
 
     private void collectChild(Category categoryWithChildren, Set<CategoryDto> collect) {
@@ -60,7 +60,7 @@ public class CategoryServiceImpl implements CategoryService {
                 .filter(Category::isActive)
                 .sorted(Comparator.comparing(Category::getId))
                 .forEach(cat -> {
-                    collect.add(new CategoryDto(cat.getId(), cat.getName(), cat.getCategory().getName(),cat.getLayer()));
+                    collect.add(new CategoryDto(cat.getId(), cat.getName(), cat.getCategory().getName(), cat.getLayer()));
                     collectChild(cat, collect);
                 });
     }
@@ -145,6 +145,5 @@ public class CategoryServiceImpl implements CategoryService {
     public Optional<Category> getCategoryByFrontName(String frontName) {
         return Optional.ofNullable(categoryRepository.findCategoryByFrontName(frontName));
     }
-
 
 }
