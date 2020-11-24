@@ -240,7 +240,7 @@ public class PostingRestController {
     @PostMapping("/new/audiovideo/{id}")
     public Response<Void> createAudioVideoPosting(@PathVariable Long id,
                                                   @AuthenticationPrincipal User user,
-                                                  @RequestParam Map<String, String> obj,
+                                                  @RequestParam Map<String,String> obj,
                                                   @RequestParam(value = "photos") List<MultipartFile> photos) {
         AudioVideoPosting posting;
 
