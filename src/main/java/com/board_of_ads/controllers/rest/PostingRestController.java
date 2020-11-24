@@ -7,12 +7,8 @@ import com.board_of_ads.models.dto.PostingCarDto;
 import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
-import com.board_of_ads.models.posting.personalBelongings.Clothes;
-import com.board_of_ads.repository.CategoryRepository;
-import com.board_of_ads.service.interfaces.CategoryService;
-import com.board_of_ads.models.posting.forAudioVideo.AudioVideoPosting;
-import com.board_of_ads.models.posting.forHomeAndGarden.HouseholdAppliancesPosting;
 import com.board_of_ads.models.posting.autoTransport.cars.PostingCar;
+import com.board_of_ads.models.posting.forAudioVideo.AudioVideoPosting;
 import com.board_of_ads.models.posting.forHomeAndGarden.HouseholdAppliancesPosting;
 import com.board_of_ads.models.posting.job.Vacancy;
 import com.board_of_ads.service.interfaces.AutoAttributesService;
@@ -38,8 +34,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -49,7 +43,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/posting")
@@ -222,6 +215,28 @@ public class PostingRestController {
         }
     }
 
+    @PostMapping("/new/vacancy")
+    public Response<Void> saveNewVacancyPosting(@AuthenticationPrincipal User user,
+                                                @RequestParam Map<String, String> form,
+                                                @RequestParam(value = "photos") List<MultipartFile> photos,
+                                                @RequestParam(value = "preferences") List<String> preferences) {
+        log.info("Inside saveVacancyPosting (api/posting/new/vacancy). Received incoming data: User.id: " + user.getId()
+                + " / FormData: " + form + " / Photos: " + photos + " / Preferences: " + preferences);
+        User userById = userService.getUserById(user.getId());
+        Vacancy posting = new Vacancy();
+        City city = user.getCity() != null ? user.getCity()
+                : cityService.findCityByName(form.get("city")).orElse(null);
+
+        List<Image> images = imageService.savePhotos(userById, photos);
+        images.forEach(image -> image.setPostings(new ArrayList<>()));
+
+        postingService.setVacancyCondition(form, preferences, userById, posting, city, images);
+        images.forEach(imageService::save);
+        images.forEach(image -> image.getPostings().add(posting));
+        postingService.save(posting);
+        return Response.ok().build();
+    }
+
     @PostMapping("/new/audiovideo/{id}")
     public Response<Void> createAudioVideoPosting(@PathVariable Long id,
                                                   @AuthenticationPrincipal User user,
@@ -243,28 +258,6 @@ public class PostingRestController {
             log.info("Не удалось создать объявление => " + ex.getMessage());
             return new ErrorResponse<>(new Error(400, "Posting is not created"));
         }
-    }
-
-    @PostMapping("/new/vacancy")
-    public Response<Void> saveNewVacancyPosting(@AuthenticationPrincipal User user,
-                                                @RequestParam Map<String, String> form,
-                                                @RequestParam(value = "photos") List<MultipartFile> photos,
-                                                @RequestParam(value = "preferences") List<String> preferences) {
-        log.info("Inside saveVacancyPosting (api/posting/new/vacancy). Received incoming data: User.id: " + user.getId()
-                + " / FormData: " + form + " / Photos: " + photos + " / Preferences: " + preferences);
-        User userById = userService.getUserById(user.getId());
-        Vacancy posting = new Vacancy();
-        City city = user.getCity() != null ? user.getCity()
-                : cityService.findCityByName(form.get("city")).orElse(null);
-
-        List<Image> images = imageService.savePhotos(userById, photos);
-        images.forEach(image -> image.setPostings(new ArrayList<>()));
-
-        postingService.setVacancyCondition(form, preferences, userById, posting, city, images);
-        images.forEach(imageService::save);
-        images.forEach(image -> image.getPostings().add(posting));
-        postingService.save(posting);
-        return Response.ok().build();
     }
 
     @PostMapping("/clothes/{id}")
