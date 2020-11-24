@@ -14,8 +14,15 @@ btn2.addEventListener("click", () => {
         }
         let price = window.price.value;
 
+        let state;
+        if (document.getElementById("state") !== null) {
+            state = document.querySelector('input[name="state"]:checked').value;
+        } else {
+            state = "";
+        }
+
         formData.append('title', window.title.value);
-        formData.append('state', document.querySelector('input[name="state"]:checked').value);
+        formData.append('state', state === "" ? null : state);
         formData.append('description', window.description.value);
         formData.append('price', price === "" ? 0 : price);
         formData.append('linkYouTube', window.linkYouTube.value);
