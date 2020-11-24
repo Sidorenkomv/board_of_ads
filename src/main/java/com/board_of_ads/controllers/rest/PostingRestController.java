@@ -268,6 +268,5 @@ public class PostingRestController {
 
         log.info("Create posting clothes");
         return postingService.savePersonalClothesPosting(id, user, map, photos);
-
     }
 }
