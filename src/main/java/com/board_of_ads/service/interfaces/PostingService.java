@@ -53,4 +53,8 @@ public interface PostingService {
 
     void setVacancyCondition(Map<String, String> form, List<String> preferences, User userById,
                              Vacancy posting, City city, List<Image> images);
+
+    Response<Void> saveForBusinessPosting(Long id, User user, Map<String,
+            String> map, List<MultipartFile> photos);
+
 }

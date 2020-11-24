@@ -511,22 +511,22 @@ public class DataInitializer {
         secondSubCategory.add(new Category("Спортивное питание", categoryService.getCategoryByName("Спорт и отдых").get(), 3));
         secondSubCategory.add(new Category("Другое", categoryService.getCategoryByName("Спорт и отдых").get(), 3));
 
-        secondSubCategory.add(new Category("Интернет-магазин", categoryService.getCategoryByName("Готовый бизнес").get(), 3));
-        secondSubCategory.add(new Category("Общественное питание", categoryService.getCategoryByName("Готовый бизнес").get(), 3));
-        secondSubCategory.add(new Category("Производство", categoryService.getCategoryByName("Готовый бизнес").get(), 3));
-        secondSubCategory.add(new Category("Развлечение", categoryService.getCategoryByName("Готовый бизнес").get(), 3));
-        secondSubCategory.add(new Category("Сельское хозяйство", categoryService.getCategoryByName("Готовый бизнес").get(), 3));
-        secondSubCategory.add(new Category("Строительство", categoryService.getCategoryByName("Готовый бизнес").get(), 3));
-        secondSubCategory.add(new Category("Сфера услуг", categoryService.getCategoryByName("Готовый бизнес").get(), 3));
-        secondSubCategory.add(new Category("Торговля", categoryService.getCategoryByName("Готовый бизнес").get(), 3));
-        secondSubCategory.add(new Category("Другое", categoryService.getCategoryByName("Готовый бизнес").get(), 3));
+        secondSubCategory.add(new Category("Интернет-магазин", categoryService.getCategoryByName("Готовый бизнес").get(), 3,"ready-business"));
+        secondSubCategory.add(new Category("Общественное питание", categoryService.getCategoryByName("Готовый бизнес").get(), 3,"ready-business"));
+        secondSubCategory.add(new Category("Производство", categoryService.getCategoryByName("Готовый бизнес").get(), 3,"ready-business"));
+        secondSubCategory.add(new Category("Развлечение", categoryService.getCategoryByName("Готовый бизнес").get(), 3,"ready-business"));
+        secondSubCategory.add(new Category("Сельское хозяйство", categoryService.getCategoryByName("Готовый бизнес").get(), 3,"ready-business"));
+        secondSubCategory.add(new Category("Строительство", categoryService.getCategoryByName("Готовый бизнес").get(), 3,"ready-business"));
+        secondSubCategory.add(new Category("Сфера услуг", categoryService.getCategoryByName("Готовый бизнес").get(), 3,"ready-business"));
+        secondSubCategory.add(new Category("Торговля", categoryService.getCategoryByName("Готовый бизнес").get(), 3,"ready-business"));
+        secondSubCategory.add(new Category("Другое", categoryService.getCategoryByName("Готовый бизнес").get(), 3,"ready-business"));
 
-        secondSubCategory.add(new Category("Для магазина", categoryService.getCategoryByName("Оборудование для бизнеса").get(), 3));
-        secondSubCategory.add(new Category("Для офиса", categoryService.getCategoryByName("Оборудование для бизнеса").get(), 3));
-        secondSubCategory.add(new Category("Для ресторана", categoryService.getCategoryByName("Оборудование для бизнеса").get(), 3));
-        secondSubCategory.add(new Category("Для салона красоты", categoryService.getCategoryByName("Оборудование для бизнеса").get(), 3));
-        secondSubCategory.add(new Category("Промышленное", categoryService.getCategoryByName("Оборудование для бизнеса").get(), 3));
-        secondSubCategory.add(new Category("Другое", categoryService.getCategoryByName("Оборудование для бизнеса").get(), 3));
+        secondSubCategory.add(new Category("Для магазина", categoryService.getCategoryByName("Оборудование для бизнеса").get(), 3,"equpment-for-business"));
+        secondSubCategory.add(new Category("Для офиса", categoryService.getCategoryByName("Оборудование для бизнеса").get(), 3,"equpment-for-business"));
+        secondSubCategory.add(new Category("Для ресторана", categoryService.getCategoryByName("Оборудование для бизнеса").get(), 3,"equpment-for-business"));
+        secondSubCategory.add(new Category("Для салона красоты", categoryService.getCategoryByName("Оборудование для бизнеса").get(), 3,"equpment-for-business"));
+        secondSubCategory.add(new Category("Промышленное", categoryService.getCategoryByName("Оборудование для бизнеса").get(), 3,"equpment-for-business"));
+        secondSubCategory.add(new Category("Другое", categoryService.getCategoryByName("Оборудование для бизнеса").get(), 3,"equpment-for-business"));
 
         for (Category category : secondSubCategory) {
             if (categoryService.getCategoryByName(category.getName()).isEmpty()) {
