@@ -64,6 +64,7 @@
                 <input  id="inputAddress" name="dealAddress" placeholder="Начните вводить адрес, а потом выберите из списка" maxlength="150"
                        autocomplete="none" type="text" class="form-control" value="">
             </p>
+            <p id="fill_address"></p>
             <p class="text-muted" data-toggle="tooltip" data-placement="top" title="Зачем указывать точный адрес.
             Объявление смогут найти покупатели, которые ищут товары в конкретном радиусе или районе.
             Точный адрес не помешает вашему предложению появиться в результатах поиска по городу,
@@ -90,7 +91,8 @@
                 <div class="form-group row">
                     <label for="inputPhone" class="col-sm-2 col-form-label">Телефон</label>
                     <div class="col-sm-3">
-                        <input class="form-control form-control-sm" id="inputPhone" placeholder="8 ___ ___-__-__" inputmode="tel" autocomplete="off" data-marker="phone/input" value im-insert="true">
+                        <input class="form-control form-control-sm" id="inputPhone" placeholder="8 (999) 99 99 999" inputmode="tel" autocomplete="off" data-marker="phone/input" value im-insert="true">
+                        <p id="fill_phone"></p>
                     </div>
                 </div>
                 <fieldset id="wayOfCommunication" class="form-group">
@@ -142,7 +144,12 @@
 <script src="../static/js/new_posting_forms/household-appliances.js" th:src="@{/js/new_posting_forms/household-appliances.js}"></script>
 <script src="../static/js/new_posting_forms/audio-video.js" th:src="@{/js/new_posting_forms/audio-video.js}"></script>
 <script src="../static/js/new_posting_forms/posting-car.js" th:src="@{/js/new_posting_forms/posting-car.js}"></script>
+<script src="../static/js/new_posting_forms/test.js"
+        th:src="@{/js/new_posting_forms/test.js}"></script>
+<script src="../static/js/new_posting_forms/posting-clothes.js" th:src="@{/js/new_posting_forms/posting-clothes.js}"></script>
 <script src="../static/js/new_posting_forms/test.js" th:src="@{/js/new_posting_forms/test.js}"></script>
 <script sec:authorize="isAuthenticated()"  src="../static/js/new_posting_forms/vacancy.js" th:src="@{/js/new_posting_forms/vacancy.js}"></script>
+<script src="../static/js/jquery.maskedinput.js" th:src="@{/js/jquery.maskedinput.js}"></script>
+
 </body>
 </html>

@@ -29,4 +29,5 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     @Query("select new com.board_of_ads.models.dto.CategoryDtoMenu (c.id, c.name, c.frontName) from Category c where c.category.id = :id ")
     List<CategoryDtoMenu> findAllChildCategoriesByParentId(@Param("id") Long id);
 
+    Category findCategoryByFrontName(String frontName);
 }
