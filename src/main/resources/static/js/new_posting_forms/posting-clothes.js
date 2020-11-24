@@ -85,21 +85,21 @@ function validateForm() {
         document.getElementById("fill_photo").innerHTML = alert_photo;
         document.getElementById("postPhotos").focus();
         return false;
+
+    } else if (document.getElementById("inputAddress").value == "") {
+
+        let alert_address = "Укажите место сделки";
+        document.getElementById("fill_address").innerHTML = alert_address;
+        document.getElementById("inputAddress").focus();
+        return false;
+
+    } else if (document.getElementById("inputPhone").value == "") {
+
+        let alert_phone = "Укажите телефон";
+        document.getElementById("fill_phone").innerHTML = alert_phone;
+        document.getElementById("inputPhone").focus();
+        return false;
     }
-    // } else if (document.getElementById("inputAddress").value == "") {
-    //
-    //     let alert_address = "Укажите место сделки";
-    //     document.getElementById("fill_address").innerHTML = alert_address;
-    //     document.getElementById("inputAddress").focus();
-    //     return false;
-    //
-    // } else if (document.getElementById("inputPhone").value == "") {
-    //
-    //     let alert_phone = "Укажите телефон";
-    //     document.getElementById("fill_phone").innerHTML = alert_phone;
-    //     document.getElementById("inputPhone").focus();
-    //     return false;
-    // }
 
     return true;
 }
