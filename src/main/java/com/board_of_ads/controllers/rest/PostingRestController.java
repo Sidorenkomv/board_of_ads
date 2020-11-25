@@ -9,11 +9,14 @@ import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.models.posting.autoTransport.cars.PostingCar;
 import com.board_of_ads.models.posting.forAudioVideo.AudioVideoPosting;
+import com.board_of_ads.models.posting.forDogs.DogBreed;
+import com.board_of_ads.models.posting.forDogs.dogsPosting;
 import com.board_of_ads.models.posting.forHomeAndGarden.HouseholdAppliancesPosting;
 import com.board_of_ads.models.posting.job.Vacancy;
 import com.board_of_ads.service.interfaces.AutoAttributesService;
 import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.service.interfaces.CityService;
+import com.board_of_ads.service.interfaces.DogBreedService;
 import com.board_of_ads.service.interfaces.ImageService;
 import com.board_of_ads.service.interfaces.PostingService;
 import com.board_of_ads.service.interfaces.UserService;
@@ -57,6 +60,7 @@ public class PostingRestController {
     private final CategoryService categoryService;
     private final UserService userService;
     private final ImageService imageService;
+    private final DogBreedService dogBreedService;
 
     @GetMapping
     public Response<List<PostingDto>> findAllPosts() {
@@ -258,5 +262,34 @@ public class PostingRestController {
             log.info("Не удалось создать объявление => " + ex.getMessage());
             return new ErrorResponse<>(new Error(400, "Posting is not created"));
         }
+    }
+
+    @PostMapping("/new/dogs/{id}")
+    public Response<Void> createDogsPosting(@PathVariable Long id,
+                                                  @AuthenticationPrincipal User user,
+                                                  @RequestParam Map<String,String> obj,
+                                                  @RequestParam(value = "photos") List<MultipartFile> photos) {
+        dogsPosting posting;
+
+        try {
+            posting = new dogsPosting(userService.getUserById(user.getId()), categoryService.getCategoryById(id),
+                    obj.get("title"), obj.get("description"), Long.parseLong(obj.get("price")), obj.get("contact"),
+                    true, obj.get("contactEmail"), obj.get("linkYouTube"), obj.get("communicationType"), obj.get("breed"));
+            List<Image> images = imageService.savePhotos(user, photos);
+            posting.setImages(images);
+            posting.setCity(cityService.findCityByName("Ростов-на-Дону").get());
+            postingService.save(posting);
+            log.info("Объявление успешно создано пользователем " + user.getEmail());
+            return Response.ok().build();
+        } catch (Exception ex) {
+            log.info("Не удалось создать объявление => " + ex.getMessage());
+            return new ErrorResponse<>(new Error(400, "Posting is not created"));
+        }
+    }
+
+    @GetMapping("/getdogbreeds")
+    public Response<List<DogBreed>> getDogBreeds() {
+        log.info("getDogsBreed Controller");
+        return Response.ok(dogBreedService.findAll());
     }
 }
