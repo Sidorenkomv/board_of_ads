@@ -26,7 +26,7 @@ async function getCategoryColumn(selectedCategoryId, selectLayer, frontName) {
 
         document.getElementById('cascadeTableContainer').innerHTML +=
             '<div id="cascadeTableColumn' + displayLayer + '" class="cascade-table-column">' +
-            '   <div class="category-table-title">'+parentName+'</div>' +
+            '   <div class="category-table-title">' + parentName + '</div>' +
             '</div>';
 
         for (let i = 0; i < categories.length; i++) {
@@ -93,7 +93,7 @@ async function getURL(parentID) {
 
 async function cleanCategoryColumns(selectLayer) {
     if (selectLayer <= displayLayer) {
-        for (let i = selectLayer+1; i <= displayLayer; i++) {
+        for (let i = selectLayer + 1; i <= displayLayer; i++) {
             document.getElementById('cascadeTableColumn' + i).remove();
         }
         path.splice(selectLayer - 1, path.length - selectLayer + 1);
@@ -106,23 +106,36 @@ async function changeVisible(frontName, id) {
     $('#visibleElement1').hide();
     $('#visibleElement3').show();
 
-    switch(frontName) {
-        case 'used-car':  await carPostingFunction(frontName, id);
+    switch (frontName) {
+        case 'used-car':
+            await carPostingFunction(frontName, id);
             break;
-        case 'new-car':  await carPostingFunction(frontName, id);
+        case 'new-car':
+            await carPostingFunction(frontName, id);
             break;
-        case 'householdAppliances': await getHouseholdAppliancesForm(frontName, id);
+        case 'householdAppliances':
+            await getHouseholdAppliancesForm(frontName, id);
             break;
-        case 'clothes': showClothesForm(frontName, id);
+        case 'clothes':
+            showClothesForm(frontName, id);
             break;
-        case 'shoes': showShoesForm(frontName, id);
+        case 'shoes':
+            showShoesForm(frontName, id);
             break;
-        case 'other-clothes': showOtherClothesForm(frontName, id);
+        case 'other-clothes':
+            showOtherClothesForm(frontName, id);
             break;
-        case 'audiovideo': await getAudioVideoForm(frontName, id);
+        case 'audiovideo':
+            await getAudioVideoForm(frontName, id);
             break;
         case 'vacancy':
             await buildVacancyForm(frontName, id);
+            break;
+        case 'ready-business':
+            showReadyBusinessForm(frontName, id);
+            break;
+        case 'equpment-for-business':
+            showEquipmentForBusinessForm(frontName, id);
             break;
         default:
             alert('For frontName="' + frontName + '" not found posting form');
