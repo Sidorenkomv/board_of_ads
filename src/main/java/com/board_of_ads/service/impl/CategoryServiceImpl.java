@@ -3,6 +3,8 @@ package com.board_of_ads.service.impl;
 import com.board_of_ads.models.Category;
 import com.board_of_ads.models.dto.CategoryDto;
 import com.board_of_ads.models.dto.CategoryDtoMenu;
+import com.board_of_ads.models.dto.analytics.ReportCategoryPostingDto;
+import com.board_of_ads.models.dto.analytics.ReportCityPostingDto;
 import com.board_of_ads.repository.CategoryRepository;
 import com.board_of_ads.service.interfaces.CategoryService;
 import lombok.AllArgsConstructor;
@@ -10,11 +12,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -145,5 +151,31 @@ public class CategoryServiceImpl implements CategoryService {
     public Optional<Category> getCategoryByFrontName(String frontName) {
         return Optional.ofNullable(categoryRepository.findCategoryByFrontName(frontName));
     }
+
+    @Override
+    public List<ReportCategoryPostingDto> getNumberOfPostings(String date) {
+        List<LocalDateTime> localDateTimes = dateConvertation(date);
+        return categoryRepository.findAllByDatePostingBetween(localDateTimes.get(0), localDateTimes.get(1));
+    }
+
+    private List<LocalDateTime> dateConvertation(String date) {
+
+        String[] arr = date.split("\\D+");
+
+        List<Integer> dateValues = Arrays.stream(arr)
+                .filter(a -> !a.equals(""))
+                .map(Integer::parseInt)
+                .collect(Collectors.toList());
+
+        LocalDateTime startDateTime = LocalDateTime.of(dateValues.get(2), dateValues.get(1), dateValues.get(0), 0, 0);
+        LocalDateTime endDateTime = LocalDateTime.of(dateValues.get(5), dateValues.get(4), dateValues.get(3), 23, 59);
+
+        List<LocalDateTime> localDateTimeList = new ArrayList<>();
+        localDateTimeList.add(startDateTime);
+        localDateTimeList.add(endDateTime);
+
+        return localDateTimeList;
+    }
+
 
 }

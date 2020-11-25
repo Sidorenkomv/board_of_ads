@@ -2,11 +2,14 @@ package com.board_of_ads.repository;
 
 import com.board_of_ads.models.Category;
 import com.board_of_ads.models.dto.CategoryDtoMenu;
+import com.board_of_ads.models.dto.analytics.ReportCategoryPostingDto;
+import com.board_of_ads.models.dto.analytics.ReportCityPostingDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -30,4 +33,11 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     List<CategoryDtoMenu> findAllChildCategoriesByParentId(@Param("id") Long id);
 
     Category findCategoryByFrontName(String frontName);
+
+    @Query("select new com.board_of_ads.models.dto.analytics.ReportCategoryPostingDto(" +
+            "c.name, count (c.name), sum (case when p.isActive = true then 1 else 0 end), sum (case when p.isActive = true then 0 else 1 end)" +
+            ")" +
+            " from Category c, Posting p where p.category = c AND p.datePosting BETWEEN :startDate and :endDate GROUP BY c.name")
+    List<ReportCategoryPostingDto> findAllByDatePostingBetween(LocalDateTime startDate, LocalDateTime endDate);
+
 }
