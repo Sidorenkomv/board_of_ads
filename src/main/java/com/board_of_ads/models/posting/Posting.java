@@ -115,5 +115,4 @@ public class Posting {
         this.city = city;
         this.viewNumber = viewNumber;
     }
-
 }

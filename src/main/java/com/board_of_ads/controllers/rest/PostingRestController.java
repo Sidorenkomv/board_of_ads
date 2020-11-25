@@ -230,7 +230,7 @@ public class PostingRestController {
         Vacancy posting = new Vacancy();
         City city = user.getCity() != null ? user.getCity()
                 : cityService.findCityByName(form.get("city")).orElse(null);
-        
+
         List<Image> images = imageService.savePhotos(userById, photos);
         images.forEach(image -> image.setPostings(new ArrayList<>()));
 
@@ -291,5 +291,15 @@ public class PostingRestController {
     public Response<List<DogBreed>> getDogBreeds() {
         log.info("getDogsBreed Controller");
         return Response.ok(dogBreedService.findAll());
+    }
+  
+    @PostMapping("/clothes/{id}")
+    public Response<Void> createPersonalClothesPosting(@PathVariable Long id,
+                                                       @AuthenticationPrincipal User user,
+                                                       @RequestParam Map<String, String> map,
+                                                       @RequestParam(value = "photos") List<MultipartFile> photos) {
+
+        log.info("Create posting clothes");
+        return postingService.savePersonalClothesPosting(id, user, map, photos);
     }
 }

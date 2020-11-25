@@ -7,6 +7,8 @@ import com.board_of_ads.models.dto.PostingCarDto;
 import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
+import com.board_of_ads.util.Response;
+import org.springframework.web.multipart.MultipartFile;
 import com.board_of_ads.models.posting.autoTransport.cars.PostingCar;
 import com.board_of_ads.models.posting.job.Vacancy;
 import org.springframework.boot.configurationprocessor.json.JSONException;
@@ -41,6 +43,9 @@ public interface PostingService {
     List<PostingDto> getFavDtosFromUser(User user);
 
     List<Long> getFavIDFromUser(User user);
+
+    Response<Void> savePersonalClothesPosting(Long id, User user, Map<String,
+            String> map, List<MultipartFile> photos);
 
     PostingCarDto getNewPostingCarDto(Long userId, String isCarNew);
 
