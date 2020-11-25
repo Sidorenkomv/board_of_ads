@@ -128,6 +128,9 @@ async function changeVisible(frontName, id) {
         case 'audiovideo':
             await getAudioVideoForm(frontName, id);
             break;
+        case 'dogs':
+            await getDogsForm(frontName, id);
+            break;
         case 'vacancy':
             await buildVacancyForm(frontName, id);
             break;

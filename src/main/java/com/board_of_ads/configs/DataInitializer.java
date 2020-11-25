@@ -1,9 +1,11 @@
 package com.board_of_ads.configs;
 
 import com.board_of_ads.models.Category;
+import com.board_of_ads.models.City;
 import com.board_of_ads.models.Image;
 import com.board_of_ads.models.Message;
 import com.board_of_ads.models.Notification;
+import com.board_of_ads.models.Region;
 import com.board_of_ads.models.Role;
 import com.board_of_ads.models.User;
 import com.board_of_ads.models.dto.PostingDto;
@@ -14,7 +16,9 @@ import com.board_of_ads.models.UserNotification;
 import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.models.posting.autoTransport.cars.car_attributes.AutoColor;
 import com.board_of_ads.models.posting.autoTransport.cars.car_attributes.AutoModel;
+import com.board_of_ads.models.posting.forDogs.DogBreed;
 import com.board_of_ads.service.interfaces.AutoAttributesService;
+import com.board_of_ads.service.interfaces.DogBreedService;
 import com.board_of_ads.service.interfaces.MessageService;
 import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.service.interfaces.CityService;
@@ -28,9 +32,15 @@ import com.board_of_ads.service.interfaces.RoleService;
 import com.board_of_ads.service.interfaces.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -55,6 +65,7 @@ public class DataInitializer {
     private final NotificationService notificationService;
     private final AutoAttributesService autoAttributesService;
     private final MessageService messageService;
+    private final DogBreedService dogBreedService;
     List<Posting> postingList;
 
 
@@ -71,6 +82,7 @@ public class DataInitializer {
         initNotifications();
         initCarAttributes();
         initMessages();
+        initDogBreed();
     }
 
     private void initUsers() {
@@ -177,7 +189,7 @@ public class DataInitializer {
         subCategoryList.add(new Category("Охота и рыбалка", categoryService.getCategoryByName("Хобби и отдых").get(), 2));
         subCategoryList.add(new Category("Спорт и отдых", categoryService.getCategoryByName("Хобби и отдых").get(), 2));
 
-        subCategoryList.add(new Category("Собаки", categoryService.getCategoryByName("Животные").get(), 2));
+        subCategoryList.add(new Category("Собаки", categoryService.getCategoryByName("Животные").get(), 2, "dogs"));
         subCategoryList.add(new Category("Кошки", categoryService.getCategoryByName("Животные").get(), 2));
         subCategoryList.add(new Category("Птицы", categoryService.getCategoryByName("Животные").get(), 2));
         subCategoryList.add(new Category("Аквариум", categoryService.getCategoryByName("Животные").get(), 2));
@@ -813,5 +825,9 @@ public class DataInitializer {
                 messageService.save(message);
             }
         }
+    }
+
+    private void initDogBreed() throws IOException {
+        dogBreedService.saveDogBreed();
     }
 }
