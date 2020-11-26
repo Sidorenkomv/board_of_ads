@@ -17,7 +17,6 @@ import java.util.Objects;
 @AllArgsConstructor
 @Getter
 @Setter
-
 @Entity
 @Table(name = "cities")
 public class City {
