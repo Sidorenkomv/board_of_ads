@@ -14,7 +14,7 @@ async function getPostingDto(id) {
 }
 
 async function getCategoryByName(name) {
-    let response = await fetch("/api/category/" + name, {
+    let response = await fetch("/api/category/getByName/" + name, {
         method: 'GET',
         headers: {
             'Accept': 'application/json',
