@@ -72,16 +72,11 @@ public class DataInitializer {
     private final CityRepository cityRepository;
 
     @PostConstruct
+
     private void init() throws IOException {
+        initKladr();
         initUsers();
         initMoreUsers();
-        try {
-        initKladr();
-        } catch (NullPointerException ignored) {
-            // при изменении 4-ого кладдера городов (добавляю единицу с столбец, чтобы обозначить город-миллионник,
-            // программа крашится с NPE. возможно, причина связана с тем, что в строке кладдера отсутствует город или
-            // обозначение региона. источник NPE не отловил, в кладдере 60 000 нас. пунктов)
-        }
         initCategories();
         initPosting();
         initOrders();

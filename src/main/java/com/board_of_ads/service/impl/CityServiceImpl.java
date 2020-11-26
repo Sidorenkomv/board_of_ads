@@ -7,9 +7,6 @@ import com.board_of_ads.repository.CityRepository;
 import com.board_of_ads.service.interfaces.CityService;
 import com.board_of_ads.service.interfaces.RegionService;
 import lombok.AllArgsConstructor;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -95,5 +92,4 @@ public class CityServiceImpl implements CityService {
 
         return localDateTimeList;
     }
-
 }

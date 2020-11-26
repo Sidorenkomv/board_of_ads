@@ -1,23 +1,17 @@
 package com.board_of_ads.repository;
 
-import com.board_of_ads.models.City;
-import com.board_of_ads.models.Image;
-import com.board_of_ads.models.Role;
+
 import com.board_of_ads.models.User;
 import com.board_of_ads.models.dto.UserDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+
 import java.util.List;
-import java.util.Set;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+
 
 @Repository
 @Transactional

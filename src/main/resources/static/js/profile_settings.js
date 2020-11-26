@@ -140,7 +140,6 @@ $('#changePasswordButton').on('click', function() {
         });
 })
 
-
 $('#selectCity').on('change', function() {
     $('#chooseCityModal').modal('show');
 })
@@ -308,7 +307,6 @@ const userService = {
             method: 'PUT'
         });
     },
-
     getPostingCount: async (id) => {
         return await http.fetch('/api/posting/userpost/' + id, {
             method: 'GET'

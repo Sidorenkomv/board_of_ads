@@ -1,14 +1,11 @@
 package com.board_of_ads.controllers.rest;
 
 import com.board_of_ads.models.City;
+import com.board_of_ads.models.User;
 import com.board_of_ads.models.dto.analytics.ReportCityPostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
-//<<<<<<< HEAD
-//=======
-import com.board_of_ads.models.User;
 import com.board_of_ads.repository.CityRepository;
 import com.board_of_ads.repository.UserRepository;
-//>>>>>>> 34f356e... Таска Города (без выпадающих списков)
 import com.board_of_ads.service.interfaces.CityService;
 import com.board_of_ads.util.Error;
 import com.board_of_ads.util.ErrorResponse;
@@ -16,20 +13,15 @@ import com.board_of_ads.util.Response;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-//<<<<<<< HEAD
-//=======
-import java.security.Principal;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-//>>>>>>> 34f356e... Таска Города (без выпадающих списков)
-import java.util.List;
 import java.util.Set;
 
 @RestController
