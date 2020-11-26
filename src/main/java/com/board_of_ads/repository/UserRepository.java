@@ -8,11 +8,15 @@ import com.board_of_ads.models.dto.UserDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Repository
@@ -37,5 +41,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("select new com.board_of_ads.models.dto.UserDto (u.id, u.sessionID, u.email, u.password, u.firstName, u.lastName, u.phone, u.dataRegistration, u.enable) from User u")
     List<UserDto> findAllDto();
+
+    @Query(
+            value = "SELECT city_id FROM users where id = ?",
+            nativeQuery = true)
+    Long findCityByUser(Long id);
 
 }

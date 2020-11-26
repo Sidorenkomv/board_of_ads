@@ -1,23 +1,141 @@
 <div th:fragment="choose-city" xmlns:th="http://www.w3.org/1999/xhtml">
-    <div class="modal"
-         id="chooseCityModal"
-         tabindex="-1"
-         role="dialog">
-        <div class="modal-dialog"
-             role="document">
-            <div class="modal-content modal-settings-email-confirm center-block">
-                <div class="modal-body" id="emailBlock">
-                    <div class="h5">
-                        Выбор города
-                    </div>
-                    <button class="close modal-email-confirm-close"
-                            data-dismiss="modal"
-                            data-marker="popup-location/close-button" style="position: relative; top: -50px;">X</button>
-                    <div>
-<!--                        TODO: Реализовать отображение выбора городов-->
+
+
+    <div class="modal" id="chooseCityModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Выбор города</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class = "regions-location">
+                        <div class="d-flex text-white">
+
+                            <div class="p-2 flex-fill">
+                                <div id="cityListM">
+                                    <li>
+                                        <a class="js-regions-link" id="1226" data-value="Москва" role="button">
+                                            <small><strong>Москва</strong></small>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="js-regions-link" id="1232" data-value="Санкт-Петербург" role="button">
+                                            <small><strong>Санкт-Петербург</strong></small>
+                                        </a>
+                                    </li>
+                                </div>
+                                <div id="cityList">
+                                    <li>
+                                        <a class="js-regions-link" id="5001"  role="button"></a>
+                                    </li>
+                                    <li>
+                                        <a class="js-regions-link" id="5002"  role="button"></a>
+                                    </li>
+                                    <li>
+                                        <a class="js-regions-link" id="5003"  role="button"></a>
+                                    </li>
+                                    <li>
+                                        <a class="js-regions-link" id="5004"  role="button"></a>
+                                    </li>
+                                    <li>
+                                        <a class="js-regions-link" id="5005"  role="button"></a>
+                                    </li>
+                                    <li>
+                                        <a class="js-regions-link" id="5006"  role="button"></a>
+                                    </li>
+                                    <li>
+                                        <a class="js-regions-link" id="5007"  role="button"></a>
+                                    </li>
+                                    <li>
+                                        <a class="js-regions-link" id="5008"  role="button"></a>
+                                    </li>
+                                </div>
+
+
+                            </div>
+
+                            <div class="p-2 flex-fill">
+
+                                <div id="cityList1">
+                                    <li>
+                                        <a class="js-regions-link" id="5009" role="button"></a>
+                                    </li>
+                                    <li>
+                                        <a class="js-regions-link" id="5010" role="button"></a>
+                                    </li>
+                                    <li>
+                                        <a class="js-regions-link" id="5011"  role="button"></a>
+                                    </li>
+                                    <li>
+                                        <a class="js-regions-link" id="5012"role="button"></a>
+                                    </li>
+                                    <li>
+                                        <a class="js-regions-link" id="5013" role="button"></a>
+                                    </li>
+                                    <li>
+                                        <a class="js-regions-link" id="5014" role="button"></a>
+                                    </li>
+                                    <li>
+                                        <a class="js-regions-link" id="5015" role="button"></a>
+                                    </li>
+                                    <li>
+                                        <a class="js-regions-link" id="5016" role="button"></a>
+                                    </li>
+                                    <li>
+                                        <a class="js-regions-link" id="5017" role="button"></a>
+                                    </li>
+                                    <li>
+                                        <a class="js-regions-link" id="5018" role="button"></a>
+                                    </li>
+                                </div>
+                            </div>
+
+                            <div class="p-2 flex-fill">
+                                <div id="cityList2">
+                                    <li>
+                                        <a class="js-regions-link" id="5019" role="button"></a>
+                                    </li>
+                                    <li>
+                                        <a class="js-regions-link" id="5020" role="button"></a>
+                                    </li>
+                                    <li>
+                                        <a class="js-regions-link" id="5021" role="button"></a>
+                                    </li>
+                                    <li>
+                                        <a class="js-regions-link" id="5022" role="button"></a>
+                                    </li>
+                                    <li>
+                                        <a class="js-regions-link" id="5023" role="button"></a>
+                                    </li>
+                                    <li>
+                                        <a class="js-regions-link" id="5024" role="button"></a>
+                                    </li>
+                                    <li>
+                                        <a class="js-regions-link" id="5025" role="button"></a>
+                                    </li>
+                                    <li>
+                                        <a class="js-regions-link" id="5026" role="button"></a>
+                                    </li>
+                                    <li>
+                                        <a class="js-regions-link" id="5027" role="button"></a>
+                                    </li>
+                                    <li>
+                                        <a class="js-regions-link" id="5028" role="button"></a>
+                                    </li>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
+
+                <div class="modal-footer">
             </div>
         </div>
     </div>
-</div>
+    </div>
+    </div>
