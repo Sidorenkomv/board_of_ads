@@ -1,18 +1,12 @@
 package com.board_of_ads.service.impl;
 
-import com.board_of_ads.models.Category;
 import com.board_of_ads.models.City;
-import com.board_of_ads.models.Image;
 import com.board_of_ads.models.User;
 import com.board_of_ads.models.dto.PostingCarDto;
 import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.models.posting.autoTransport.cars.PostingCar;
-import com.board_of_ads.models.posting.realty.estate.BuyEstatePosting;
-import com.board_of_ads.models.posting.realty.estate.GetAnEstatePosting;
-import com.board_of_ads.models.posting.realty.estate.RentAnEstatePosting;
-import com.board_of_ads.models.posting.realty.estate.SellEstatePosting;
 import com.board_of_ads.repository.CityRepository;
 import com.board_of_ads.repository.PostingCarRepository;
 import com.board_of_ads.repository.PostingRepository;
@@ -20,9 +14,6 @@ import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.service.interfaces.PostingService;
 import com.board_of_ads.service.interfaces.RegionService;
 import com.board_of_ads.service.interfaces.UserService;
-import com.board_of_ads.util.Error;
-import com.board_of_ads.util.ErrorResponse;
-import com.board_of_ads.util.Response;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.configurationprocessor.json.JSONException;
@@ -30,13 +21,12 @@ import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -341,149 +331,6 @@ public class PostingServiceImpl implements PostingService {
         long catId =  json.getInt("categoryId");
         pc.setCategory(categoryService.getCategoryById(catId));
         return pc;
-    }
-
-    @Override
-    public BuyEstatePosting addBuyEstatePosting(Map<String,String> obj) {
-
-        BuyEstatePosting posting;
-        try {
-            posting = new BuyEstatePosting();
-            posting.setTitle(obj.get("title"));
-            posting.setDescription(obj.get("description"));
-            posting.setContact(obj.get("contact"));
-            posting.setIsActive(true);
-            posting.setRooms(obj.get("rooms"));
-            posting.setContactEmail(obj.get("contactEmail"));
-            posting.setCommunicationType(obj.get("communicationType"));
-            return posting;
-        } catch (Exception ex) {
-            log.info("Проблема с добавлением объявления buy estate => " + ex.getMessage());
-            return null;
-        }
-
-    }
-
-    @Override
-    public GetAnEstatePosting addGetAnEstatePosting(Map<String,String> obj){
-
-        GetAnEstatePosting posting = new GetAnEstatePosting();
-
-        try {
-            posting.setTitle(obj.get("title"));
-            posting.setDescription(obj.get("description"));
-            posting.setPrice(Long.parseLong(obj.get("price")));
-            posting.setContact(obj.get("contact"));
-            posting.setIsActive(true);
-            posting.setRooms(obj.get("rooms"));
-            posting.setContactEmail(obj.get("contactEmail"));
-            posting.setCommunicationType(obj.get("communicationType"));
-            posting.setNumberOfBeds(obj.get("numberOfBeds"));
-            posting.setSleeper(obj.get("sleeper"));
-            posting.setWifi(Boolean.getBoolean(obj.get("wifi")));
-            posting.setTv(Boolean.getBoolean(obj.get("tv")));
-            posting.setCable(Boolean.getBoolean(obj.get("cable")));
-            posting.setCooker(Boolean.getBoolean(obj.get("cooker")));
-            posting.setMicrowave(Boolean.getBoolean(obj.get("microwave")));
-            posting.setFridge(Boolean.getBoolean(obj.get("fridge")));
-            posting.setWashingMachine(Boolean.getBoolean(obj.get("washingMachine")));
-            posting.setHairdryer(Boolean.getBoolean(obj.get("hairdryer")));
-            posting.setFlatiron(Boolean.getBoolean(obj.get("flatiron")));
-            posting.setNurslings(Boolean.getBoolean(obj.get("nurslings")));
-            posting.setChildren(Boolean.getBoolean(obj.get("children")));
-            posting.setEvents(Boolean.getBoolean(obj.get("events")));
-            posting.setSmoke(Boolean.getBoolean(obj.get("smoke")));
-
-            return posting;
-        } catch (Exception ex) {
-            log.info("\"Проблема с добавлением объявления get an estate => " + ex.getMessage());
-            return null;
-        }
-
-    }
-
-    @Override
-    public RentAnEstatePosting addRentAnEstatePosting(Map<String,String> obj) {
-
-        RentAnEstatePosting posting = new RentAnEstatePosting();;
-
-        try {
-            posting.setTitle(obj.get("title"));
-            posting.setDescription(obj.get("description"));
-            posting.setPrice(Long.parseLong(obj.get("price")));
-            posting.setContact(obj.get("contact"));
-            posting.setIsActive(true);
-            posting.setTypeOfHousing(obj.get("typeOfHousing"));
-            posting.setOwnership(obj.get("ownership"));
-            posting.setStatus(obj.get("status"));
-            posting.setRooms(obj.get("rooms"));
-            posting.setTypeOfHouse(obj.get("typeOfHouse"));
-            posting.setFloor(Integer.parseInt(obj.get("floor")));
-            posting.setFloorsInHouse(Integer.parseInt(obj.get("floorsInHouse")));
-            posting.setTotalArea(Integer.parseInt(obj.get("totalArea")));
-            posting.setKitchenArea(Integer.parseInt(obj.get("kitchenArea")));
-            posting.setLivingArea(Integer.parseInt(obj.get("livingArea")));
-            posting.setLoggia(obj.get("loggia"));
-            posting.setView(obj.get("view"));
-            posting.setContactEmail(obj.get("contactEmail"));
-            posting.setLinkYouTube(obj.get("linkYouTube"));
-            posting.setCommunicationType(obj.get("communicationType"));
-            posting.setNumberOfBeds(obj.get("numberOfBeds"));
-            posting.setSleeper(obj.get("sleeper"));
-            posting.setWifi(Boolean.getBoolean(obj.get("wifi")));
-            posting.setTv(Boolean.getBoolean(obj.get("tv")));
-            posting.setCable(Boolean.getBoolean(obj.get("cable")));
-            posting.setCooker(Boolean.getBoolean(obj.get("cooker")));
-            posting.setMicrowave(Boolean.getBoolean(obj.get("microwave")));
-            posting.setFridge(Boolean.getBoolean(obj.get("fridge")));
-            posting.setWashingMachine(Boolean.getBoolean(obj.get("washingMachine")));
-            posting.setHairdryer(Boolean.getBoolean(obj.get("hairdryer")));
-            posting.setFlatiron(Boolean.getBoolean(obj.get("flatiron")));
-            posting.setNurslings(Boolean.getBoolean(obj.get("nurslings")));
-            posting.setChildren(Boolean.getBoolean(obj.get("children")));
-            posting.setEvents(Boolean.getBoolean(obj.get("events")));
-            posting.setSmoke(Boolean.getBoolean(obj.get("smoke")));
-
-            return posting;
-        } catch (Exception ex) {
-            log.info("\"Проблема с добавлением объявления get an estate => " + ex.getMessage());
-            return null;
-        }
-    }
-
-    @Override
-    public SellEstatePosting addSellEstatePosting(Map<String,String> obj) {
-
-        SellEstatePosting posting = new SellEstatePosting();
-
-        try {
-            posting.setTitle(obj.get("title"));
-            posting.setDescription(obj.get("description"));
-            posting.setPrice(Long.parseLong(obj.get("price")));
-            posting.setContact(obj.get("contact"));
-            posting.setIsActive(true);
-            posting.setTypeOfHousing(obj.get("typeOfHousing"));
-            posting.setOwnership(obj.get("ownership"));
-            posting.setStatus(obj.get("status"));
-            posting.setRooms(obj.get("rooms"));
-            posting.setTypeOfHouse(obj.get("typeOfHouse"));
-            posting.setFloor(Integer.parseInt(obj.get("floor")));
-            posting.setFloorsInHouse(Integer.parseInt(obj.get("floorsInHouse")));
-            posting.setTotalArea(Integer.parseInt(obj.get("totalArea")));
-            posting.setKitchenArea(Integer.parseInt(obj.get("kitchenArea")));
-            posting.setLivingArea(Integer.parseInt(obj.get("livingArea")));
-            posting.setLoggia(obj.get("loggia"));
-            posting.setView(obj.get("view"));
-            posting.setContactEmail(obj.get("contactEmail"));
-            posting.setLinkYouTube(obj.get("linkYouTube"));
-            posting.setCommunicationType(obj.get("communicationType"));
-
-
-            return posting;
-        } catch (Exception ex) {
-            log.info("\"Проблема с добавлением объявления get an estate => " + ex.getMessage());
-            return null;
-        }
     }
 
 }
