@@ -35,6 +35,9 @@ function clickCountButton() {
     $('#searchModel').modal('hide');
     let row = `<option>` + changedCityName + `</option>`;
     $('#category-select-city').append(row);
+
+    let selectedCategoryOption = $("#category-select option:selected").text();
+
     reinstallTable(selectedCategoryOption, changedCityName, $("#search-main-text").val(), $("#image-select option:selected").val())
 }
 
@@ -73,7 +76,9 @@ async function onClickOpt(id) {
     let sizeArray = 0;
     posts.then(posts => {
         posts.data.forEach((posting) => {
-            let temp = selectedCategoryOption;
+//            let temp = selectedCategoryOption;
+            let temp = $("#category-select option:selected").text();
+
             if(temp === "Любая категория") {
                 temp = posting.category;
             }
@@ -133,7 +138,8 @@ async function viewCities() {
     let sizeArray = 0;
     posts.then(posts => {
         posts.data.forEach((posting) => {
-            let temp = selectedCategoryOption;
+//            let temp = selectedCategoryOption;
+            let temp = $("#category-select option:selected").text();
             if(temp === "Любая категория") {
                temp = posting.category;
             }

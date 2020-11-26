@@ -12,6 +12,8 @@ public interface CategoryService {
 
     Optional<Category> getCategoryByName(String name);
 
+    Optional<Category> getCategoryByFrontName(String frontName);
+
     Category saveCategory(Category category);
 
     Set<CategoryDto> findAllCategory();
@@ -31,5 +33,4 @@ public interface CategoryService {
     List<CategoryDtoMenu> allParentCategory();
 
     List<CategoryDtoMenu> findChildCatById(Long id);
-
 }

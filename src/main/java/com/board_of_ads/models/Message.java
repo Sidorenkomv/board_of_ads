@@ -30,4 +30,9 @@ public class Message {
     @JoinColumn(name = "posting_id")
     private Posting posting;
 
+    public Message(String text, User author, Posting posting) {
+        this.text = text;
+        this.author = author;
+        this.posting = posting;
+    }
 }
