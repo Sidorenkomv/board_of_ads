@@ -55,12 +55,9 @@ public class KladrServiceImpl implements KladrService {
     public boolean existsRegionByName(String regionName) {
         return regionRepository.existsRegionByName(regionName);
     }
-
-
-
     @Override
     public void streamKladr() throws IOException {
-        Set<FileInputStream> streamKLADR = new LinkedHashSet<>();
+        Set<FileInputStream> streamKLADR = new HashSet<>();
         FileInputStream fileInputStream_1 = new FileInputStream("src/main/resources/kladr/KLADR_1.xls");
         streamKLADR.add(fileInputStream_1);
         FileInputStream fileInputStream_2 = new FileInputStream("src/main/resources/kladr/KLADR_2.xls");
@@ -69,13 +66,10 @@ public class KladrServiceImpl implements KladrService {
         streamKLADR.add(fileInputStream_3);
         FileInputStream fileInputStream_4 = new FileInputStream("src/main/resources/kladr/KLADR_4.xls");
         streamKLADR.add(fileInputStream_4);
-
-
         for (FileInputStream fileInputStream : streamKLADR) {
             BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
             Workbook workbook = new HSSFWorkbook(bufferedInputStream);
             Sheet sheet = workbook.getSheetAt(0);
-
             for (Row row : sheet) {
                 if (row.getCell(1).getStringCellValue().equals("обл")
                         || row.getCell(1).getStringCellValue().equals("Респ")
@@ -112,15 +106,19 @@ public class KladrServiceImpl implements KladrService {
                         regionRepository.save(new Region(row.getCell(0).getStringCellValue(), row.getCell(2).getStringCellValue().substring(0, 2), regionFormSubject));
                     }
                 }
-                if (row.getCell(1).getStringCellValue().equals("г")) {
+                if (row.getCell(1).getStringCellValue().equals("г")
+                        & !(row.getCell(0).getStringCellValue().equals("Москва")
+                        || row.getCell(0).getStringCellValue().equals("Санкт-Петербург")
+                        || row.getCell(0).getStringCellValue().equals("Байконур")
+                        || row.getCell(0).getStringCellValue().equals("Севастополь"))) {
 
                 if (!cityRepository.existsCityByNameAndRegion(row.getCell(0).getStringCellValue(), regionRepository.findRegionByRegionNumber(row.getCell(2).getStringCellValue().substring(0, 2)))) {
-                    if (row.getCell(8) == null) {
+                    if (row.getCell(8).getNumericCellValue() == 1) {
+                        cityRepository.save(new City(row.getCell(0).getStringCellValue(), regionRepository.findRegionByRegionNumber(row.getCell(2).getStringCellValue().substring(0, 2)), "Город", true));
+                    }else{
                         cityRepository.save(new City(row.getCell(0).getStringCellValue(), regionRepository.findRegionByRegionNumber(row.getCell(2).getStringCellValue().substring(0, 2)), "Город", false));
                     }
-                    else if (row.getCell(8).getNumericCellValue() == 1) {
-                        cityRepository.save(new City(row.getCell(0).getStringCellValue(), regionRepository.findRegionByRegionNumber(row.getCell(2).getStringCellValue().substring(0, 2)), "Город", true));
-                    }
+
                     }
                 }
 
