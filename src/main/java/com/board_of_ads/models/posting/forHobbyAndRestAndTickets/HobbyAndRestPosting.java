@@ -1,4 +1,4 @@
-package com.board_of_ads.models.posting.forHobbyAndRest;
+package com.board_of_ads.models.posting.forHobbyAndRestAndTickets;
 
 import com.board_of_ads.models.Category;
 import com.board_of_ads.models.User;

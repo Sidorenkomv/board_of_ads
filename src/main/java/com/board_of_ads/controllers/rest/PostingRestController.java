@@ -3,12 +3,12 @@ package com.board_of_ads.controllers.rest;
 import com.board_of_ads.models.User;
 import com.board_of_ads.models.dto.PostingCarDto;
 import com.board_of_ads.models.Image;
-import com.board_of_ads.models.User;
 import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.models.posting.forAudioVideo.AudioVideoPosting;
-import com.board_of_ads.models.posting.forHobbyAndRest.HobbyAndRestPosting;
+import com.board_of_ads.models.posting.forHobbyAndRestAndTickets.HobbyAndRestPosting;
+import com.board_of_ads.models.posting.forHobbyAndRestAndTickets.TicketsPosting;
 import com.board_of_ads.models.posting.forHomeAndGarden.HouseholdAppliancesPosting;
 import com.board_of_ads.models.posting.autoTransport.cars.PostingCar;
 import com.board_of_ads.service.interfaces.AutoAttributesService;
@@ -24,8 +24,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,8 +34,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -265,4 +261,26 @@ public class PostingRestController {
         }
     }
 
+    @PostMapping("/new/tickets/{id}")
+    public Response<Void> createTicketsPosting(@PathVariable Long id,
+                                                    @AuthenticationPrincipal User user,
+                                                    @RequestParam Map<String,String> obj,
+                                                    @RequestParam(value = "photos") List<MultipartFile> photos) {
+        TicketsPosting posting;
+
+        try {
+            posting = new TicketsPosting(userService.getUserById(user.getId()), categoryService.getCategoryById(id),
+                    obj.get("title"), obj.get("description"), Long.parseLong(obj.get("price")), obj.get("contact"),
+                    true, obj.get("contactEmail"), obj.get("linkYouTube"), obj.get("communicationType"));
+            List<Image> images = imageService.savePhotos(user, photos);
+            posting.setImages(images);
+            posting.setCity(cityService.findCityByName("Ростов-на-Дону").get());
+            postingService.save(posting);
+            log.info("Объявление успешно создано пользователем " + user.getEmail());
+            return Response.ok().build();
+        } catch (Exception ex) {
+            log.info("Не удалось создать объявление => " + ex.getMessage());
+            return new ErrorResponse<>(new Error(400, "Posting is not created"));
+        }
+    }
 }

@@ -117,6 +117,8 @@ async function changeVisible(frontName, id) {
             break;
         case 'hobbyAndRest': await getHobbyAndRestForm(frontName, id);
             break;
+        case 'tickets': await getTicketsForm(frontName, id);
+            break;
         default: alert('For frontName="' + frontName + '" not found posting form');
             break;
     }

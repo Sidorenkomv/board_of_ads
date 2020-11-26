@@ -1,0 +1,15 @@
+.hidden {
+    display: none;
+}
+
+.error-field {
+    border: 1px solid red;
+}
+
+.error-text {
+    color: red;
+}
+
+.showed {
+    visibility: visible;
+}

@@ -51,7 +51,7 @@ async function getPostingInfo(id) {
     while (true) {
         li = `<li><a href="#">${categoryDto.name}</a></li>`;
         categoriesLine.append(li);
-        if (categoryDto.layer !== 1) {
+        if (categoryDto.layer !== 1 && categoryDto.name != "undefined") {
             categoriesLine.append(liDot);
             categoryDto = getCategoryByName(categoryDto.parentName);
         } else {
@@ -129,6 +129,8 @@ async function onClickFav() {
         addToFavorites();
     }
 }
+
+
 
 async function addToFavorites() {
     let postingId = $("#postingId").text().valueOf();
