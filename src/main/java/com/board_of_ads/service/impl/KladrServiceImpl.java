@@ -106,15 +106,13 @@ public class KladrServiceImpl implements KladrService {
                         regionRepository.save(new Region(row.getCell(0).getStringCellValue(), row.getCell(2).getStringCellValue().substring(0, 2), regionFormSubject));
                     }
                 }
-                if (row.getCell(1).getStringCellValue().equals("г")
-                        & !(row.getCell(0).getStringCellValue().equals("Москва")
-                        || row.getCell(0).getStringCellValue().equals("Санкт-Петербург")
-                        || row.getCell(0).getStringCellValue().equals("Байконур")
-                        || row.getCell(0).getStringCellValue().equals("Севастополь"))) {
+                if (row.getCell(1).getStringCellValue().equals("г")){
 
                 if (!cityRepository.existsCityByNameAndRegion(row.getCell(0).getStringCellValue(), regionRepository.findRegionByRegionNumber(row.getCell(2).getStringCellValue().substring(0, 2)))) {
-                    if (row.getCell(8).getNumericCellValue() == 1) {
+                    if (row.getCell(7).getStringCellValue() == "1") {
+
                         cityRepository.save(new City(row.getCell(0).getStringCellValue(), regionRepository.findRegionByRegionNumber(row.getCell(2).getStringCellValue().substring(0, 2)), "Город", true));
+                        System.out.println(row.getCell(0).getStringCellValue());
                     }else{
                         cityRepository.save(new City(row.getCell(0).getStringCellValue(), regionRepository.findRegionByRegionNumber(row.getCell(2).getStringCellValue().substring(0, 2)), "Город", false));
                     }
