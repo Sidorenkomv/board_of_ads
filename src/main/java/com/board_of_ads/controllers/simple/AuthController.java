@@ -53,6 +53,15 @@ public class AuthController {
         return "redirect:/";
     }
 
+    @GetMapping("/auth_apple")
+    public String appleAuth(@RequestParam(value = "code", required = false) String code, Model model) {
+        if (code == null) {
+            return "redirect:" + vkService.getAuthURL();
+        }
+        vkService.auth(code);
+        return "redirect:/";
+    }
+
     @GetMapping("/auth_yandex")
     public String yandexAuth(@RequestParam(value = "code", required = false) String code, Model model) {
         if (code == null) {
