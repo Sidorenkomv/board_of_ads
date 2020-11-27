@@ -137,12 +137,11 @@ public class KladrServiceImpl implements KladrService {
                     }
                 }
                 if (readCellToString(row.getCell(1)).equals("г")) {
-                    //System.out.println(readCellToString(row.getCell(0))+"|"+readCellToString(row.getCell(1))+"|"+readCellToString(row.getCell(2))+"|"+readCellToString(row.getCell(7)));
+
                     if (!cityRepository.existsCityByNameAndRegion(readCellToString(row.getCell(0)), regionRepository.findRegionByRegionNumber(readCellToString(row.getCell(2)).substring(0, 2)))) {
                         if (readCellToString(row.getCell(7)).equals("1")) {
 
                             cityRepository.save(new City(readCellToString(row.getCell(0)), regionRepository.findRegionByRegionNumber(readCellToString( row.getCell(2)).substring(0, 2)), "Город", true));
-                            System.out.println(readCellToString(row.getCell(0))+ "//2-" +readCellToString(row.getCell(2)));
                         } else {
                             cityRepository.save(new City(readCellToString(row.getCell(0)), regionRepository.findRegionByRegionNumber(readCellToString( row.getCell(2)).substring(0, 2)), "Город", false));
                         }
