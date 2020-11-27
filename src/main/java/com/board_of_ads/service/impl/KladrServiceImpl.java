@@ -109,7 +109,7 @@ public class KladrServiceImpl implements KladrService {
                 if (row.getCell(1).getStringCellValue().equals("г")){
 
                 if (!cityRepository.existsCityByNameAndRegion(row.getCell(0).getStringCellValue(), regionRepository.findRegionByRegionNumber(row.getCell(2).getStringCellValue().substring(0, 2)))) {
-                    if (row.getCell(7).getStringCellValue() == "1") {
+                    if (row.getCell(7).getStringCellValue().equals("1")) {
 
                         cityRepository.save(new City(row.getCell(0).getStringCellValue(), regionRepository.findRegionByRegionNumber(row.getCell(2).getStringCellValue().substring(0, 2)), "Город", true));
                         System.out.println(row.getCell(0).getStringCellValue());
