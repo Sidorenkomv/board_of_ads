@@ -37,4 +37,6 @@ public interface CategoryService {
     List<CategoryDtoMenu> findChildCatById(Long id);
 
     List<ReportCategoryPostingDto> getNumberOfPostings(String date);
+
+    List<CategoryDto> findAllParentCategoriesById(Long id);
 }

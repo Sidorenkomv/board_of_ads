@@ -4,7 +4,6 @@ import com.board_of_ads.models.Category;
 import com.board_of_ads.models.dto.CategoryDto;
 import com.board_of_ads.models.dto.CategoryDtoMenu;
 import com.board_of_ads.models.dto.analytics.ReportCategoryPostingDto;
-import com.board_of_ads.models.dto.analytics.ReportCityPostingDto;
 import com.board_of_ads.repository.CategoryRepository;
 import com.board_of_ads.service.interfaces.CategoryService;
 import lombok.AllArgsConstructor;
@@ -16,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
@@ -143,6 +143,11 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository.findAllChildCategoriesByParentId(id);
     }
 
+    @Override
+    public List<CategoryDto> findAllParentCategoriesById(Long id) {
+        return categoryRepository.findAllParentCategoriesById(id);
+    }
+
     private List<Category> findParentByName(String name) {
         return categoryRepository.findParentLikeName("%" + name);
     }
@@ -155,7 +160,61 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<ReportCategoryPostingDto> getNumberOfPostings(String date) {
         List<LocalDateTime> localDateTimes = dateConvertation(date);
-        return categoryRepository.findAllByDatePostingBetween(localDateTimes.get(0), localDateTimes.get(1));
+
+        List<ReportCategoryPostingDto> childList = categoryRepository.findAllByDatePostingBetween(localDateTimes.get(0), localDateTimes.get(1));
+
+        List<ReportCategoryPostingDto> parentList = new ArrayList<>();
+
+        for (ReportCategoryPostingDto child : childList) {
+            parentList.add(new ReportCategoryPostingDto(child.getParentCategory().getName(), child.getPostsCount(), child.getActivePostsCount(), child.getArchivePostsCount()));
+        }
+
+
+        for (int i = 0; i < parentList.size(); i++) {
+            int k = i + 1;
+            while (k < parentList.size()) {
+
+                if (parentList.get(i).getCategory().equals(parentList.get(k).getCategory())) {
+                    parentList.set(i, new ReportCategoryPostingDto(parentList.get(i).getCategory(), parentList.get(i).getPostsCount() + parentList.get(k).getPostsCount(),
+                            parentList.get(i).getActivePostsCount() + parentList.get(k).getActivePostsCount(),
+                            parentList.get(i).getArchivePostsCount() + parentList.get(k).getArchivePostsCount()));
+
+                    parentList.remove(k);
+                    k--;
+                }
+                k++;
+            }
+        }
+
+        List<ReportCategoryPostingDto> grandParentList = new ArrayList<>();
+
+        for (ReportCategoryPostingDto child : childList) {
+            grandParentList.add(new ReportCategoryPostingDto(child.getParentCategory().getCategory().getName(), child.getPostsCount(), child.getActivePostsCount(), child.getArchivePostsCount()));
+        }
+
+        for (int i = 0; i < grandParentList.size(); i++) {
+            int k = i + 1;
+            while (k < grandParentList.size()) {
+
+                if (grandParentList.get(i).getCategory().equals(grandParentList.get(k).getCategory())) {
+                    grandParentList.set(i, new ReportCategoryPostingDto(grandParentList.get(i).getCategory(), grandParentList.get(i).getPostsCount() + grandParentList.get(k).getPostsCount(),
+                            grandParentList.get(i).getActivePostsCount() + grandParentList.get(k).getActivePostsCount(),
+                            grandParentList.get(i).getArchivePostsCount() + grandParentList.get(k).getArchivePostsCount()));
+
+                    grandParentList.remove(k);
+                    k--;
+                }
+                k++;
+            }
+        }
+
+        List<ReportCategoryPostingDto> combinedList = new ArrayList<>();
+        combinedList.addAll(childList);
+        combinedList.addAll(parentList);
+        combinedList.addAll(grandParentList);
+
+        return combinedList;
+
     }
 
     private List<LocalDateTime> dateConvertation(String date) {
@@ -176,6 +235,5 @@ public class CategoryServiceImpl implements CategoryService {
 
         return localDateTimeList;
     }
-
 
 }
