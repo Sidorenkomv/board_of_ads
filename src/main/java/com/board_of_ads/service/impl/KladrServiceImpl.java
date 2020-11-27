@@ -6,8 +6,10 @@ import com.board_of_ads.repository.CityRepository;
 import com.board_of_ads.repository.RegionRepository;
 import com.board_of_ads.service.interfaces.KladrService;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -21,10 +23,27 @@ import java.util.*;
 
 @Service
 @AllArgsConstructor
+
 public class KladrServiceImpl implements KladrService {
 
     private final CityRepository cityRepository;
     private final RegionRepository regionRepository;
+
+    @Override
+    public String readCellToString(Cell cell) {
+
+        if ((cell == null || cell.getCellType() == CellType.BLANK)) {
+            return "";
+        }
+        if (cell.getCellType() == CellType.BOOLEAN) {
+            return String.valueOf(cell.getBooleanCellValue());
+        }
+        if (cell.getCellType() == CellType.NUMERIC) {
+            return String.valueOf(cell.getNumericCellValue());
+        }
+        return "";
+
+    }
 
     @Override
     public Region getRegionByRegionNumber(String regionNumber) {
@@ -55,8 +74,10 @@ public class KladrServiceImpl implements KladrService {
     public boolean existsRegionByName(String regionName) {
         return regionRepository.existsRegionByName(regionName);
     }
+
     @Override
-    public void streamKladr() throws IOException {
+    @SneakyThrows
+    public void streamKladr() {
         Set<FileInputStream> streamKLADR = new HashSet<>();
         FileInputStream fileInputStream_1 = new FileInputStream("src/main/resources/kladr/KLADR_1.xls");
         streamKLADR.add(fileInputStream_1);
@@ -106,16 +127,16 @@ public class KladrServiceImpl implements KladrService {
                         regionRepository.save(new Region(row.getCell(0).getStringCellValue(), row.getCell(2).getStringCellValue().substring(0, 2), regionFormSubject));
                     }
                 }
-                if (row.getCell(1).getStringCellValue().equals("г")){
+                if (row.getCell(1).getStringCellValue().equals("г")) {
 
-                if (!cityRepository.existsCityByNameAndRegion(row.getCell(0).getStringCellValue(), regionRepository.findRegionByRegionNumber(row.getCell(2).getStringCellValue().substring(0, 2)))) {
-                    if (row.getCell(7).getStringCellValue().equals("1")) {
+                    if (!cityRepository.existsCityByNameAndRegion(row.getCell(0).getStringCellValue(), regionRepository.findRegionByRegionNumber(row.getCell(2).getStringCellValue().substring(0, 2)))) {
+                        if (row.getCell(7).getStringCellValue().equals("1")) {
 
-                        cityRepository.save(new City(row.getCell(0).getStringCellValue(), regionRepository.findRegionByRegionNumber(row.getCell(2).getStringCellValue().substring(0, 2)), "Город", true));
-                        System.out.println(row.getCell(0).getStringCellValue()+"//2-"+row.getCell(2).getStringCellValue());
-                    }else{
-                        cityRepository.save(new City(row.getCell(0).getStringCellValue(), regionRepository.findRegionByRegionNumber(row.getCell(2).getStringCellValue().substring(0, 2)), "Город", false));
-                    }
+                            cityRepository.save(new City(row.getCell(0).getStringCellValue(), regionRepository.findRegionByRegionNumber(row.getCell(2).getStringCellValue().substring(0, 2)), "Город", true));
+                            System.out.println(row.getCell(0).getStringCellValue() + "//2-" + row.getCell(2).getStringCellValue());
+                        } else {
+                            cityRepository.save(new City(row.getCell(0).getStringCellValue(), regionRepository.findRegionByRegionNumber(row.getCell(2).getStringCellValue().substring(0, 2)), "Город", false));
+                        }
 
                     }
                 }
