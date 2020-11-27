@@ -1,51 +1,33 @@
 package com.board_of_ads.service.impl;
 
 import com.board_of_ads.models.City;
-import com.board_of_ads.models.Image;
 import com.board_of_ads.models.User;
 import com.board_of_ads.models.dto.PostingCarDto;
 import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
-import com.board_of_ads.models.posting.forBusiness.Business;
-import com.board_of_ads.models.posting.personalBelongings.Clothes;
 import com.board_of_ads.models.posting.autoTransport.cars.PostingCar;
-import com.board_of_ads.models.posting.job.Vacancy;
+import com.board_of_ads.models.posting.realty.estate.BuyEstatePosting;
+import com.board_of_ads.models.posting.realty.estate.GetAnEstatePosting;
+import com.board_of_ads.models.posting.realty.estate.RentAnEstatePosting;
+import com.board_of_ads.models.posting.realty.estate.SellEstatePosting;
 import com.board_of_ads.repository.CityRepository;
 import com.board_of_ads.repository.PostingCarRepository;
 import com.board_of_ads.repository.PostingRepository;
 import com.board_of_ads.service.interfaces.CategoryService;
-import com.board_of_ads.service.interfaces.CityService;
-import com.board_of_ads.service.interfaces.ImageService;
 import com.board_of_ads.service.interfaces.PostingService;
 import com.board_of_ads.service.interfaces.RegionService;
 import com.board_of_ads.service.interfaces.UserService;
-import com.board_of_ads.util.Error;
-import com.board_of_ads.util.ErrorResponse;
-import com.board_of_ads.util.Response;
-import com.board_of_ads.service.interfaces.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -59,9 +41,7 @@ public class PostingServiceImpl implements PostingService {
     private final CategoryService categoryService;
     private final RegionService regionService;
     private final CityRepository cityRepository;
-    private final ImageService imageService;
     private final PostingCarRepository postingCarRepository;
-    private final CityService cityService;
 
     @Override
     public void save(Posting posting) {
@@ -85,7 +65,7 @@ public class PostingServiceImpl implements PostingService {
         postingDto.setImages(getPostingById(postingDto.getId()).getImages());
         postingDto.setCategory(categoryService.getCategoryDtoById(
                 getPostingById(postingDto.getId()).getCategory().getId()).get());
-        if (getPostingById(postingDto.getId()).getCity() != null) {
+        if(getPostingById(postingDto.getId()).getCity() != null) {
             postingDto.setCity(getPostingById(postingDto.getId()).getCity().getName());
         }
         return postingDto;
@@ -119,13 +99,13 @@ public class PostingServiceImpl implements PostingService {
     }
 
     private List<PostingDto> getPostingDtos(List<PostingDto> postingDtos) {
-        for (PostingDto dto : postingDtos) {
-            dto.setImages(getPostingById(dto.getId()).getImages());
-            dto.setCategory(categoryService.getCategoryDtoById(
-                    postingRepository.findPostingByTitle(dto.getTitle()).getCategory().getId()).get());
-            if (getPostingById(dto.getId()).getCity() != null) {
-                dto.setCity(getPostingById(dto.getId()).getCity().getName());
-            }
+        for(PostingDto dto : postingDtos) {
+           dto.setImages(getPostingById(dto.getId()).getImages());
+           dto.setCategory(categoryService.getCategoryDtoById(
+                   postingRepository.findPostingByTitle(dto.getTitle()).getCategory().getId()).get());
+           if(getPostingById(dto.getId()).getCity() != null) {
+               dto.setCity(getPostingById(dto.getId()).getCity().getName());
+           }
         }
         return postingDtos;
     }
@@ -134,8 +114,8 @@ public class PostingServiceImpl implements PostingService {
     public List<PostingDto> searchPostings(String categorySelect, String citySelect, String searchText, String photoOption) {
 
         List<PostingDto> postingDtos;
-        if (citySelect != null && !(citySelect.equals("undefined"))) {
-            if (citySelect.matches("(.*)" + "Область" + "(.*)")
+        if(citySelect != null && !(citySelect.equals("undefined"))) {
+            if (citySelect.matches("(.*)" +"Область" + "(.*)")
                     || citySelect.matches("(.*)" + "Край" + "(.*)")
                     || citySelect.matches("(.*)" + "Республика" + "(.*)")
                     || citySelect.matches("(.*)" + "Автономный округ" + "(.*)")
@@ -162,30 +142,30 @@ public class PostingServiceImpl implements PostingService {
             } else if (postingDto.getCategory().equals(categorySelect)) {
                 categoryFlag = true;
             }
-            if (photoOption != null) {
-                if (photoOption.equals("пункт2")) {
-                    if (postingDto.getImages().size() > 0) {
+            if(photoOption != null) {
+                if(photoOption.equals("пункт2")) {
+                    if(postingDto.getImages().size() > 0) {
                         photoFlag = true;
                     }
-                } else if (photoOption.equals("пункт3")) {
-                    if (postingDto.getImages().size() == 0) {
+                } else if(photoOption.equals("пункт3")) {
+                    if(postingDto.getImages().size() == 0) {
                         photoFlag = true;
                     }
-                } else if (photoOption.equals("пункт1")) {
+                } else if(photoOption.equals("пункт1")) {
                     photoFlag = true;
                 }
             } else {
                 photoFlag = true;
             }
-            if (searchText != null && !(searchText.equals("")) && !(searchText.equals("undefined"))) {
-                if (postingDto.getTitle().toLowerCase().matches("(.*)" + searchText.toLowerCase() + "(.*)")) {
+            if(searchText != null && !(searchText.equals("")) && !(searchText.equals("undefined"))) {
+                if(postingDto.getTitle().toLowerCase().matches("(.*)" + searchText.toLowerCase() + "(.*)")) {
                     textFlag = true;
                 }
             } else {
                 textFlag = true;
             }
 
-            if (categoryFlag && photoFlag && textFlag) {
+            if(categoryFlag && photoFlag && textFlag) {
                 resultList.add(postingDto);
             }
         }
@@ -221,37 +201,15 @@ public class PostingServiceImpl implements PostingService {
     @Override
     public List<PostingDto> getFavDtosFromUser(User user) {
         List<Long> listfavoritsid = new ArrayList<>();
-        user.getFavorites().forEach(x -> listfavoritsid.add(x.getId()));
+        user.getFavorites().forEach(x ->listfavoritsid.add(x.getId()));
         return postingRepository.findUserFavorites(listfavoritsid);
     }
 
     @Override
     public List<Long> getFavIDFromUser(User user) {
         List<Long> listfavoritsid = new ArrayList<>();
-        user.getFavorites().forEach(x -> listfavoritsid.add(x.getId()));
+        user.getFavorites().forEach(x ->listfavoritsid.add(x.getId()));
         return listfavoritsid;
-    }
-
-    public Response<Void> savePersonalClothesPosting(Long id, User user, Map<String,
-            String> map, List<MultipartFile> photos) {
-
-        Clothes posting;
-        try {
-
-            posting = new Clothes(userService.getUserById(user.getId()), categoryService.getCategoryById(id),
-                    map.get("title"), map.get("description"), Long.parseLong(map.get("price")), map.get("contact"),
-                    true, map.get("contactEmail"), map.get("linkYouTube"), map.get("communicationType"), map.get("state"), map.get("typeAd"), map.get("size"));
-
-            List<Image> images = imageService.savePhotos(user, photos);
-            posting.setImages(images);
-            posting.setCity(cityService.findCityByName("Ростов-на-Дону").get());
-            postingRepository.save(posting);
-            log.info("Объявление успешно создано пользователем " + user.getEmail());
-            return Response.ok().build();
-        } catch (Exception ex) {
-            log.info("Не удалось создать объявление => " + ex.getMessage());
-            return new ErrorResponse<>(new Error(400, "Posting is not created"));
-        }
     }
 
     @Override
@@ -366,59 +324,126 @@ public class PostingServiceImpl implements PostingService {
         pc.setCondition(json.getString("condition"));
         pc.setVideoURL(json.getString("videoURL"));
         pc.setContactEmail(json.getString("contactEmail"));
-        //  pc.setMessage(json.getString("message"));
+      //  pc.setMessage(json.getString("message"));
         pc.setPrice(json.getLong("price"));
         pc.setIsActive(json.getBoolean("isActive"));
-        // pc.setViewNumber(json.getInt("viewNumber"));
+       // pc.setViewNumber(json.getInt("viewNumber"));
         pc.setViewNumber(1);
-        long catId = json.getInt("categoryId");
+        long catId =  json.getInt("categoryId");
         pc.setCategory(categoryService.getCategoryById(catId));
         return pc;
     }
 
     @Override
-    public void setVacancyCondition(Map<String, String> form, List<String> preferences, User userById,
-                                    Vacancy posting, City city, List<Image> images) {
-        StringBuilder options = new StringBuilder();
-        preferences.forEach(a -> options.append(a).append("/"));
+    public BuyEstatePosting addBuyEstatePosting(Map<String,String> obj) throws Exception {
 
-        posting.setUser(userById);
-        posting.setCategory(categoryService.getCategoryById(Long.valueOf(form.get("categoryId"))));
-        posting.setCity(city);
-        posting.setContact(userById.getEmail());
-        posting.setDatePosting(LocalDateTime.now());
-        posting.setDescription(form.get("description"));
-        posting.setTitle(form.get("title"));
+        BuyEstatePosting posting = new BuyEstatePosting();
+        posting.setTitle(obj.get("title"));
+        posting.setDescription(obj.get("description"));
+        posting.setContact(obj.get("contact"));
         posting.setIsActive(true);
-        posting.setSchedule(form.get("schedule"));
-        posting.setDuties(form.get("duties"));
-        posting.setExperienceValue(form.get("workExperience"));
-        posting.setLocation(form.get("location"));
-        posting.setPreferences(options.toString());
-        posting.setPrice(Long.valueOf(form.get("price")));
-        posting.setImages(images);
+        posting.setRooms(obj.get("rooms"));
+        posting.setContactEmail(obj.get("contactEmail"));
+        posting.setCommunicationType(obj.get("communicationType"));
+        return posting;
     }
 
     @Override
-    public Response<Void> saveForBusinessPosting(Long id, User user, Map<String,
-            String> map, List<MultipartFile> photos) {
+    public GetAnEstatePosting addGetAnEstatePosting(Map<String,String> obj) throws Exception {
 
-        Business posting;
-        try {
+        GetAnEstatePosting posting = new GetAnEstatePosting();
+        posting.setTitle(obj.get("title"));
+        posting.setDescription(obj.get("description"));
+        posting.setPrice(Long.parseLong(obj.get("price")));
+        posting.setContact(obj.get("contact"));
+        posting.setIsActive(true);
+        posting.setRooms(obj.get("rooms"));
+        posting.setContactEmail(obj.get("contactEmail"));
+        posting.setCommunicationType(obj.get("communicationType"));
+        posting.setNumberOfBeds(obj.get("numberOfBeds"));
+        posting.setSleeper(obj.get("sleeper"));
+        posting.setWifi(Boolean.getBoolean(obj.get("wifi")));
+        posting.setTv(Boolean.getBoolean(obj.get("tv")));
+        posting.setCable(Boolean.getBoolean(obj.get("cable")));
+        posting.setCooker(Boolean.getBoolean(obj.get("cooker")));
+        posting.setMicrowave(Boolean.getBoolean(obj.get("microwave")));
+        posting.setFridge(Boolean.getBoolean(obj.get("fridge")));
+        posting.setWashingMachine(Boolean.getBoolean(obj.get("washingMachine")));
+        posting.setHairdryer(Boolean.getBoolean(obj.get("hairdryer")));
+        posting.setFlatiron(Boolean.getBoolean(obj.get("flatiron")));
+        posting.setNurslings(Boolean.getBoolean(obj.get("nurslings")));
+        posting.setChildren(Boolean.getBoolean(obj.get("children")));
+        posting.setEvents(Boolean.getBoolean(obj.get("events")));
+        posting.setSmoke(Boolean.getBoolean(obj.get("smoke")));
+        return posting;
+    }
 
-            posting = new Business(userService.getUserById(user.getId()), categoryService.getCategoryById(id),
-                    map.get("title"), map.get("description"), Long.parseLong(map.get("price")), map.get("contact"),
-                    true, map.get("contactEmail"), map.get("linkYouTube"), map.get("communicationType"), map.get("state"));
+    @Override
+    public RentAnEstatePosting addRentAnEstatePosting(Map<String,String> obj) throws Exception {
 
-            List<Image> images = imageService.savePhotos(user, photos);
-            posting.setImages(images);
-            posting.setCity(cityService.findCityByName("Ростов-на-Дону").get());
-            postingRepository.save(posting);
-            log.info("Объявление успешно создано пользователем " + user.getEmail());
-            return Response.ok().build();
-        } catch (Exception ex) {
-            log.info("Не удалось создать объявление => " + ex.getMessage());
-            return new ErrorResponse<>(new Error(400, "Posting is not created"));
-        }
+        RentAnEstatePosting posting = new RentAnEstatePosting();;
+        posting.setTitle(obj.get("title"));
+        posting.setDescription(obj.get("description"));
+        posting.setPrice(Long.parseLong(obj.get("price")));
+        posting.setContact(obj.get("contact"));
+        posting.setIsActive(true);
+        posting.setTypeOfHousing(obj.get("typeOfHousing"));
+        posting.setOwnership(obj.get("ownership"));
+        posting.setStatus(obj.get("status"));
+        posting.setRooms(obj.get("rooms"));
+        posting.setTypeOfHouse(obj.get("typeOfHouse"));
+        posting.setFloor(Integer.parseInt(obj.get("floor")));
+        posting.setFloorsInHouse(Integer.parseInt(obj.get("floorsInHouse")));
+        posting.setTotalArea(Integer.parseInt(obj.get("totalArea")));
+        posting.setKitchenArea(Integer.parseInt(obj.get("kitchenArea")));
+        posting.setLivingArea(Integer.parseInt(obj.get("livingArea")));
+        posting.setLoggia(obj.get("loggia"));
+        posting.setView(obj.get("view"));
+        posting.setContactEmail(obj.get("contactEmail"));
+        posting.setLinkYouTube(obj.get("linkYouTube"));
+        posting.setCommunicationType(obj.get("communicationType"));
+        posting.setNumberOfBeds(obj.get("numberOfBeds"));
+        posting.setSleeper(obj.get("sleeper"));
+        posting.setWifi(Boolean.getBoolean(obj.get("wifi")));
+        posting.setTv(Boolean.getBoolean(obj.get("tv")));
+        posting.setCable(Boolean.getBoolean(obj.get("cable")));
+        posting.setCooker(Boolean.getBoolean(obj.get("cooker")));
+        posting.setMicrowave(Boolean.getBoolean(obj.get("microwave")));
+        posting.setFridge(Boolean.getBoolean(obj.get("fridge")));
+        posting.setWashingMachine(Boolean.getBoolean(obj.get("washingMachine")));
+        posting.setHairdryer(Boolean.getBoolean(obj.get("hairdryer")));
+        posting.setFlatiron(Boolean.getBoolean(obj.get("flatiron")));
+        posting.setNurslings(Boolean.getBoolean(obj.get("nurslings")));
+        posting.setChildren(Boolean.getBoolean(obj.get("children")));
+        posting.setEvents(Boolean.getBoolean(obj.get("events")));
+        posting.setSmoke(Boolean.getBoolean(obj.get("smoke")));
+        return posting;
+    }
+
+    @Override
+    public SellEstatePosting addSellEstatePosting(Map<String,String> obj) throws Exception {
+
+        SellEstatePosting posting = new SellEstatePosting();
+        posting.setTitle(obj.get("title"));
+        posting.setDescription(obj.get("description"));
+        posting.setPrice(Long.parseLong(obj.get("price")));
+        posting.setContact(obj.get("contact"));
+        posting.setIsActive(true);
+        posting.setTypeOfHousing(obj.get("typeOfHousing"));
+        posting.setOwnership(obj.get("ownership"));
+        posting.setStatus(obj.get("status"));
+        posting.setRooms(obj.get("rooms"));
+        posting.setTypeOfHouse(obj.get("typeOfHouse"));
+        posting.setFloor(Integer.parseInt(obj.get("floor")));
+        posting.setFloorsInHouse(Integer.parseInt(obj.get("floorsInHouse")));
+        posting.setTotalArea(Integer.parseInt(obj.get("totalArea")));
+        posting.setKitchenArea(Integer.parseInt(obj.get("kitchenArea")));
+        posting.setLivingArea(Integer.parseInt(obj.get("livingArea")));
+        posting.setLoggia(obj.get("loggia"));
+        posting.setView(obj.get("view"));
+        posting.setContactEmail(obj.get("contactEmail"));
+        posting.setLinkYouTube(obj.get("linkYouTube"));
+        posting.setCommunicationType(obj.get("communicationType"));
+        return posting;
     }
 }
