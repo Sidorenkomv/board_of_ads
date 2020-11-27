@@ -31,17 +31,26 @@ public class KladrServiceImpl implements KladrService {
 
     @Override
     public String readCellToString(Cell cell) {
+        String resultStr= "";
 
         if ((cell == null || cell.getCellType() == CellType.BLANK)) {
-            return "";
+            return resultStr;
         }
         if (cell.getCellType() == CellType.BOOLEAN) {
+
             return String.valueOf(cell.getBooleanCellValue());
         }
         if (cell.getCellType() == CellType.NUMERIC) {
-            return String.valueOf(cell.getNumericCellValue());
+
+
+            return String.valueOf((int)cell.getNumericCellValue());
         }
-        return "";
+        if (cell.getCellType() == CellType.STRING) {
+
+            return cell.getStringCellValue();
+        }
+
+        return resultStr;
 
     }
 
@@ -92,18 +101,18 @@ public class KladrServiceImpl implements KladrService {
             Workbook workbook = new HSSFWorkbook(bufferedInputStream);
             Sheet sheet = workbook.getSheetAt(0);
             for (Row row : sheet) {
-                if (row.getCell(1).getStringCellValue().equals("обл")
-                        || row.getCell(1).getStringCellValue().equals("Респ")
-                        || row.getCell(1).getStringCellValue().equals("край")
-                        || row.getCell(1).getStringCellValue().equals("АО")
-                        || row.getCell(1).getStringCellValue().equals("Аобл")
-                        || (row.getCell(1).getStringCellValue().equals("г")
-                        & (row.getCell(0).getStringCellValue().equals("Москва")
-                        || row.getCell(0).getStringCellValue().equals("Санкт-Петербург")
-                        || row.getCell(0).getStringCellValue().equals("Байконур")
-                        || row.getCell(0).getStringCellValue().equals("Севастополь")))) {
+                if (readCellToString(row.getCell(1)).equals("обл")
+                        || readCellToString(row.getCell(1)).equals("Респ")
+                        || readCellToString(row.getCell(1)).equals("край")
+                        || readCellToString(row.getCell(1)).equals("АО")
+                        || readCellToString(row.getCell(1)).equals("Аобл")
+                        || (readCellToString(row.getCell(1)).equals("г")
+                        & (readCellToString(row.getCell(0)).equals("Москва")
+                        || readCellToString(row.getCell(0)).equals("Санкт-Петербург")
+                        || readCellToString(row.getCell(0)).equals("Байконур")
+                        || readCellToString(row.getCell(0)).equals("Севастополь")))) {
                     String regionFormSubject = null;
-                    switch (row.getCell(1).getStringCellValue()) {
+                    switch (readCellToString(row.getCell(1))) {
                         case "обл":
                             regionFormSubject = "Область";
                             break;
@@ -123,19 +132,19 @@ public class KladrServiceImpl implements KladrService {
                             regionFormSubject = "Город";
                             break;
                     }
-                    if (!regionRepository.existsRegionByName(row.getCell(0).getStringCellValue())) {
-                        regionRepository.save(new Region(row.getCell(0).getStringCellValue(), row.getCell(2).getStringCellValue().substring(0, 2), regionFormSubject));
+                    if (!regionRepository.existsRegionByName(readCellToString(row.getCell(0)))) {
+                        regionRepository.save(new Region(readCellToString(row.getCell(0)), readCellToString(row.getCell(2)).substring(0, 2), regionFormSubject));
                     }
                 }
-                if (row.getCell(1).getStringCellValue().equals("г")) {
+                if (readCellToString(row.getCell(1)).equals("г")) {
+                    //System.out.println(readCellToString(row.getCell(0))+"|"+readCellToString(row.getCell(1))+"|"+readCellToString(row.getCell(2))+"|"+readCellToString(row.getCell(7)));
+                    if (!cityRepository.existsCityByNameAndRegion(readCellToString(row.getCell(0)), regionRepository.findRegionByRegionNumber(readCellToString(row.getCell(2)).substring(0, 2)))) {
+                        if (readCellToString(row.getCell(7)).equals("1")) {
 
-                    if (!cityRepository.existsCityByNameAndRegion(row.getCell(0).getStringCellValue(), regionRepository.findRegionByRegionNumber(row.getCell(2).getStringCellValue().substring(0, 2)))) {
-                        if (row.getCell(7).getStringCellValue().equals("1")) {
-
-                            cityRepository.save(new City(row.getCell(0).getStringCellValue(), regionRepository.findRegionByRegionNumber(row.getCell(2).getStringCellValue().substring(0, 2)), "Город", true));
-                            System.out.println(row.getCell(0).getStringCellValue() + "//2-" + row.getCell(2).getStringCellValue());
+                            cityRepository.save(new City(readCellToString(row.getCell(0)), regionRepository.findRegionByRegionNumber(readCellToString( row.getCell(2)).substring(0, 2)), "Город", true));
+                            System.out.println(readCellToString(row.getCell(0))+ "//2-" +readCellToString(row.getCell(2)));
                         } else {
-                            cityRepository.save(new City(row.getCell(0).getStringCellValue(), regionRepository.findRegionByRegionNumber(row.getCell(2).getStringCellValue().substring(0, 2)), "Город", false));
+                            cityRepository.save(new City(readCellToString(row.getCell(0)), regionRepository.findRegionByRegionNumber(readCellToString( row.getCell(2)).substring(0, 2)), "Город", false));
                         }
 
                     }
