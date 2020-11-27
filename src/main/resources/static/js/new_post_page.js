@@ -119,6 +119,12 @@ async function changeVisible(frontName, id) {
         case 'clothes':
             showClothesForm(frontName, id);
             break;
+        case 'hobbyAndRest':
+            await getHobbyAndRestForm(frontName, id);
+            break;
+        case 'tickets':
+            await getTicketsForm(frontName, id);
+            break;
         case 'shoes':
             showShoesForm(frontName, id);
             break;

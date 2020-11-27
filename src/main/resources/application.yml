@@ -116,6 +116,7 @@ spring:
       tokenUrl: https://connect.mail.ru/oauth/token
       userInfoUrl: http://www.appsmail.ru/platform/api
 
+
   jhipster:
     mail: # specific JHipster mail property, for standard properties see MailProperties
     from: kunaev993@gmail.com

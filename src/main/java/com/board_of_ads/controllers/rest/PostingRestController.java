@@ -9,6 +9,8 @@ import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.models.posting.autoTransport.cars.PostingCar;
 import com.board_of_ads.models.posting.forAudioVideo.AudioVideoPosting;
+import com.board_of_ads.models.posting.forHobbyAndRestAndTickets.HobbyAndRestPosting;
+import com.board_of_ads.models.posting.forHobbyAndRestAndTickets.TicketsPosting;
 import com.board_of_ads.models.posting.forDogs.DogBreed;
 import com.board_of_ads.models.posting.forDogs.dogsPosting;
 import com.board_of_ads.models.posting.forHomeAndGarden.HouseholdAppliancesPosting;
@@ -264,17 +266,65 @@ public class PostingRestController {
         }
     }
 
+    @PostMapping("/new/hobbyAndRest/{id}")
+    public Response<Void> createHobbyAndRestPosting(@PathVariable Long id,
+                                                    @AuthenticationPrincipal User user,
+                                                    @RequestParam Map<String, String> obj,
+                                                    @RequestParam(value = "photos") List<MultipartFile> photos) {
+        HobbyAndRestPosting posting;
+
+        try {
+            posting = new HobbyAndRestPosting(userService.getUserById(user.getId()), categoryService.getCategoryById(id),
+                    obj.get("title"), obj.get("description"), Long.parseLong(obj.get("price")), obj.get("contact"),
+                    true, obj.get("contactEmail"), obj.get("linkYouTube"), obj.get("communicationType"), obj.get("state"));
+
+            List<Image> images = imageService.savePhotos(user, photos);
+            posting.setImages(images);
+            posting.setCity(cityService.findCityByName("Ростов-на-Дону").get());
+            postingService.save(posting);
+            log.info("Объявление успешно создано пользователем " + user.getEmail());
+            return Response.ok().build();
+        } catch (Exception ex) {
+            log.info("Не удалось создать объявление => " + ex.getMessage());
+            return new ErrorResponse<>(new Error(400, "Posting is not created"));
+        }
+    }
+
     @PostMapping("/new/dogs/{id}")
     public Response<Void> createDogsPosting(@PathVariable Long id,
-                                                  @AuthenticationPrincipal User user,
-                                                  @RequestParam Map<String,String> obj,
-                                                  @RequestParam(value = "photos") List<MultipartFile> photos) {
+                                            @AuthenticationPrincipal User user,
+                                            @RequestParam Map<String, String> obj,
+                                            @RequestParam(value = "photos") List<MultipartFile> photos) {
         dogsPosting posting;
 
         try {
             posting = new dogsPosting(userService.getUserById(user.getId()), categoryService.getCategoryById(id),
                     obj.get("title"), obj.get("description"), Long.parseLong(obj.get("price")), obj.get("contact"),
                     true, obj.get("contactEmail"), obj.get("linkYouTube"), obj.get("communicationType"), obj.get("breed"));
+
+            List<Image> images = imageService.savePhotos(user, photos);
+            posting.setImages(images);
+            posting.setCity(cityService.findCityByName("Ростов-на-Дону").get());
+            postingService.save(posting);
+            log.info("Объявление успешно создано пользователем " + user.getEmail());
+            return Response.ok().build();
+        } catch (Exception ex) {
+            log.info("Не удалось создать объявление => " + ex.getMessage());
+            return new ErrorResponse<>(new Error(400, "Posting is not created"));
+        }
+    }
+
+    @PostMapping("/new/tickets/{id}")
+    public Response<Void> createTicketsPosting(@PathVariable Long id,
+                                               @AuthenticationPrincipal User user,
+                                               @RequestParam Map<String, String> obj,
+                                               @RequestParam(value = "photos") List<MultipartFile> photos) {
+        TicketsPosting posting;
+
+        try {
+            posting = new TicketsPosting(userService.getUserById(user.getId()), categoryService.getCategoryById(id),
+                    obj.get("title"), obj.get("description"), Long.parseLong(obj.get("price")), obj.get("contact"),
+                    true, obj.get("contactEmail"), obj.get("linkYouTube"), obj.get("communicationType"));
             List<Image> images = imageService.savePhotos(user, photos);
             posting.setImages(images);
             posting.setCity(cityService.findCityByName("Ростов-на-Дону").get());
@@ -292,7 +342,7 @@ public class PostingRestController {
         log.info("getDogsBreed Controller");
         return Response.ok(dogBreedService.findAll());
     }
-  
+
     @PostMapping("/clothes/{id}")
     public Response<Void> createPersonalClothesPosting(@PathVariable Long id,
                                                        @AuthenticationPrincipal User user,
@@ -312,5 +362,4 @@ public class PostingRestController {
         log.info("Create posting for business");
         return postingService.saveForBusinessPosting(id, user, map, photos);
     }
-
 }
