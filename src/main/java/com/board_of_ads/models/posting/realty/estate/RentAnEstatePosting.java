@@ -7,8 +7,6 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)

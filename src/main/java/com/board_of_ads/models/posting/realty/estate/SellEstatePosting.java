@@ -7,12 +7,9 @@ import lombok.*;
 
 import javax.persistence.*;
 
-//Пост с недвижимостью
 
 @Data
 @Entity
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -102,10 +99,4 @@ public class SellEstatePosting extends Posting {
         this.communicationType = communicationType;
     }
 
-    //    //Количество комнат
-//    @Column
-//    private Integer countRoom;
-//    //Является ли собственником
-//    @Column
-//    private boolean isProprietor;
 }
