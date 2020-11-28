@@ -37,9 +37,9 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     Category findCategoryByFrontName(String frontName);
 
     @Query("select new com.board_of_ads.models.dto.analytics.ReportCategoryPostingDto(" +
-            "c.name, c.id, c.category, count (c.id), sum (case when p.isActive = true then 1 else 0 end), sum (case when p.isActive = true then 0 else 1 end)" +
+            "c.name, c.localNumber, c.layer, c.category, count (c.name), sum (case when p.isActive = true then 1 else 0 end), sum (case when p.isActive = true then 0 else 1 end)" +
             ")" +
-            " from Category c, Posting p where p.category = c AND p.datePosting BETWEEN :startDate and :endDate GROUP BY c.id, c.name,c.category")
+            " from Category c, Posting p where p.category = c AND p.datePosting BETWEEN :startDate and :endDate GROUP BY c.localNumber, c.name,c.category, c.layer")
     List<ReportCategoryPostingDto> findAllByDatePostingBetween(LocalDateTime startDate, LocalDateTime endDate);
 
     @Query("select new com.board_of_ads.models.dto.CategoryDto (c.id, c.name, c.category.name, c.layer) from Category c where c.id = :id")

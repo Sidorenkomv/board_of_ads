@@ -82,8 +82,8 @@ async function drawBody(analyticElem) {
         // CREATE HEADER
         let tr = document.createElement("thead");
         let num = document.createElement("th");
-        num.appendChild(document.createTextNode("№"));
-        tr.appendChild(num);
+       num.appendChild(document.createTextNode("№"));
+       tr.appendChild(num);
         analyticElem.columns.forEach((x) => {
             let th = document.createElement("th");
             th.appendChild(document.createTextNode(x.title));
