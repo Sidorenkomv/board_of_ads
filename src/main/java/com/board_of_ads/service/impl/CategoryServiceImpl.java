@@ -144,11 +144,6 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository.findAllChildCategoriesByParentId(id);
     }
 
-    @Override
-    public List<CategoryDto> findAllParentCategoriesById(Long id) {
-        return categoryRepository.findAllParentCategoriesById(id);
-    }
-
     private List<Category> findParentByName(String name) {
         return categoryRepository.findParentLikeName("%" + name);
     }
@@ -168,19 +163,7 @@ public class CategoryServiceImpl implements CategoryService {
             parentList.add(new ReportCategoryPostingDto(child.getParentCategory().getLocalNumber(), child.getParentCategory().getName().toUpperCase(), child.getParentCategory().getLayer(), child.getPostsCount(), child.getActivePostsCount(), child.getArchivePostsCount()));
         }
 
-        for (int i = 0; i < parentList.size(); i++) {
-            int k = i + 1;
-            while (k < parentList.size()) {
-                if (parentList.get(i).getCategory().equals(parentList.get(k).getCategory())) {
-                    parentList.set(i, new ReportCategoryPostingDto(parentList.get(i).getLocalNumber(), parentList.get(i).getCategory(), parentList.get(i).getLayer(), parentList.get(i).getPostsCount() + parentList.get(k).getPostsCount(),
-                            parentList.get(i).getActivePostsCount() + parentList.get(k).getActivePostsCount(),
-                            parentList.get(i).getArchivePostsCount() + parentList.get(k).getArchivePostsCount()));
-                    parentList.remove(k);
-                    k--;
-                }
-                k++;
-            }
-        }
+        mergeParent(parentList);
 
         List<ReportCategoryPostingDto> grandParentList = new ArrayList<>();
 
@@ -190,19 +173,7 @@ public class CategoryServiceImpl implements CategoryService {
             }
         }
 
-        for (int i = 0; i < grandParentList.size(); i++) {
-            int k = i + 1;
-            while (k < grandParentList.size()) {
-                if (grandParentList.get(i).getCategory().equals(grandParentList.get(k).getCategory())) {
-                    grandParentList.set(i, new ReportCategoryPostingDto(grandParentList.get(i).getLocalNumber(), grandParentList.get(i).getCategory(), grandParentList.get(i).getLayer(), grandParentList.get(i).getPostsCount() + grandParentList.get(k).getPostsCount(),
-                            grandParentList.get(i).getActivePostsCount() + grandParentList.get(k).getActivePostsCount(),
-                            grandParentList.get(i).getArchivePostsCount() + grandParentList.get(k).getArchivePostsCount()));
-                    grandParentList.remove(k);
-                    k--;
-                }
-                k++;
-            }
-        }
+        mergeParent(grandParentList);
 
         List<ReportCategoryPostingDto> grandGrandParentList = new ArrayList<>();
         for (ReportCategoryPostingDto child : childList) {
@@ -211,19 +182,7 @@ public class CategoryServiceImpl implements CategoryService {
             }
         }
 
-        for (int i = 0; i < grandGrandParentList.size(); i++) {
-            int k = i + 1;
-            while (k < grandGrandParentList.size()) {
-                if (grandGrandParentList.get(i).getCategory().equals(grandGrandParentList.get(k).getCategory())) {
-                    grandGrandParentList.set(i, new ReportCategoryPostingDto(grandGrandParentList.get(i).getLocalNumber(), grandGrandParentList.get(i).getCategory(), grandGrandParentList.get(i).getLayer(), grandGrandParentList.get(i).getPostsCount() + grandGrandParentList.get(k).getPostsCount(),
-                            grandGrandParentList.get(i).getActivePostsCount() + grandGrandParentList.get(k).getActivePostsCount(),
-                            grandGrandParentList.get(i).getArchivePostsCount() + grandGrandParentList.get(k).getArchivePostsCount()));
-                    grandGrandParentList.remove(k);
-                    k--;
-                }
-                k++;
-            }
-        }
+        mergeParent(grandGrandParentList);
 
         List<ReportCategoryPostingDto> combinedList = new ArrayList<>();
         combinedList.addAll(childList);
@@ -254,4 +213,20 @@ public class CategoryServiceImpl implements CategoryService {
         return localDateTimeList;
     }
 
+    public void mergeParent(List<ReportCategoryPostingDto> list) {
+        for (int i = 0; i < list.size(); i++) {
+            int k = i + 1;
+            while (k < list.size()) {
+                if (list.get(i).getCategory().equals(list.get(k).getCategory())) {
+                    list.set(i, new ReportCategoryPostingDto(list.get(i).getLocalNumber(), list.get(i).getCategory(),
+                            list.get(i).getLayer(), list.get(i).getPostsCount() + list.get(k).getPostsCount(),
+                            list.get(i).getActivePostsCount() + list.get(k).getActivePostsCount(),
+                            list.get(i).getArchivePostsCount() + list.get(k).getArchivePostsCount()));
+                    list.remove(k);
+                    k--;
+                }
+                k++;
+            }
+        }
+    }
 }

@@ -38,5 +38,4 @@ public interface CategoryService {
 
     List<ReportCategoryPostingDto> getNumberOfPostings(String date);
 
-    List<CategoryDto> findAllParentCategoriesById(Long id);
-}
+   }

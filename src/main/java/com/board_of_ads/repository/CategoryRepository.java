@@ -42,8 +42,5 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
             " from Category c, Posting p where p.category = c AND p.datePosting BETWEEN :startDate and :endDate GROUP BY c.localNumber, c.name,c.category, c.layer")
     List<ReportCategoryPostingDto> findAllByDatePostingBetween(LocalDateTime startDate, LocalDateTime endDate);
 
-    @Query("select new com.board_of_ads.models.dto.CategoryDto (c.id, c.name, c.category.name, c.layer) from Category c where c.id = :id")
-    List<CategoryDto> findAllParentCategoriesById(@Param("id") Long id);
-
 
 }
