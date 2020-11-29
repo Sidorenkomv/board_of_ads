@@ -42,14 +42,9 @@ $('#profileSettings, #profile-settings-from-header').on('click', async function 
                     } else {
                         $('#phoneTd').addClass("d-none");
                     }
+            })
             $('#userEmail').text(principal.data.principal.email);
             $('#userId').text(principal.data.principal.id);
-            $('#fld_name').val(principal.data.principal.firsName);
-               })
-
-            $('#userEmail').text(principal.data.principal.email);
-            $('#userId').text(principal.data.principal.id);
-            $('#fld_name').val(principal.data.principal.firsName);
             $('#fld_name').val(principal.data.principal.firstName);
             $('#selectedCity').text(principal.data.principal.city != null ? principal.data.principal.city.name : '');
             $('#selectedCity').val(principal.data.principal.city != null ? principal.data.principal.city.id : 0);
