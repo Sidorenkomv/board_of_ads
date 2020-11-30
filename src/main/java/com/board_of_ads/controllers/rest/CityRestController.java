@@ -3,7 +3,6 @@ package com.board_of_ads.controllers.rest;
 import com.board_of_ads.models.City;
 import com.board_of_ads.models.User;
 import com.board_of_ads.models.dto.analytics.ReportCityPostingDto;
-import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.repository.CityRepository;
 import com.board_of_ads.repository.UserRepository;
 import com.board_of_ads.service.interfaces.CityService;
