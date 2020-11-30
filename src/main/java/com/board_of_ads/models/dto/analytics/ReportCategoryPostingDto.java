@@ -11,15 +11,13 @@ import java.util.Comparator;
 @AllArgsConstructor
 public class ReportCategoryPostingDto implements Serializable {
     private String category;
-    private int localNumber;
     private int layer;
     private Category parentCategory;
     private Long postsCount;
     private Long activePostsCount;
     private Long archivePostsCount;
 
-    public ReportCategoryPostingDto(int localNumber, String category, int layer, Long postsCount, Long activePostsCount, Long archivePostsCount) {
-        this.localNumber = localNumber;
+    public ReportCategoryPostingDto(String category, int layer, Long postsCount, Long activePostsCount, Long archivePostsCount) {
         this.category = category;
         this.layer = layer;
         this.postsCount = postsCount;
@@ -27,10 +25,10 @@ public class ReportCategoryPostingDto implements Serializable {
         this.archivePostsCount = archivePostsCount;
     }
 
-    public static final Comparator<ReportCategoryPostingDto> COMPARE_BY_localNumber = new Comparator<ReportCategoryPostingDto>() {
+    public static final Comparator<ReportCategoryPostingDto> COMPARE_BY_LAYER = new Comparator<ReportCategoryPostingDto>() {
         @Override
         public int compare(ReportCategoryPostingDto obj1, ReportCategoryPostingDto obj2) {
-            return obj1.getLocalNumber() - obj2.getLocalNumber();
+            return obj1.getLayer() - obj2.getLayer();
         }
     };
 }

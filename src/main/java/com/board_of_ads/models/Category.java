@@ -48,9 +48,6 @@ public class Category {
     @Column
     private String frontName;
 
-    @Column
-    private int localNumber;
-
     public Category(String name, Category category) {
         this.isActive = true;
         this.name = name;
@@ -72,14 +69,6 @@ public class Category {
 
     }
 
-    public Category(String name, Category category, int layer, int localNumber) {
-        this.isActive = true;
-        this.name = name;
-        this.category = category;
-        this.layer = layer;
-        this.localNumber = localNumber;
-    }
-
     public Category(String name, Category category, int layer, String frontName) {
         this.isActive = true;
         this.name = name;
@@ -87,15 +76,6 @@ public class Category {
         this.layer = layer;
         this.frontName = frontName;
 
-    }
-
-    public Category(String name, Category category, int layer, String frontName, int localNumber) {
-        this.isActive = true;
-        this.name = name;
-        this.category = category;
-        this.layer = layer;
-        this.frontName = frontName;
-        this.localNumber = localNumber;
     }
 
     public Category(Long id, String name, Category category, int layer) {

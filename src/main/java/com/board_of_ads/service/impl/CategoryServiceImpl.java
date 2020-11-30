@@ -158,41 +158,133 @@ public class CategoryServiceImpl implements CategoryService {
         List<LocalDateTime> localDateTimes = dateConvertation(date);
         List<ReportCategoryPostingDto> childList = categoryRepository.findAllByDatePostingBetween(localDateTimes.get(0), localDateTimes.get(1));
         List<ReportCategoryPostingDto> parentList = new ArrayList<>();
+        List<ReportCategoryPostingDto> grandParentList = new ArrayList<>();
+        List<ReportCategoryPostingDto> grandGrandParentList = new ArrayList<>();
 
         for (ReportCategoryPostingDto child : childList) {
-            parentList.add(new ReportCategoryPostingDto(child.getParentCategory().getLocalNumber(), child.getParentCategory().getName().toUpperCase(), child.getParentCategory().getLayer(), child.getPostsCount(), child.getActivePostsCount(), child.getArchivePostsCount()));
+            parentList.add(new ReportCategoryPostingDto(child.getParentCategory().getName(), child.getParentCategory().getLayer(), child.getPostsCount(), child.getActivePostsCount(), child.getArchivePostsCount()));
+            if (child.getLayer() == 3 || child.getLayer() == 4) {
+                grandParentList.add(new ReportCategoryPostingDto(child.getParentCategory().getCategory().getName(), child.getParentCategory().getCategory().getLayer(), child.getPostsCount(), child.getActivePostsCount(), child.getArchivePostsCount()));
+            }
+            if (child.getLayer() == 4) {
+                grandGrandParentList.add(new ReportCategoryPostingDto(child.getParentCategory().getCategory().getCategory().getName(), child.getParentCategory().getCategory().getCategory().getLayer(), child.getPostsCount(), child.getActivePostsCount(), child.getArchivePostsCount()));
+            }
         }
 
         mergeParent(parentList);
-
-        List<ReportCategoryPostingDto> grandParentList = new ArrayList<>();
-
-        for (ReportCategoryPostingDto child : childList) {
-            if (child.getLayer() == 3) {
-                grandParentList.add(new ReportCategoryPostingDto(child.getParentCategory().getCategory().getLocalNumber(), child.getParentCategory().getCategory().getName().toUpperCase(), child.getParentCategory().getCategory().getLayer(), child.getPostsCount(), child.getActivePostsCount(), child.getArchivePostsCount()));
-            }
-        }
-
         mergeParent(grandParentList);
-
-        List<ReportCategoryPostingDto> grandGrandParentList = new ArrayList<>();
-        for (ReportCategoryPostingDto child : childList) {
-            if (child.getLayer() == 4) {
-                grandGrandParentList.add(new ReportCategoryPostingDto(child.getParentCategory().getCategory().getCategory().getLocalNumber(), child.getParentCategory().getCategory().getCategory().getName().toUpperCase(), child.getParentCategory().getCategory().getCategory().getLayer(), child.getPostsCount(), child.getActivePostsCount(), child.getArchivePostsCount()));
-            }
-        }
-
         mergeParent(grandGrandParentList);
 
-        List<ReportCategoryPostingDto> combinedList = new ArrayList<>();
-        combinedList.addAll(childList);
-        combinedList.addAll(parentList);
-        combinedList.addAll(grandParentList);
-        combinedList.addAll(grandGrandParentList);
+        Collections.sort(childList, ReportCategoryPostingDto.COMPARE_BY_LAYER);
+        Collections.sort(parentList, ReportCategoryPostingDto.COMPARE_BY_LAYER);
+        Collections.sort(grandParentList, ReportCategoryPostingDto.COMPARE_BY_LAYER);
 
-        Collections.sort(combinedList, ReportCategoryPostingDto.COMPARE_BY_localNumber);
-        return combinedList;
+        List<ReportCategoryPostingDto> mergedList = new ArrayList<>();
+
+        for (ReportCategoryPostingDto child : childList) {
+            if (child.getLayer() == 2) {
+                for (int i = 0; i < parentList.size(); i++) {
+
+                    if (child.getParentCategory().getName() == parentList.get(i).getCategory()) {
+                        mergedList.add(parentList.get(i));
+                        mergedList.add(child);
+                        parentList.remove(i);
+
+                    } else {
+                        mergedList.add(child);
+                    }
+                    break;
+                }
+
+            } else if (child.getLayer() == 3 && grandParentList.size() != 0) {
+
+                for (int i = 0; i < grandParentList.size(); i++) {
+                    if (child.getParentCategory().getCategory().getName() == grandParentList.get(i).getCategory()) {
+                        mergedList.add(grandParentList.get(i));
+                        grandParentList.remove(i);
+
+                        for (int j = 0; j < parentList.size(); j++) {
+                            if (child.getParentCategory().getName() == parentList.get(j).getCategory()) {
+                                mergedList.add(parentList.get(j));
+                                mergedList.add(child);
+                                parentList.remove(j);
+                            } else {
+                                mergedList.add(child);
+                            }
+                            break;
+                        }
+                    } else {
+                        mergedList.add(child);
+                    }
+                    break;
+                }
+            } else if (child.getLayer() == 3 && grandParentList.size() == 0) {
+                mergedList.add(child);
+
+            } else if (child.getLayer() == 4 && grandGrandParentList.size() != 0) {
+
+                for (int i = 0; i < grandGrandParentList.size(); i++) {
+                    if (child.getParentCategory().getCategory().getCategory().getName() == grandGrandParentList.get(i).getCategory()) {
+                        mergedList.add(grandGrandParentList.get(i));
+                        grandGrandParentList.remove(i);
+
+                        for (int j = 0; j < grandParentList.size(); j++) {
+                            if (child.getParentCategory().getCategory().getName() == grandParentList.get(j).getCategory()) {
+                                mergedList.add(grandParentList.get(j));
+                                //            mergedList.add(child);
+                                grandParentList.remove(j);
+
+                                for (int k = 0; k < parentList.size(); k++) {
+                                    if (child.getParentCategory().getName() == parentList.get(k).getCategory()) {
+                                        mergedList.add(parentList.get(k));
+                                        mergedList.add(child);
+                                        parentList.remove(k);
+                                    } else {
+                                        mergedList.add(child);
+                                    }
+                                    break;
+                                }
+                            } else {
+                                mergedList.add(child);
+                            }
+                            break;
+                        }
+                    } else {
+                        mergedList.add(child);
+                    }
+                    break;
+                }
+            } else if (child.getLayer() == 4 && grandGrandParentList.size() == 0) {
+
+                if (parentList.size() != 0) {
+
+                    for (int k = 0; k < parentList.size(); k++) {
+                        if (child.getParentCategory().getName() == parentList.get(k).getCategory()) {
+                            mergedList.add(parentList.get(k));
+                            mergedList.add(child);
+                            parentList.remove(k);
+                        } else {
+                            mergedList.add(child);
+                        }
+                        break;
+                    }
+                } else {
+                    mergedList.add(child);
+                }
+            }
+        }
+
+        for (int i = 0; i < mergedList.size(); i++) {
+            if (mergedList.get(i).getLayer() == 1) {
+                ReportCategoryPostingDto obj = mergedList.get(i);
+                obj.setCategory(obj.getCategory().toUpperCase());
+                mergedList.set(i, obj);
+            }
+        }
+
+        return mergedList;
     }
+
 
     private List<LocalDateTime> dateConvertation(String date) {
 
@@ -215,17 +307,15 @@ public class CategoryServiceImpl implements CategoryService {
 
     public void mergeParent(List<ReportCategoryPostingDto> list) {
         for (int i = 0; i < list.size(); i++) {
-            int k = i + 1;
-            while (k < list.size()) {
+            for (int k = i + 1; k < list.size(); k++) {
                 if (list.get(i).getCategory().equals(list.get(k).getCategory())) {
-                    list.set(i, new ReportCategoryPostingDto(list.get(i).getLocalNumber(), list.get(i).getCategory(),
+                    list.set(i, new ReportCategoryPostingDto(list.get(i).getCategory(),
                             list.get(i).getLayer(), list.get(i).getPostsCount() + list.get(k).getPostsCount(),
                             list.get(i).getActivePostsCount() + list.get(k).getActivePostsCount(),
                             list.get(i).getArchivePostsCount() + list.get(k).getArchivePostsCount()));
                     list.remove(k);
                     k--;
                 }
-                k++;
             }
         }
     }
