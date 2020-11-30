@@ -70,22 +70,11 @@ async function fillNewCarPostingFields(pc) {
 
     let mainDiv = document.createElement('div');
     mainDiv.setAttribute('id', 'car-post-fields-main-container');
-    let ve2 = document.getElementById('visibleElement2');
-    ve2.innerHTML = "";
-    ve2.appendChild(mainDiv);
 
     // changePathCategory();
     changeMeetingPlace();
 
-    let a = document.getElementById('pathCategory').parentElement.parentElement;
-    if(a.contains(document.getElementById('type-of-usp'))) {
-        a.removeChild(document.getElementById('type-of-usp'));
-    }
-
-    if (isUsedCarPosting) {
-        addTypeOfUsedCarPosting();
-    }
-
+    addTypeOfUsedCarPosting();
 
     let div1 = makeMainAndTitleFields('1', "Внешний вид");
     mainDiv.appendChild(div1);

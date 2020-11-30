@@ -10,6 +10,7 @@ import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.models.posting.forAudioVideo.AudioVideoPosting;
 import com.board_of_ads.models.posting.forHomeAndGarden.HouseholdAppliancesPosting;
 import com.board_of_ads.models.posting.autoTransport.cars.PostingCar;
+import com.board_of_ads.models.posting.job.Vacancy;
 import com.board_of_ads.service.interfaces.AutoAttributesService;
 import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.service.interfaces.CityService;
@@ -239,4 +240,32 @@ public class PostingRestController {
             return new ErrorResponse<>(new Error(400, "Posting is not created"));
         }
     }
+
+    @PostMapping("/new/vacancy/{id}")
+    public Response<Void> createVacancyPosting(@PathVariable Long id,
+                                                  @AuthenticationPrincipal User user,
+                                                  @RequestParam Map<String,String> obj,
+                                                  @RequestParam(value = "photos") List<MultipartFile> photos) {
+        Vacancy posting;
+
+        try {
+            posting = new Vacancy(userService.getUserById(user.getId()), categoryService.getCategoryById(id),
+                    obj.get("title"), obj.get("description"), Long.parseLong(obj.get("price")), obj.get("contact"),
+                    true, obj.get("schedule"), obj.get("experienceValue"), obj.get("placeOfWork"),
+                    obj.get("contactEmail"), obj.get("communicationType"), obj.get("frequency"), obj.get("duties"),
+                    Boolean.parseBoolean(obj.get("fits45")), Boolean.parseBoolean(obj.get("fits14")),
+                    Boolean.parseBoolean(obj.get("fitsHandicapped")));
+            List<Image> images = imageService.savePhotos(user, photos);
+            posting.setImages(images);
+            posting.setCity(cityService.findCityByName("Одинцово").get());
+            postingService.save(posting);
+            log.info("Объявление успешно создано пользователем " + user.getEmail());
+            return Response.ok().build();
+        } catch (Exception ex) {
+            log.info("Не удалось создать объявление => " + ex.getMessage());
+            return new ErrorResponse<>(new Error(400, "Posting is not created"));
+        }
+    }
+
+
 }
