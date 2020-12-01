@@ -49,7 +49,6 @@ import java.util.Map;
 @AllArgsConstructor
 @Slf4j
 public class PostingRestController {
-
     private final CityService cityService;
     private final PostingService postingService;
     @Autowired

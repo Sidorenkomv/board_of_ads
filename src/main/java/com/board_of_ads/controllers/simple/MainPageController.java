@@ -58,7 +58,7 @@ public class MainPageController {
         return "main-page";
     }
 
-    @GetMapping("/favorite")
+    @GetMapping("/favorite-not-auth")
     public String myFavoritePage(@AuthenticationPrincipal() User user, Model model) {
         model.addAttribute("user", user != null ? user : new User());
         return "favorite";
