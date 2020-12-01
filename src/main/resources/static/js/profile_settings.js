@@ -216,8 +216,11 @@ $('#selectCity').on('change', function () {
 async function showChooseCityModal() {
     sendMillionRequest('GET', '/api/city/millionCities').then(data => {
         let cid = 5001;
-        for (i = 0; i < 28; i++) {
+        for (let i = 0; i < 30; i++) {
             let millionCity = data.data[i];
+            if(millionCity.name=='Москва'|| millionCity.name=='Санкт-Петербург') {
+                continue;
+            };
             document.getElementById(cid.toString()).style.fontSize = '12px';
             document.getElementById(cid.toString()).innerHTML = millionCity.name;
             document.getElementById(cid.toString()).id = millionCity.id;
