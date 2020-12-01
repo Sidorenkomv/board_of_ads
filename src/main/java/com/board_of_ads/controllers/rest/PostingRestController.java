@@ -253,8 +253,8 @@ public class PostingRestController {
                     obj.get("title"), obj.get("description"), Long.parseLong(obj.get("price")), obj.get("contact"),
                     true, obj.get("schedule"), obj.get("experienceValue"), obj.get("placeOfWork"),
                     obj.get("contactEmail"), obj.get("communicationType"), obj.get("frequency"), obj.get("duties"),
-                    Boolean.parseBoolean(obj.get("fits45")), Boolean.parseBoolean(obj.get("fits14")),
-                    Boolean.parseBoolean(obj.get("fitsHandicapped")));
+                    Boolean.parseBoolean(obj.get("isFor45")), Boolean.parseBoolean(obj.get("isFor14")),
+                    Boolean.parseBoolean(obj.get("isForHandicapped")));
             List<Image> images = imageService.savePhotos(user, photos);
             posting.setImages(images);
             posting.setCity(cityService.findCityByName("Одинцово").get());

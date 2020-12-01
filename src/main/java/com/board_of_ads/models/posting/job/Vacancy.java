@@ -35,25 +35,25 @@ public class Vacancy extends JobPosting {
     private String duties;
 
     @Column
-    private Boolean fits45;
+    private Boolean isFor45;
 
     @Column
-    private Boolean fits14;
+    private Boolean isFor14;
 
     @Column
-    private Boolean fitsHandicapped;
+    private Boolean isForHandicapped;
 
     public Vacancy (User user, Category category, String title, String description, Long price, String contact, Boolean isActive,
                     String schedule, String experienceValue, String placeOfWork,
                     String contactEmail, String communicationType, String frequency, String duties,
-                    Boolean fits45, Boolean fits14, Boolean fitsHandicapped) {
+                    Boolean isFor45, Boolean isFor14, Boolean isForHandicapped) {
         super(user, category, title, description, price, contact, isActive, schedule, experienceValue, placeOfWork);
         this.contactEmail = contactEmail;
         this.communicationType = communicationType;
         this.frequency = frequency;
         this.duties = duties;
-        this.fits45 = fits45;
-        this.fits14 = fits14;
-        this.fitsHandicapped = fitsHandicapped;
+        this.isFor45 = isFor45;
+        this.isFor14 = isFor14;
+        this.isForHandicapped = isForHandicapped;
     }
 }

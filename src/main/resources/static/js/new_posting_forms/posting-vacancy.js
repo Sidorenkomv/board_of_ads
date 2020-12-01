@@ -17,9 +17,9 @@ async function sentVacancyPosting(frontName, selectedCategoryId) {
     formData.append('schedule', window.postSchedule.value);
     formData.append('frequency', window.postFrequency.value);
     formData.append('experienceValue', window.postExperienceValue.value);
-    formData.append('fits45', window.postFits45.checked);
-    formData.append('fits14', window.postFits14.checked);
-    formData.append('fitsHandicapped', window.postFitsHandicapped.checked);
+    formData.append('isFor45', window.isFor45.checked);
+    formData.append('isFor14', window.isFor14.checked);
+    formData.append('isForHandicapped', window.isForHandicapped.checked);
     formData.append('duties', window.postDuties.value);
     formData.append('placeOfWork', window.postPlace.value);
     formData.append('meetingAddress', window.inputAddress.value);
@@ -191,16 +191,16 @@ async function getVacancyForm(frontName, selectedCategoryId) {
         '                    <label for="fitsSpecCateg" class="col-sm-2 col-form-label">Подходит соискателям</label>\n' +
         '                    <div id="fitsSpecCateg" class="col-sm-6">\n' +
         '                       <div class="form-check">\n' +
-        '                           <input id="postFits45" class="form-check-input" type="checkbox" name="postFits45">\n' +
-        '                           <label for="postFits45" class="form-check-label"> Старше 45 лет</label>\n' +
+        '                           <input id="isFor45" class="form-check-input" type="checkbox" name="isFor45">\n' +
+        '                           <label for="isFor45" class="form-check-label"> Старше 45 лет</label>\n' +
         '                        </div>\n' +
         '                       <div class="form-check">\n' +
-        '                           <input id="postFits14" class="form-check-input" type="checkbox" name="postFits14">\n' +
-        '                           <label for="postFits14" class="form-check-label"> От 14 лет</label>\n' +
+        '                           <input id="isFor14" class="form-check-input" type="checkbox" name="isFor14">\n' +
+        '                           <label for="isFor14" class="form-check-label"> От 14 лет</label>\n' +
         '                        </div>\n' +
         '                       <div class="form-check">\n' +
-        '                           <input id="postFitsHandicapped" class="form-check-input" type="checkbox" name="postFitsHandicapped">\n' +
-        '                           <label for="postFitsHandicapped" class="form-check-label"> С нарушениями здоровья</label>\n' +
+        '                           <input id="isForHandicapped" class="form-check-input" type="checkbox" name="isForHandicapped">\n' +
+        '                           <label for="isForHandicapped" class="form-check-label"> С нарушениями здоровья</label>\n' +
         '                        </div>\n' +
         '                        <p class="text-muted" data-toggle="tooltip" data-placement="top">Подчеркните, что рассматриваете разных соискателей. Так вы\n' +
         'привлечёте дополнительное внимание кандидатов к вакансии.</p>\n' +
