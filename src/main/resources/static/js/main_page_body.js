@@ -98,7 +98,7 @@ function getPostingsTable(posts, favorites) {
                 $("#add" + postingId).show()
 
                 fetch(`/api/favorite/delete/` + postingId, {
-                    method: 'GET',
+                    method: 'DELETE',
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
