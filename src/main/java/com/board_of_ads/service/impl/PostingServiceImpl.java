@@ -1,12 +1,16 @@
 package com.board_of_ads.service.impl;
 
 import com.board_of_ads.models.City;
+import com.board_of_ads.models.Image;
 import com.board_of_ads.models.User;
 import com.board_of_ads.models.dto.PostingCarDto;
 import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.models.posting.autoTransport.cars.PostingCar;
+import com.board_of_ads.models.posting.forBusiness.Business;
+import com.board_of_ads.models.posting.job.Vacancy;
+import com.board_of_ads.models.posting.personalBelongings.Clothes;
 import com.board_of_ads.models.posting.realty.estate.BuyEstatePosting;
 import com.board_of_ads.models.posting.realty.estate.GetAnEstatePosting;
 import com.board_of_ads.models.posting.realty.estate.RentAnEstatePosting;
@@ -15,15 +19,21 @@ import com.board_of_ads.repository.CityRepository;
 import com.board_of_ads.repository.PostingCarRepository;
 import com.board_of_ads.repository.PostingRepository;
 import com.board_of_ads.service.interfaces.CategoryService;
+import com.board_of_ads.service.interfaces.CityService;
+import com.board_of_ads.service.interfaces.ImageService;
 import com.board_of_ads.service.interfaces.PostingService;
 import com.board_of_ads.service.interfaces.RegionService;
 import com.board_of_ads.service.interfaces.UserService;
+import com.board_of_ads.util.Error;
+import com.board_of_ads.util.ErrorResponse;
+import com.board_of_ads.util.Response;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -42,6 +52,8 @@ public class PostingServiceImpl implements PostingService {
     private final RegionService regionService;
     private final CityRepository cityRepository;
     private final PostingCarRepository postingCarRepository;
+    private final CityService cityService;
+    private final ImageService imageService;
 
     @Override
     public void save(Posting posting) {
@@ -446,4 +458,74 @@ public class PostingServiceImpl implements PostingService {
         posting.setCommunicationType(obj.get("communicationType"));
         return posting;
     }
+
+    public Response<Void> savePersonalClothesPosting(Long id, User user, Map<String,
+            String> map, List<MultipartFile> photos) {
+
+        Clothes posting;
+        try {
+
+            posting = new Clothes(userService.getUserById(user.getId()), categoryService.getCategoryById(id),
+                    map.get("title"), map.get("description"), Long.parseLong(map.get("price")), map.get("contact"),
+                    true, map.get("contactEmail"), map.get("linkYouTube"), map.get("communicationType"), map.get("state"), map.get("typeAd"), map.get("size"));
+
+            List<Image> images = imageService.savePhotos(user, photos);
+            posting.setImages(images);
+            posting.setCity(cityService.findCityByName("Ростов-на-Дону").get());
+            postingRepository.save(posting);
+            log.info("Объявление успешно создано пользователем " + user.getEmail());
+            return Response.ok().build();
+        } catch (Exception ex) {
+            log.info("Не удалось создать объявление => " + ex.getMessage());
+            return new ErrorResponse<>(new Error(400, "Posting is not created"));
+        }
+    }
+
+    @Override
+    public void setVacancyCondition(Map<String, String> form, List<String> preferences, User userById,
+                                    Vacancy posting, City city, List<Image> images) {
+        StringBuilder options = new StringBuilder();
+        preferences.forEach(a -> options.append(a).append("/"));
+
+        posting.setUser(userById);
+        posting.setCategory(categoryService.getCategoryById(Long.valueOf(form.get("categoryId"))));
+        posting.setCity(city);
+        posting.setContact(userById.getEmail());
+        posting.setDatePosting(LocalDateTime.now());
+        posting.setDescription(form.get("description"));
+        posting.setTitle(form.get("title"));
+        posting.setIsActive(true);
+        posting.setSchedule(form.get("schedule"));
+        posting.setDuties(form.get("duties"));
+        posting.setExperienceValue(form.get("workExperience"));
+        posting.setLocation(form.get("location"));
+        posting.setPreferences(options.toString());
+        posting.setPrice(Long.valueOf(form.get("price")));
+        posting.setImages(images);
+    }
+
+    @Override
+    public Response<Void> saveForBusinessPosting(Long id, User user, Map<String,
+            String> map, List<MultipartFile> photos) {
+
+        Business posting;
+        try {
+
+            posting = new Business(userService.getUserById(user.getId()), categoryService.getCategoryById(id),
+                    map.get("title"), map.get("description"), Long.parseLong(map.get("price")), map.get("contact"),
+                    true, map.get("contactEmail"), map.get("linkYouTube"), map.get("communicationType"), map.get("state"));
+
+            List<Image> images = imageService.savePhotos(user, photos);
+            posting.setImages(images);
+            posting.setCity(cityService.findCityByName("Ростов-на-Дону").get());
+            postingRepository.save(posting);
+            log.info("Объявление успешно создано пользователем " + user.getEmail());
+            return Response.ok().build();
+        } catch (Exception ex) {
+            log.info("Не удалось создать объявление => " + ex.getMessage());
+            return new ErrorResponse<>(new Error(400, "Posting is not created"));
+        }
+    }
+
+
 }
