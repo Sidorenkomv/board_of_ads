@@ -49,11 +49,14 @@ async function getPostingInfo(id) {
     }
 
     while (true) {
+        if(categoryDto === undefined) {
+            break;
+        }
         li = `<li><a href="#">${categoryDto.name}</a></li>`;
         categoriesLine.append(li);
-        if (categoryDto.layer !== 1) {
+        if (categoryDto.layer !== 1 && categoryDto.name != "undefined") {
             categoriesLine.append(liDot);
-            categoryDto = getCategoryByName(categoryDto.parentName);
+            categoryDto = await getCategoryByName(categoryDto.parentName);
         } else {
             break;
         }
@@ -129,6 +132,8 @@ async function onClickFav() {
         addToFavorites();
     }
 }
+
+
 
 async function addToFavorites() {
     let postingId = $("#postingId").text().valueOf();

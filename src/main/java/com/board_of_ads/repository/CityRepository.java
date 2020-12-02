@@ -27,4 +27,10 @@ public interface CityRepository extends JpaRepository<City, Long> {
             ")" +
             " from City c, Posting p where p.city = c AND p.datePosting BETWEEN :startDate and :endDate GROUP BY c.name")
     List<ReportCityPostingDto> findAllByDatePostingBetween(LocalDateTime startDate, LocalDateTime endDate);
+
+    @Query(value = "SELECT c.name FROM Cities c  \n" +
+            "WHERE c.name=?1 \n" +
+            "LIKE '%' || c.name || '%'",
+            nativeQuery = true)
+    Optional<City> findCityByNameContainName(String name);
 }

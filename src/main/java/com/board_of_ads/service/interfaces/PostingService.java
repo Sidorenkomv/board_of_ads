@@ -7,10 +7,15 @@ import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.models.posting.autoTransport.cars.PostingCar;
+import com.board_of_ads.models.posting.realty.estate.BuyEstatePosting;
+import com.board_of_ads.models.posting.realty.estate.GetAnEstatePosting;
+import com.board_of_ads.models.posting.realty.estate.RentAnEstatePosting;
+import com.board_of_ads.models.posting.realty.estate.SellEstatePosting;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface PostingService {
@@ -42,4 +47,12 @@ public interface PostingService {
     PostingCarDto getNewPostingCarDto(Long userId, String isCarNew);
 
     PostingCar convertJsonToPostingCar(JSONObject json) throws JSONException;
+
+    BuyEstatePosting addBuyEstatePosting(Map<String,String> obj) throws Exception;
+
+    GetAnEstatePosting addGetAnEstatePosting(Map<String,String> obj) throws Exception;
+
+    RentAnEstatePosting addRentAnEstatePosting(Map<String,String> obj) throws Exception;
+
+    SellEstatePosting addSellEstatePosting(Map<String,String> obj) throws Exception;
 }

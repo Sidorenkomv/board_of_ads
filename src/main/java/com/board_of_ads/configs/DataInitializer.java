@@ -1,18 +1,24 @@
 package com.board_of_ads.configs;
 
 import com.board_of_ads.models.Category;
+import com.board_of_ads.models.City;
 import com.board_of_ads.models.Image;
 import com.board_of_ads.models.Message;
 import com.board_of_ads.models.Notification;
+import com.board_of_ads.models.Region;
 import com.board_of_ads.models.Role;
 import com.board_of_ads.models.User;
+import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.order.Order;
 import com.board_of_ads.models.dto.order.DeliveryStatus;
 import com.board_of_ads.models.dto.review.Review;
 import com.board_of_ads.models.UserNotification;
 import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.models.posting.autoTransport.cars.car_attributes.AutoColor;
+import com.board_of_ads.models.posting.autoTransport.cars.car_attributes.AutoModel;
+import com.board_of_ads.models.posting.forDogs.DogBreed;
 import com.board_of_ads.service.interfaces.AutoAttributesService;
+import com.board_of_ads.service.interfaces.DogBreedService;
 import com.board_of_ads.service.interfaces.MessageService;
 import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.service.interfaces.CityService;
@@ -26,9 +32,15 @@ import com.board_of_ads.service.interfaces.RoleService;
 import com.board_of_ads.service.interfaces.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,6 +65,8 @@ public class DataInitializer {
     private final NotificationService notificationService;
     private final AutoAttributesService autoAttributesService;
     private final MessageService messageService;
+    private final DogBreedService dogBreedService;
+    List<Posting> postingList;
 
 
     @PostConstruct
@@ -68,6 +82,7 @@ public class DataInitializer {
         initNotifications();
         initCarAttributes();
         initMessages();
+        initDogBreed();
     }
 
     private void initUsers() {
@@ -89,7 +104,7 @@ public class DataInitializer {
             Set<Role> roleAdmin = new HashSet<>();
             roleAdmin.add(roleService.getRoleByName("ADMIN"));
             admin.setRoles(roleAdmin);
-            // admin.setCity(cityService.findCityByName("Екатеринбург").get());
+            //admin.setCity(cityService.findCityByName("Екатеринбург").get());
             userService.saveUser(admin);
         }
         if (userService.getUserByEmail("user@mail.ru") == null) {
@@ -103,7 +118,6 @@ public class DataInitializer {
             Set<Role> roleAdmin = new HashSet<>();
             roleAdmin.add(roleService.getRoleByName("USER"));
             user.setRoles(roleAdmin);
-            // user.setCity(cityService.findCityByName("Рязань").get());
             userService.saveUser(user);
         }
     }
@@ -127,7 +141,6 @@ public class DataInitializer {
             }
         }
 
-
         List<Category> subCategoryList = new ArrayList<>();
         subCategoryList.add(new Category("Автомобили", categoryService.getCategoryByName("Транспорт").get(), 2));
         subCategoryList.add(new Category("Мотоциклы и мототехника", categoryService.getCategoryByName("Транспорт").get(), 2));
@@ -143,7 +156,7 @@ public class DataInitializer {
         subCategoryList.add(new Category("Коммерческая недвижимость", categoryService.getCategoryByName("Недвижимость").get(), 2));
         subCategoryList.add(new Category("Недвижимость за рубежом", categoryService.getCategoryByName("Недвижимость").get(), 2));
 
-        subCategoryList.add(new Category("Вакансии", categoryService.getCategoryByName("Работа").get(), 2));
+        subCategoryList.add(new Category("Вакансии", categoryService.getCategoryByName("Работа").get(), 2, "vacancy"));
         subCategoryList.add(new Category("Резюме", categoryService.getCategoryByName("Работа").get(), 2));
 
         subCategoryList.add(new Category("Одежда, обувь, аксессуары", categoryService.getCategoryByName("Личные вещи").get(), 2));
@@ -176,7 +189,7 @@ public class DataInitializer {
         subCategoryList.add(new Category("Охота и рыбалка", categoryService.getCategoryByName("Хобби и отдых").get(), 2));
         subCategoryList.add(new Category("Спорт и отдых", categoryService.getCategoryByName("Хобби и отдых").get(), 2));
 
-        subCategoryList.add(new Category("Собаки", categoryService.getCategoryByName("Животные").get(), 2));
+        subCategoryList.add(new Category("Собаки", categoryService.getCategoryByName("Животные").get(), 2, "dogs"));
         subCategoryList.add(new Category("Кошки", categoryService.getCategoryByName("Животные").get(), 2));
         subCategoryList.add(new Category("Птицы", categoryService.getCategoryByName("Животные").get(), 2));
         subCategoryList.add(new Category("Аквариум", categoryService.getCategoryByName("Животные").get(), 2));
@@ -244,10 +257,10 @@ public class DataInitializer {
         secondSubCategory.add(new Category("Экипировка", categoryService.getCategoryByName("Запчасти и автоаксессуары").get(), 3));
 
 
-        secondSubCategory.add(new Category("Продам", categoryService.getCategoryByName("Квартиры").get(), 3));
-        secondSubCategory.add(new Category("Сдам", categoryService.getCategoryByName("Квартиры").get(), 3));
-        secondSubCategory.add(new Category("Куплю", categoryService.getCategoryByName("Квартиры").get(), 3));
-        secondSubCategory.add(new Category("Сниму", categoryService.getCategoryByName("Квартиры").get(), 3));
+        secondSubCategory.add(new Category("Продам", categoryService.getCategoryByName("Квартиры").get(), 3, "sellEstate"));
+        secondSubCategory.add(new Category("Сдам", categoryService.getCategoryByName("Квартиры").get(), 3, "rentAnEstate"));
+        secondSubCategory.add(new Category("Куплю", categoryService.getCategoryByName("Квартиры").get(), 3, "buyEstate"));
+        secondSubCategory.add(new Category("Сниму", categoryService.getCategoryByName("Квартиры").get(), 3, "getAnEstate"));
 
         secondSubCategory.add(new Category("Продам", categoryService.getCategoryByName("Комнаты").get(), 3));
         secondSubCategory.add(new Category("Сдам", categoryService.getCategoryByName("Комнаты").get(), 3));
@@ -335,7 +348,7 @@ public class DataInitializer {
 
         secondSubCategory.add(new Category("Женская одежда", categoryService.getCategoryByName("Одежда, обувь, аксессуары").get(), 3));
         secondSubCategory.add(new Category("Мужская одежда", categoryService.getCategoryByName("Одежда, обувь, аксессуары").get(), 3));
-        secondSubCategory.add(new Category("Аксессуары", categoryService.getCategoryByName("Одежда, обувь, аксессуары").get(), 3));
+        secondSubCategory.add(new Category("Аксесуары", categoryService.getCategoryByName("Одежда, обувь, аксессуары").get(), 3, "other-clothes"));
 
         secondSubCategory.add(new Category("Для девочек", categoryService.getCategoryByName("Детская одежда и обувь").get(), 3));
         secondSubCategory.add(new Category("Для мальчиков", categoryService.getCategoryByName("Детская одежда и обувь").get(), 3));
@@ -445,93 +458,122 @@ public class DataInitializer {
         secondSubCategory.add(new Category("Оборудование и аксессуары", categoryService.getCategoryByName("Фототехника").get(), 3));
 
 
-        secondSubCategory.add(new Category("Карты, купоны", categoryService.getCategoryByName("Билеты и путешествия").get(), 3));
-        secondSubCategory.add(new Category("Концерты", categoryService.getCategoryByName("Билеты и путешествия").get(), 3));
-        secondSubCategory.add(new Category("Путешествия", categoryService.getCategoryByName("Билеты и путешествия").get(), 3));
-        secondSubCategory.add(new Category("Спорт", categoryService.getCategoryByName("Билеты и путешествия").get(), 3));
-        secondSubCategory.add(new Category("Театр, опера, балет", categoryService.getCategoryByName("Билеты и путешествия").get(), 3));
-        secondSubCategory.add(new Category("Цирк, кино", categoryService.getCategoryByName("Билеты и путешествия").get(), 3));
-        secondSubCategory.add(new Category("Шоу, мюзикл", categoryService.getCategoryByName("Билеты и путешествия").get(), 3));
+        secondSubCategory.add(new Category("Карты, купоны", categoryService.getCategoryByName("Билеты и путешествия").get(), 3,  "tickets"));
+        secondSubCategory.add(new Category("Концерты", categoryService.getCategoryByName("Билеты и путешествия").get(), 3, "tickets"));
+        secondSubCategory.add(new Category("Путешествия", categoryService.getCategoryByName("Билеты и путешествия").get(), 3, "tickets"));
+        secondSubCategory.add(new Category("Спорт", categoryService.getCategoryByName("Билеты и путешествия").get(), 3, "tickets"));
+        secondSubCategory.add(new Category("Театр, опера, балет", categoryService.getCategoryByName("Билеты и путешествия").get(), 3, "tickets"));
+        secondSubCategory.add(new Category("Цирк, кино", categoryService.getCategoryByName("Билеты и путешествия").get(), 3, "tickets"));
+        secondSubCategory.add(new Category("Шоу, мюзикл", categoryService.getCategoryByName("Билеты и путешествия").get(), 3, "tickets"));
 
-        secondSubCategory.add(new Category("Горные", categoryService.getCategoryByName("Велосипеды").get(), 3));
-        secondSubCategory.add(new Category("Дорожные", categoryService.getCategoryByName("Велосипеды").get(), 3));
-        secondSubCategory.add(new Category("BMX", categoryService.getCategoryByName("Велосипеды").get(), 3));
-        secondSubCategory.add(new Category("Детские", categoryService.getCategoryByName("Велосипеды").get(), 3));
-        secondSubCategory.add(new Category("Запчасти и аксессуары", categoryService.getCategoryByName("Велосипеды").get(), 3));
+        secondSubCategory.add(new Category("Горные", categoryService.getCategoryByName("Велосипеды").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Дорожные", categoryService.getCategoryByName("Велосипеды").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("BMX", categoryService.getCategoryByName("Велосипеды").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Детские", categoryService.getCategoryByName("Велосипеды").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Запчасти и аксессуары", categoryService.getCategoryByName("Велосипеды").get(), 3, "hobbyAndRest"));
 
-        secondSubCategory.add(new Category("Журналы, газеты, брошюры", categoryService.getCategoryByName("Книги и журналы").get(), 3));
-        secondSubCategory.add(new Category("Книги", categoryService.getCategoryByName("Книги и журналы").get(), 3));
-        secondSubCategory.add(new Category("Учебная литература", categoryService.getCategoryByName("Книги и журналы").get(), 3));
+        secondSubCategory.add(new Category("Журналы, газеты, брошюры", categoryService.getCategoryByName("Книги и журналы").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Книги", categoryService.getCategoryByName("Книги и журналы").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Учебная литература", categoryService.getCategoryByName("Книги и журналы").get(), 3, "hobbyAndRest"));
 
-        secondSubCategory.add(new Category("Банкноты", categoryService.getCategoryByName("Коллекционирование").get(), 3));
-        secondSubCategory.add(new Category("Билеты", categoryService.getCategoryByName("Коллекционирование").get(), 3));
-        secondSubCategory.add(new Category("Вещи знаменитостей, автографы", categoryService.getCategoryByName("Коллекционирование").get(), 3));
-        secondSubCategory.add(new Category("Военные вещи", categoryService.getCategoryByName("Коллекционирование").get(), 3));
-        secondSubCategory.add(new Category("Грампластинки", categoryService.getCategoryByName("Коллекционирование").get(), 3));
-        secondSubCategory.add(new Category("Документы", categoryService.getCategoryByName("Коллекционирование").get(), 3));
-        secondSubCategory.add(new Category("Жетоны, медали, значки", categoryService.getCategoryByName("Коллекционирование").get(), 3));
-        secondSubCategory.add(new Category("Игры", categoryService.getCategoryByName("Коллекционирование").get(), 3));
-        secondSubCategory.add(new Category("Календари", categoryService.getCategoryByName("Коллекционирование").get(), 3));
-        secondSubCategory.add(new Category("Картины", categoryService.getCategoryByName("Коллекционирование").get(), 3));
-        secondSubCategory.add(new Category("Киндер-Сюрприз", categoryService.getCategoryByName("Коллекционирование").get(), 3));
-        secondSubCategory.add(new Category("Конверты и почтовые карточки", categoryService.getCategoryByName("Коллекционирование").get(), 3));
-        secondSubCategory.add(new Category("Макеты оружия", categoryService.getCategoryByName("Коллекционирование").get(), 3));
-        secondSubCategory.add(new Category("Марки", categoryService.getCategoryByName("Коллекционирование").get(), 3));
-        secondSubCategory.add(new Category("Модели", categoryService.getCategoryByName("Коллекционирование").get(), 3));
-        secondSubCategory.add(new Category("Монеты", categoryService.getCategoryByName("Коллекционирование").get(), 3));
-        secondSubCategory.add(new Category("Открытки", categoryService.getCategoryByName("Коллекционирование").get(), 3));
-        secondSubCategory.add(new Category("Пепельницы, зажигалки", categoryService.getCategoryByName("Коллекционирование").get(), 3));
-        secondSubCategory.add(new Category("Пластиковые карточки", categoryService.getCategoryByName("Коллекционирование").get(), 3));
-        secondSubCategory.add(new Category("Спортивные карточки", categoryService.getCategoryByName("Коллекционирование").get(), 3));
-        secondSubCategory.add(new Category("Фотографии, письма", categoryService.getCategoryByName("Коллекционирование").get(), 3));
-        secondSubCategory.add(new Category("Этикетки, бутылки, пробки", categoryService.getCategoryByName("Коллекционирование").get(), 3));
-        secondSubCategory.add(new Category("Другое", categoryService.getCategoryByName("Коллекционирование").get(), 3));
+        secondSubCategory.add(new Category("Банкноты", categoryService.getCategoryByName("Коллекционирование").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Билеты", categoryService.getCategoryByName("Коллекционирование").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Вещи знаменитостей, автографы", categoryService.getCategoryByName("Коллекционирование").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Военные вещи", categoryService.getCategoryByName("Коллекционирование").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Грампластинки", categoryService.getCategoryByName("Коллекционирование").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Документы", categoryService.getCategoryByName("Коллекционирование").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Жетоны, медали, значки", categoryService.getCategoryByName("Коллекционирование").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Игры", categoryService.getCategoryByName("Коллекционирование").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Календари", categoryService.getCategoryByName("Коллекционирование").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Картины", categoryService.getCategoryByName("Коллекционирование").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Киндер-Сюрприз", categoryService.getCategoryByName("Коллекционирование").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Конверты и почтовые карточки", categoryService.getCategoryByName("Коллекционирование").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Макеты оружия", categoryService.getCategoryByName("Коллекционирование").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Марки", categoryService.getCategoryByName("Коллекционирование").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Модели", categoryService.getCategoryByName("Коллекционирование").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Монеты", categoryService.getCategoryByName("Коллекционирование").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Открытки", categoryService.getCategoryByName("Коллекционирование").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Пепельницы, зажигалки", categoryService.getCategoryByName("Коллекционирование").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Пластиковые карточки", categoryService.getCategoryByName("Коллекционирование").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Спортивные карточки", categoryService.getCategoryByName("Коллекционирование").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Фотографии, письма", categoryService.getCategoryByName("Коллекционирование").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Этикетки, бутылки, пробки", categoryService.getCategoryByName("Коллекционирование").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Другое", categoryService.getCategoryByName("Коллекционирование").get(), 3, "hobbyAndRest"));
 
-        secondSubCategory.add(new Category("Аккордеоны, гармонии, баяны", categoryService.getCategoryByName("Музыкальные инструменты").get(), 3));
-        secondSubCategory.add(new Category("Гитары и другие струнные", categoryService.getCategoryByName("Музыкальные инструменты").get(), 3));
-        secondSubCategory.add(new Category("Духовные", categoryService.getCategoryByName("Музыкальные инструменты").get(), 3));
-        secondSubCategory.add(new Category("Пианино и другие клавишные", categoryService.getCategoryByName("Музыкальные инструменты").get(), 3));
-        secondSubCategory.add(new Category("Скрипки и другие смычковые", categoryService.getCategoryByName("Музыкальные инструменты").get(), 3));
-        secondSubCategory.add(new Category("Ударные", categoryService.getCategoryByName("Музыкальные инструменты").get(), 3));
-        secondSubCategory.add(new Category("Для студии и концертов", categoryService.getCategoryByName("Музыкальные инструменты").get(), 3));
-        secondSubCategory.add(new Category("Аксессуары", categoryService.getCategoryByName("Музыкальные инструменты").get(), 3));
+        secondSubCategory.add(new Category("Аккордеоны, гармонии, баяны", categoryService.getCategoryByName("Музыкальные инструменты").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Гитары и другие струнные", categoryService.getCategoryByName("Музыкальные инструменты").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Духовные", categoryService.getCategoryByName("Музыкальные инструменты").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Пианино и другие клавишные", categoryService.getCategoryByName("Музыкальные инструменты").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Скрипки и другие смычковые", categoryService.getCategoryByName("Музыкальные инструменты").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Ударные", categoryService.getCategoryByName("Музыкальные инструменты").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Для студии и концертов", categoryService.getCategoryByName("Музыкальные инструменты").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Аксессуары", categoryService.getCategoryByName("Музыкальные инструменты").get(), 3, "hobbyAndRest"));
 
-        secondSubCategory.add(new Category("Бильярд и боулинг", categoryService.getCategoryByName("Спорт и отдых").get(), 3));
-        secondSubCategory.add(new Category("Дайвинг и водный спорт", categoryService.getCategoryByName("Спорт и отдых").get(), 3));
-        secondSubCategory.add(new Category("Единоборства", categoryService.getCategoryByName("Спорт и отдых").get(), 3));
-        secondSubCategory.add(new Category("Зимние виды спорта", categoryService.getCategoryByName("Спорт и отдых").get(), 3));
-        secondSubCategory.add(new Category("Игры с мячом", categoryService.getCategoryByName("Спорт и отдых").get(), 3));
-        secondSubCategory.add(new Category("Настольные игры", categoryService.getCategoryByName("Спорт и отдых").get(), 3));
-        secondSubCategory.add(new Category("Пейнтбол и страйкбол", categoryService.getCategoryByName("Спорт и отдых").get(), 3));
-        secondSubCategory.add(new Category("Ролики и скейтбординг", categoryService.getCategoryByName("Спорт и отдых").get(), 3));
-        secondSubCategory.add(new Category("Теннис, бадминтон, пинг-понг", categoryService.getCategoryByName("Спорт и отдых").get(), 3));
-        secondSubCategory.add(new Category("Туризм", categoryService.getCategoryByName("Спорт и отдых").get(), 3));
-        secondSubCategory.add(new Category("Финтес и тренажеры", categoryService.getCategoryByName("Спорт и отдых").get(), 3));
-        secondSubCategory.add(new Category("Спортивное питание", categoryService.getCategoryByName("Спорт и отдых").get(), 3));
-        secondSubCategory.add(new Category("Другое", categoryService.getCategoryByName("Спорт и отдых").get(), 3));
+        secondSubCategory.add(new Category("Бильярд и боулинг", categoryService.getCategoryByName("Спорт и отдых").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Дайвинг и водный спорт", categoryService.getCategoryByName("Спорт и отдых").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Единоборства", categoryService.getCategoryByName("Спорт и отдых").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Зимние виды спорта", categoryService.getCategoryByName("Спорт и отдых").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Игры с мячом", categoryService.getCategoryByName("Спорт и отдых").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Настольные игры", categoryService.getCategoryByName("Спорт и отдых").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Пейнтбол и страйкбол", categoryService.getCategoryByName("Спорт и отдых").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Ролики и скейтбординг", categoryService.getCategoryByName("Спорт и отдых").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Теннис, бадминтон, пинг-понг", categoryService.getCategoryByName("Спорт и отдых").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Туризм", categoryService.getCategoryByName("Спорт и отдых").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Финтес и тренажеры", categoryService.getCategoryByName("Спорт и отдых").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Спортивное питание", categoryService.getCategoryByName("Спорт и отдых").get(), 3, "hobbyAndRest"));
+        secondSubCategory.add(new Category("Другое", categoryService.getCategoryByName("Спорт и отдых").get(), 3, "hobbyAndRest"));
 
+        secondSubCategory.add(new Category("Интернет-магазин", categoryService.getCategoryByName("Готовый бизнес").get(), 3,"ready-business"));
+        secondSubCategory.add(new Category("Общественное питание", categoryService.getCategoryByName("Готовый бизнес").get(), 3,"ready-business"));
+        secondSubCategory.add(new Category("Производство", categoryService.getCategoryByName("Готовый бизнес").get(), 3,"ready-business"));
+        secondSubCategory.add(new Category("Развлечение", categoryService.getCategoryByName("Готовый бизнес").get(), 3,"ready-business"));
+        secondSubCategory.add(new Category("Сельское хозяйство", categoryService.getCategoryByName("Готовый бизнес").get(), 3,"ready-business"));
+        secondSubCategory.add(new Category("Строительство", categoryService.getCategoryByName("Готовый бизнес").get(), 3,"ready-business"));
+        secondSubCategory.add(new Category("Сфера услуг", categoryService.getCategoryByName("Готовый бизнес").get(), 3,"ready-business"));
+        secondSubCategory.add(new Category("Торговля", categoryService.getCategoryByName("Готовый бизнес").get(), 3,"ready-business"));
+        secondSubCategory.add(new Category("Другое", categoryService.getCategoryByName("Готовый бизнес").get(), 3,"ready-business"));
 
-        secondSubCategory.add(new Category("Интернет-магазин", categoryService.getCategoryByName("Готовый бизнес").get(), 3));
-        secondSubCategory.add(new Category("Общественное питание", categoryService.getCategoryByName("Готовый бизнес").get(), 3));
-        secondSubCategory.add(new Category("Производство", categoryService.getCategoryByName("Готовый бизнес").get(), 3));
-        secondSubCategory.add(new Category("Развлечение", categoryService.getCategoryByName("Готовый бизнес").get(), 3));
-        secondSubCategory.add(new Category("Сельское хозяйство", categoryService.getCategoryByName("Готовый бизнес").get(), 3));
-        secondSubCategory.add(new Category("Строительство", categoryService.getCategoryByName("Готовый бизнес").get(), 3));
-        secondSubCategory.add(new Category("Сфера услуг", categoryService.getCategoryByName("Готовый бизнес").get(), 3));
-        secondSubCategory.add(new Category("Торговля", categoryService.getCategoryByName("Готовый бизнес").get(), 3));
-        secondSubCategory.add(new Category("Другое", categoryService.getCategoryByName("Готовый бизнес").get(), 3));
-
-        secondSubCategory.add(new Category("Для магазина", categoryService.getCategoryByName("Оборудование для бизнеса").get(), 3));
-        secondSubCategory.add(new Category("Для офиса", categoryService.getCategoryByName("Оборудование для бизнеса").get(), 3));
-        secondSubCategory.add(new Category("Для ресторана", categoryService.getCategoryByName("Оборудование для бизнеса").get(), 3));
-        secondSubCategory.add(new Category("Для салона красоты", categoryService.getCategoryByName("Оборудование для бизнеса").get(), 3));
-        secondSubCategory.add(new Category("Промышленное", categoryService.getCategoryByName("Оборудование для бизнеса").get(), 3));
-        secondSubCategory.add(new Category("Другое", categoryService.getCategoryByName("Оборудование для бизнеса").get(), 3));
+        secondSubCategory.add(new Category("Для магазина", categoryService.getCategoryByName("Оборудование для бизнеса").get(), 3,"equpment-for-business"));
+        secondSubCategory.add(new Category("Для офиса", categoryService.getCategoryByName("Оборудование для бизнеса").get(), 3,"equpment-for-business"));
+        secondSubCategory.add(new Category("Для ресторана", categoryService.getCategoryByName("Оборудование для бизнеса").get(), 3,"equpment-for-business"));
+        secondSubCategory.add(new Category("Для салона красоты", categoryService.getCategoryByName("Оборудование для бизнеса").get(), 3,"equpment-for-business"));
+        secondSubCategory.add(new Category("Промышленное", categoryService.getCategoryByName("Оборудование для бизнеса").get(), 3,"equpment-for-business"));
+        secondSubCategory.add(new Category("Другое", categoryService.getCategoryByName("Оборудование для бизнеса").get(), 3,"equpment-for-business"));
 
         for (Category category : secondSubCategory) {
             if (categoryService.getCategoryByName(category.getName()).isEmpty()) {
                 categoryService.saveCategory(category);
             }
+        }
+
+        List<Category> thirdSubCategory = new ArrayList<>();
+
+        thirdSubCategory.add(new Category("Брюки", categoryService.getCategoryByName("Женская одежда").get(), 4, "clothes"));
+        thirdSubCategory.add(new Category("Верхняя одежда", categoryService.getCategoryByName("Женская одежда").get(), 4, "clothes"));
+        thirdSubCategory.add(new Category("Джинсы", categoryService.getCategoryByName("Женская одежда").get(), 4, "clothes"));
+        thirdSubCategory.add(new Category("Купальники", categoryService.getCategoryByName("Женская одежда").get(), 4, "clothes"));
+        thirdSubCategory.add(new Category("Нижнее белье", categoryService.getCategoryByName("Женская одежда").get(), 4, "clothes"));
+        thirdSubCategory.add(new Category("Обувь", categoryService.getCategoryByName("Женская одежда").get(), 4, "shoes"));
+        thirdSubCategory.add(new Category("Пиджаки и костюмы", categoryService.getCategoryByName("Женская одежда").get(), 4, "clothes"));
+        thirdSubCategory.add(new Category("Платья и юбки", categoryService.getCategoryByName("Женская одежда").get(), 4, "clothes"));
+        thirdSubCategory.add(new Category("Рубашки и блузки", categoryService.getCategoryByName("Женская одежда").get(), 4, "clothes"));
+        thirdSubCategory.add(new Category("Свадебные платья", categoryService.getCategoryByName("Женская одежда").get(), 4, "clothes"));
+        thirdSubCategory.add(new Category("Топы и футболки", categoryService.getCategoryByName("Женская одежда").get(), 4, "clothes"));
+        thirdSubCategory.add(new Category("Трикотаж", categoryService.getCategoryByName("Женская одежда").get(), 4, "clothes"));
+        thirdSubCategory.add(new Category("Другое", categoryService.getCategoryByName("Женская одежда").get(), 4, "other-clothes"));
+        thirdSubCategory.add(new Category("Брюки", categoryService.getCategoryByName("Мужская одежда").get(), 4, "clothes"));
+        thirdSubCategory.add(new Category("Верхняя одежда", categoryService.getCategoryByName("Мужская одежда").get(), 4, "clothes"));
+        thirdSubCategory.add(new Category("Джинсы", categoryService.getCategoryByName("Мужская одежда").get(), 4, "clothes"));
+        thirdSubCategory.add(new Category("Обувь", categoryService.getCategoryByName("Мужская одежда").get(), 4, "shoes"));
+        thirdSubCategory.add(new Category("Пиджаки и костюмы", categoryService.getCategoryByName("Мужская одежда").get(), 4, "clothes"));
+        thirdSubCategory.add(new Category("Рубашки", categoryService.getCategoryByName("Мужская одежда").get(), 4, "clothes"));
+        thirdSubCategory.add(new Category("Трикотаж и футболки", categoryService.getCategoryByName("Мужская одежда").get(), 4, "clothes"));
+        thirdSubCategory.add(new Category("Другое", categoryService.getCategoryByName("Мужская одежда").get(), 4, "other-clothes"));
+
+        for (Category category : thirdSubCategory) {
+//            if (categoryService.getCategoryByName(category.getName()).isEmpty()) {
+            categoryService.saveCategory(category);
+//            }
         }
     }
 
@@ -540,7 +582,7 @@ public class DataInitializer {
     }
 
     private void initPosting() {
-        List<Posting> postingList = new ArrayList<>();
+        postingList = new ArrayList<>();
         postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Услуги").get()
                 , "Поглажу кота", "Очень качественно", 100L, "+79998887766", cityService.findCityByName("Ростов").get(), true, 0));
         postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Транспорт").get()
@@ -629,7 +671,7 @@ public class DataInitializer {
         }
     }
 
-    private void initOrders(){
+    private void initOrders() {
         List<Order> orderList = new ArrayList<>();
 
         orderList.add(new Order(
@@ -638,12 +680,12 @@ public class DataInitializer {
                 "Почта России", DeliveryStatus.IN_PROCESS)
         );
 
-        for (Order order: orderList){
+        for (Order order : orderList) {
             orderService.save(order);
         }
     }
 
-    private void initReviews(){
+    private void initReviews() {
         List<Review> reviewList = new ArrayList<>();
 
         reviewList.add(new Review(
@@ -653,7 +695,7 @@ public class DataInitializer {
                 "Проиграл")
         );
 
-        for (Review review: reviewList){
+        for (Review review : reviewList) {
             reviewService.save(review);
         }
     }
@@ -775,19 +817,17 @@ public class DataInitializer {
     }
 
     private void initMessages() {
-        List<Message> messages = new ArrayList<>();
-        messages.add(new Message(1L, "привет", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1600L)));
-        messages.add(new Message(2L, "можно обсудить скидку?", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1601L)));
-        messages.add(new Message(4L, "здравствуйте", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1602L)));
-        messages.add(new Message(5L, "еще актуально?", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1603L)));
-        messages.add(new Message(6L, "приеду завтра", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1604L)));
-        messages.add(new Message(7L, "подумаю", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1605L)));
-        messages.add(new Message(8L, "предложу другу", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1606L)));
-        messages.add(new Message(9L, "приеду сегодня вечером", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1607L)));
-        messages.add(new Message(10L, "спасибо!", userService.getUserByEmail("user@mail.ru"), postingService.getPostingById(1608L)));
+        for (int i = 1; i < 10; i++) {
+            List<Message> messages = new ArrayList<>();
+            messages.add(new Message(null, "Message " + i, userService.getUserByEmail("user@mail.ru"), postingList.get(i)));
 
-        for (Message message : messages) {
-            messageService.save(message);
+            for (Message message : messages) {
+                messageService.save(message);
+            }
         }
+    }
+
+    private void initDogBreed() throws IOException {
+        dogBreedService.saveDogBreed();
     }
 }
