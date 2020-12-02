@@ -18,9 +18,9 @@ public class PostingVacancyDto {
     private String frequency;
     private String placeOfWork;
     private String experienceValue;
-    private Boolean fits45;
-    private Boolean fits14;
-    private Boolean fitsHandicapped;
+    private Boolean isFor45;
+    private Boolean isFor14;
+    private Boolean isForHandicapped;
     private String meetingAddress;
     private String duties;
     private String description;

@@ -57,7 +57,7 @@ async function getVacancyForm(frontName, selectedCategoryId) {
         '                <div class="form-group row">\n' +
         '                    <label for="postTitle" class="col-sm-2 col-form-label">Название объявления</label>\n' +
         '                    <div class="col-sm-6">\n' +
-        '                        <input  id="postTitle" name="postTitle" maxlength="100" type="text" class="form-control form-control-sm">\n' +
+        '                        <input  id="postTitle" name="postTitle" maxlength="100" type="text" class="form-control form-control-sm" required>\n' +
         '                        <p class="text-muted" data-toggle="tooltip" data-placement="top">Например, «Продавец-консультант в магазин одежды» или «Водитель такси».</p>\n' +
         '                    </div>\n' +
         '                </div>\n' +
@@ -146,7 +146,7 @@ async function getVacancyForm(frontName, selectedCategoryId) {
         '                <div class="form-group row">\n' +
         '                    <label for="postDescription" class="col-sm-2 col-form-label">Описание вакансии и компании</label>\n' +
         '                    <div class="col-sm-5">\n' +
-        '                        <textarea id="postDescription" name="postDescription" rows="7" maxlength="6000" style="height: 150px;" class="form-control"></textarea>\n' +
+        '                        <textarea id="postDescription" name="postDescription" rows="7" maxlength="6000" style="height: 150px;" class="form-control" required></textarea>\n' +
         '                        <p class="text-muted">Расскажите, что вы предлагаете и каких кандидатов ищете. Убедитесь, что в объявлении нет признаков дискриминации.</p>\n' +
         '                    </div>\n' +
         '                </div>\n' +
@@ -188,8 +188,8 @@ async function getVacancyForm(frontName, selectedCategoryId) {
         '                </div>\n' +
         '\n' +
         '                <div class="form-group row">\n' +
-        '                    <label for="fitsSpecCateg" class="col-sm-2 col-form-label">Подходит соискателям</label>\n' +
-        '                    <div id="fitsSpecCateg" class="col-sm-6">\n' +
+        '                    <label for="preferences" class="col-sm-2 col-form-label">Подходит соискателям</label>\n' +
+        '                    <div id="preferences" class="col-sm-6">\n' +
         '                       <div class="form-check">\n' +
         '                           <input id="isFor45" class="form-check-input" type="checkbox" name="isFor45">\n' +
         '                           <label for="isFor45" class="form-check-label"> Старше 45 лет</label>\n' +
