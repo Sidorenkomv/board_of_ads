@@ -75,7 +75,7 @@ public class PostingServiceImpl implements PostingService {
 
     @Override
     public Optional<Posting> getPostingByTitle(String title) {
-        return Optional.ofNullable(postingRepository.findPostingByTitle(title));
+        return Optional.ofNullable(postingRepository.findTopPostingByTitle(title));
     }
 
     @Override
@@ -122,7 +122,7 @@ public class PostingServiceImpl implements PostingService {
         for (PostingDto dto : postingDtos) {
             dto.setImages(getPostingById(dto.getId()).getImages());
             dto.setCategory(categoryService.getCategoryDtoById(
-                    postingRepository.findPostingByTitle(dto.getTitle()).getCategory().getId()).get());
+                    postingRepository.findTopPostingByTitle(dto.getTitle()).getCategory().getId()).get());
             if (getPostingById(dto.getId()).getCity() != null) {
                 dto.setCity(getPostingById(dto.getId()).getCity().getName());
             }

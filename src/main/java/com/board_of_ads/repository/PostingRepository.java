@@ -16,7 +16,7 @@ import java.util.List;
 @Repository
 public interface PostingRepository extends JpaRepository<Posting, Long> {
 
-    Posting findPostingByTitle(String title);
+    Posting findTopPostingByTitle(String title);
 
     @Query("select new com.board_of_ads.models.dto.PostingDto(p.id, p.title, p.description, p.price, p.contact, p.datePosting,p.city.name, p.viewNumber) from Posting p where p.id = :id")
     PostingDto getPostingDtoById(@Param("id") Long id);
