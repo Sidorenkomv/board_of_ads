@@ -8,6 +8,7 @@ import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.models.posting.forBusiness.Business;
+import com.board_of_ads.models.posting.job.Vacancy;
 import com.board_of_ads.models.posting.personalBelongings.Clothes;
 import com.board_of_ads.models.posting.autoTransport.cars.PostingCar;
 import com.board_of_ads.models.posting.realty.estate.BuyEstatePosting;
@@ -26,26 +27,17 @@ import com.board_of_ads.service.interfaces.UserService;
 import com.board_of_ads.util.Error;
 import com.board_of_ads.util.ErrorResponse;
 import com.board_of_ads.util.Response;
-import com.board_of_ads.service.interfaces.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -63,7 +55,6 @@ public class PostingServiceImpl implements PostingService {
     private final RegionService regionService;
     private final CityRepository cityRepository;
     private final ImageService imageService;
-    private final PostingCarRepository postingCarRepository;
     private final CityService cityService;
 
     @Override
@@ -423,6 +414,50 @@ public class PostingServiceImpl implements PostingService {
             log.info("Не удалось создать объявление => " + ex.getMessage());
             return new ErrorResponse<>(new Error(400, "Posting is not created"));
         }
+    }
+
+    @Override
+    public BuyEstatePosting addBuyEstatePosting(Map<String,String> obj) throws Exception {
+
+        BuyEstatePosting posting = new BuyEstatePosting();
+        posting.setTitle(obj.get("title"));
+        posting.setDescription(obj.get("description"));
+        posting.setContact(obj.get("contact"));
+        posting.setIsActive(true);
+        posting.setRooms(obj.get("rooms"));
+        posting.setContactEmail(obj.get("contactEmail"));
+        posting.setCommunicationType(obj.get("communicationType"));
+        return posting;
+    }
+
+    @Override
+    public GetAnEstatePosting addGetAnEstatePosting(Map<String,String> obj) throws Exception {
+
+        GetAnEstatePosting posting = new GetAnEstatePosting();
+        posting.setTitle(obj.get("title"));
+        posting.setDescription(obj.get("description"));
+        posting.setPrice(Long.parseLong(obj.get("price")));
+        posting.setContact(obj.get("contact"));
+        posting.setIsActive(true);
+        posting.setRooms(obj.get("rooms"));
+        posting.setContactEmail(obj.get("contactEmail"));
+        posting.setCommunicationType(obj.get("communicationType"));
+        posting.setNumberOfBeds(obj.get("numberOfBeds"));
+        posting.setSleeper(obj.get("sleeper"));
+        posting.setWifi(Boolean.getBoolean(obj.get("wifi")));
+        posting.setTv(Boolean.getBoolean(obj.get("tv")));
+        posting.setCable(Boolean.getBoolean(obj.get("cable")));
+        posting.setCooker(Boolean.getBoolean(obj.get("cooker")));
+        posting.setMicrowave(Boolean.getBoolean(obj.get("microwave")));
+        posting.setFridge(Boolean.getBoolean(obj.get("fridge")));
+        posting.setWashingMachine(Boolean.getBoolean(obj.get("washingMachine")));
+        posting.setHairdryer(Boolean.getBoolean(obj.get("hairdryer")));
+        posting.setFlatiron(Boolean.getBoolean(obj.get("flatiron")));
+        posting.setNurslings(Boolean.getBoolean(obj.get("nurslings")));
+        posting.setChildren(Boolean.getBoolean(obj.get("children")));
+        posting.setEvents(Boolean.getBoolean(obj.get("events")));
+        posting.setSmoke(Boolean.getBoolean(obj.get("smoke")));
+        return posting;
     }
 
     @Override
