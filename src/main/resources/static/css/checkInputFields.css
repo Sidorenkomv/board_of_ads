@@ -1,0 +1,11 @@
+.cFM_wrong
+{
+	color:red;
+	font-size:12px;
+	position:absolute;
+
+}
+
+.redBorder {
+	border: 1px red solid;
+}
