@@ -2,6 +2,70 @@ let postingFormHobbyAndRest = document.getElementById('visibleElement2');
 let frontNamePH;
 let selectedCategoryIdPH;
 let saveButtonPH = document.getElementById('saveButton');
+let choosenFiles;
+const approvedExtensions = ["jpeg", "png", "gif", "pjpeg", "jpg"];
+const maxFileSize = 10485760;
+const urlPhotoUpload = "/api/posting/saveMiniatures";
+
+function checkFiles() {
+    let fileList = Array.from(choosenFiles.files);
+    for (let i = 0; i < fileList.length; i++) {
+
+        let fileExtension = fileList[i].name.slice(fileList[i].name.lastIndexOf(".") + 1).toLowerCase();
+        if (approvedExtensions.indexOf(fileExtension) === -1) {
+            alert("Неверное расширение");
+            fileList.splice(i, 1);
+            i--;
+            continue;
+        }
+        if (fileList[i].size > maxFileSize) {
+            alert("Слишком большой файл");
+            fileList.splice(i, 1);
+            i--;
+        }
+    }
+    uploadPhoto(fileList);
+}
+
+// async function uploadPhoto(photos) {
+//     const formData = new FormData();
+//     photos.forEach(photo => formData.append('file', photo));
+//     const response = await fetch(urlPhotoUpload, {
+//         method: 'POST',
+//         body: formData
+//     })
+//
+//     if (response.ok) {
+//         let imgUrls = await response.json();
+//         addImgToList(imgUrls.data);
+//     }
+// }
+function uploadPhoto(photos) {
+    let photoList = document.getElementById('photoList');
+
+    photos.forEach(function (photo) {
+        let divPhoto = document.createElement('div');
+        divPhoto.className = 'clickable-photo';
+        let photoURL = URL.createObjectURL(photo);
+        divPhoto.style.cssText = 'background: url(' + phnewotoURL + ') center no-repeat;';
+        console.log(photoURL);
+        photoList.append(divPhoto);
+    })
+}
+
+
+function addImgToList(imgUrls) {
+    let photoList = document.getElementById('photoList');
+
+    imgUrls.forEach(function (currentValue) {
+        let newPhoto = document.createElement('div');
+        newPhoto.className = 'clickable-photo';
+        let cu = currentValue.replaceAll('\\', '\/')
+        let path = 'background: url(.\/' + cu + ') center no-repeat;';
+        newPhoto.style.cssText = path;
+        photoList.append(newPhoto);
+    })
+}
 
 async function sentForHobbyAndRestPosting() {
     let url = '/api/posting/new/' + frontNamePH + '/' + selectedCategoryIdPH;
@@ -40,7 +104,6 @@ async function sendFile(body, url) {
         console.error('Ошибка:', error);
     }
 }
-
 
 function getHobbyAndRestForm(frontName, selectedCategoryId) {
     frontNamePH = frontName;
@@ -106,9 +169,11 @@ function getHobbyAndRestForm(frontName, selectedCategoryId) {
         '                <div class="form-group row">\n' +
         '                    <label for="postPhotos" class="col-sm-2 col-form-label">Фотографии</label>\n' +
         '\n' +
-        '                    <div class="col-sm-2 d-flex">\n' +
-        '                        <label class="" data-marker="add">\n' +
-        '                            <input id="postPhotos" type="file" value="" multiple style="display: block " accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input">\n' +
+        '                    <div id="photoList" class="listOfPhoto col-sm-2 d-flex">\n' +
+        '                       <div class="clickable-photo">  </div>                  ' +
+        '                        <label for="postPhotos" type="button" class="photo-upload" data-marker="add">\n' +
+        '                            <input id="postPhotos" type="file" value="" multiple class="hidden" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input">\n' +
+        // '                            <input id="postPhotos" type="file" value="" multiple style="display: block " class="hidden" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input">\n' +
         '                            <div id="uploadPhotos"></div>' +
         '                            <p id="errorFor-postPhotos" class="hidden error-text" data-toggle="tooltip" data-placement="top">Загрузите хотя бы одну фотографию</p>\n' +
         '                        </label>\n' +
@@ -124,4 +189,8 @@ function getHobbyAndRestForm(frontName, selectedCategoryId) {
         '            </form>\n' +
         '        </div>\n' +
         '    </div>'
+
+    choosenFiles = document.getElementById('postPhotos');
+    choosenFiles.onchange = checkFiles;
+    // choosenFiles.addEventListener('change', test, false);
 }
