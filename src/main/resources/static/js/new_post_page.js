@@ -146,6 +146,14 @@ async function changeVisible(frontName, id) {
         case 'equpment-for-business':
             showEquipmentForBusinessForm(frontName, id);
             break;
+        case 'sellEstate' : await getEstate(frontName, id)
+            break;
+        case 'rentAnEstate' : await getEstate(frontName, id)
+            break;
+        case 'buyEstate' : await getEstate(frontName, id)
+            break;
+        case 'getAnEstate' : await getEstate(frontName, id)
+            break;
         default:
             alert('For frontName="' + frontName + '" not found posting form');
             break;

@@ -10,7 +10,10 @@ import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.models.posting.forBusiness.Business;
 import com.board_of_ads.models.posting.personalBelongings.Clothes;
 import com.board_of_ads.models.posting.autoTransport.cars.PostingCar;
-import com.board_of_ads.models.posting.job.Vacancy;
+import com.board_of_ads.models.posting.realty.estate.BuyEstatePosting;
+import com.board_of_ads.models.posting.realty.estate.GetAnEstatePosting;
+import com.board_of_ads.models.posting.realty.estate.RentAnEstatePosting;
+import com.board_of_ads.models.posting.realty.estate.SellEstatePosting;
 import com.board_of_ads.repository.CityRepository;
 import com.board_of_ads.repository.PostingCarRepository;
 import com.board_of_ads.repository.PostingRepository;
@@ -420,5 +423,74 @@ public class PostingServiceImpl implements PostingService {
             log.info("Не удалось создать объявление => " + ex.getMessage());
             return new ErrorResponse<>(new Error(400, "Posting is not created"));
         }
+    }
+
+    @Override
+    public RentAnEstatePosting addRentAnEstatePosting(Map<String,String> obj) throws Exception {
+
+        RentAnEstatePosting posting = new RentAnEstatePosting();;
+        posting.setTitle(obj.get("title"));
+        posting.setDescription(obj.get("description"));
+        posting.setPrice(Long.parseLong(obj.get("price")));
+        posting.setContact(obj.get("contact"));
+        posting.setIsActive(true);
+        posting.setTypeOfHousing(obj.get("typeOfHousing"));
+        posting.setOwnership(obj.get("ownership"));
+        posting.setStatus(obj.get("status"));
+        posting.setRooms(obj.get("rooms"));
+        posting.setTypeOfHouse(obj.get("typeOfHouse"));
+        posting.setFloor(Integer.parseInt(obj.get("floor")));
+        posting.setFloorsInHouse(Integer.parseInt(obj.get("floorsInHouse")));
+        posting.setTotalArea(Integer.parseInt(obj.get("totalArea")));
+        posting.setKitchenArea(Integer.parseInt(obj.get("kitchenArea")));
+        posting.setLivingArea(Integer.parseInt(obj.get("livingArea")));
+        posting.setLoggia(obj.get("loggia"));
+        posting.setView(obj.get("view"));
+        posting.setContactEmail(obj.get("contactEmail"));
+        posting.setLinkYouTube(obj.get("linkYouTube"));
+        posting.setCommunicationType(obj.get("communicationType"));
+        posting.setNumberOfBeds(obj.get("numberOfBeds"));
+        posting.setSleeper(obj.get("sleeper"));
+        posting.setWifi(Boolean.getBoolean(obj.get("wifi")));
+        posting.setTv(Boolean.getBoolean(obj.get("tv")));
+        posting.setCable(Boolean.getBoolean(obj.get("cable")));
+        posting.setCooker(Boolean.getBoolean(obj.get("cooker")));
+        posting.setMicrowave(Boolean.getBoolean(obj.get("microwave")));
+        posting.setFridge(Boolean.getBoolean(obj.get("fridge")));
+        posting.setWashingMachine(Boolean.getBoolean(obj.get("washingMachine")));
+        posting.setHairdryer(Boolean.getBoolean(obj.get("hairdryer")));
+        posting.setFlatiron(Boolean.getBoolean(obj.get("flatiron")));
+        posting.setNurslings(Boolean.getBoolean(obj.get("nurslings")));
+        posting.setChildren(Boolean.getBoolean(obj.get("children")));
+        posting.setEvents(Boolean.getBoolean(obj.get("events")));
+        posting.setSmoke(Boolean.getBoolean(obj.get("smoke")));
+        return posting;
+    }
+
+    @Override
+    public SellEstatePosting addSellEstatePosting(Map<String,String> obj) throws Exception {
+
+        SellEstatePosting posting = new SellEstatePosting();
+        posting.setTitle(obj.get("title"));
+        posting.setDescription(obj.get("description"));
+        posting.setPrice(Long.parseLong(obj.get("price")));
+        posting.setContact(obj.get("contact"));
+        posting.setIsActive(true);
+        posting.setTypeOfHousing(obj.get("typeOfHousing"));
+        posting.setOwnership(obj.get("ownership"));
+        posting.setStatus(obj.get("status"));
+        posting.setRooms(obj.get("rooms"));
+        posting.setTypeOfHouse(obj.get("typeOfHouse"));
+        posting.setFloor(Integer.parseInt(obj.get("floor")));
+        posting.setFloorsInHouse(Integer.parseInt(obj.get("floorsInHouse")));
+        posting.setTotalArea(Integer.parseInt(obj.get("totalArea")));
+        posting.setKitchenArea(Integer.parseInt(obj.get("kitchenArea")));
+        posting.setLivingArea(Integer.parseInt(obj.get("livingArea")));
+        posting.setLoggia(obj.get("loggia"));
+        posting.setView(obj.get("view"));
+        posting.setContactEmail(obj.get("contactEmail"));
+        posting.setLinkYouTube(obj.get("linkYouTube"));
+        posting.setCommunicationType(obj.get("communicationType"));
+        return posting;
     }
 }
