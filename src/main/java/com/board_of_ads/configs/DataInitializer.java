@@ -71,7 +71,6 @@ public class DataInitializer {
 
     @PostConstruct
     private void init() throws IOException {
-        initUsers();
         initMoreUsers();
         initKladr();
         initUsers();
@@ -104,7 +103,7 @@ public class DataInitializer {
             Set<Role> roleAdmin = new HashSet<>();
             roleAdmin.add(roleService.getRoleByName("ADMIN"));
             admin.setRoles(roleAdmin);
-            //admin.setCity(cityService.findCityByName("Екатеринбург").get());
+            admin.setCity(cityService.findCityByName("Екатеринбург").get());
             userService.saveUser(admin);
         }
         if (userService.getUserByEmail("user@mail.ru") == null) {
