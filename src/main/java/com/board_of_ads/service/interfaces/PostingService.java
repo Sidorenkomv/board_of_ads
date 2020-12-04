@@ -63,8 +63,8 @@ public interface PostingService {
     Response<Void> savePersonalClothesPosting(Long id, User user, Map<String,
             String> map, List<MultipartFile> photos);
 
-    void setVacancyCondition(Map<String, String> form, List<String> preferences, User userById,
-                             Vacancy posting, City city, List<Image> images);
+//    void setVacancyCondition(Map<String, String> form, List<String> preferences, User userById,
+//                             Vacancy posting, City city, List<Image> images);
 
     Response<Void> saveForBusinessPosting(Long id, User user, Map<String,
             String> map, List<MultipartFile> photos);

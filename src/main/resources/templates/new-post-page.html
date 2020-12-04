@@ -66,7 +66,7 @@
                        autocomplete="none" type="text" class="form-control" value="">
             </p>
             <p id="fill_address"></p>
-            <p class="text-muted" data-toggle="tooltip" data-placement="top" title="Зачем указывать точный адрес.
+            <p id="preciseAddress" class="text-muted" data-toggle="tooltip" data-placement="top" title="Зачем указывать точный адрес.
             Объявление смогут найти покупатели, которые ищут товары в конкретном радиусе или районе.
             Точный адрес не помешает вашему предложению появиться в результатах поиска по городу,
             региону или всей России.">
@@ -143,7 +143,7 @@
 <script sec:authorize="isAuthenticated()"  src="../static/js/new_posting_forms/household-appliances.js" th:src="@{/js/new_posting_forms/household-appliances.js}"></script>
 <script sec:authorize="isAuthenticated()" src="../static/js/new_posting_forms/audio-video.js" th:src="@{/js/new_posting_forms/audio-video.js}"></script>
 <script sec:authorize="isAuthenticated()" src="../static/js/new_posting_forms/dogs.js" th:src="@{/js/new_posting_forms/dogs.js}"></script>
-<script sec:authorize="isAuthenticated()"  src="../static/js/new_posting_forms/vacancy.js" th:src="@{/js/new_posting_forms/vacancy.js}"></script>
+<script sec:authorize="isAuthenticated()"  src="../static/js/new_posting_forms/vacancy.js" th:src="@{/js/new_posting_forms/posting-vacancy.js}"></script>
 
 <script src="../static/js/new_posting_forms/posting-car.js" th:src="@{/js/new_posting_forms/posting-car.js}"></script>
 <script src="../static/js/new_posting_forms/posting-hobby-and-rest.js" th:src="@{/js/new_posting_forms/posting-hobby-and-rest.js}"></script>
@@ -151,6 +151,7 @@
 <script src="../static/js/new_posting_forms/posting-clothes.js" th:src="@{/js/new_posting_forms/posting-clothes.js}"></script>
 <script src="../static/js/new_posting_forms/posting-business.js" th:src="@{/js/new_posting_forms/posting-business.js}"></script>
 <script src="../static/js/new_posting_forms/estates.js" th:src="@{/js/new_posting_forms/estates.js}"></script>
+<script src="../static/js/new_posting_forms/posting-vacancy.js" th:src="@{/js/new_posting_forms/posting-vacancy.js}"></script>
 
 <script src="../static/js/checkingEmptyFields.js" th:src="@{/js/checkingEmptyFields.js}"></script>
 <script src="../static/js/jquery.maskedinput.js" th:src="@{/js/jquery.maskedinput.js}"></script>

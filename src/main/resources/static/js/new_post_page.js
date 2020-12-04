@@ -138,7 +138,7 @@ async function changeVisible(frontName, id) {
             await getDogsForm(frontName, id);
             break;
         case 'vacancy':
-            await buildVacancyForm(frontName, id);
+            await getVacancyForm(frontName, id);
             break;
         case 'ready-business':
             showReadyBusinessForm(frontName, id);

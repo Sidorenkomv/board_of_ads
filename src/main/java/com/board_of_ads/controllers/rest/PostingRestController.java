@@ -317,26 +317,30 @@ public class PostingRestController {
         }
     }
 
-    @PostMapping("/new/vacancy")
-    public Response<Void> saveNewVacancyPosting(@AuthenticationPrincipal User user,
-                                                @RequestParam Map<String, String> form,
-                                                @RequestParam(value = "photos") List<MultipartFile> photos,
-                                                @RequestParam(value = "preferences") List<String> preferences) {
-        log.info("Inside saveVacancyPosting (api/posting/new/vacancy). Received incoming data: User.id: " + user.getId()
-                + " / FormData: " + form + " / Photos: " + photos + " / Preferences: " + preferences);
-        User userById = userService.getUserById(user.getId());
-        Vacancy posting = new Vacancy();
-        City city = user.getCity() != null ? user.getCity()
-                : cityService.findCityByName(form.get("city")).orElse(null);
+    @PostMapping("/new/vacancy/{id}")
+    public Response<Void> createVacancyPosting(@PathVariable Long id,
+                                               @AuthenticationPrincipal User user,
+                                               @RequestParam Map<String,String> obj,
+                                               @RequestParam(value = "photos") List<MultipartFile> photos) {
+        Vacancy posting;
 
-        List<Image> images = imageService.savePhotos(userById, photos);
-        images.forEach(image -> image.setPostings(new ArrayList<>()));
-
-        postingService.setVacancyCondition(form, preferences, userById, posting, city, images);
-        images.forEach(imageService::save);
-        images.forEach(image -> image.getPostings().add(posting));
-        postingService.save(posting);
-        return Response.ok().build();
+        try {
+            posting = new Vacancy(userService.getUserById(user.getId()), categoryService.getCategoryById(id),
+                    obj.get("title"), obj.get("description"), Long.parseLong(obj.get("price")), obj.get("contact"),
+                    true, obj.get("schedule"), obj.get("experienceValue"), obj.get("placeOfWork"),
+                    obj.get("contactEmail"), obj.get("communicationType"), obj.get("frequency"), obj.get("duties"),
+                    Boolean.parseBoolean(obj.get("isFor45")), Boolean.parseBoolean(obj.get("isFor14")),
+                    Boolean.parseBoolean(obj.get("isForHandicapped")));
+            List<Image> images = imageService.savePhotos(user, photos);
+            posting.setImages(images);
+            posting.setCity(cityService.findCityByName("Одинцово").get());
+            postingService.save(posting);
+            log.info("Объявление успешно создано пользователем " + user.getEmail());
+            return Response.ok().build();
+        } catch (Exception ex) {
+            log.info("Не удалось создать объявление => " + ex.getMessage());
+            return new ErrorResponse<>(new Error(400, "Posting is not created"));
+        }
     }
 
     @PostMapping("/new/audiovideo/{id}")
@@ -439,23 +443,23 @@ public class PostingRestController {
         return Response.ok(dogBreedService.findAll());
     }
 
-    @PostMapping("/clothes/{id}")
-    public Response<Void> createPersonalClothesPosting(@PathVariable Long id,
-                                                       @AuthenticationPrincipal User user,
-                                                       @RequestParam Map<String, String> map,
-                                                       @RequestParam(value = "photos") List<MultipartFile> photos) {
+//    @PostMapping("/clothes/{id}")
+//    public Response<Void> createPersonalClothesPosting(@PathVariable Long id,
+//                                                       @AuthenticationPrincipal User user,
+//                                                       @RequestParam Map<String, String> map,
+//                                                       @RequestParam(value = "photos") List<MultipartFile> photos) {
 
-        log.info("Create posting clothes");
-        return postingService.savePersonalClothesPosting(id, user, map, photos);
-    }
+//        log.info("Create posting clothes");
+//        return postingService.savePersonalClothesPosting(id, user, map, photos);
+//    }
 
-    @PostMapping("/business/{id}")
-    public Response<Void> createForBusinessPosting(@PathVariable Long id,
-                                                   @AuthenticationPrincipal User user,
-                                                   @RequestParam Map<String, String> map,
-                                                   @RequestParam(value = "photos") List<MultipartFile> photos) {
+//    @PostMapping("/business/{id}")
+//    public Response<Void> createForBusinessPosting(@PathVariable Long id,
+//                                                   @AuthenticationPrincipal User user,
+//                                                   @RequestParam Map<String, String> map,
+//                                                   @RequestParam(value = "photos") List<MultipartFile> photos) {
 
-        log.info("Create posting for business");
-        return postingService.saveForBusinessPosting(id, user, map, photos);
-    }
+//        log.info("Create posting for business");
+//        return postingService.saveForBusinessPosting(id, user, map, photos);
+//    }
 }
