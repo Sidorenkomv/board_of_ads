@@ -57,7 +57,7 @@ async function getVacancyForm(frontName, selectedCategoryId) {
         '                <div class="form-group row">\n' +
         '                    <label for="postTitle" class="col-sm-2 col-form-label">Название объявления</label>\n' +
         '                    <div class="col-sm-6">\n' +
-        '                        <input  id="postTitle" name="postTitle" maxlength="100" type="text" class="form-control form-control-sm" required>\n' +
+        '                        <input  id="postTitle" name="postTitle" maxlength="100" type="text" class="form-control form-control-sm">\n' +
         '                        <p class="text-muted" data-toggle="tooltip" data-placement="top">Например, «Продавец-консультант в магазин одежды» или «Водитель такси».</p>\n' +
         '                    </div>\n' +
         '                </div>\n' +
@@ -65,7 +65,7 @@ async function getVacancyForm(frontName, selectedCategoryId) {
         '                <div class="form-group row">\n' +
         '                    <label for="postSchedule" class="col-sm-2 col-form-label">График работы</label>\n' +
         '                    <div class="col-sm-6">\n' +
-        '                        <select style="width: 220px;" id="postSchedule" name="postSchedule" class="form-control form-control-sm" required>\n' +
+        '                        <select style="width: 220px;" id="postSchedule" name="postSchedule" class="form-control form-control-sm">\n' +
         '                           <option value="">—</option>\n' +
         '                           <option value="Вахтовый метод">Вахтовый метод</option>\n' +
         '                           <option value="Неполный день">Неполный день</option>\n' +
@@ -81,14 +81,14 @@ async function getVacancyForm(frontName, selectedCategoryId) {
         '                <div class="form-group row">\n' +
         '                    <label for="postPrice" class="col-sm-2 col-form-label">Зарплата</label>\n' +
         '                    <div class="col-sm-2">\n' +
-        '                        <input  style="width: 120px;" id="postPrice" name="postPrice" maxlength="7" inputmode="numeric" placeholder="₽" type="text" class="form-control form-control-sm" required>\n' +
+        '                        <input  style="width: 120px;" id="postPrice" name="postPrice" maxlength="7" inputmode="numeric" placeholder="₽" type="text" class="form-control form-control-sm">\n' +
         '                    </div>\n' +
         '                </div>\n' +
         '\n' +
         '                <div class="form-group row">\n' +
         '                    <label for="postFrequency" class="col-sm-2 col-form-label">Частота выплат</label>\n' +
         '                    <div class="col-sm-6">\n' +
-        '                        <select style="width: 220px;" id="postFrequency" name="postFrequency" class="form-control form-control-sm" required>\n' +
+        '                        <select style="width: 220px;" id="postFrequency" name="postFrequency" class="form-control form-control-sm">\n' +
         '                           <option value="">—</option>\n' +
         '                           <option value="почасовая оплата">почасовая оплата</option>\n' +
         '                           <option value="каждый день">каждый день</option>\n' +
@@ -101,7 +101,7 @@ async function getVacancyForm(frontName, selectedCategoryId) {
         '                <div class="form-group row">\n' +
         '                    <label for="postDuties" class="col-sm-2 col-form-label">Обязанности</label>\n' +
         '                    <div class="col-sm-5">\n' +
-        '                        <textarea id="postDuties" name="postDuties" rows="5" maxlength="5000" style="height: 130px;" class="form-control" placeholder="Через запятую, например: помощь покупателям, работа с кассой, контроль сроков годности" required></textarea>\n' +
+        '                        <textarea id="postDuties" name="postDuties" rows="5" maxlength="5000" style="height: 130px;" class="form-control" placeholder="Через запятую, например: помощь покупателям, работа с кассой, контроль сроков годности"></textarea>\n' +
         '                        <p class="text-muted">Соискатели увидят это на карточке вакансии в поиске — и смогут решить, откликаться или нет.</p>\n' +
         '                    </div>\n' +
         '                </div>\n' +
@@ -109,7 +109,7 @@ async function getVacancyForm(frontName, selectedCategoryId) {
         '                <div class="form-group row">\n' +
         '                    <label for="postPlace" class="col-sm-2 col-form-label">Где предстоит работать</label>\n' +
         '                    <div class="col-sm-6">\n' +
-        '                        <select style="width: 220px;" id="postPlace" name="postPlace" class="form-control form-control-sm" required>\n' +
+        '                        <select style="width: 220px;" id="postPlace" name="postPlace" class="form-control form-control-sm">\n' +
         '                           <option value="">—</option>\n' +
         '                           <option value="На дому">На дому</option>\n' +
         '                           <option value="С проживанием">С проживанием</option>\n' +
@@ -146,7 +146,7 @@ async function getVacancyForm(frontName, selectedCategoryId) {
         '                <div class="form-group row">\n' +
         '                    <label for="postDescription" class="col-sm-2 col-form-label">Описание вакансии и компании</label>\n' +
         '                    <div class="col-sm-5">\n' +
-        '                        <textarea id="postDescription" name="postDescription" rows="7" maxlength="6000" style="height: 150px;" class="form-control" required></textarea>\n' +
+        '                        <textarea id="postDescription" name="postDescription" rows="7" maxlength="6000" style="height: 150px;" class="form-control"></textarea>\n' +
         '                        <p class="text-muted">Расскажите, что вы предлагаете и каких кандидатов ищете. Убедитесь, что в объявлении нет признаков дискриминации.</p>\n' +
         '                    </div>\n' +
         '                </div>\n' +
@@ -176,7 +176,7 @@ async function getVacancyForm(frontName, selectedCategoryId) {
         '                <div class="form-group row">\n' +
         '                    <label for="postExperienceValue" class="col-sm-2 col-form-label">Опыт работы</label>\n' +
         '                    <div class="col-sm-6">\n' +
-        '                        <select style="width: 220px;" id="postExperienceValue" name="postExperienceValue" class="form-control form-control-sm" required>\n' +
+        '                        <select style="width: 220px;" id="postExperienceValue" name="postExperienceValue" class="form-control form-control-sm">\n' +
         '                           <option value="">—</option>\n' +
         '                           <option value="Не имеет значения">Не имеет значения</option>\n' +
         '                           <option value="Более 1 года">Более 1 года</option>\n' +
