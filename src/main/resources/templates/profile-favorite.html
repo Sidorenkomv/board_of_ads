@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Favorite</title>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/main_page.css" th:href="@{/css/main_page.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/fragment-navigate-panel-style.css" th:href="@{/css/fragment-navigate-panel-style.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/header-fragment-style.css" th:href="@{/css/header-fragment-style.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/search-fragment-style.css" th:href="@{/css/search-fragment-style.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/auth-style.css" th:href="@{/css/auth-style.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/user-info-menu.css" th:href="@{/css/user-info-menu.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/recovery-pswd.css" th:href="@{/css/recovery-pswd.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/profile-body.css" th:href="@{/css/profile-body.css}"/>
+
+    <link rel="stylesheet" type="text/css" href="../static/css/favorite.css" th:href="@{/css/favorite.css}"/>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+            integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+            crossorigin="anonymous"></script>
+
+</head>
+<body>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
+
+<header th:insert="fragments/header::main-header"></header>
+<div class="second-header">
+    <div th:insert="fragments/navigate-panel::navigate-header"></div>
+    <div th:insert="fragments/authorization-button::authorization-button"></div>
+    <div th:insert="fragments/pswd-recovery-modal-window::password-recovery"></div>
+    <div th:insert="fragments/new-password-modal::new-password"></div>
+</div>
+<div th:insert="fragments/profile-favorite::profile-body"></div>
+<script src="../static/js/favorite_page.js" th:src="@{/js/favorite_page.js}"></script>
+<script src="../static/js/header.js" th:src="@{/js/header.js}"></script>
+
+</body>
+</html>

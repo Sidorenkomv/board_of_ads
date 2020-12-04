@@ -9,11 +9,21 @@
 #MainBody {
     max-width: 1230px;
     padding: 0;
-    margin-top: 150px;
+    margin-top: 30px;
 }
 
 #mainPageBody {
     padding: 0;
+}
+
+#title {
+    margin-left: 15px;
+    font-size: 32px;
+    line-height: 40px;
+    font-weight: 400;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 ul {

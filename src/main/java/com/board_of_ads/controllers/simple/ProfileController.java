@@ -2,16 +2,13 @@ package com.board_of_ads.controllers.simple;
 
 import com.board_of_ads.models.User;
 import com.board_of_ads.models.dto.order.Order;
+import com.board_of_ads.service.interfaces.NotificationService;
 import com.board_of_ads.service.interfaces.OrderService;
 import com.board_of_ads.service.interfaces.ReviewService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.board_of_ads.service.interfaces.NotificationService;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.ArrayList;
 import java.util.Set;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @AllArgsConstructor
@@ -33,11 +29,10 @@ public class ProfileController {
     private NotificationService notificationService;
 
 
-
     @GetMapping("/orders/sales")
-    public String getSales(@AuthenticationPrincipal User user, Model model){
+    public String getSales(@AuthenticationPrincipal User user, Model model) {
         Set<Order> sales = orderService.getOrdersByOwner(user);
-        sales.forEach(x->{
+        sales.forEach(x -> {
             x.setChecked(true);
             orderService.save(x);
         });
@@ -52,7 +47,7 @@ public class ProfileController {
     }
 
     @GetMapping("/orders/purchases")
-    public String getPurchases(@AuthenticationPrincipal User user, Model model){
+    public String getPurchases(@AuthenticationPrincipal User user, Model model) {
         Set<Order> purchases = orderService.getOrdersByUser(user);
 
         model.addAttribute(user);
@@ -65,7 +60,7 @@ public class ProfileController {
     }
 
     @GetMapping("/profile/contacts")
-    public String getReviews(@AuthenticationPrincipal User user, Model model){
+    public String getReviews(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute(user);
         model.addAttribute("unchecked_orders", orderService.countUncheckedByUser(user));
         model.addAttribute("page", "contacts");
@@ -75,7 +70,7 @@ public class ProfileController {
     }
 
     @GetMapping("/profile/reviews")
-    public String getLeftReviews(@AuthenticationPrincipal User user, Model model){
+    public String getLeftReviews(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute(user);
         model.addAttribute("unchecked_orders", orderService.countUncheckedByUser(user));
         model.addAttribute("page", "reviews");
@@ -101,11 +96,20 @@ public class ProfileController {
         return "profile-notifications";
     }
 
+    //my correct acts
+    @GetMapping("/favorite")
+    public String profileFavouritePage(@AuthenticationPrincipal User user, Model model) {
+        addAttributesToProfile(user, model);
+        return "profile-favorite";
+    }
+
     private void addAttributesToProfile(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute(user);
         int[] count = notificationService.getUsersNotificationsCountMap(user);
         boolean hasNew = false;
-        if (count[0] > 0) { hasNew = true; }
+        if (count[0] > 0) {
+            hasNew = true;
+        }
         model.addAttribute("countMap", count);
         model.addAttribute("hasNew", hasNew);
     }

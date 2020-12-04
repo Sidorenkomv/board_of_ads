@@ -3,7 +3,6 @@
         <li class="dropdown-divider"></li>
         <div class="row">
             <div class="col-md-3">
-                <!--/*@thymesVar id="user" type="com.board_of_ads.models.User"*/-->
                 <div th:if="${user.getAvatar()}">
                     <img class="user-profile-avatar" id="avatar" th:src="${user.getAvatar().getPathURL()}"><br>
                     <div class="user-profile-name" id="name" th:text="${user.getFirstName() + ' ' + user.getLastName()}">
@@ -31,12 +30,12 @@
                 </a>
                 <li class="dropdown-divider"></li>
                 <div class="profile-menu-font">
-                    <strong th:text="#{myAds}">Мои объявления</strong><br>
+                    <a th:text="#{myAds}" href="/ads">Мои объявления</a><br>
                     <a th:text="#{myOrders}" href="#">Заказы</a><br>
                     <a th:text="#{MyReviews}" href="#">Мои отзывы</a><br>
-                    <a th:text="#{Favourites}" href="/favorite">Избранное</a><br>
+                    <strong a th:text="#{Favourites}" href="/favorite">Избранное</a></strong><br>
                     <li class="dropdown-divider"></li>
-                    <a th:text="#{messages}" href="/messenger" >Сообщения</a><br>
+                    <a th:text="#{messages}" href="/messenger">Сообщения</a><br>
                     <a th:text="#{Notifications}" href="/notifications" id="noteCallLeft">Уведомления</a><br>
                     <li class="dropdown-divider"></li>
                     <a th:text="#{Wallet}" href="#">Кошелек</a><br>
@@ -45,9 +44,23 @@
                     <a th:text="#{settings}" href="#">Настройки</a><br>
                 </div>
             </div>
-            <div class="col-md-9" id="posts_block">
-                <div id="profile-posts-content" th:insert="fragments/posts_block_fragments::profile-posts-block"></div>
+
+            <div class="col-md-9">
+
+                <div class="container">
+                    <div class="wrap">
+                        <div class="inner-wrap" id="render">
+                            <h1 class="h1">Избранное</h1>
+                            <ul class="ul">
+                                <li><h5>Объявления</h5></li>
+                                <li><a href="#">Поиски</a></li>
+                                <li><a href="#">Продавцы</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
             </div>
+        </div>
     </div>
-</div>
 </div>
