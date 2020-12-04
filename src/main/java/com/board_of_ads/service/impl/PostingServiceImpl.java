@@ -481,28 +481,28 @@ public class PostingServiceImpl implements PostingService {
         }
     }
 
-    @Override
-    public void setVacancyCondition(Map<String, String> form, List<String> preferences, User userById,
-                                    Vacancy posting, City city, List<Image> images) {
-        StringBuilder options = new StringBuilder();
-        preferences.forEach(a -> options.append(a).append("/"));
-
-        posting.setUser(userById);
-        posting.setCategory(categoryService.getCategoryById(Long.valueOf(form.get("categoryId"))));
-        posting.setCity(city);
-        posting.setContact(userById.getEmail());
-        posting.setDatePosting(LocalDateTime.now());
-        posting.setDescription(form.get("description"));
-        posting.setTitle(form.get("title"));
-        posting.setIsActive(true);
-        posting.setSchedule(form.get("schedule"));
-        posting.setDuties(form.get("duties"));
-        posting.setExperienceValue(form.get("workExperience"));
-        posting.setLocation(form.get("location"));
-        posting.setPreferences(options.toString());
-        posting.setPrice(Long.valueOf(form.get("price")));
-        posting.setImages(images);
-    }
+//    @Override
+//    public void setVacancyCondition(Map<String, String> form, List<String> preferences, User userById,
+//                                    Vacancy posting, City city, List<Image> images) {
+//        StringBuilder options = new StringBuilder();
+//        preferences.forEach(a -> options.append(a).append("/"));
+//
+//        posting.setUser(userById);
+//        posting.setCategory(categoryService.getCategoryById(Long.valueOf(form.get("categoryId"))));
+//        posting.setCity(city);
+//        posting.setContact(userById.getEmail());
+//        posting.setDatePosting(LocalDateTime.now());
+//        posting.setDescription(form.get("description"));
+//        posting.setTitle(form.get("title"));
+//        posting.setIsActive(true);
+//        posting.setSchedule(form.get("schedule"));
+//        posting.setDuties(form.get("duties"));
+//        posting.setExperienceValue(form.get("workExperience"));
+//        posting.setLocation(form.get("location"));
+//        posting.setPreferences(options.toString());
+//        posting.setPrice(Long.valueOf(form.get("price")));
+//        posting.setImages(images);
+//    }
 
     @Override
     public Response<Void> saveForBusinessPosting(Long id, User user, Map<String,
