@@ -16,12 +16,21 @@
             <div style="padding-top: 5px" class="header-favorite-button">
                 <div>
                     <div>
-                        <a href="/favorite">
+
+                        <a sec:authorize="!isAuthenticated()" href="/favorite-not-auth">
                             <svg width="25" height="21" xmlns="http://www.w3.org/2000/svg">
                                 <path style="padding-top: 5px" class="fill-favorite-icon"
                                       d="M10.918 5.085a5.256 5.256 0 0 1 7.524 0c2.077 2.114 2.077 5.541 0 7.655l-7.405 7.534a.75.75 0 0 1-1.074 0L2.558 12.74c-2.077-2.114-2.077-5.54 0-7.655a5.256 5.256 0 0 1 7.524 0c.15.152.289.312.418.479.13-.167.269-.327.418-.479z"></path>
                             </svg>
                         </a>
+
+                        <a sec:authorize="isAuthenticated()" href="/favorite">
+                            <svg width="25" height="21" xmlns="http://www.w3.org/2000/svg">
+                                <path style="padding-top: 5px" class="fill-favorite-icon"
+                                      d="M10.918 5.085a5.256 5.256 0 0 1 7.524 0c2.077 2.114 2.077 5.541 0 7.655l-7.405 7.534a.75.75 0 0 1-1.074 0L2.558 12.74c-2.077-2.114-2.077-5.54 0-7.655a5.256 5.256 0 0 1 7.524 0c.15.152.289.312.418.479.13-.167.269-.327.418-.479z"></path>
+                            </svg>
+                        </a>
+
                     </div>
                     <div style="position: relative; right: 30px; bottom: 20px"  sec:authorize="isAuthenticated()">
                         <a href="/notifications" >
@@ -75,7 +84,7 @@
                             <li class="dropdown-divider"></li>
                             <li class="dropdown-item"><a th:text="#{myAds}" href="/ads">Мои объявления</a></li>
                             <li class="dropdown-item "><a th:text="#{MyReviews}" href="/profile/reviews">Мои отзывы</a></li>
-                            <li class="dropdown-item "><a th:text="#{Favourites}" href="/profile">Избранное</a></li>
+                            <li class="dropdown-item "><a th:text="#{Favourites}" href="/favorite">Избранное</a></li>
                             <li class="dropdown-divider"></li>
                             <li class="dropdown-item "><a th:text="#{messages}" href="/messenger" >Сообщения</a></li>
                             <li class="dropdown-item "><a th:text="#{Notifications}" href="/notifications"  class="noteCall">Уведомления</a></li>
