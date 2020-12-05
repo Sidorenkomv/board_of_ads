@@ -74,10 +74,47 @@
 
 .photo-upload {
     width: 100px;
-    height: 75px;
+    height: 100px;
+    /*margin-right: 0;*/
+    overflow: hidden;
+    border: 1px solid #D6D6D6;
+    border-radius: 2px;
+    background: url(../images/upload-photo.svg) center no-repeat;
+}
+
+
+.delete-image {
+    float: right;
+    display: inline-block;
+    margin: 5px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 1px solid #D6D6D6;
+    overflow: hidden;
+    /* background-size: 100%; */
+    background: url(../images/delete-button.svg) center no-repeat;
+}
+
+.turn-image {
+    display: inline-block;
+    margin: 5px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 1px solid #D6D6D6;
+    overflow: hidden;
+    background-size: contain;
+    background: url(../images/rotate-button.svg) center no-repeat;
+}
+
+.clickable-photo {
+    background-size: 150px 150px;
+    width: 100px;
+    height: 100px;
     margin-right: 0;
     overflow: hidden;
     border: 1px solid #D6D6D6;
     border-radius: 2px;
-    background: url("/images/upload-photo.svg") center no-repeat;
+    background-size: contain;
 }

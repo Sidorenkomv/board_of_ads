@@ -1,19 +1,30 @@
-let postingFormHobbyAndRest = document.getElementById('visibleElement2');
 let frontNamePH;
 let selectedCategoryIdPH;
-let saveButtonPH = document.getElementById('saveButton');
-let choosenFiles;
+let fileList;
+const postingFormHobbyAndRest = document.getElementById('visibleElement2');
+const saveButtonPH = document.getElementById('saveButton');
 const approvedExtensions = ["jpeg", "png", "gif", "pjpeg", "jpg"];
 const maxFileSize = 10485760;
 const urlPhotoUpload = "/api/posting/saveMiniatures";
 
+function deletePhoto(event) {
+    //определяем индекс удаляемого элемента по id его div
+    let id = (event.currentTarget.id).slice(event.currentTarget.id.lastIndexOf('_') + 1);
+    fileList.splice(id, 1, null);
+
+    //скрываем его со страницы
+    let divToHide = event.currentTarget.parentNode;
+    divToHide.classList.add('hidden');
+}
+
 function checkFiles() {
-    let fileList = Array.from(choosenFiles.files);
+    fileList = Array.from(choosenFiles.files);
     for (let i = 0; i < fileList.length; i++) {
 
         let fileExtension = fileList[i].name.slice(fileList[i].name.lastIndexOf(".") + 1).toLowerCase();
         if (approvedExtensions.indexOf(fileExtension) === -1) {
             alert("Неверное расширение");
+            $('#alert').show();
             fileList.splice(i, 1);
             i--;
             continue;
@@ -24,10 +35,10 @@ function checkFiles() {
             i--;
         }
     }
-    uploadPhoto(fileList);
+    showPhotoOnPage(fileList);
 }
 
-// async function uploadPhoto(photos) {
+// async function showPhotoOnPage(photos) {
 //     const formData = new FormData();
 //     photos.forEach(photo => formData.append('file', photo));
 //     const response = await fetch(urlPhotoUpload, {
@@ -40,40 +51,60 @@ function checkFiles() {
 //         addImgToList(imgUrls.data);
 //     }
 // }
-function uploadPhoto(photos) {
+function showPhotoOnPage(fileList) {
     let photoList = document.getElementById('photoList');
 
-    photos.forEach(function (photo) {
+    fileList.forEach(function (photo, index) {
         let divPhoto = document.createElement('div');
-        divPhoto.className = 'clickable-photo';
         let photoURL = URL.createObjectURL(photo);
-        divPhoto.style.cssText = 'background: url(' + phnewotoURL + ') center no-repeat;';
-        console.log(photoURL);
+        let turnIDBtn = 'turnImg_' + index;
+        let deleteIDBtn = 'deleteImg_' + index;
+
+        divPhoto.innerHTML =
+            '<div class="clickable-photo" ' +
+            'style="background: url(' + photoURL + ') center no-repeat; background-size: contain" ' +
+            'id="photo_' + index + '"> ' +
+            '<div class="turn-image" id="' + turnIDBtn + '"></div> ' +
+            '<div class="delete-image" id="' + deleteIDBtn + '"></div> ' +
+            '</div> ';
+        divPhoto.smt = {name: 'data'};
         photoList.append(divPhoto);
-    })
+
+
+        // document.getElementById(deleteIDBtn).addEventListener('click', function (ev) {
+
+    });
+    $('.delete-image').on('click', deletePhoto);
+    // document.getElementsByClassName('turn-image').addEventListener('click', test);
+
+    // document.getElementById(deleteIDBtn).onclick = () => fileList.slice(index, 1);
+    // document.getElementById(deleteIDBtn).onclick(ev, rev);
+
 }
 
-
-function addImgToList(imgUrls) {
-    let photoList = document.getElementById('photoList');
-
-    imgUrls.forEach(function (currentValue) {
-        let newPhoto = document.createElement('div');
-        newPhoto.className = 'clickable-photo';
-        let cu = currentValue.replaceAll('\\', '\/')
-        let path = 'background: url(.\/' + cu + ') center no-repeat;';
-        newPhoto.style.cssText = path;
-        photoList.append(newPhoto);
-    })
-}
+//
+// function addImgToList(imgUrls) {
+//     let photoList = document.getElementById('photoList');
+//
+//     imgUrls.forEach(function (currentValue) {
+//         let newPhoto = document.createElement('div');
+//         newPhoto.className = 'clickable-photo';
+//         let cu = currentValue.replaceAll('\\', '\/')
+//         let path = 'background: url(.\/' + cu + ') center no-repeat;';
+//         newPhoto.style.cssText = path;
+//         photoList.append(newPhoto);
+//     })
+// }
 
 async function sentForHobbyAndRestPosting() {
     let url = '/api/posting/new/' + frontNamePH + '/' + selectedCategoryIdPH;
     const formData = new FormData();
-    const fileField = document.querySelector('input[type="file"][multiple]');
 
-    for (let i = 0; i < fileField.files.length; i++) {
-        formData.append('photos', fileField.files[i]);
+    for (let i = 0; i < fileList.length; i++) {
+        if (fileList[i] == null) {
+            continue
+        }
+        formData.append('photos', fileList  [i]);
     }
     let price = window.postPrice.value;
     formData.append('title', window.postTitle.value);
@@ -169,8 +200,11 @@ function getHobbyAndRestForm(frontName, selectedCategoryId) {
         '                <div class="form-group row">\n' +
         '                    <label for="postPhotos" class="col-sm-2 col-form-label">Фотографии</label>\n' +
         '\n' +
-        '                    <div id="photoList" class="listOfPhoto col-sm-2 d-flex">\n' +
-        '                       <div class="clickable-photo">  </div>                  ' +
+        '                    <div id="photoList" class="listOfPhoto col-sm-6 d-flex">\n' +
+        '                       <div class="clickable-photo">' +
+        '                               <div class="turn-image"></div>' +
+        '                               <div class="delete-image"></div>' +
+        '                    </div>' +
         '                        <label for="postPhotos" type="button" class="photo-upload" data-marker="add">\n' +
         '                            <input id="postPhotos" type="file" value="" multiple class="hidden" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input">\n' +
         // '                            <input id="postPhotos" type="file" value="" multiple style="display: block " class="hidden" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input">\n' +
@@ -191,6 +225,6 @@ function getHobbyAndRestForm(frontName, selectedCategoryId) {
         '    </div>'
 
     choosenFiles = document.getElementById('postPhotos');
-    choosenFiles.onchange = checkFiles;
-    // choosenFiles.addEventListener('change', test, false);
+    // choosenFiles.onchange = checkFiles();
+    choosenFiles.addEventListener('change', checkFiles, false);
 }

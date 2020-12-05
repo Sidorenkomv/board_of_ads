@@ -19,6 +19,7 @@ import com.board_of_ads.service.interfaces.AutoAttributesService;
 import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.service.interfaces.CityService;
 import com.board_of_ads.service.interfaces.DogBreedService;
+import com.board_of_ads.service.interfaces.DraftService;
 import com.board_of_ads.service.interfaces.ImageService;
 import com.board_of_ads.service.interfaces.PostingService;
 import com.board_of_ads.service.interfaces.UserService;
@@ -30,12 +31,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,6 +47,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -63,6 +67,22 @@ public class PostingRestController {
     private final UserService userService;
     private final ImageService imageService;
     private final DogBreedService dogBreedService;
+    private final DraftService draftService;
+
+    @PostMapping("/saveMiniatures") //переименовать?
+    public Response<List<String>> saveDraftMiniatures(@AuthenticationPrincipal User user, @RequestParam("file") MultipartFile[] file) {
+//                                                        @RequestParam(value = "photos") MultipartFile [] photos) {
+        //добавить свой метод преобразования?
+        List<MultipartFile> listOfFiles = Arrays.asList(file);
+        List<Image> images = imageService.savePhotos(user, listOfFiles);
+        List<String> paths = new ArrayList<>();
+        for (Image image : images
+        ) {
+            paths.add(image.getPathURL());
+        }
+        draftService.saveDraft(images, user.getId());
+        return Response.ok(paths);
+    }
 
     @GetMapping
     public Response<List<PostingDto>> findAllPosts() {
@@ -362,4 +382,6 @@ public class PostingRestController {
         log.info("Create posting for business");
         return postingService.saveForBusinessPosting(id, user, map, photos);
     }
+
+
 }

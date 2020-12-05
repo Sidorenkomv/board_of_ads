@@ -13,3 +13,10 @@
 .showed {
     visibility: visible;
 }
+
+.addPhoto {
+    background: url("images/");
+    display: inline-block;
+    line-height: 30px;
+    padding-left: 30px;
+}
