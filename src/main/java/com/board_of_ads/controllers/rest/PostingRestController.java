@@ -15,11 +15,14 @@ import com.board_of_ads.models.posting.forDogs.DogBreed;
 import com.board_of_ads.models.posting.forDogs.dogsPosting;
 import com.board_of_ads.models.posting.forHomeAndGarden.HouseholdAppliancesPosting;
 import com.board_of_ads.models.posting.job.Vacancy;
+import com.board_of_ads.models.posting.realty.estate.BuyEstatePosting;
+import com.board_of_ads.models.posting.realty.estate.GetAnEstatePosting;
+import com.board_of_ads.models.posting.realty.estate.RentAnEstatePosting;
+import com.board_of_ads.models.posting.realty.estate.SellEstatePosting;
 import com.board_of_ads.service.interfaces.AutoAttributesService;
 import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.service.interfaces.CityService;
 import com.board_of_ads.service.interfaces.DogBreedService;
-import com.board_of_ads.service.interfaces.DraftService;
 import com.board_of_ads.service.interfaces.ImageService;
 import com.board_of_ads.service.interfaces.PostingService;
 import com.board_of_ads.service.interfaces.UserService;
@@ -58,7 +61,6 @@ import java.util.Set;
 @AllArgsConstructor
 @Slf4j
 public class PostingRestController {
-
     private final CityService cityService;
     private final PostingService postingService;
     @Autowired
@@ -67,22 +69,6 @@ public class PostingRestController {
     private final UserService userService;
     private final ImageService imageService;
     private final DogBreedService dogBreedService;
-    private final DraftService draftService;
-
-    @PostMapping("/saveMiniatures") //переименовать?
-    public Response<List<String>> saveDraftMiniatures(@AuthenticationPrincipal User user, @RequestParam("file") MultipartFile[] file) {
-//                                                        @RequestParam(value = "photos") MultipartFile [] photos) {
-        //добавить свой метод преобразования?
-        List<MultipartFile> listOfFiles = Arrays.asList(file);
-        List<Image> images = imageService.savePhotos(user, listOfFiles);
-        List<String> paths = new ArrayList<>();
-        for (Image image : images
-        ) {
-            paths.add(image.getPathURL());
-        }
-        draftService.saveDraft(images, user.getId());
-        return Response.ok(paths);
-    }
 
     @GetMapping
     public Response<List<PostingDto>> findAllPosts() {
@@ -241,26 +227,123 @@ public class PostingRestController {
         }
     }
 
-    @PostMapping("/new/vacancy")
-    public Response<Void> saveNewVacancyPosting(@AuthenticationPrincipal User user,
-                                                @RequestParam Map<String, String> form,
-                                                @RequestParam(value = "photos") List<MultipartFile> photos,
-                                                @RequestParam(value = "preferences") List<String> preferences) {
-        log.info("Inside saveVacancyPosting (api/posting/new/vacancy). Received incoming data: User.id: " + user.getId()
-                + " / FormData: " + form + " / Photos: " + photos + " / Preferences: " + preferences);
-        User userById = userService.getUserById(user.getId());
-        Vacancy posting = new Vacancy();
-        City city = user.getCity() != null ? user.getCity()
-                : cityService.findCityByName(form.get("city")).orElse(null);
+    @PostMapping("/new/sellEstate/{id}")
+    public Response<Void> createSellEstatePosting(@PathVariable Long id,
+                                                  @AuthenticationPrincipal User user,
+                                                  @RequestParam Map<String,String> obj,
+                                                  @RequestParam(value = "photos") List<MultipartFile> photos) {
 
-        List<Image> images = imageService.savePhotos(userById, photos);
-        images.forEach(image -> image.setPostings(new ArrayList<>()));
+        try {
+            SellEstatePosting posting = postingService.addSellEstatePosting(obj);
+            List<Image> images =  imageService.savePhotos(user, photos);
+            posting.setUser(user);
+            posting.setCategory(categoryService.getCategoryById(id).getCategory());
+            posting.setCity(user.getCity());
+            posting.setImages(images);
+            postingService.save(posting);
+            log.info("Объявление успешно создано пользователем " + user.getEmail());
+            return Response.ok().build();
+        } catch (Exception ex) {
+            log.info("Не удалось создать объявление => " + ex.getMessage());
+            return new ErrorResponse<>(new Error(400, "Posting is not created"));
+        }
+    }
 
-        postingService.setVacancyCondition(form, preferences, userById, posting, city, images);
-        images.forEach(imageService::save);
-        images.forEach(image -> image.getPostings().add(posting));
-        postingService.save(posting);
-        return Response.ok().build();
+
+    @PostMapping("/new/buyEstate/{id}")
+    public Response<Void> createBuyEstatePosting(@PathVariable Long id,
+                                                 @AuthenticationPrincipal User user,
+                                                 @RequestParam Map<String,String> obj) {
+
+        try {
+            BuyEstatePosting posting = postingService.addBuyEstatePosting(obj);
+            posting.setUser(user);
+            posting.setCategory(categoryService.getCategoryById(id).getCategory());
+            posting.setCity(user.getCity());
+            postingService.save(posting);
+
+            log.info("Объявление успешно создано пользователем " + user.getEmail());
+            return Response.ok().build();
+        } catch (Exception ex) {
+            log.info("Не удалось создать объявление => " + ex.getMessage());
+            return new ErrorResponse<>(new Error(400, "Posting is not created"));
+        }
+    }
+
+
+    @PostMapping("/new/rentAnEstate/{id}")
+    public Response<Void> rentAnEstatePosting(@PathVariable Long id,
+                                              @AuthenticationPrincipal User user,
+                                              @RequestParam Map<String,String> obj,
+                                              @RequestParam(value = "photos") List<MultipartFile> photos) {
+        try {
+            RentAnEstatePosting posting = postingService.addRentAnEstatePosting(obj);
+            List<Image> images = imageService.savePhotos(user, photos);
+
+            posting.setUser(user);
+            posting.setCategory(categoryService.getCategoryById(id).getCategory());
+            posting.setCity(user.getCity());
+            posting.setImages(images);
+            postingService.save(posting);
+
+            log.info("Объявление успешно создано пользователем " + user.getEmail());
+            return Response.ok().build();
+
+        } catch (Exception ex) {
+            log.info("Не удалось создать объявление => " + ex.getMessage());
+            return new ErrorResponse<>(new Error(400, "Posting is not created"));
+        }
+
+    }
+
+    @PostMapping("/new/getAnEstate/{id}")
+    public Response<Void> getAnEstatePosting(@PathVariable Long id,
+                                             @AuthenticationPrincipal User user,
+                                             @RequestParam Map<String,String> obj,
+                                             @RequestParam(value = "photos") List<MultipartFile> photos) {
+        try {
+            GetAnEstatePosting posting = postingService.addGetAnEstatePosting(obj);
+            List<Image> images = imageService.savePhotos(user, photos);
+
+            posting.setUser(user);
+            posting.setCategory(categoryService.getCategoryById(id).getCategory());
+            posting.setCity(user.getCity());
+            posting.setImages(images);
+            postingService.save(posting);
+
+            log.info("Объявление успешно создано пользователем " + user.getEmail());
+            return Response.ok().build();
+
+        } catch (Exception ex) {
+            log.info("Не удалось создать объявление => " + ex.getMessage());
+            return new ErrorResponse<>(new Error(400, "Posting is not created"));
+        }
+    }
+
+    @PostMapping("/new/vacancy/{id}")
+    public Response<Void> createVacancyPosting(@PathVariable Long id,
+                                               @AuthenticationPrincipal User user,
+                                               @RequestParam Map<String,String> obj,
+                                               @RequestParam(value = "photos") List<MultipartFile> photos) {
+        Vacancy posting;
+
+        try {
+            posting = new Vacancy(userService.getUserById(user.getId()), categoryService.getCategoryById(id),
+                    obj.get("title"), obj.get("description"), Long.parseLong(obj.get("price")), obj.get("contact"),
+                    true, obj.get("schedule"), obj.get("experienceValue"), obj.get("placeOfWork"),
+                    obj.get("contactEmail"), obj.get("communicationType"), obj.get("frequency"), obj.get("duties"),
+                    Boolean.parseBoolean(obj.get("isFor45")), Boolean.parseBoolean(obj.get("isFor14")),
+                    Boolean.parseBoolean(obj.get("isForHandicapped")));
+            List<Image> images = imageService.savePhotos(user, photos);
+            posting.setImages(images);
+            posting.setCity(cityService.findCityByName("Одинцово").get());
+            postingService.save(posting);
+            log.info("Объявление успешно создано пользователем " + user.getEmail());
+            return Response.ok().build();
+        } catch (Exception ex) {
+            log.info("Не удалось создать объявление => " + ex.getMessage());
+            return new ErrorResponse<>(new Error(400, "Posting is not created"));
+        }
     }
 
     @PostMapping("/new/audiovideo/{id}")

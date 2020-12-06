@@ -66,6 +66,7 @@ public class Category {
         this.name = name;
         this.category = category;
         this.layer = layer;
+
     }
 
     public Category(String name, Category category, int layer, String frontName) {
@@ -74,6 +75,7 @@ public class Category {
         this.category = category;
         this.layer = layer;
         this.frontName = frontName;
+
     }
 
     public Category(Long id, String name, Category category, int layer) {

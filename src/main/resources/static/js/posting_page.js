@@ -14,7 +14,7 @@ async function getPostingDto(id) {
 }
 
 async function getCategoryByName(name) {
-    let response = await fetch("/api/category/" + name, {
+    let response = await fetch("/api/category/getByName/" + name, {
         method: 'GET',
         headers: {
             'Accept': 'application/json',
@@ -115,6 +115,8 @@ async function getPostingInfo(id) {
         postingDto.datePosting.toString().substring(0, 4) + " " +
         postingDto.datePosting.toString().substring(11, 16);
 
+    $("#title").append(`${postingDto.title}`);
+
     $("#timeOfPosting").append(date);
     $("#price").append(`${postingDto.price} ₽`);
     $("#contactNumber").append(`<br>${postingDto.contact}`);
@@ -158,7 +160,7 @@ async function deleteFromFavorites() {
 
     $("#buttonFav_txt" + postingId).text("Добавить в избранное");
     fetch(`/api/favorite/delete/` + postingId, {
-        method: 'GET',
+        method: 'DELETE',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -188,3 +190,19 @@ async function isFavorite() {
     return false;
 }
 
+
+
+
+
+/*
+{"success":true,
+    "data": {
+        "id":1602,
+        "title":"Ремонт электроники",
+        "description":"Быстро, качественно",
+        "price":1000,
+        "contact":"+79998887766",
+        "datePosting":[2020,12,1,14,3,24,269814000],
+        "images":[{"id":1599,"pathURL":"/images/numbers/4.jpg","postings":null},{"id":1598,"pathURL":"/images/numbers/3.jpg","postings":null},{"id":1597,"pathURL":"/images/numbers/2.jpg","postings":null},{"id":1596,"pathURL":"/images/numbers/1.jpg","postings":null},{"id":1595,"pathURL":"/images/numbers/0.jpg","postings":null}],
+        "category":{"id":1313,"name":"Недвижимость","parent":false,"layer":1,"frontName":null},"city":"Ростов","meetingAddress":null,"isActive":null,"userEmail":null,"viewNumber":7}}
+*/

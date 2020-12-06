@@ -70,11 +70,11 @@ async function fillNewCarPostingFields(pc) {
 
     let mainDiv = document.createElement('div');
     mainDiv.setAttribute('id', 'car-post-fields-main-container');
-    document.getElementById('visibleElement2').appendChild(mainDiv);
 
     // changePathCategory();
     changeMeetingPlace();
-    addTypeOfUsedCarPosting()
+
+    addTypeOfUsedCarPosting();
 
     let div1 = makeMainAndTitleFields('1', "Внешний вид");
     mainDiv.appendChild(div1);

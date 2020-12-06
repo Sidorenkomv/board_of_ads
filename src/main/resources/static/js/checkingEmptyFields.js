@@ -12,7 +12,7 @@ function isAllRequiredFieldFilled() {
         }
     });
 
-    if ($('#postPhotos').prop('files').length < 1) {
+    if (fileList.length < 1) {
         noBlankFields = false;
         $('#errorFor-postPhotos').removeClass('hidden');
     }

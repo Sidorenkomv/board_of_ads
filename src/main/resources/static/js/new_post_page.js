@@ -138,13 +138,21 @@ async function changeVisible(frontName, id) {
             await getDogsForm(frontName, id);
             break;
         case 'vacancy':
-            await buildVacancyForm(frontName, id);
+            await getVacancyForm(frontName, id);
             break;
         case 'ready-business':
             showReadyBusinessForm(frontName, id);
             break;
         case 'equpment-for-business':
             showEquipmentForBusinessForm(frontName, id);
+            break;
+        case 'sellEstate' : await getEstate(frontName, id)
+            break;
+        case 'rentAnEstate' : await getEstate(frontName, id)
+            break;
+        case 'buyEstate' : await getEstate(frontName, id)
+            break;
+        case 'getAnEstate' : await getEstate(frontName, id)
             break;
         default:
             alert('For frontName="' + frontName + '" not found posting form');
