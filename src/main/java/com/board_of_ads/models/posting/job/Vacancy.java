@@ -41,6 +41,7 @@ public class Vacancy extends JobPosting {
     @Column
     private Boolean isForHandicapped;
 
+
     public Vacancy (User user, Category category, String title, String description, Long price, String contact, Boolean isActive,
                     String schedule, String experienceValue, String placeOfWork,
                     String contactEmail, String communicationType, String frequency, String duties,
