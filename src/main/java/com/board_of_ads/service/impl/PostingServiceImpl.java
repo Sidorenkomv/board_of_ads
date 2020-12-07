@@ -526,6 +526,4 @@ public class PostingServiceImpl implements PostingService {
             return new ErrorResponse<>(new Error(400, "Posting is not created"));
         }
     }
-
-
 }

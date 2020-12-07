@@ -20,6 +20,7 @@ import com.board_of_ads.models.posting.forDogs.DogBreed;
 import com.board_of_ads.service.interfaces.AutoAttributesService;
 import com.board_of_ads.service.interfaces.DogBreedService;
 import com.board_of_ads.service.interfaces.MessageService;
+import com.board_of_ads.repository.CityRepository;
 import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.service.interfaces.CityService;
 import com.board_of_ads.service.interfaces.ImageService;
@@ -68,13 +69,14 @@ public class DataInitializer {
     private final DogBreedService dogBreedService;
     List<Posting> postingList;
 
+    private final CityRepository cityRepository;
 
     @PostConstruct
+
     private void init() throws IOException {
-        initUsers();
-        initMoreUsers();
         initKladr();
         initUsers();
+        initMoreUsers();
         initCategories();
         initPosting();
         initOrders();
@@ -104,7 +106,7 @@ public class DataInitializer {
             Set<Role> roleAdmin = new HashSet<>();
             roleAdmin.add(roleService.getRoleByName("ADMIN"));
             admin.setRoles(roleAdmin);
-            //admin.setCity(cityService.findCityByName("Екатеринбург").get());
+            admin.setCity(cityRepository.findCitiesByName("Екатеринбург").get());
             userService.saveUser(admin);
         }
         if (userService.getUserByEmail("user@mail.ru") == null) {
@@ -118,6 +120,7 @@ public class DataInitializer {
             Set<Role> roleAdmin = new HashSet<>();
             roleAdmin.add(roleService.getRoleByName("USER"));
             user.setRoles(roleAdmin);
+            user.setCity(cityRepository.findCitiesByName("Рязань").get());
             userService.saveUser(user);
         }
     }
@@ -159,11 +162,16 @@ public class DataInitializer {
         subCategoryList.add(new Category("Вакансии", categoryService.getCategoryByName("Работа").get(), 2, "vacancy"));
         subCategoryList.add(new Category("Резюме", categoryService.getCategoryByName("Работа").get(), 2));
 
+        subCategoryList.add(new Category("IT, интернет, телеком", categoryService.getCategoryByName("Услуги").get(), 2));
+        subCategoryList.add(new Category("Бытовые услуги", categoryService.getCategoryByName("Услуги").get(), 2));
+        subCategoryList.add(new Category("Деловые услуги", categoryService.getCategoryByName("Услуги").get(), 2));
+        subCategoryList.add(new Category("Няни, сиделки", categoryService.getCategoryByName("Услуги").get(), 2));
+
         subCategoryList.add(new Category("Одежда, обувь, аксессуары", categoryService.getCategoryByName("Личные вещи").get(), 2));
-        subCategoryList.add(new Category("Детская одежда и обувь", categoryService.getCategoryByName("Личные вещи").get(), 2));
-        subCategoryList.add(new Category("Товары для детей и игрушки", categoryService.getCategoryByName("Личные вещи").get(), 2));
-        subCategoryList.add(new Category("Часы и украшения", categoryService.getCategoryByName("Личные вещи").get(), 2));
-        subCategoryList.add(new Category("Красота и здоровье", categoryService.getCategoryByName("Личные вещи").get(), 2));
+        subCategoryList.add(new Category("Детская одежда и обувь", categoryService.getCategoryByName("Личные вещи").get()));
+        subCategoryList.add(new Category("Товары для детей и игрушки", categoryService.getCategoryByName("Личные вещи").get()));
+        subCategoryList.add(new Category("Часы и украшения", categoryService.getCategoryByName("Личные вещи").get()));
+        subCategoryList.add(new Category("Красота и здоровье", categoryService.getCategoryByName("Личные вещи").get()));
 
         subCategoryList.add(new Category("Бытовая техника", categoryService.getCategoryByName("Для дома и дачи").get(), 2));
         subCategoryList.add(new Category("Мебель и интерьер", categoryService.getCategoryByName("Для дома и дачи").get(), 2));
@@ -181,6 +189,7 @@ public class DataInitializer {
         subCategoryList.add(new Category("Телефоны", categoryService.getCategoryByName("Бытовая электроника").get(), 2));
         subCategoryList.add(new Category("Товары для компьютера", categoryService.getCategoryByName("Бытовая электроника").get(), 2));
         subCategoryList.add(new Category("Фототехника", categoryService.getCategoryByName("Бытовая электроника").get(), 2));
+
         subCategoryList.add(new Category("Билеты и путешествия", categoryService.getCategoryByName("Хобби и отдых").get(), 2));
         subCategoryList.add(new Category("Велосипеды", categoryService.getCategoryByName("Хобби и отдых").get(), 2));
         subCategoryList.add(new Category("Книги и журналы", categoryService.getCategoryByName("Хобби и отдых").get(), 2));
@@ -583,65 +592,65 @@ public class DataInitializer {
 
     private void initPosting() {
         postingList = new ArrayList<>();
-        postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Услуги").get()
+        postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Бытовые услуги").get()
                 , "Поглажу кота", "Очень качественно", 100L, "+79998887766", cityService.findCityByName("Ростов").get(), true, 0));
-        postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Транспорт").get()
+        postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Новые").get()
                 , "Поддержу советом", "Не факт что полезным", 50L, "+79998887766", cityService.findCityByName("Ростов").get(), true, 0));
-        postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Недвижимость").get()
+        postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Бытовые услуги").get()
                 , "Ремонт электроники", "Быстро, качественно", 1000L, "+79998887766", cityService.findCityByName("Ростов").get(), true, 0));
-        postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Недвижимость").get()
+        postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Деловые услуги").get()
                 , "Монтаж электросетей", "Любая сложность", 10_000L, "+79998887766", cityService.findCityByName("Азов").get(), true, 0));
-        postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Транспорт").get()
+        postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("С пробегом").get()
                 , "Няня", "от 1 года", 2_000L, "+79998887766", cityService.findCityByName("Азов").get(), true, 0));
-        postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Услуги").get()
+        postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Бытовые услуги").get()
                 , "Посмотрю телевизор за Вас", "только 16к", 1_000L, "+79998887766", cityService.findCityByName("Азов").get(), false, 0));
         postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Услуги").get()
                 , "Схожу за продуктами", "Могу в Ашан, могу в Пятерочку", 1_000L, "+79998887766", cityService.findCityByName("Азов").get(), false, 0));
-        postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Услуги").get()
+        postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Бытовые услуги").get()
                 , "Выгуляю собаку", "Ей понравится", 1_000L, "+79998887766", cityService.findCityByName("Азов").get(), false, 0));
-        postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Услуги").get()
+        postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Бытовые услуги").get()
                 , "Газовщик", "Любая сложность", 2_000L, "+79998887766", cityService.findCityByName("Азов").get(), false, 0));
-        postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Услуги").get()
+        postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Деловые услуги").get()
                 , "Врач", "Терапевт", 3_000L, "+79998887766", cityService.findCityByName("Ростов-на-Дону").get(), true, 0));
-        postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Транспорт").get()
+        postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Деловые услуги").get()
                 , "Стоматолог", "Будет не больно", 5_000L, "+79998887766", cityService.findCityByName("Ростов-на-Дону").get(), true, 0));
-        postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Недвижимость").get()
+        postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Деловые услуги").get()
                 , "Киллер", "Будет больно", 300_000L, "+79998887766", cityService.findCityByName("Ростов-на-Дону").get(), true, 0));
-        postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Услуги").get()
+        postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Деловые услуги").get()
                 , "Собутыльник", "Будет весело", 500L, "+79998887766", cityService.findCityByName("Ростов-на-Дону").get(), true, 0));
-        postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Услуги").get()
+        postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Бытовые услуги").get()
                 , "Грузовые перевозки", "Трезвые грузчики", 10_000L, "+79998887766", cityService.findCityByName("Ростов-на-Дону").get(), true, 0));
-        postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Услуги").get()
+        postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Бытовые услуги").get()
                 , "Сыграю в лото", "Я в этом хорош", 500L, "+79998887766", cityService.findCityByName("Ростов-на-Дону").get(), true, 0));
-        postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Услуги").get()
+        postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Бытовые услуги").get()
                 , "Разобью сердце", "Только парням", 10_000L, "+79998887766", cityService.findCityByName("Ростов-на-Дону").get(), true, 0));
-        postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Услуги").get()
+        postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Бытовые услуги").get()
                 , "Схожу в кино", "За компанию", 1_000L, "+79998887766", cityService.findCityByName("Ростов-на-Дону").get(), true, 0));
-        postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Услуги").get()
+        postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Бытовые услуги").get()
                 , "Сдамся в рабство", "ненадолго", 50_000L, "+79998887766", true));
-        postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Услуги").get()
+        postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Бытовые услуги").get()
                 , "Уведу у Вас девушку", "Вдруг она вам надоела", 3_000L, "+79998887766", false));
-        postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Услуги").get()
+        postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Бытовые услуги").get()
                 , "Обижу обидчиков", "Не старше 18 лет", 5_000L, "+79896661488", true));
-        postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Услуги").get()
+        postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Бытовые услуги").get()
                 , "Отмажу от ментов", "У меня папка начальник", 10_000L, "+79896661488", false));
-        postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Услуги").get()
+        postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Бытовые услуги").get()
                 , "Вынесу мусор", "Небольшой", 400L, "+79896661488", true));
-        postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Услуги").get()
+        postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Бытовые услуги").get()
                 , "Научу играть на гитаре", "Учил самого Цоя", 10_000L, "+79896661488", false));
-        postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Услуги").get()
+        postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Бытовые услуги").get()
                 , "Научу играть в Warcraft", "PvP или зассал?", 10_000L, "+79896661488", false));
-        postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Услуги").get()
+        postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Бытовые услуги").get()
                 , "Продам средство для похудения", "Результат уже через 3 дня. Нужно всего лишь 1 ложка...", 10_000L, "+79896661488", true));
-        postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Услуги").get()
+        postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Бытовые услуги").get()
                 , "Продам ядерный реактор", "Самовывоз с Припяти", 500_000L, "+79896661488", true));
-        postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Услуги").get()
+        postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Бытовые услуги").get()
                 , "Стань программистом за 1 урок", "Урок №1: перезагрузка роутера", 20_000L, "+79896661488", true));
-        postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Услуги").get()
+        postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Бытовые услуги").get()
                 , "Свадебный фотограф", "Фоткаю на iPhone 7", 10_000L, "+79896661488", true));
-        postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Услуги").get()
+        postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Бытовые услуги").get()
                 , "Компьютерный мастер на дом", "Перезагружу ваш компьютер быстро и качественно", 4_000L, "+79896661488", true));
-        postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Услуги").get()
+        postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Бытовые услуги").get()
                 , "Сесть на пенёк", "...Почему тут так мало?", 1_000L, "+79896661488", true));
 
         Image one = new Image(null, "/images/numbers/0.jpg");

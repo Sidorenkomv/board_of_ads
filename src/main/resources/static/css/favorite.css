@@ -34,16 +34,16 @@ li {
 }
 
 .favorite-container {
-    border: 1px solid gray;
+    position: relative;
     display: flex;
     justify-content: space-between;
     margin-top: 30px;
     height: 26%;
     width: 65%;
+    border-radius: 15px;
 }
 
 .photo, .desc, .buttons {
-    border: 1px solid gray;
     display: flex;
     justify-content: center;
     height: 86%;
@@ -51,14 +51,23 @@ li {
     margin-top: 2%;
     margin-left: 2%;
 }
+.photo{
+    background: url(/images/numbers/1.jpg) no-repeat center center;
 
-.buttons {
-    width: 28%;
+    background-size: cover;
+    border-radius: 7px;
+    border: 1px solid black;
+    width: 40%;
+
 }
+
+/*.buttons {
+    width: 28%;
+}*/
 
 .addToWish, .deleteWish {
     margin-top: 8px;
-    margin-left: 77px;
+    margin-left: 65px;
     width: 15px;
     position: absolute;
     z-index: 999;
@@ -71,3 +80,64 @@ li {
 .text-size {
     font-size: 14px;
 }
+
+
+
+
+.button-responsive {
+    position: relative;
+    width: 33%;
+
+}
+
+.range-txt {
+    position: absolute;
+    bottom: 0%;
+    left: 0;
+    width: 100%;
+    color: #000;
+    font-size: 20px;
+    padding: 10px 10px 10px 16px;
+    text-align: center;
+}
+
+.position-rage-bottom {
+    padding-bottom: 20px;
+}
+
+.favorite-container input {
+    position: absolute;
+    width: 100px;
+    height: 30px;
+    top: 15px;
+    left: -30px;
+    background: white;
+    color: black;
+    border: black 1px solid;
+    border-radius: 3px;
+}
+
+.favorite-container:hover {
+    background:#DCDCDC;
+}
+
+.favorite-container input {
+    opacity: 0;
+}
+
+
+.favorite-container:hover input {
+    opacity: 1;
+}
+
+.custom-checkbox {
+
+}
+
+#flag input {
+    opacity: 1;
+    position: absolute;
+    left: -20px;
+    border: 1px solid red;
+}
+

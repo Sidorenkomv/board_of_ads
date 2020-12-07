@@ -1,5 +1,6 @@
 package com.board_of_ads.repository;
 
+import com.board_of_ads.models.Category;
 import com.board_of_ads.models.City;
 import com.board_of_ads.models.Region;
 import com.board_of_ads.models.dto.analytics.ReportCityPostingDto;
@@ -10,10 +11,14 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 @Repository
+
 public interface CityRepository extends JpaRepository<City, Long> {
 
     Set<City> findCitiesByRegion(Region region);
@@ -21,6 +26,12 @@ public interface CityRepository extends JpaRepository<City, Long> {
     boolean existsCityByNameAndRegion(String cityName, Region region);
 
     Optional<City> findCitiesByName(String name);
+
+    Optional<City> findCityById(Long id);
+
+    @Query("SELECT u FROM City u WHERE u.millionCity = true order by u.name")
+    Set<City> getCitiesByPopulation();
+
 
     @Query("select new com.board_of_ads.models.dto.analytics.ReportCityPostingDto(" +
             "c.name, count (c.name), sum (case when p.isActive = true then 1 else 0 end), sum (case when p.isActive = true then 0 else 1 end)" +

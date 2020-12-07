@@ -3,6 +3,8 @@ package com.board_of_ads.controllers.rest;
 import com.board_of_ads.models.Category;
 import com.board_of_ads.models.dto.CategoryDto;
 import com.board_of_ads.models.dto.CategoryDtoMenu;
+import com.board_of_ads.models.dto.analytics.ReportCategoryPostingDto;
+import com.board_of_ads.models.dto.analytics.ReportCityPostingDto;
 import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.util.Error;
 import com.board_of_ads.util.ErrorResponse;
@@ -64,6 +66,15 @@ public class CategoryRestController {
                 : new ErrorResponse<>(new Error(204, "No found category"));
     }
 
+    @GetMapping ("/getByName/{categoryName}")
+    public Response <CategoryDto> getCategoryByName (@PathVariable String categoryName) {
+        var category = categoryService.getCategoryDtoByName(categoryName);
+        log.info("CategoryRestController.getCategoryByName() worked with name " + categoryName);
+        return (category.isPresent())
+                ? Response.ok(category.get())
+                : new ErrorResponse<>(new Error(204, "Category by name " + categoryName + " not found"));
+    }
+
    @PutMapping("/{old}")
     public Response<Category> setCategory(@PathVariable(name = "old") String old, @RequestBody CategoryDto category) {
         var result = categoryService.updateCategory(old, category);
@@ -84,4 +95,10 @@ public class CategoryRestController {
         categoryService.createCategory(category);
         return new Response<>();
     }
+
+    @PostMapping("/date")
+    public Response<List<ReportCategoryPostingDto>> findByDate(@RequestBody String date) {
+        return Response.ok(categoryService.getNumberOfPostings(date));
+    }
+
 }

@@ -11,15 +11,15 @@
                     </div>
                 </div>
                 <div th:if="${user.getAvatar() == null}">
-                    <div class="user-profile-avatar" id="avatar"></div>
+                    <div class="user-profile-avatar" id="avatarHide"></div>
                     <br>
-                    <div class="user-profile-name" id="name" th:text="${user.getFirstName() + ' ' + user.getLastName()}">
+                    <div class="user-profile-name" id="nameHide" th:text="${user.getFirstName() + ' ' + user.getLastName()}">
                         %username%
                     </div>
                 </div>
-
+                <div id="userpostid" class="userpostid" th:text="${user.getId()}"></div>
                 <a href="#">
-                    <span style="color: black"><strong>3,0</strong></span>
+                    <span style="color: black"><strong>0,0</strong></span>
                     <div class="rating-mini-profile">
                         <span class="active"></span>
                         <span class="active"></span>
@@ -34,7 +34,7 @@
                     <strong th:text="#{myAds}">Мои объявления</strong><br>
                     <a th:text="#{myOrders}" href="#">Заказы</a><br>
                     <a th:text="#{MyReviews}" href="#">Мои отзывы</a><br>
-                    <a th:text="#{Favourites}" href="#">Избранное</a><br>
+                    <a th:text="#{Favourites}" href="/favorite">Избранное</a><br>
                     <li class="dropdown-divider"></li>
                     <a th:text="#{messages}" href="/messenger" >Сообщения</a><br>
                     <a th:text="#{Notifications}" href="/notifications" id="noteCallLeft">Уведомления</a><br>
@@ -42,12 +42,14 @@
                     <a th:text="#{Wallet}" href="#">Кошелек</a><br>
                     <a th:text="#{PaidService}" href="#">Платные услуги</a><br>
                     <li class="dropdown-divider"></li>
-                    <a th:text="#{settings}" href="#">Настройки</a><br>
+                    <a id="profileSettings" th:text="#{settings}" href="#">Настройки</a><br>
                 </div>
             </div>
-            <div class="col-md-9" id="posts_block">
-                <div id="profile-posts-content" th:insert="fragments/posts_block_fragments::profile-posts-block"></div>
-            </div>
+
+            <div th:insert="fragments/profile-myposts::profile-myposts"></div>
+            <div th:insert="fragments/profile-settings::profile-settings"></div>
+
+        </div>
     </div>
 </div>
 </div>
