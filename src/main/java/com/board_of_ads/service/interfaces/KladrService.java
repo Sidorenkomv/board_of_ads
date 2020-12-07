@@ -2,6 +2,7 @@ package com.board_of_ads.service.interfaces;
 
 import com.board_of_ads.models.City;
 import com.board_of_ads.models.Region;
+import org.apache.poi.ss.usermodel.Cell;
 
 import java.io.IOException;
 import java.util.Set;
@@ -20,5 +21,8 @@ public interface KladrService {
 
     boolean existsRegionByName(String regionName);
 
-    void streamKladr() throws IOException;
+    void streamKladr();
+
+    String readCellToString(Cell cell);
+
 }
