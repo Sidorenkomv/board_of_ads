@@ -498,8 +498,6 @@ public class PostingServiceImpl implements PostingService {
         posting.setSchedule(form.get("schedule"));
         posting.setDuties(form.get("duties"));
         posting.setExperienceValue(form.get("workExperience"));
-        posting.setLocation(form.get("location"));
-        posting.setPreferences(options.toString());
         posting.setPrice(Long.valueOf(form.get("price")));
         posting.setImages(images);
     }
