@@ -191,13 +191,14 @@ function showEquipmentForBusinessForm(fName, ident) {
         '\n' +
         '                <div class="form-group row">\n' +
         '                    <label for="postPhotos" class="col-sm-2 col-form-label">Фотографии</label>\n' +
-        '                    <div class="col-sm-2 d-flex">\n' +
-        '                        <label class="" data-marker="add">\n' +
-        '                            <input id="postPhotos" type="file" value="" multiple style="display: block" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input" >\n' +
+        '\n' +
+        '                    <div id="photoList" class="listOfPhoto col-sm-6 d-flex">\n' +
+        '                        <label for="postPhotos" type="button" class="photo-upload" data-marker="add">\n' +
+        '                            <input id="postPhotos" type="file" value="" multiple class="hidden" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input">\n' +
         '                            <div id="uploadPhotos"></div>' +
-        '                        <p  id="fill_photo"></p>\n' +
         '                        </label>\n' +
         '                    </div>\n' +
+        '                     <p id="errorFor-postPhotos" class="hidden error-text" data-toggle="tooltip" data-placement="top">Загрузите хотя бы одну фотографию</p>\n' +
         '                </div>\n' +
         '\n' +
         '                <div class="form-group row">\n' +
@@ -209,5 +210,8 @@ function showEquipmentForBusinessForm(fName, ident) {
         '            </form>\n' +
         '        </div>\n' +
         '    </div>'
+
+    choosenFiles = document.getElementById('postPhotos');
+    choosenFiles.addEventListener('change', checkFiles, false);
 
 }

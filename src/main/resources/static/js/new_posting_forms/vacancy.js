@@ -257,4 +257,7 @@ async function buildVacancyForm(frontName, selectedCategoryId) {
         '            </td>\n' +
         '        </tr>\n' +
         '    </table>';
+
+    choosenFiles = document.getElementById('postPhotos');
+    choosenFiles.addEventListener('change', checkFiles, false);
 }
