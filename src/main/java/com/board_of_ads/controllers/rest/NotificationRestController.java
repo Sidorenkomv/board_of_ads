@@ -32,7 +32,7 @@ public class NotificationRestController {
 
     public NotificationRestController(){}
 
-    @GetMapping //done
+    @GetMapping
     public Response<List<NotificationDto>> getNotificationsOfUser(@AuthenticationPrincipal User principal){
         log.info("In NotificationRestController: inside getNotificationsOfUser notification ");
         User user = userService.getUserById(principal.getId());
@@ -41,21 +41,21 @@ public class NotificationRestController {
                 : new ErrorResponse<>(new Error(204, "Notifications not found"));
     }
 
-    @PatchMapping("/{noteId}") // done
+    @PatchMapping("/{noteId}")
     public Response<Void> changeStatusToRead(@PathVariable Long noteId, @AuthenticationPrincipal User principal){
         log.info("inside api changeStatusToRead ");
         boolean test = notificationService.changeStatusToRead(noteId, principal);
         return test ? new Response<>() : new ErrorResponse<>(new Error(204, "Notification not found"));
     }
 
-    @DeleteMapping("/{noteId}") // done
+    @DeleteMapping("/{noteId}")
     public Response<Void> deleteNotificationFromUser(@PathVariable Long noteId, @AuthenticationPrincipal User principal) {
         log.info("inside api deleteNotificationFromUser ");
         boolean test = notificationService.deleteNotificationFromUser(noteId, principal);
         return  test ? new Response<>() : new ErrorResponse<>(new Error(204, "Notification not found"));
     }
 
-    @GetMapping("/count-map")  // тут все норм
+    @GetMapping("/count-map")
     public Response<int[]> getNotificationsCountOfUser(@AuthenticationPrincipal User principal){
         log.info("In getNotificationsCountOfUser api-method notification ");
         User user = userService.getUserById(principal.getId());
