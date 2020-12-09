@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -33,51 +32,35 @@ public class NotificationRestController {
 
     public NotificationRestController(){}
 
-    @GetMapping
+    @GetMapping //done
     public Response<List<NotificationDto>> getNotificationsOfUser(@AuthenticationPrincipal User principal){
         log.info("In NotificationRestController: inside getNotificationsOfUser notification ");
         User user = userService.getUserById(principal.getId());
-        List<UserNotification> userNotifications = notificationService.getUsersAllNotifications(user);
-        if ( userNotifications.size() > 0 ) {
-            List<NotificationDto> notificationsResponseList = new ArrayList<>();
-            for (UserNotification userNote: userNotifications) {
-                notificationsResponseList.add(new NotificationDto(userNote));
-            }
-            return Response.ok(notificationsResponseList);
-        } else {
-            return  new ErrorResponse<>(new Error(204, "Notifications not found"));
-        }
+        List<NotificationDto> notificationsResponseList = notificationService.getNotificationDtoOfUser(user);
+        return notificationsResponseList.size()>0 ? Response.ok(notificationsResponseList)
+                : new ErrorResponse<>(new Error(204, "Notifications not found"));
     }
 
-    @PatchMapping("/{noteId}")
+    @PatchMapping("/{noteId}") // done
     public Response<Void> changeStatusToRead(@PathVariable Long noteId, @AuthenticationPrincipal User principal){
         log.info("inside api changeStatusToRead ");
-        UserNotification un = notificationService.findByNoteIdAndUserId(noteId, principal.getId());
-        if (un != null) {
-            un.setStatus("read");
-            notificationService.updateUserNotificationFields(un);
-            return new Response<>();
-        }
-        return new ErrorResponse<>(new Error(204, "Notification not found"));
+        boolean test = notificationService.changeStatusToRead(noteId, principal);
+        return test ? new Response<>() : new ErrorResponse<>(new Error(204, "Notification not found"));
     }
 
-    @DeleteMapping("/{noteId}")
+    @DeleteMapping("/{noteId}") // done
     public Response<Void> deleteNotificationFromUser(@PathVariable Long noteId, @AuthenticationPrincipal User principal) {
         log.info("inside api deleteNotificationFromUser ");
-        UserNotification un = notificationService.findByNoteIdAndUserId(noteId, principal.getId());
-        if (un != null) {
-            notificationService.deleteUserNotification(un);
-            return new Response<>();
-        }
-        return new ErrorResponse<>(new Error(204, "Notification not found"));
+        boolean test = notificationService.deleteNotificationFromUser(noteId, principal);
+        return  test ? new Response<>() : new ErrorResponse<>(new Error(204, "Notification not found"));
     }
 
-    @GetMapping("/count-map")
+    @GetMapping("/count-map")  // тут все норм
     public Response<int[]> getNotificationsCountOfUser(@AuthenticationPrincipal User principal){
         log.info("In getNotificationsCountOfUser api-method notification ");
         User user = userService.getUserById(principal.getId());
         int[] countMap = notificationService.getUsersNotificationsCountMap(user);
-            return  Response.ok(countMap);
+        return  Response.ok(countMap);
     }
 }
 

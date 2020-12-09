@@ -3,6 +3,7 @@ package com.board_of_ads.service.impl;
 import com.board_of_ads.models.Notification;
 import com.board_of_ads.models.User;
 import com.board_of_ads.models.UserNotification;
+import com.board_of_ads.models.dto.NotificationDto;
 import com.board_of_ads.repository.NotificationRepository;
 import com.board_of_ads.repository.UserNotificationRepository;
 import com.board_of_ads.service.interfaces.NotificationService;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,8 +58,8 @@ public class NotificationServiceImpl implements NotificationService {
         try {
             return userNotificationRepository.getUserNotificationsByUser(user);
         } catch (Exception e) {
-               log.error("Exception occur while fetch Notification by User ", e);
-               return new ArrayList<>();
+            log.error("Exception occur while fetch Notification by User ", e);
+            return new ArrayList<>();
         }
     }
 
@@ -73,17 +75,17 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public UserNotification findByNoteIdAndUserId(Long noteId, Long userId){
+    public UserNotification findByNoteIdAndUserId(Long noteId, Long userId) {
         log.debug(" in findByNoteIdAndUserId(Long noteId, Long userId) ...");
         return userNotificationRepository.findById_NotificationIdAndId_UserId(noteId, userId);
     }
 
     @Override
-    public boolean updateUserNotificationFields(UserNotification userNote){
-        try{
-        notificationRepository.save(userNote.getNotification());
-        userNotificationRepository.save(userNote);
-        return true;
+    public boolean updateUserNotificationFields(UserNotification userNote) {
+        try {
+            notificationRepository.save(userNote.getNotification());
+            userNotificationRepository.save(userNote);
+            return true;
         } catch (Exception e) {
             log.error("Exception occur while trying to update UserNotification ", e);
             return false;
@@ -91,8 +93,8 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public boolean deleteUserNotification(UserNotification userNotification){
-        try{
+    public boolean deleteUserNotification(UserNotification userNotification) {
+        try {
             userNotificationRepository.delete(userNotification);
             return true;
         } catch (Exception e) {
@@ -102,10 +104,10 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public int[] getUsersNotificationsCountMap(User user){
+    public int[] getUsersNotificationsCountMap(User user) {
         int[] countMap = new int[3];
         List<UserNotification> userNotifications = getUsersAllNotifications(user);
-        if ( userNotifications.size() > 0 ) {
+        if (userNotifications.size() > 0) {
             countMap[0] = userNotifications.size();
             for (UserNotification un : userNotifications) {
                 if (un.getStatus().equals("newSent")) {
@@ -116,4 +118,33 @@ public class NotificationServiceImpl implements NotificationService {
         }
         return countMap;
     }
+
+    public boolean changeStatusToRead(Long noteId, User user) {
+        boolean var = false;
+        UserNotification un = findByNoteIdAndUserId(noteId, user.getId());
+        if (un != null) {
+            un.setStatus("read");
+            var = updateUserNotificationFields(un);
+        }
+        return var;
+    }
+
+    public List<NotificationDto> getNotificationDtoOfUser (User user) { //insert findAllUserNotificationDto(id)
+/*        List<NotificationDto> notificationsResponseList = new ArrayList<>();
+        List<UserNotification> userNotifications = getUsersAllNotifications(user);
+        if (userNotifications.size() > 0) {
+            for (UserNotification userNote : userNotifications) {
+                notificationsResponseList.add(new NotificationDto(userNote));
+            }
+        }
+        return notificationsResponseList;*/
+        return notificationRepository.findAllUserNotificationDto(user.getId());
+
+    }
+
+    public boolean deleteNotificationFromUser (Long noteId, User user) {
+        UserNotification un = findByNoteIdAndUserId(noteId, user.getId());
+        return un != null && deleteUserNotification(un);
+    }
+
 }
