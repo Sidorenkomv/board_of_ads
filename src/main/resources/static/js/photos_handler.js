@@ -14,7 +14,7 @@ function deletePhoto(event) {
 }
 
 function rotatePhoto(event) {
-    //поворачивает фотку в canvas, заменяет в списке файлов на перевернутую версию
+    //поворачивает фото в canvas, заменяет в списке файлов на перевернутую версию
     let id = (event.currentTarget.id).slice(event.currentTarget.id.lastIndexOf('_') + 1);
     let img = new Image();
     let canvas = document.createElement('canvas');
@@ -23,7 +23,7 @@ function rotatePhoto(event) {
 
     img.src = URL.createObjectURL(fileList[id]);
     img.onload = function () {
-        canvas.width = img.height;
+        canvas.width = img.height; //высота canvas = ширине фото, чтобы не обрезалось при перевороте
         canvas.height = img.width;
         context.translate(canvas.width / 2, canvas.height / 2);
         context.rotate(90 * Math.PI / 180);
@@ -44,14 +44,13 @@ function checkFiles() {
     for (let i = currentStartIndex; i < fileList.length; i++) {
         let fileExtension = fileList[i].name.slice(fileList[i].name.lastIndexOf(".") + 1).toLowerCase();
         if (approvedExtensions.indexOf(fileExtension) === -1) {
-            alert("Неверное расширение");
-            $('#alert').show();
+            $('#alert-extension').show();
             fileList.splice(i, 1);
             i--;
             continue;
         }
         if (fileList[i].size > maxFileSize) {
-            alert("Слишком большой файл");
+            $('#alert-size').show();
             fileList.splice(i, 1);
             i--;
         }
@@ -75,10 +74,15 @@ function showPhotosOnPage(fileList, currentStartIndex) {
             '<div class="turn-image" id="' + turnIDBtn + '"></div> ' +
             '<div class="delete-image" id="' + deleteIDBtn + '"></div> ' +
             '</div> ';
-        photoList.append(divPhoto);
+        photoList.prepend(divPhoto);
     }
-    ;
 
     $('.delete-image').on('click', deletePhoto);
     $('.turn-image').on('click', rotatePhoto);
 }
+
+//поведение кнопки закрыть на alert bootstrap
+$('.alert').on('close.bs.alert', function (event) {
+    event.preventDefault();
+    $(this).css('display', 'none');
+});

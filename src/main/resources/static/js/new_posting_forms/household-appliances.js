@@ -4,10 +4,10 @@ let saveButton = document.getElementById('saveButton');
 async function sentForHomeAndGardenPosting(frontName, selectedCategoryId) {
     let url = '/api/posting/new/' + frontName + '/' + selectedCategoryId;
     const formData = new FormData();
-    const fileField = document.querySelector('input[type="file"][multiple]');
+    const fileField = fileList;
 
-    for (let i = 0; i < fileField.files.length; i++) {
-        formData.append('photos', fileField.files[i]);
+    for (let i = 0; i < fileField.length; i++) {
+        formData.append('photos', fileField[i]);
     }
     let price = window.postPrice.value;
     formData.append('title', window.postTitle.value);

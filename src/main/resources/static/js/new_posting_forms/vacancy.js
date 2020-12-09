@@ -1,7 +1,7 @@
 async function sendNewVacancyPosting(selectedCategoryId) {
     let url = "/api/posting/new/vacancy";
 
-    const fileField = document.querySelector('input[type="file"][name="image"][multiple]');
+    const fileField = fileList;
 
     let body = new FormData();
 
@@ -13,8 +13,8 @@ async function sendNewVacancyPosting(selectedCategoryId) {
         }
     }
 
-    for (let i = 0; i < fileField.files.length; i++) {
-        body.append('photos', fileField.files[i], fileField.files[i].name);
+    for (let i = 0; i < fileField.length; i++) {
+        body.append('photos', fileField[i], fileField[i].name);
     }
     body.append("title", document.getElementById("title").value);
     body.append("schedule", document.getElementById("schedule").value);
