@@ -20,31 +20,6 @@ public class NotificationDto {
     private int urgentLevel;
     private LocalDateTime sentTime;
 
-
-/*
-    public NotificationDto(UserNotification userNote) {
-        acceptNumber = userNote.getAcceptNumber();
-        notificationId = userNote.getNotification().getId();
-        userId = userNote.getUser().getId();
-        messageTitle = userNote.getNotification().getMessageTitle();
-        messageBody = userNote.getNotification().getMessageBody();
-        clickAction = userNote.getNotification().getClickAction();
-        status = userNote.getStatus();
-        urgentLevel = userNote.getUrgentLevel();
-        sentTime = convertTime(userNote.getSentTime());
-
-    }*/
-
-/*    public NotificationDto(UserNotification userNote, Notification notification) {
-        notificationId = notification.getId();
-        messageTitle = notification.getMessageTitle();
-        messageBody = notification.getMessageBody();
-        clickAction = notification.getClickAction();
-        sentTime = convertTime(userNote.getSentTime());
-        status = userNote.getStatus();
-        urgentLevel = userNote.getUrgentLevel();
-    }*/
-
     public String getSentTime() {
         return sentTime.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss"));
     }

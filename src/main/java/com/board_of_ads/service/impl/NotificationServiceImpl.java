@@ -129,15 +129,7 @@ public class NotificationServiceImpl implements NotificationService {
         return var;
     }
 
-    public List<NotificationDto> getNotificationDtoOfUser (User user) { //insert findAllUserNotificationDto(id)
-/*        List<NotificationDto> notificationsResponseList = new ArrayList<>();
-        List<UserNotification> userNotifications = getUsersAllNotifications(user);
-        if (userNotifications.size() > 0) {
-            for (UserNotification userNote : userNotifications) {
-                notificationsResponseList.add(new NotificationDto(userNote));
-            }
-        }
-        return notificationsResponseList;*/
+    public List<NotificationDto> getNotificationDtoOfUser (User user) {
         return notificationRepository.findAllUserNotificationDto(user.getId());
 
     }
