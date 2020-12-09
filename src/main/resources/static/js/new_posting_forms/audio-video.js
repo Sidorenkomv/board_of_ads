@@ -21,6 +21,10 @@ async function sentAudioVideoPosting(frontName, selectedCategoryId) {
     formData.append('contact', window.inputPhone.value);
     formData.append('communicationType', document.querySelector('input[name="communication"]:checked').value);
 
+    if (!checkInputFields(formData)) {
+        return false;
+    }
+
     await sendFile(formData, url);
     window.location.href = '/';
 }
