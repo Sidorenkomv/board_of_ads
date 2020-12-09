@@ -70,11 +70,22 @@ async function fillNewCarPostingFields(pc) {
 
     let mainDiv = document.createElement('div');
     mainDiv.setAttribute('id', 'car-post-fields-main-container');
+    let visibleElement2 = document.getElementById('visibleElement2');
+    visibleElement2.innerHTML = "";
+    visibleElement2.appendChild(mainDiv);
 
     // changePathCategory();
     changeMeetingPlace();
 
-    addTypeOfUsedCarPosting();
+    let typeOfUsp = document.getElementById('type-of-usp');
+    let a = document.getElementById('pathCategory').parentElement.parentElement;
+    if(a.contains(typeOfUsp)) {
+        a.removeChild(typeOfUsp);
+    }
+
+    if (isUsedCarPosting) {
+        addTypeOfUsedCarPosting();
+    }
 
     let div1 = makeMainAndTitleFields('1', "Внешний вид");
     mainDiv.appendChild(div1);
@@ -702,6 +713,14 @@ function collectAllFields() {
         return (carFN === 'new-car');
     }
 
+    function getTypeOfUsedCarPostingValue() {
+        let type = '';
+        if (isUsedCarPosting) {
+            type = getValueFromSelectElement('typeOfUsedCarPosting');
+        }
+        return type;
+    }
+
     function getValueOfCheckBox(elementId) {
         return document.getElementById(elementId).checked;
     }
@@ -744,7 +763,7 @@ function collectAllFields() {
     return {
         vinCode: getValueFromInputElement('vinCode'),
         carIsNew: checkCarIsNew(),
-        typeOfUsedCarPosting: getValueFromSelectElement('typeOfUsedCarPosting'),
+        typeOfUsedCarPosting: getTypeOfUsedCarPostingValue(), //getValueFromSelectElement('typeOfUsedCarPosting'),
         statePlateNumber: getPlateValueByCarType(),
         mileage: getMileageValueByCarType(),
         numberOfOwners: getValueByCarType('ownerCount'),
