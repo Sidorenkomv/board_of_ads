@@ -18,13 +18,14 @@ function checkInputFields(formData) {
     removeErrors("textarea");
 
 // Проверка полей
-    let arr = ["description", "title", "meetingAddress", "contactEmail", "contact"]; // Какие поля с именами проверять
+    let arr = ["typeOfHousing", "description", "title", "meetingAddress", "contactEmail", "contact"]; // Какие поля с именами проверять
     var arrRealNames = new Map([
         ['description', 'postDescription'],
         ['title', 'postTitle'],
         ['meetingAddress', 'dealAddress'],
         ['contactEmail', 'email'],
-        ['contact', 'inputPhone']
+        ['contact', 'inputPhone'],
+        ['typeOfHousing', 'estate']
     ]);
 
     $(".form-control").removeClass('redBorder');
@@ -35,7 +36,6 @@ function checkInputFields(formData) {
                 var nameField = arrRealNames.get(key);
                 if (typeof nameField != "undefined") {
                     var title = "Заполните поле";
-                    /*var field = "#" + nameField;*/
                     var field = "[name='" + nameField + "']";
                     if(typeof $(field).attr('title') !== 'undefined' && $(field).attr('title').length > 0)
                         title = $(field).attr('title');

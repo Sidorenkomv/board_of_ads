@@ -30,6 +30,10 @@ async function sentSellEstatePosting(frontName, categoryId) {
      formData.append('price', price === "" ? 0 : price);
      formData.append('contact', window.inputPhone.value);
 
+     if (!checkInputFields(formData)) {
+         return false;
+     }
+
      await sendFile(formData, url);
     window.location.href = '/';
 }
@@ -172,7 +176,7 @@ async function getEstate(frontName, id) {
             '                <div class="form-group row">\n' +
             '                    <label for="postTitle" class="col-sm-2 col-form-label">Название объявления</label>\n' +
             '                    <div class="col-sm-6">\n' +
-            '                        <input  id="postTitle" maxlength="100" type="text" class="form-control form-control-sm">\n' +
+            '                        <input  id="postTitle" name="postTitle" title="Введите название объявления" maxlength="100" type="text" class="form-control form-control-sm">\n' +
             '                        <p class="text-muted" data-toggle="tooltip" data-placement="top">Например, «Квартира однушка, Двухкомнатная квартира...»</p>\n' +
             '                    </div>\n' +
             '                </div>\n' +
@@ -182,7 +186,7 @@ async function getEstate(frontName, id) {
             '                    <div class="col-sm-10">\n' +
             '                        <div id="postState" class="btn-group btn-group-toggle" data-toggle="buttons">\n' +
             '                            <label class="btn btn-sm btn-outline-secondary">\n' +
-            '                                <input type="radio" name="estate" id="noNewEstate" value="Вторичка" checked>Вторичка' +
+            '                                <input type="radio" name="estate" title="Введите название объявления" id="noNewEstate" value="Вторичка" checked>Вторичка' +
             '                            </label>\n' +
             '                            <label class="btn btn-sm btn-outline-secondary">\n' +
             '                                <input type="radio" name="estate" id="newEstate" value="Новостройка">Новостройка' +
