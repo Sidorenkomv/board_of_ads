@@ -16,23 +16,39 @@ function checkInputFields(formData) {
 
     removeErrors("input");
     removeErrors("textarea");
+    removeErrors("select");
 
 // Проверка полей
-    let arr = ["typeOfHousing", "description", "title", "meetingAddress", "contactEmail", "contact"]; // Какие поля с именами проверять
+    let arr = ["sleeper", "numberOfBeds", "view", "loggia", "totalArea", "floorsInHouse", "floor", "typeOfHouse", "rooms", "experienceValue", "duties", "frequency",
+        "schedule", "size", "typeAd", "description", "title", "meetingAddress", "contactEmail", "contact"]; // Какие поля с именами проверять
     var arrRealNames = new Map([
+        ['sleeper', 'sleeper'],
+        ['numberOfBeds', 'numberOfBeds'],
+        ['view', 'view'],
+        ['loggia', 'loggia'],
+        ['totalArea', 'TotalArea'],
+        ['floorsInHouse', 'floorIsHome'],
+        ['floor', 'floor'],
+        ['typeOfHouse', 'tip'],
+        ['rooms', 'planirovka'],
+        ['experienceValue', 'postExperienceValue'],
+        ['frequency', 'postFrequency'],
+        ['duties', 'postDuties'],
+        ['size', 'postSize'],
+        ['schedule', 'postSchedule'],
         ['description', 'postDescription'],
         ['title', 'postTitle'],
         ['meetingAddress', 'dealAddress'],
         ['contactEmail', 'email'],
         ['contact', 'inputPhone'],
-        ['typeOfHousing', 'estate']
+        ['typeAd', 'typeAd']
     ]);
 
     $(".form-control").removeClass('redBorder');
     for (const key of formData.keys()) {
         if (arr.includes(key)) {
             let value = formData.get(key).trim();
-            if (value === '') {
+            if ((value === '') || (value === 'null')) {
                 var nameField = arrRealNames.get(key);
                 if (typeof nameField != "undefined") {
                     var title = "Заполните поле";
@@ -44,14 +60,12 @@ function checkInputFields(formData) {
                             $(field).next().css("visibility", "hidden");
                         }
                     $("[name='" + nameField + "']").addClass('redBorder').after("<div id='chk_" + nameField + "' class='cFM_wrong'>" + title + "</div>");
-                    $("html, body").animate({scrollTop: 0}, 600);
+                    $("html, body").animate({scrollTop: 0}, 50);
                 }
             }
         }
     }
-
     if ($(".form-control.redBorder").length > 0) {
-        console.log($(".form-control.redBorder").length)
         return false;
     }
     return true;

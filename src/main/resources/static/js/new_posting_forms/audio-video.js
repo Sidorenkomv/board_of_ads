@@ -55,8 +55,8 @@ async function getAudioVideoForm(frontName, selectedCategoryId) {
         '                <div class="form-group row">\n' +
         '                    <label for="postTitle" class="col-sm-2 col-form-label">Название объявления</label>\n' +
         '                    <div class="col-sm-6">\n' +
-        '                        <input  id="postTitle" maxlength="100" type="text" class="form-control form-control-sm">\n' +
-        '                        <p class="text-muted" data-toggle="tooltip" data-placement="top">Например, «Диван-кровать Икеа» или «Холодильник Бирюса 110»</p>\n' +
+        '                        <input id="postTitle" name="postTitle" title="Введите название объявления" maxlength="100" type="text" class="form-control form-control-sm">\n' +
+        '                        <p class="text-muted" data-toggle="tooltip" data-placement="top">Например, «iPhone 6S Plus серый космос 32 гб» или «Фотоаппарат Canon 700D Kit 18-55»</p>\n' +
         '                    </div>\n' +
         '                </div>\n' +
         '\n' +
@@ -88,7 +88,7 @@ async function getAudioVideoForm(frontName, selectedCategoryId) {
         '                <div class="form-group row">\n' +
         '                    <label for="postDescription" class="col-sm-2 col-form-label">Описание объявления</label>\n' +
         '                    <div class="col-sm-6">\n' +
-        '                        <textarea id="postDescription" name="postDescription" rows="6" maxlength="5000" style="height: 130px;" class="form-control"></textarea>\n' +
+        '                        <textarea id="postDescription" name="postDescription" title="Пожалуйста, заполните описание" rows="6" maxlength="5000" style="height: 130px;" class="form-control"></textarea>\n' +
         '                        <p class="text-muted">Не указывайте в описании телефон и e-mail — для этого есть отдельные поля</p>\n' +
         '                    </div>\n' +
         '                </div>\n' +
