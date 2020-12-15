@@ -23,6 +23,10 @@ async function sentForTicketsPosting() {
     formData.append('contact', window.inputPhone.value);
     formData.append('communicationType', document.querySelector('input[name="communication"]:checked').value);
 
+    if (!checkInputFields(formData)) {
+        return false;
+    }
+
     await sendFile(formData, url);
     window.location.href = '/';
 }
@@ -41,12 +45,12 @@ async function sendFile(body, url) {
     }
 }
 
-
 function getTicketsForm(frontName, selectedCategoryId) {
 
     frontNameTikets = frontName;
     selectedCategoryIdTikets = selectedCategoryId;
-    saveButtonTickets.onclick = () => isAllRequiredFieldFilled() ? sentForTicketsPosting() : window.scrollTo(0, 0);
+
+    saveButtonTickets.onclick = () => sentForTicketsPosting();
 
     postingFormHobbyAndRest.innerHTML = '<div id="parameters" class="main-container">\n' +
         '        <div class="category-head-container">\n' +
@@ -57,8 +61,7 @@ function getTicketsForm(frontName, selectedCategoryId) {
         '                <div class="form-group row">\n' +
         '                    <label for="postTitle" class="col-sm-2 col-form-label">Название объявления</label>\n' +
         '                    <div class="col-sm-6">\n' +
-        '                        <input  id="postTitle" maxlength="100" type="text" class="form-control form-control-sm">\n' +
-        '                        <p id="errorFor-postTitle" class="hidden error-text" data-toggle="tooltip" data-placement="top">Введите название объявления</p>\n' +
+        '                        <input  id="postTitle" name="postTitle" title="Введите название объявления" maxlength="100" type="text" class="form-control form-control-sm">\n' +
         '                        <p class="text-muted" data-toggle="tooltip" data-placement="top">Например, «Велосипед Stels Navigator 700 MD» или «Электрогитара Ibanez GSA60»</p>\n' +
         '                    </div>\n' +
         '                </div>\n' +
@@ -77,8 +80,7 @@ function getTicketsForm(frontName, selectedCategoryId) {
         '                <div class="form-group row">\n' +
         '                    <label for="postDescription" class="col-sm-2 col-form-label">Описание объявления</label>\n' +
         '                    <div class="col-sm-6">\n' +
-        '                        <textarea id="postDescription" name="postDescription" rows="6" maxlength="5000" style="height: 130px;" class="form-control"></textarea>\n' +
-        '                        <p id="errorFor-postDescription" class="hidden error-text" data-toggle="tooltip" data-placement="top">Пожалуйста, заполните описание</p>\n' +
+        '                        <textarea id="postDescription" name="postDescription" title="Пожалуйста, заполните описание" rows="6" maxlength="5000" style="height: 130px;" class="form-control"></textarea>\n' +
         '                        <p class="text-muted">Не указывайте в описании телефон и e-mail — для этого есть отдельные поля</p>\n' +
         '                    </div>\n' +
         '                </div>\n' +
@@ -97,7 +99,6 @@ function getTicketsForm(frontName, selectedCategoryId) {
         '                        <label class="" data-marker="add">\n' +
         '                            <input id="postPhotos" type="file" value="" multiple style="display: block" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input">\n' +
         '                            <div id="uploadPhotos"></div>' +
-        '                            <p id="errorFor-postPhotos" class="hidden error-text" data-toggle="tooltip" data-placement="top">Загрузите хотя бы одну фотографию</p>\n' +
         '                        </label>\n' +
         '                    </div>\n' +
         '                </div>\n' +
