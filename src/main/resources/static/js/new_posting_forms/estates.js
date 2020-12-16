@@ -371,7 +371,7 @@ async function getEstate(frontName, id) {
         choosenFiles = document.getElementById('postPhotos');
         choosenFiles.addEventListener('change', checkFiles, false);
 
-        saveButton.onclick = () => sentRentAnEstatePosting(frontName, id);
+        saveButton.onclick = () => sentSellEstatePosting(frontName, id);
 
 
     } else if (frontName === "buyEstate") {
@@ -427,7 +427,7 @@ async function getEstate(frontName, id) {
         choosenFiles = document.getElementById('postPhotos');
         choosenFiles.addEventListener('change', checkFiles, false);
 
-        saveButton.onclick = () => sentRentAnEstatePosting(frontName, id);
+        saveButton.onclick = () => sentBuyEstatePosting(frontName, id);
 
     } else if (frontName === "rentAnEstate") {
 
