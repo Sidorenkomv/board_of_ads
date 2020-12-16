@@ -20,6 +20,7 @@ import com.board_of_ads.models.posting.forDogs.DogBreed;
 import com.board_of_ads.service.interfaces.AutoAttributesService;
 import com.board_of_ads.service.interfaces.DogBreedService;
 import com.board_of_ads.service.interfaces.MessageService;
+import com.board_of_ads.repository.CityRepository;
 import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.service.interfaces.CityService;
 import com.board_of_ads.service.interfaces.ImageService;
@@ -68,13 +69,14 @@ public class DataInitializer {
     private final DogBreedService dogBreedService;
     List<Posting> postingList;
 
+    private final CityRepository cityRepository;
 
     @PostConstruct
+
     private void init() throws IOException {
-        initUsers();
-        initMoreUsers();
         initKladr();
         initUsers();
+        initMoreUsers();
         initCategories();
         initPosting();
         initOrders();
@@ -104,7 +106,7 @@ public class DataInitializer {
             Set<Role> roleAdmin = new HashSet<>();
             roleAdmin.add(roleService.getRoleByName("ADMIN"));
             admin.setRoles(roleAdmin);
-            //admin.setCity(cityService.findCityByName("Екатеринбург").get());
+            admin.setCity(cityRepository.findCitiesByName("Екатеринбург").get());
             userService.saveUser(admin);
         }
         if (userService.getUserByEmail("user@mail.ru") == null) {
@@ -118,6 +120,7 @@ public class DataInitializer {
             Set<Role> roleAdmin = new HashSet<>();
             roleAdmin.add(roleService.getRoleByName("USER"));
             user.setRoles(roleAdmin);
+            user.setCity(cityRepository.findCitiesByName("Рязань").get());
             userService.saveUser(user);
         }
     }

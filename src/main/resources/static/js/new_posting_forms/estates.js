@@ -30,6 +30,10 @@ async function sentSellEstatePosting(frontName, categoryId) {
      formData.append('price', price === "" ? 0 : price);
      formData.append('contact', window.inputPhone.value);
 
+     if (!checkInputFields(formData)) {
+         return false;
+     }
+
      await sendFile(formData, url);
     window.location.href = '/';
 }
@@ -46,6 +50,10 @@ async function sentBuyEstatePosting(frontName, categoryId) {
     formData.append("communicationType", document.querySelector('input[name="communication"]:checked').value)
     formData.append('description', window.postDescription.value);
     formData.append('contact', window.inputPhone.value);
+
+    if (!checkInputFields(formData)) {
+        return false;
+    }
 
    await sendFile(formData, url)
 
@@ -98,6 +106,10 @@ async function sentRentAnEstatePosting(frontName, categoryId) {
     formData.append('flatiron', document.getElementById("flatiron").checked);
     formData.append('smoke', document.getElementById("smoke").checked);
 
+    if (!checkInputFields(formData)) {
+        return false;
+    }
+
     await sendFile(formData, url);
     window.location.href = '/';
 }
@@ -136,6 +148,10 @@ async function sentGetAnEstatePosting(frontName, categoryId) {
     formData.append('flatiron', document.getElementById("flatiron").checked);
     formData.append('smoke', document.getElementById("smoke").checked);
 
+    if (!checkInputFields(formData)) {
+        return false;
+    }
+
     await sendFile(formData, url);
     window.location.href = '/';
 }
@@ -172,7 +188,7 @@ async function getEstate(frontName, id) {
             '                <div class="form-group row">\n' +
             '                    <label for="postTitle" class="col-sm-2 col-form-label">Название объявления</label>\n' +
             '                    <div class="col-sm-6">\n' +
-            '                        <input  id="postTitle" maxlength="100" type="text" class="form-control form-control-sm">\n' +
+            '                        <input  id="postTitle" name="postTitle" title="Введите название объявления" maxlength="100" type="text" class="form-control form-control-sm">\n' +
             '                        <p class="text-muted" data-toggle="tooltip" data-placement="top">Например, «Квартира однушка, Двухкомнатная квартира...»</p>\n' +
             '                    </div>\n' +
             '                </div>\n' +
@@ -182,10 +198,10 @@ async function getEstate(frontName, id) {
             '                    <div class="col-sm-10">\n' +
             '                        <div id="postState" class="btn-group btn-group-toggle" data-toggle="buttons">\n' +
             '                            <label class="btn btn-sm btn-outline-secondary">\n' +
-            '                                <input type="radio" name="estate" id="noNewEstate" value="Вторичка" checked>Вторичка' +
+            '                                <input type="radio" name="estate" id="noNewEstate" value="Вторичка">Вторичка' +
             '                            </label>\n' +
-            '                            <label class="btn btn-sm btn-outline-secondary">\n' +
-            '                                <input type="radio" name="estate" id="newEstate" value="Новостройка">Новостройка' +
+            '                            <label class="btn btn-sm btn-outline-secondary active">\n' +
+            '                                <input type="radio" name="estate" id="newEstate" value="Новостройка" checked>Новостройка' +
             '                            </label>\n' +
             '                        </div>\n' +
             '                    </div>\n' +
@@ -195,7 +211,7 @@ async function getEstate(frontName, id) {
             '                    <label for="postState2" class="col-sm-2 col-form-label">Право собственности</label>\n' +
             '                    <div class="col-sm-10">\n' +
             '                        <div id="postState2" class="btn-group btn-group-toggle" data-toggle="buttons">\n' +
-            '                            <label class="btn btn-sm btn-outline-secondary">\n' +
+            '                            <label class="btn btn-sm btn-outline-secondary active">\n' +
             '                                <input type="radio" name="ownership" id="owner" value="Собственник" checked>Собственник' +
             '                            </label>\n' +
             '                            <label class="btn btn-sm btn-outline-secondary">\n' +
@@ -209,7 +225,7 @@ async function getEstate(frontName, id) {
             '                    <label for="postState3" class="col-sm-2 col-form-label">Статус</label>\n' +
             '                    <div class="col-sm-10">\n' +
             '                        <div id="postState3" class="btn-group btn-group-toggle" data-toggle="buttons">\n' +
-            '                            <label class="btn btn-sm btn-outline-secondary">\n' +
+            '                            <label class="btn btn-sm btn-outline-secondary active">\n' +
             '                                <input type="radio" name="statusOf" id="statusOfApartment" value="Квартира" checked>Квартира' +
             '                            </label>\n' +
             '                            <label class="btn btn-sm btn-outline-secondary">\n' +
@@ -224,8 +240,8 @@ async function getEstate(frontName, id) {
             '                <div class="form-group row">\n' +
             '                    <label for="postType" class="col-sm-2 col-form-label">Количество комнат</label>\n' +
             '                    <div class="col-sm-3">\n' +
-            '                        <select id="planirovka" name="planirovka" class="custom-select custom-select-sm" required>\n' +
-            '                            <option value="-">-</option>\n' +
+            '                        <select id="planirovka" name="planirovka" title="Укажите количество комнат" class="custom-select custom-select-sm" required>\n' +
+            '                            <option value="">-</option>\n' +
             '                            <option value="Студия">Студия</option>\n' +
             '                            <option value="Своб. планировка">Своб. планировка</option>\n' +
             '                            <option value="1">1</option>\n' +
@@ -245,8 +261,8 @@ async function getEstate(frontName, id) {
             '                <div class="form-group row">\n' +
             '                    <label for="postType2" class="col-sm-2 col-form-label">Тип дома</label>\n' +
             '                    <div class="col-sm-3">\n' +
-            '                        <select id="tip" name="tip" class="custom-select custom-select-sm" required>\n' +
-            '                            <option value="-">-</option>\n' +
+            '                        <select id="tip" name="tip" title="Укажите тип дома" class="custom-select custom-select-sm" required>\n' +
+            '                            <option value="">-</option>\n' +
             '                            <option value="Кирпичный">Кирпичный</option>\n' +
             '                            <option value="Панельный">Панельный</option>\n' +
             '                            <option value="Блочный">Блочный</option>\n' +
@@ -262,21 +278,21 @@ async function getEstate(frontName, id) {
             '                <div class="form-group row">\n' +
             '                    <label for="floor" class="col-sm-2 col-form-label">Этаж</label>\n' +
             '                    <div class="col-sm-6">\n' +
-            '                        <textarea id="floor" name="floor" rows="1" maxlength="4" style="height: 40px; width: 70px" class="form-control" required></textarea>\n' +
+            '                        <textarea id="floor" name="floor" title="Укажите этаж" rows="1" maxlength="4" style="height: 40px; width: 70px" class="form-control" required></textarea>\n' +
             '                    </div>\n' +
             '                </div>\n' +
             '\n' +
             '                <div class="form-group row">\n' +
             '                    <label for="floorIsHome" class="col-sm-2 col-form-label">Этажей в доме</label>\n' +
             '                    <div class="col-sm-6">\n' +
-            '                        <textarea id="floorIsHome" name="floorIsHome" rows="1" maxlength="4" style="height: 40px; width: 70px" class="form-control" required></textarea>\n' +
+            '                        <textarea id="floorIsHome" name="floorIsHome" title="Укажите количество этажей в доме" rows="1" maxlength="4" style="height: 40px; width: 70px" class="form-control" required></textarea>\n' +
             '                    </div>\n' +
             '                </div>\n' +
             '\n' +
             '                <div class="form-group row">\n' +
             '                    <label for="TotalArea" class="col-sm-2 col-form-label">Общая площадь(м²)</label>\n' +
             '                    <div class="col-sm-6">\n' +
-            '                        <textarea id="TotalArea" name="TotalArea" rows="1" maxlength="6" style="height: 40px; width: 70px" class="form-control" required></textarea>\n' +
+            '                        <textarea id="TotalArea" name="TotalArea" title="Укажите общую площадь" rows="1" maxlength="6" style="height: 40px; width: 70px" class="form-control" required></textarea>\n' +
             '                    </div>\n' +
             '                </div>\n' +
             '\n' +
@@ -297,8 +313,8 @@ async function getEstate(frontName, id) {
             '                <div class="form-group row">\n' +
             '                    <label for="loggiaF" class="col-sm-2 col-form-label">Балкон или лоджия</label>\n' +
             '                    <div class="col-sm-3">\n' +
-            '                        <select id="loggia" name="loggia" class="custom-select custom-select-sm" required>\n' +
-            '                            <option value="-">-</option>\n' +
+            '                        <select id="loggia" name="loggia" title="Укажите, балкон или лоджия" class="custom-select custom-select-sm" required>\n' +
+            '                            <option value="">-</option>\n' +
             '                            <option value="Балкон">Балкон</option>\n' +
             '                            <option value="Лоджия">Лоджия</option>\n' +
             '                            <option value="Нет">Нет</option>\n' +
@@ -309,8 +325,8 @@ async function getEstate(frontName, id) {
             '                <div class="form-group row">\n' +
             '                    <label for="viewF" class="col-sm-2 col-form-label">Вид из окна</label>\n' +
             '                    <div class="col-sm-3">\n' +
-            '                        <select id="view" name="view" class="custom-select custom-select-sm" required>\n' +
-            '                            <option value="-">-</option>\n' +
+            '                        <select id="view" name="view" title="Укажите вид из окна" class="custom-select custom-select-sm" required>\n' +
+            '                            <option value="">-</option>\n' +
             '                            <option value="На улицу">На улицу</option>\n' +
             '                            <option value="Во двор">Во двор</option>\n' +
             '                        </select>\n' +
@@ -320,7 +336,7 @@ async function getEstate(frontName, id) {
             '                <div class="form-group row">\n' +
             '                    <label for="postDescription" class="col-sm-2 col-form-label">Описание объявления</label>\n' +
             '                    <div class="col-sm-6">\n' +
-            '                        <textarea id="postDescription" name="postDescription" rows="6" maxlength="5000" style="height: 130px;" class="form-control"></textarea>\n' +
+            '                        <textarea id="postDescription" name="postDescription" title="Укажите описание объявления" rows="6" maxlength="5000" style="height: 130px;" class="form-control"></textarea>\n' +
             '                        <p class="text-muted">Не указывайте в описании телефон и e-mail — для этого есть отдельные поля</p>\n' +
             '                    </div>\n' +
             '                </div>\n' +
@@ -368,7 +384,7 @@ async function getEstate(frontName, id) {
         '                <div class="form-group row">\n' +
         '                    <label for="postTitle" class="col-sm-2 col-form-label">Название объявления</label>\n' +
         '                    <div class="col-sm-6">\n' +
-        '                        <input  id="postTitle" maxlength="100" type="text" class="form-control form-control-sm">\n' +
+        '                        <input id="postTitle" name="postTitle" title="Укажите название объявления" maxlength="100" type="text" class="form-control form-control-sm">\n' +
         '                        <p class="text-muted" data-toggle="tooltip" data-placement="top">Например, «Квартира однушка, Двухкомнатная квартира...»</p>\n' +
         '                    </div>\n' +
         '                </div>\n' +
@@ -378,8 +394,8 @@ async function getEstate(frontName, id) {
             '                <div class="form-group row">\n' +
             '                    <label for="postType" class="col-sm-2 col-form-label">Количество комнат</label>\n' +
             '                    <div class="col-sm-3">\n' +
-            '                        <select id="planirovka" name="planirovka" class="custom-select custom-select-sm" required>\n' +
-            '                            <option value="-">-</option>\n' +
+            '                        <select id="planirovka" name="planirovka" title="Укажите количество комнат" class="custom-select custom-select-sm" required>\n' +
+            '                            <option value="">-</option>\n' +
             '                            <option value="Студия">Студия</option>\n' +
             '                            <option value="Своб. планировка">Своб. планировка</option>\n' +
             '                            <option value="1">1</option>\n' +
@@ -399,7 +415,7 @@ async function getEstate(frontName, id) {
             '                <div class="form-group row">\n' +
             '                    <label for="postDescription" class="col-sm-2 col-form-label">Описание объявления</label>\n' +
             '                    <div class="col-sm-6">\n' +
-            '                        <textarea id="postDescription" name="postDescription" rows="6" maxlength="5000" style="height: 130px;" class="form-control"></textarea>\n' +
+            '                        <textarea id="postDescription" name="postDescription" title="Укажите описание объявления" rows="6" maxlength="5000" style="height: 130px;" class="form-control"></textarea>\n' +
             '                        <p class="text-muted">Не указывайте в описании телефон и e-mail — для этого есть отдельные поля</p>\n' +
             '                    </div>\n' +
             '                </div>\n' +
@@ -408,6 +424,7 @@ async function getEstate(frontName, id) {
             '    </div>'
 
         saveButton.onclick = () => sentBuyEstatePosting(frontName, id);
+
     } else if (frontName === "rentAnEstate") {
 
         postingForm2.innerHTML =
@@ -420,7 +437,7 @@ async function getEstate(frontName, id) {
             '                <div class="form-group row">\n' +
             '                    <label for="postTitle" class="col-sm-2 col-form-label">Название объявления</label>\n' +
             '                    <div class="col-sm-6">\n' +
-            '                        <input  id="postTitle" maxlength="100" type="text" class="form-control form-control-sm">\n' +
+            '                        <input id="postTitle" name="postTitle" title="Укажите название объявления" maxlength="100" type="text" class="form-control form-control-sm">\n' +
             '                        <p class="text-muted" data-toggle="tooltip" data-placement="top">Например, «Квартира однушка, Двухкомнатная квартира...»</p>\n' +
             '                    </div>\n' +
             '                </div>\n' +
@@ -430,10 +447,10 @@ async function getEstate(frontName, id) {
             '                    <div class="col-sm-10">\n' +
             '                        <div id="postState" class="btn-group btn-group-toggle" data-toggle="buttons">\n' +
             '                            <label class="btn btn-sm btn-outline-secondary">\n' +
-            '                                <input type="radio" name="estate" id="noNewEstate" value="Вторичка" checked>Вторичка' +
+            '                                <input type="radio" name="estate" id="noNewEstate" value="Вторичка">Вторичка' +
             '                            </label>\n' +
-            '                            <label class="btn btn-sm btn-outline-secondary">\n' +
-            '                                <input type="radio" name="estate" id="newEstate" value="Новостройка">Новостройка' +
+            '                            <label class="btn btn-sm btn-outline-secondary active">\n' +
+            '                                <input type="radio" name="estate" id="newEstate" value="Новостройка" checked>Новостройка' +
             '                            </label>\n' +
             '                        </div>\n' +
             '                    </div>\n' +
@@ -443,7 +460,7 @@ async function getEstate(frontName, id) {
             '                    <label for="postState2" class="col-sm-2 col-form-label">Право собственности</label>\n' +
             '                    <div class="col-sm-10">\n' +
             '                        <div id="postState2" class="btn-group btn-group-toggle" data-toggle="buttons">\n' +
-            '                            <label class="btn btn-sm btn-outline-secondary">\n' +
+            '                            <label class="btn btn-sm btn-outline-secondary active">\n' +
             '                                <input type="radio" name="ownership" id="owner" value="Собственник" checked>Собственник' +
             '                            </label>\n' +
             '                            <label class="btn btn-sm btn-outline-secondary">\n' +
@@ -457,7 +474,7 @@ async function getEstate(frontName, id) {
             '                    <label for="postState3" class="col-sm-2 col-form-label">Статус</label>\n' +
             '                    <div class="col-sm-10">\n' +
             '                        <div id="postState3" class="btn-group btn-group-toggle" data-toggle="buttons">\n' +
-            '                            <label class="btn btn-sm btn-outline-secondary">\n' +
+            '                            <label class="btn btn-sm btn-outline-secondary active">\n' +
             '                                <input type="radio" name="statusOf" id="statusOfApartment" value="Квартира" checked>Квартира' +
             '                            </label>\n' +
             '                            <label class="btn btn-sm btn-outline-secondary">\n' +
@@ -471,8 +488,8 @@ async function getEstate(frontName, id) {
             '                <div class="form-group row">\n' +
             '                    <label for="postType" class="col-sm-2 col-form-label">Количество комнат</label>\n' +
             '                    <div class="col-sm-3">\n' +
-            '                        <select id="planirovka" name="planirovka" class="custom-select custom-select-sm" required>\n' +
-            '                            <option value="-">-</option>\n' +
+            '                        <select id="planirovka" name="planirovka" title="Укажите количество комнат" class="custom-select custom-select-sm" required>\n' +
+            '                            <option value="">-</option>\n' +
             '                            <option value="Студия">Студия</option>\n' +
             '                            <option value="Своб. планировка">Своб. планировка</option>\n' +
             '                            <option value="1">1</option>\n' +
@@ -492,8 +509,8 @@ async function getEstate(frontName, id) {
             '                <div class="form-group row">\n' +
             '                    <label for="postType2" class="col-sm-2 col-form-label">Тип дома</label>\n' +
             '                    <div class="col-sm-3">\n' +
-            '                        <select id="tip" name="tip" class="custom-select custom-select-sm" required>\n' +
-            '                            <option value="-">-</option>\n' +
+            '                        <select id="tip" name="tip" title="Укажите тип дома" class="custom-select custom-select-sm" required>\n' +
+            '                            <option value="">-</option>\n' +
             '                            <option value="Кирпичный">Кирпичный</option>\n' +
             '                            <option value="Панельный">Панельный</option>\n' +
             '                            <option value="Блочный">Блочный</option>\n' +
@@ -504,26 +521,24 @@ async function getEstate(frontName, id) {
             '                </div>\n' +
             '\n' +
 
-
-
             '                <div class="form-group row">\n' +
             '                    <label for="floor" class="col-sm-2 col-form-label">Этаж</label>\n' +
             '                    <div class="col-sm-6">\n' +
-            '                        <textarea id="floor" name="floor" rows="1" maxlength="4" style="height: 40px; width: 70px" class="form-control" required></textarea>\n' +
+            '                        <textarea id="floor" name="floor" title="Укажите этаж" rows="1" maxlength="4" style="height: 40px; width: 70px" class="form-control" required></textarea>\n' +
             '                    </div>\n' +
             '                </div>\n' +
             '\n' +
             '                <div class="form-group row">\n' +
             '                    <label for="floorIsHome" class="col-sm-2 col-form-label">Этажей в доме</label>\n' +
             '                    <div class="col-sm-6">\n' +
-            '                        <textarea id="floorIsHome" name="floorIsHome" rows="1" maxlength="4" style="height: 40px; width: 70px" class="form-control" required></textarea>\n' +
+            '                        <textarea id="floorIsHome" name="floorIsHome" title="Укажите количество этажей" rows="1" maxlength="4" style="height: 40px; width: 70px" class="form-control" required></textarea>\n' +
             '                    </div>\n' +
             '                </div>\n' +
             '\n' +
             '                <div class="form-group row">\n' +
             '                    <label for="TotalArea" class="col-sm-2 col-form-label">Общая площадь(м²)</label>\n' +
             '                    <div class="col-sm-6">\n' +
-            '                        <textarea id="TotalArea" name="TotalArea" rows="1" maxlength="6" style="height: 40px; width: 70px" class="form-control" required></textarea>\n' +
+            '                        <textarea id="TotalArea" name="TotalArea" title="Укажите общую площадь" rows="1" maxlength="6" style="height: 40px; width: 70px" class="form-control" required></textarea>\n' +
             '                    </div>\n' +
             '                </div>\n' +
             '\n' +
@@ -544,8 +559,8 @@ async function getEstate(frontName, id) {
             '                <div class="form-group row">\n' +
             '                    <label for="loggiaF" class="col-sm-2 col-form-label">Балкон или лоджия</label>\n' +
             '                    <div class="col-sm-3">\n' +
-            '                        <select id="loggia" name="loggia" class="custom-select custom-select-sm" required>\n' +
-            '                            <option value="-">-</option>\n' +
+            '                        <select id="loggia" name="loggia" title="Укажите, балкон или лоджия" class="custom-select custom-select-sm" required>\n' +
+            '                            <option value="">-</option>\n' +
             '                            <option value="Балкон">Балкон</option>\n' +
             '                            <option value="Лоджия">Лоджия</option>\n' +
             '                            <option value="Нет">Нет</option>\n' +
@@ -556,8 +571,8 @@ async function getEstate(frontName, id) {
             '                <div class="form-group row">\n' +
             '                    <label for="viewF" class="col-sm-2 col-form-label">Вид из окна</label>\n' +
             '                    <div class="col-sm-3">\n' +
-            '                        <select id="view" name="view" class="custom-select custom-select-sm" required>\n' +
-            '                            <option value="-">-</option>\n' +
+            '                        <select id="view" name="view" title="Укажите вид из окна" class="custom-select custom-select-sm" required>\n' +
+            '                            <option value="">-</option>\n' +
             '                            <option value="На улицу">На улицу</option>\n' +
             '                            <option value="Во двор">Во двор</option>\n' +
             '                        </select>\n' +
@@ -567,7 +582,7 @@ async function getEstate(frontName, id) {
             '                <div class="form-group row">\n' +
             '                    <label for="postDescription" class="col-sm-2 col-form-label">Описание объявления</label>\n' +
             '                    <div class="col-sm-6">\n' +
-            '                        <textarea id="postDescription" name="postDescription" rows="6" maxlength="5000" style="height: 130px;" class="form-control"></textarea>\n' +
+            '                        <textarea id="postDescription" name="postDescription" title="Укажите описание объявления" rows="6" maxlength="5000" style="height: 130px;" class="form-control"></textarea>\n' +
             '                        <p class="text-muted">Не указывайте в описании телефон и e-mail — для этого есть отдельные поля</p>\n' +
             '                    </div>\n' +
             '                </div>\n' +
@@ -612,8 +627,8 @@ async function getEstate(frontName, id) {
             '                <div class="form-group row">\n' +
             '                    <label for="postType" class="col-sm-2 col-form-label">Количество комнат</label>\n' +
             '                    <div class="col-sm-3">\n' +
-            '                        <select id="numberOfBeds" name="numberOfBeds" class="custom-select custom-select-sm" required>\n' +
-            '                            <option value="-">-</option>\n' +
+            '                        <select id="numberOfBeds" name="numberOfBeds" title="Укажите количество комнат"  class="custom-select custom-select-sm" required>\n' +
+            '                            <option value="">-</option>\n' +
             '                            <option value="1">1</option>\n' +
             '                            <option value="2">2</option>\n' +
             '                            <option value="3">3</option>\n' +
@@ -631,8 +646,8 @@ async function getEstate(frontName, id) {
             '                <div class="form-group row">\n' +
             '                    <label for="postType" class="col-sm-2 col-form-label">Кол-во спальных мест</label>\n' +
             '                    <div class="col-sm-3">\n' +
-            '                        <select id="sleeper" name="sleeper" class="custom-select custom-select-sm" required>\n' +
-            '                            <option value="-">-</option>\n' +
+            '                        <select id="sleeper" name="sleeper" title="Укажите количество спальных мест" class="custom-select custom-select-sm" required>\n' +
+            '                            <option value="">-</option>\n' +
             '                            <option value="1">1</option>\n' +
             '                            <option value="2">2</option>\n' +
             '                            <option value="3">3</option>\n' +
@@ -753,7 +768,7 @@ async function getEstate(frontName, id) {
             '                <div class="form-group row">\n' +
             '                    <label for="postTitle" class="col-sm-2 col-form-label">Название объявления</label>\n' +
             '                    <div class="col-sm-6">\n' +
-            '                        <input  id="postTitle" maxlength="100" type="text" class="form-control form-control-sm">\n' +
+            '                        <input  id="postTitle" name="postTitle" title="Укажите название объявления" maxlength="100" type="text" class="form-control form-control-sm">\n' +
             '                        <p class="text-muted" data-toggle="tooltip" data-placement="top">Например, «Квартира однушка, Двухкомнатная квартира...»</p>\n' +
             '                    </div>\n' +
             '                </div>\n' +
@@ -765,8 +780,8 @@ async function getEstate(frontName, id) {
             '                <div class="form-group row">\n' +
             '                    <label for="postType" class="col-sm-2 col-form-label">Количество комнат</label>\n' +
             '                    <div class="col-sm-3">\n' +
-            '                        <select id="planirovka" name="planirovka" class="custom-select custom-select-sm" required>\n' +
-            '                            <option value="-">-</option>\n' +
+            '                        <select id="planirovka" name="planirovka" title="Укажите количество комнат" class="custom-select custom-select-sm" required>\n' +
+            '                            <option value="">-</option>\n' +
             '                            <option value="Студия">Студия</option>\n' +
             '                            <option value="Своб. планировка">Своб. планировка</option>\n' +
             '                            <option value="1">1</option>\n' +
@@ -785,7 +800,7 @@ async function getEstate(frontName, id) {
             '                <div class="form-group row">\n' +
             '                    <label for="postDescription" class="col-sm-2 col-form-label">Описание объявления</label>\n' +
             '                    <div class="col-sm-6">\n' +
-            '                        <textarea id="postDescription" name="postDescription" rows="6" maxlength="5000" style="height: 130px;" class="form-control"></textarea>\n' +
+            '                        <textarea id="postDescription" name="postDescription" title="Укажите описание объявления" rows="6" maxlength="5000" style="height: 130px;" class="form-control"></textarea>\n' +
             '                        <p class="text-muted">Не указывайте в описании телефон и e-mail — для этого есть отдельные поля</p>\n' +
             '                    </div>\n' +
             '                </div>\n' +
@@ -824,8 +839,8 @@ async function getEstate(frontName, id) {
             '                <div class="form-group row">\n' +
             '                    <label for="postType" class="col-sm-2 col-form-label">Количество комнат</label>\n' +
             '                    <div class="col-sm-3">\n' +
-            '                        <select id="numberOfBeds" name="numberOfBeds" class="custom-select custom-select-sm" required>\n' +
-            '                            <option value="-">-</option>\n' +
+            '                        <select id="numberOfBeds" name="numberOfBeds" title="Укажите количество комнат" class="custom-select custom-select-sm" required>\n' +
+            '                            <option value="">-</option>\n' +
             '                            <option value="1">1</option>\n' +
             '                            <option value="2">2</option>\n' +
             '                            <option value="3">3</option>\n' +
@@ -843,8 +858,8 @@ async function getEstate(frontName, id) {
             '                <div class="form-group row">\n' +
             '                    <label for="postType" class="col-sm-2 col-form-label">Кол-во спальных мест</label>\n' +
             '                    <div class="col-sm-3">\n' +
-            '                        <select id="sleeper" name="sleeper" class="custom-select custom-select-sm" required>\n' +
-            '                            <option value="-">-</option>\n' +
+            '                        <select id="sleeper" name="sleeper" title="Укажите количество спальных мест" class="custom-select custom-select-sm" required>\n' +
+            '                            <option value="">-</option>\n' +
             '                            <option value="1">1</option>\n' +
             '                            <option value="2">2</option>\n' +
             '                            <option value="3">3</option>\n' +

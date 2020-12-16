@@ -6,24 +6,53 @@ import com.board_of_ads.repository.CityRepository;
 import com.board_of_ads.repository.RegionRepository;
 import com.board_of_ads.service.interfaces.KladrService;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
+
 public class KladrServiceImpl implements KladrService {
 
     private final CityRepository cityRepository;
     private final RegionRepository regionRepository;
+
+    @Override
+    public String readCellToString(Cell cell) {
+        String resultStr= "";
+
+        if ((cell == null || cell.getCellType() == CellType.BLANK)) {
+            return resultStr;
+        }
+        if (cell.getCellType() == CellType.BOOLEAN) {
+
+            return String.valueOf(cell.getBooleanCellValue());
+        }
+        if (cell.getCellType() == CellType.NUMERIC) {
+
+
+            return String.valueOf((int)cell.getNumericCellValue());
+        }
+        if (cell.getCellType() == CellType.STRING) {
+
+            return cell.getStringCellValue();
+        }
+
+        return resultStr;
+
+    }
 
     @Override
     public Region getRegionByRegionNumber(String regionNumber) {
@@ -56,7 +85,8 @@ public class KladrServiceImpl implements KladrService {
     }
 
     @Override
-    public void streamKladr() throws IOException {
+    @SneakyThrows
+    public void streamKladr() {
         Set<FileInputStream> streamKLADR = new HashSet<>();
         FileInputStream fileInputStream_1 = new FileInputStream("src/main/resources/kladr/KLADR_1.xls");
         streamKLADR.add(fileInputStream_1);
@@ -71,18 +101,18 @@ public class KladrServiceImpl implements KladrService {
             Workbook workbook = new HSSFWorkbook(bufferedInputStream);
             Sheet sheet = workbook.getSheetAt(0);
             for (Row row : sheet) {
-                if (row.getCell(1).getStringCellValue().equals("обл")
-                        || row.getCell(1).getStringCellValue().equals("Респ")
-                        || row.getCell(1).getStringCellValue().equals("край")
-                        || row.getCell(1).getStringCellValue().equals("АО")
-                        || row.getCell(1).getStringCellValue().equals("Аобл")
-                        || (row.getCell(1).getStringCellValue().equals("г")
-                        & (row.getCell(0).getStringCellValue().equals("Москва")
-                        || row.getCell(0).getStringCellValue().equals("Санкт-Петербург")
-                        || row.getCell(0).getStringCellValue().equals("Байконур")
-                        || row.getCell(0).getStringCellValue().equals("Севастополь")))) {
+                if (readCellToString(row.getCell(1)).equals("обл")
+                        || readCellToString(row.getCell(1)).equals("Респ")
+                        || readCellToString(row.getCell(1)).equals("край")
+                        || readCellToString(row.getCell(1)).equals("АО")
+                        || readCellToString(row.getCell(1)).equals("Аобл")
+                        || (readCellToString(row.getCell(1)).equals("г")
+                        & (readCellToString(row.getCell(0)).equals("Москва")
+                        || readCellToString(row.getCell(0)).equals("Санкт-Петербург")
+                        || readCellToString(row.getCell(0)).equals("Байконур")
+                        || readCellToString(row.getCell(0)).equals("Севастополь")))) {
                     String regionFormSubject = null;
-                    switch (row.getCell(1).getStringCellValue()) {
+                    switch (readCellToString(row.getCell(1))) {
                         case "обл":
                             regionFormSubject = "Область";
                             break;
@@ -102,20 +132,23 @@ public class KladrServiceImpl implements KladrService {
                             regionFormSubject = "Город";
                             break;
                     }
-                    if (!regionRepository.existsRegionByName(row.getCell(0).getStringCellValue())) {
-                        regionRepository.save(new Region(row.getCell(0).getStringCellValue(), row.getCell(2).getStringCellValue().substring(0, 2), regionFormSubject));
+                    if (!regionRepository.existsRegionByName(readCellToString(row.getCell(0)))) {
+                        regionRepository.save(new Region(readCellToString(row.getCell(0)), readCellToString(row.getCell(2)).substring(0, 2), regionFormSubject));
                     }
                 }
-                if (row.getCell(1).getStringCellValue().equals("г")
-                        & !(row.getCell(0).getStringCellValue().equals("Москва")
-                        || row.getCell(0).getStringCellValue().equals("Санкт-Петербург")
-                        || row.getCell(0).getStringCellValue().equals("Байконур")
-                        || row.getCell(0).getStringCellValue().equals("Севастополь"))) {
+                if (readCellToString(row.getCell(1)).equals("г")) {
 
-                    if (!cityRepository.existsCityByNameAndRegion(row.getCell(0).getStringCellValue(), regionRepository.findRegionByRegionNumber(row.getCell(2).getStringCellValue().substring(0, 2)))) {
-                        cityRepository.save(new City(row.getCell(0).getStringCellValue(), regionRepository.findRegionByRegionNumber(row.getCell(2).getStringCellValue().substring(0, 2)), "Город"));
+                    if (!cityRepository.existsCityByNameAndRegion(readCellToString(row.getCell(0)), regionRepository.findRegionByRegionNumber(readCellToString(row.getCell(2)).substring(0, 2)))) {
+                        if (readCellToString(row.getCell(7)).equals("1")) {
+
+                            cityRepository.save(new City(readCellToString(row.getCell(0)), regionRepository.findRegionByRegionNumber(readCellToString( row.getCell(2)).substring(0, 2)), "Город", true));
+                        } else {
+                            cityRepository.save(new City(readCellToString(row.getCell(0)), regionRepository.findRegionByRegionNumber(readCellToString( row.getCell(2)).substring(0, 2)), "Город", false));
+                        }
+
                     }
                 }
+
             }
             fileInputStream.close();
         }
