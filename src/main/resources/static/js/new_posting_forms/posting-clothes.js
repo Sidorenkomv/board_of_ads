@@ -229,12 +229,14 @@ function showShoesForm(fName, ident) {
         '                        <input id="price" inputmode="numeric" placeholder="₽" type="text" class="form-control form-control-sm" value="">\n' +
         '                    </div>\n' +
         '                </div>\n' +
+
         '\n' +
         '                <div class="form-group row">\n' +
         '                    <label for="postPhotos" class="col-sm-2 col-form-label">Фотографии</label>\n' +
-        '                    <div class="col-sm-2 d-flex">\n' +
-        '                        <label class="" data-marker="add">\n' +
-        '                            <input id="postPhotos" type="file" value="" multiple style="display: block" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input" >\n' +
+        '\n' +
+        '                    <div id="photoList" class="listOfPhoto col-sm-6 d-flex flex-wrap">\n' +
+        '                        <label for="postPhotos" type="button" class="photo-upload" data-marker="add">\n' +
+        '                            <input id="postPhotos" type="file" value="" multiple class="d-none" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input">\n' +
         '                            <div id="uploadPhotos"></div>' +
         '                        </label>\n' +
         '                    </div>\n' +

@@ -92,16 +92,18 @@ async function getHouseholdAppliancesForm(frontName, selectedCategoryId) {
         '                        <p class="text-muted">Не указывайте в описании телефон и e-mail — для этого есть отдельные поля</p>\n' +
         '                    </div>\n' +
         '                </div>\n' +
-        '\n' +
-        '                <div class="form-group row">\n' +
-        '                    <label for="postPrice" class="col-sm-2 col-form-label">Цена</label>\n' +
-        '                    <div class="col-sm-2 d-flex">\n' +
-        '                        <input id="postPrice" inputmode="numeric" placeholder="₽" type="number" class="form-control form-control-sm" value="">\n' +
-        '                    </div>\n' +
-        '                </div>\n' +
+
         '\n' +
         '                <div class="form-group row">\n' +
         '                    <label for="postPhotos" class="col-sm-2 col-form-label">Фотографии</label>\n' +
+        '\n' +
+        '                    <div id="photoList" class="listOfPhoto col-sm-6 d-flex flex-wrap">\n' +
+        '                        <label for="postPhotos" type="button" class="photo-upload" data-marker="add">\n' +
+        '                            <input id="postPhotos" type="file" value="" multiple class="d-none" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input">\n' +
+        '                            <div id="uploadPhotos"></div>' +
+        '                        </label>\n' +
+        '                    </div>\n' +
+        '                </div>\n' +
         '\n' +
         '                    <div id="photoList" class="listOfPhoto col-sm-6 d-flex">\n' +
         '                        <label for="postPhotos" type="button" class="photo-upload" data-marker="add">\n' +
