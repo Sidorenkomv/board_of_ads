@@ -90,6 +90,13 @@ async function getHouseholdAppliancesForm(frontName, selectedCategoryId) {
         '                    <div class="col-sm-6">\n' +
         '                        <textarea id="postDescription" name="postDescription" title="Пожалуйста, заполните описание" rows="6" maxlength="5000" style="height: 130px;" class="form-control"></textarea>\n' +
         '                        <p class="text-muted">Не указывайте в описании телефон и e-mail — для этого есть отдельные поля</p>\n' +
+        '</div>\n' +
+        '                </div>\n' +
+        '\n' +
+        '                <div class="form-group row">\n' +
+        '                    <label for="postPrice" class="col-sm-2 col-form-label">Цена</label>\n' +
+        '                    <div class="col-sm-2 d-flex">\n' +
+        '                        <input id="postPrice" inputmode="numeric" placeholder="₽" type="number" class="form-control form-control-sm" value="">\n' +
         '                    </div>\n' +
         '                </div>\n' +
         '\n' +
