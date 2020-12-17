@@ -4,7 +4,6 @@ import com.board_of_ads.models.Category;
 import com.board_of_ads.models.dto.CategoryDto;
 import com.board_of_ads.models.dto.CategoryDtoMenu;
 import com.board_of_ads.models.dto.analytics.ReportCategoryPostingDto;
-import com.board_of_ads.models.dto.analytics.ReportCityPostingDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +15,7 @@ public interface CategoryService {
 
     Optional<Category> getCategoryByFrontName(String frontName);
 
-    Category saveCategory(Category category);
+    void saveCategory(Category category);
 
     Set<CategoryDto> findAllCategory();
 
@@ -30,7 +29,7 @@ public interface CategoryService {
 
     void deleteCategory(Long id);
 
-    Category createCategory(CategoryDto category);
+    void createCategory(CategoryDto category);
 
     List<CategoryDtoMenu> allParentCategory();
 

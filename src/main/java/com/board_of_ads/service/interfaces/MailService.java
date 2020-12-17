@@ -6,17 +6,17 @@ import java.util.Map;
 
 public interface MailService {
 
-    public void auth(String code);
+    void auth(String code);
 
-    public String getAuthURL();
+    String getAuthURL();
 
-    public String getAuthResponseURL(String code);
+    String getAuthResponseURL(String code);
 
-    public String getToken(String body);
+    String getToken(String body);
 
     Map<String, String> getUserData(String token, String sig);
 
-    public User init(Map<String, String> userData);
+    User init(Map<String, String> userData);
 
-    public void login(User user);
+    void login(User user);
 }

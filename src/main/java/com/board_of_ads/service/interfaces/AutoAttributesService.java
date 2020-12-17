@@ -4,7 +4,6 @@ import com.board_of_ads.models.posting.autoTransport.cars.car_attributes.AutoCol
 import com.board_of_ads.models.posting.autoTransport.cars.car_attributes.AutoModel;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Set;
 
 public interface AutoAttributesService {

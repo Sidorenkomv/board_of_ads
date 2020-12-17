@@ -63,11 +63,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User regUser(User user) {
+    public void regUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setAvatar(new Image(null, "images/user.jpg"));
         user.setRoles(roleService.defaultRolesSet());
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 
     @Override

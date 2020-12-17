@@ -11,7 +11,7 @@ public interface NotificationService {
     void createNotification(Notification notification);
     List<UserNotification> getUsersAllNotifications(User user);
     List<UserNotification> getAllNotifications();
-    boolean sendNotificationToUsers(Notification notification, List<User> users);
+    void sendNotificationToUsers(Notification notification, List<User> users);
     boolean updateUserNotificationFields(UserNotification userNotification);
     UserNotification findByNoteIdAndUserId(Long noteId, Long userId);
     boolean deleteUserNotification(UserNotification userNotification);
