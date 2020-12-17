@@ -1,14 +1,21 @@
 <div th:fragment="file-restrictions-modals" xmlns:th="http://www.w3.org/1999/xhtml">
 
-    <div id="alert-extension" class="alert-custom alert alert-dismissible collapse fixed-bottom" role="alert">
+    <div id="alert-extension" class="alert alert-dismissible collapse fixed-bottom" role="alert">
         Формат не поддерживается. Загрузите изображения в jpeg, png или gif
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
 
-    <div id="alert-size" class="alert-custom alert alert-dismissible collapse fixed-bottom" role="alert">
+    <div id="alert-size" class="alert alert-dismissible collapse fixed-bottom" role="alert">
         Изображение слишком большое. Загрузите изображение до 10 МБ
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div id="alert-count" class="alert alert-dismissible collapse fixed-bottom" role="alert">
+        Вы загрузили максимальное количество изображений
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>

@@ -2,6 +2,9 @@ const approvedExtensions = ["jpeg", "png", "gif", "pjpeg", "jpg"];
 const maxFileSize = 10485760;
 let fileList = [];
 let choosenFiles;
+let currentPhotoCount = 0;
+let maximumPhotoCount = 10; //для некоторых категорий можно больше
+
 
 function deletePhoto(event) {
     //определяем индекс удаляемого элемента по id его div
@@ -10,7 +13,9 @@ function deletePhoto(event) {
 
     //скрываем его со страницы
     let divToHide = event.currentTarget.parentNode;
-    divToHide.classList.add('hidden');
+    divToHide.classList.add('d-none');
+
+    checkCount(-1);
 }
 
 function rotatePhoto(event) {
@@ -53,7 +58,14 @@ function checkFiles() {
             $('#alert-size').show();
             fileList.splice(i, 1);
             i--;
+            continue;
         }
+        if (currentPhotoCount + 1 > maximumPhotoCount) {
+            $('#alert-count').show();
+            fileList.splice(i, fileList.length - maximumPhotoCount + 1);
+            break;
+        }
+        checkCount(1);
     }
     showPhotosOnPage(fileList, currentStartIndex);
 }
@@ -79,6 +91,19 @@ function showPhotosOnPage(fileList, currentStartIndex) {
 
     $('.delete-image').on('click', deletePhoto);
     $('.turn-image').on('click', rotatePhoto);
+}
+
+function checkCount(addedCount) {
+    currentPhotoCount += addedCount;
+    let addPhotoBtn = document.getElementsByClassName('photo-upload')[0];
+
+    if (currentPhotoCount >= maximumPhotoCount && !addPhotoBtn.classList.contains('d-none')) {
+        addPhotoBtn.classList.add('d-none');
+    }
+
+    if (currentPhotoCount < maximumPhotoCount && addPhotoBtn.classList.contains('d-none')) {
+        addPhotoBtn.classList.remove('d-none');
+    }
 }
 
 //поведение кнопки закрыть на alert bootstrap
