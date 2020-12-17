@@ -19,7 +19,7 @@ import java.util.Objects;
 @Setter
 @Entity
 @Table(name = "cities")
-public class    City {
+public class City {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

@@ -148,17 +148,21 @@ async function getVacancyForm(frontName, selectedCategoryId) {
         '                </div>\n' +
         '\n' +
         '                <div class="form-group row">\n' +
-        '                    <label for="postPhotos" class="col-sm-2 col-form-label">Логотип или фотографии</label>\n' +
+        '                    <label for="postDescription" class="col-sm-2 col-form-label">Описание вакансии и компании</label>\n' +
+        '                    <div class="col-sm-5">\n' +
+        '                        <textarea id="postDescription" name="postDescription" title="Заполните описание" rows="7" maxlength="6000" style="height: 150px;" class="form-control"></textarea>\n' +
+        '                        <p class="text-muted">Расскажите, что вы предлагаете и каких кандидатов ищете. Убедитесь, что в объявлении нет признаков дискриминации.</p>\n' +
+        '                    </div>\n' +
+        '                </div>\n' +
         '\n' +
+        '                <div class="form-group row">\n' +
+        '                    <label for="postPhotos" class="col-sm-2 col-form-label">Логотип или фотографии</label>\n' +
         '                    <div id="photoList" class="listOfPhoto col-sm-6 d-flex flex-wrap">\n' +
         '                        <label for="postPhotos" type="button" class="photo-upload" data-marker="add">\n' +
         '                            <input id="postPhotos" type="file" value="" multiple class="d-none" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input">\n' +
         '                            <div id="uploadPhotos"></div>' +
         '                        </label>\n' +
         '                    </div>\n' +
-        '                </div>\n' +
-        '\n' +
-        '                     <p id="errorFor-postPhotos" class="hidden error-text" data-toggle="tooltip" data-placement="top">Загрузите хотя бы одну фотографию</p>\n' +
         '                </div>\n' +
         '            </form>\n' +
         '        </div>\n' +

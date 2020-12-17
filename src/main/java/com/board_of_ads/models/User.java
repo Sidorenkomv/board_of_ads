@@ -9,7 +9,6 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.security.core.GrantedAuthority;
@@ -46,7 +45,6 @@ import java.util.Set;
 @Getter
 @Setter
 @Table(name = "users")
-@ToString
 public class User implements UserDetails {
 
     @Id

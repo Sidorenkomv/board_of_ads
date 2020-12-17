@@ -90,6 +90,9 @@ function showReadyBusinessForm(fName, ident) {
         '            </form>\n' +
         '        </div>\n' +
         '    </div>'
+
+    choosenFiles = document.getElementById('postPhotos');
+    choosenFiles.addEventListener('change', checkFiles, false);
 }
 
 

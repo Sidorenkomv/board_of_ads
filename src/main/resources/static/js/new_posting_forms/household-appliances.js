@@ -92,7 +92,6 @@ async function getHouseholdAppliancesForm(frontName, selectedCategoryId) {
         '                        <p class="text-muted">Не указывайте в описании телефон и e-mail — для этого есть отдельные поля</p>\n' +
         '                    </div>\n' +
         '                </div>\n' +
-
         '\n' +
         '                <div class="form-group row">\n' +
         '                    <label for="postPhotos" class="col-sm-2 col-form-label">Фотографии</label>\n' +
@@ -104,16 +103,6 @@ async function getHouseholdAppliancesForm(frontName, selectedCategoryId) {
         '                        </label>\n' +
         '                    </div>\n' +
         '                </div>\n' +
-        '\n' +
-        '                    <div id="photoList" class="listOfPhoto col-sm-6 d-flex">\n' +
-        '                        <label for="postPhotos" type="button" class="photo-upload" data-marker="add">\n' +
-        '                            <input id="postPhotos" type="file" value="" multiple class="hidden" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input">\n' +
-        '                            <div id="uploadPhotos"></div>' +
-        '                        </label>\n' +
-        '                    </div>\n' +
-        '                     <p id="errorFor-postPhotos" class="hidden error-text" data-toggle="tooltip" data-placement="top">Загрузите хотя бы одну фотографию</p>\n' +
-        '                </div>\n' +
-
         '\n' +
         '                <div class="form-group row">\n' +
         '                    <label for="postLinkYouTube" class="col-sm-2 col-form-label">Видео c YouTube</label>\n' +

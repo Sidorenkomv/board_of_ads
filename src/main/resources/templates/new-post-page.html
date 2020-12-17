@@ -29,6 +29,8 @@
         <div th:insert="fragments/new-password-modal::new-password"></div>
     </div>
 </div>
+
+<div th:insert="fragments/file-restricitons-modal.html::file-restrictions-modals"></div>
 <div class="main-container">
     <div class="head-container">
         <nav style="display: flex;">
@@ -131,19 +133,6 @@
 
 </div>
 
-<div id="alert-extension" class="alert-custom alert alert-dismissible collapse fixed-bottom"  role="alert">
-    Формат не поддерживается. Загрузите изображения в jpeg, png или gif
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-
-<div id="alert-size" class="alert-custom alert alert-dismissible collapse fixed-bottom"  role="alert">
-    Изображение слишком большое. Загрузите изображение до 10 МБ
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
 
 <script type="text/javascript" src="../static/js/user-info-menu.js" th:src="@{/js/user-info-menu.js}"></script>
 <script type="text/javascript" src="../static/js/authorization.js" th:src="@{/js/authorization.js}"></script>
