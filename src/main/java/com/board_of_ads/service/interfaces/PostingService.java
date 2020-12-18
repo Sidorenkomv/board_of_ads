@@ -68,4 +68,7 @@ public interface PostingService {
 
     Response<Void> saveForBusinessPosting(Long id, User user, Map<String,
             String> map, List<MultipartFile> photos);
+
+    Response<Void> saveHouseholdAppliancesPosting(Long id, User user, Map<String,String> map,
+                                                  List<MultipartFile> photos);
 }

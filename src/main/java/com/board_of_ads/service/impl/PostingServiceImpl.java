@@ -9,6 +9,7 @@ import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.models.posting.autoTransport.cars.PostingCar;
 import com.board_of_ads.models.posting.forBusiness.Business;
+import com.board_of_ads.models.posting.forHomeAndGarden.HouseholdAppliancesPosting;
 import com.board_of_ads.models.posting.job.Vacancy;
 import com.board_of_ads.models.posting.personalBelongings.Clothes;
 import com.board_of_ads.models.posting.realty.estate.BuyEstatePosting;
@@ -35,6 +36,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -524,5 +529,29 @@ public class PostingServiceImpl implements PostingService {
             log.info("Не удалось создать объявление => " + ex.getMessage());
             return new ErrorResponse<>(new Error(400, "Posting is not created"));
         }
+    }
+
+    @Override
+    public Response<Void> saveHouseholdAppliancesPosting(Long id, User user, Map<String, String> obj, List<MultipartFile> photos) {
+
+        HouseholdAppliancesPosting posting;
+
+        try {
+            posting = new HouseholdAppliancesPosting(userService.getUserById(user.getId()), categoryService.getCategoryById(id),
+                    obj.get("title"), obj.get("description"), Long.parseLong(obj.get("price")), obj.get("contact"),
+                    true, obj.get("contactEmail"), obj.get("linkYouTube"), obj.get("communicationType"), obj.get("state"));
+
+            List<Image> images = imageService.savePhotos(user, photos);
+            posting.setImages(images);
+            posting.setCity(user.getCity());
+            postingRepository.save(posting);
+            log.info("Объявление в категории Для дома и дачи успешно создано пользователем " + user.getEmail());
+            return Response.ok().build();
+        } catch (Exception ex) {
+            log.info("Не удалось создать объявление в категории Для дома и дачи => " + ex.getMessage());
+            return new ErrorResponse<>(new Error(400, "Posting is not created"));
+        }
+
+
     }
 }
