@@ -5,10 +5,10 @@ let btn2 = document.getElementById("saveButton");
 btn2.addEventListener("click", () => {
 
         const formData = new FormData();
-        const fileField = document.querySelector('input[type="file"][multiple]');
+        const fileField = fileList;
 
-        for (let i = 0; i < fileField.files.length; i++) {
-            formData.append('photos', fileField.files[i]);
+        for (let i = 0; i < fileField.length; i++) {
+            formData.append('photos', fileField[i]);
         }
         let price = window.price.value;
         let state;
@@ -28,9 +28,9 @@ btn2.addEventListener("click", () => {
         formData.append('contact', window.inputPhone.value);
         formData.append('communicationType', document.querySelector('input[name="communication"]:checked').value);
 
-    if (!checkInputFields(formData)) {
-        return false;
-    }
+        if (!checkInputFields(formData)) {
+            return false;
+        }
 
         fetch('/api/posting/business/' + id_business, {
             method: 'POST',
@@ -72,11 +72,11 @@ function showReadyBusinessForm(fName, ident) {
         '\n' +
         '                <div class="form-group row">\n' +
         '                    <label for="postPhotos" class="col-sm-2 col-form-label">Фотографии</label>\n' +
-        '                    <div class="col-sm-2 d-flex">\n' +
-        '                        <label class="" data-marker="add">\n' +
-        '                            <input id="postPhotos" type="file" value="" multiple style="display: block" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input" >\n' +
+        '\n' +
+        '                    <div id="photoList" class="listOfPhoto col-sm-6 d-flex flex-wrap">\n' +
+        '                        <label for="postPhotos" type="button" class="photo-upload" data-marker="add">\n' +
+        '                            <input id="postPhotos" type="file" value="" multiple class="d-none" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input">\n' +
         '                            <div id="uploadPhotos"></div>' +
-        '                        <p  id="fill_photo"></p>\n' +
         '                        </label>\n' +
         '                    </div>\n' +
         '                </div>\n' +
@@ -90,6 +90,9 @@ function showReadyBusinessForm(fName, ident) {
         '            </form>\n' +
         '        </div>\n' +
         '    </div>'
+
+    choosenFiles = document.getElementById('postPhotos');
+    choosenFiles.addEventListener('change', checkFiles, false);
 }
 
 
@@ -143,12 +146,14 @@ function showEquipmentForBusinessForm(fName, ident) {
         '\n' +
         '                <div class="form-group row">\n' +
         '                    <label for="postPhotos" class="col-sm-2 col-form-label">Фотографии</label>\n' +
-        '                    <div class="col-sm-2 d-flex">\n' +
-        '                        <label class="" data-marker="add">\n' +
-        '                            <input id="postPhotos" type="file" value="" multiple style="display: block" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input" >\n' +
+        '\n' +
+        '                    <div id="photoList" class="listOfPhoto col-sm-6 d-flex">\n' +
+        '                        <label for="postPhotos" type="button" class="photo-upload" data-marker="add">\n' +
+        '                            <input id="postPhotos" type="file" value="" multiple class="hidden" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input">\n' +
         '                            <div id="uploadPhotos"></div>' +
         '                        </label>\n' +
         '                    </div>\n' +
+        '                     <p id="errorFor-postPhotos" class="hidden error-text" data-toggle="tooltip" data-placement="top">Загрузите хотя бы одну фотографию</p>\n' +
         '                </div>\n' +
         '\n' +
         '                <div class="form-group row">\n' +
@@ -160,5 +165,8 @@ function showEquipmentForBusinessForm(fName, ident) {
         '            </form>\n' +
         '        </div>\n' +
         '    </div>'
+
+    choosenFiles = document.getElementById('postPhotos');
+    choosenFiles.addEventListener('change', checkFiles, false);
 
 }

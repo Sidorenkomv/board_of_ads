@@ -1,7 +1,7 @@
 async function sendNewVacancyPosting(selectedCategoryId) {
     let url = "/api/posting/new/vacancy";
 
-    const fileField = document.querySelector('input[type="file"][name="image"][multiple]');
+    const fileField = fileList;
 
     let body = new FormData();
 
@@ -13,8 +13,8 @@ async function sendNewVacancyPosting(selectedCategoryId) {
         }
     }
 
-    for (let i = 0; i < fileField.files.length; i++) {
-        body.append('photos', fileField.files[i], fileField.files[i].name);
+    for (let i = 0; i < fileField.length; i++) {
+        body.append('photos', fileField[i], fileField[i].name);
     }
     body.append("title", document.getElementById("title").value);
     body.append("schedule", document.getElementById("schedule").value);
@@ -187,20 +187,18 @@ async function buildVacancyForm(frontName, selectedCategoryId) {
         '            </td>\n' +
         '        </tr>\n' +
         '        <tr>\n' +
-        '            <td><label\n' +
-        '                    class="fieldset-label-uvOzG" data-marker="label" for="image"><span\n' +
-        '                    class="text-text-1PdBw">Логотип или фотография</span></label>\n' +
-        '            </td>\n' +
-        '            <td>\n' +
-        '                <input type="file" id="image" name="image" multiple\n' +
-        '                       accept="image/gif,image/png,image/jpeg,image/pjpeg"\n' +
-        '                       value="">\n' +
-        '                <div class="ui-icon-image">\n' +
-        '                    Перетащите сюда изображение\n' +
+        '\n' +
+        '                <div class="form-group row">\n' +
+        '                    <label for="postPhotos" class="col-sm-2 col-form-label">Логотип или фотографии</label>\n' +
+        '\n' +
+        '                    <div id="photoList" class="listOfPhoto col-sm-6 d-flex flex-wrap">\n' +
+        '                        <label for="postPhotos" type="button" class="photo-upload" data-marker="add">\n' +
+        '                            <input id="postPhotos" type="file" value="" multiple class="d-none" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input">\n' +
+        '                            <div id="uploadPhotos"></div>' +
+        '                        </label>\n' +
+        '                    </div>\n' +
         '                </div>\n' +
-        '            </td>\n' +
-        '        </tr>\n' +
-        '        <tr>\n' +
+        '\n' +
         '            <td colspan="2"><h3>Требования к кандидату</h3></td>\n' +
         '        </tr>\n' +
         '        <tr>\n' +
@@ -257,4 +255,7 @@ async function buildVacancyForm(frontName, selectedCategoryId) {
         '            </td>\n' +
         '        </tr>\n' +
         '    </table>';
+
+    choosenFiles = document.getElementById('postPhotos');
+    choosenFiles.addEventListener('change', checkFiles, false);
 }

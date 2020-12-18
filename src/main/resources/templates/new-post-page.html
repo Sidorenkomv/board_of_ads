@@ -29,6 +29,8 @@
         <div th:insert="fragments/new-password-modal::new-password"></div>
     </div>
 </div>
+
+<div th:insert="fragments/file-restricitons-modal.html::file-restrictions-modals"></div>
 <div class="main-container">
     <div class="head-container">
         <nav style="display: flex;">
@@ -130,6 +132,8 @@
     </div>
 
 </div>
+
+
 <script type="text/javascript" src="../static/js/user-info-menu.js" th:src="@{/js/user-info-menu.js}"></script>
 <script type="text/javascript" src="../static/js/authorization.js" th:src="@{/js/authorization.js}"></script>
 <script src="../static/js/recovery_password.js" th:src="@{/js/recovery_password.js}"></script>
@@ -154,6 +158,6 @@
 
 <script src="../static/js/checkInputFields.js" th:src="@{/js/checkInputFields.js}"></script>
 <script src="../static/js/jquery.maskedinput.js" th:src="@{/js/jquery.maskedinput.js}"></script>
-
+<script src="../static/js/photos_handler.js" th:src="@{/js/photos_handler.js}"></script>
 </body>
 </html>
