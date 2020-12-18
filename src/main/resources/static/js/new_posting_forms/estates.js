@@ -631,7 +631,7 @@ async function getEstate(frontName, id) {
             '                <div class="form-group row">\n' +
             '                    <label for="postType" class="col-sm-2 col-form-label">Количество комнат</label>\n' +
             '                    <div class="col-sm-3">\n' +
-            '                        <select id="numberOfBeds" name="numberOfBeds" title="Укажите количество комнат"  class="custom-select custom-select-sm" required>\n' +
+            '                        <select id="numberOfBeds" name="numberOfBeds" title="Укажите количество комнат" class="custom-select custom-select-sm" required>\n' +
             '                            <option value="">-</option>\n' +
             '                            <option value="1">1</option>\n' +
             '                            <option value="2">2</option>\n' +
