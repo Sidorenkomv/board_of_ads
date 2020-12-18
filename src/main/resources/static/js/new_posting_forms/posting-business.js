@@ -4,13 +4,11 @@ let btn2 = document.getElementById("saveButton");
 
 btn2.addEventListener("click", () => {
 
-    if (validateForm()) {
-
         const formData = new FormData();
-        const fileField = document.querySelector('input[type="file"][multiple]');
+        const fileField = fileList;
 
-        for (let i = 0; i < fileField.files.length; i++) {
-            formData.append('photos', fileField.files[i]);
+        for (let i = 0; i < fileField.length; i++) {
+            formData.append('photos', fileField[i]);
         }
         let price = window.price.value;
         let state;
@@ -20,9 +18,9 @@ btn2.addEventListener("click", () => {
             state = "";
         }
 
-        formData.append('title', window.title.value);
+        formData.append('title', window.postTitle.value);
         formData.append('state', state === "" ? null : state);
-        formData.append('description', window.description.value);
+        formData.append('description', window.postDescription.value);
         formData.append('price', price === "" ? 0 : price);
         formData.append('linkYouTube', window.linkYouTube.value);
         formData.append('meetingAddress', window.inputAddress.value);
@@ -30,56 +28,15 @@ btn2.addEventListener("click", () => {
         formData.append('contact', window.inputPhone.value);
         formData.append('communicationType', document.querySelector('input[name="communication"]:checked').value);
 
+        if (!checkInputFields(formData)) {
+            return false;
+        }
 
         fetch('/api/posting/business/' + id_business, {
-
             method: 'POST',
             body: formData
         }).then(() => window.location.href = '/');
-
-    }
 });
-
-
-function validateForm() {
-    if (document.getElementById("title").value == "") {
-
-        let alert_title = "Введите название объявления";
-        document.getElementById("fill_title").innerHTML = alert_title;
-        document.getElementById("title").focus();
-        return false;
-
-    } else if (document.getElementById("description").value == "") {
-
-        let alert_description = "Пожалуйста, заполните описание";
-        document.getElementById("fill_description").innerHTML = alert_description;
-        document.getElementById("description").focus();
-        return false;
-
-    } else if (document.getElementById("postPhotos").files.length == 0) {
-        let alert_photo = "Загрузите хотя бы 1 фотографию";
-        document.getElementById("fill_photo").innerHTML = alert_photo;
-        document.getElementById("postPhotos").focus();
-        return false;
-
-    } else if (document.getElementById("inputAddress").value == "") {
-
-        let alert_address = "Укажите место сделки";
-        document.getElementById("fill_address").innerHTML = alert_address;
-        document.getElementById("inputAddress").focus();
-        return false;
-
-    } else if (document.getElementById("inputPhone").value == "") {
-
-        let alert_phone = "Укажите телефон";
-        document.getElementById("fill_phone").innerHTML = alert_phone;
-        document.getElementById("inputPhone").focus();
-        return false;
-    }
-
-    return true;
-}
-
 
 function showReadyBusinessForm(fName, ident) {
     id_business = ident;
@@ -93,17 +50,15 @@ function showReadyBusinessForm(fName, ident) {
         '                <div class="form-group row">\n' +
         '                    <label for="title" class="col-sm-2 col-form-label">Название объявления</label>\n' +
         '                    <div class="col-sm-6">\n' +
-        '                        <input  id="title" maxlength="100" type="text" class="form-control form-control-sm" value="Другое"  >\n' +
-        '                        <p  id="fill_title"></p>\n' +
-        '                        <p class="text-muted" data-toggle="tooltip" data-placement="top">Например, «Комбинезон зимний Reima 104 см» или «Apple Watch 3 стальной ремешок»</p>\n' +
+        '                        <input id="postTitle" name="postTitle" title="Введите название объявления" maxlength="100" type="text" class="form-control form-control-sm">\n' +
+        '                        <p class="text-muted" data-toggle="tooltip" data-placement="top">Например, «Интернет-магазин игрушек» или «Фрезерный станок с ЧПУ»</p>\n' +
         '                    </div>\n' +
         '                </div>\n' +
         '\n' +
         '                <div class="form-group row">\n' +
         '                    <label for="description" class="col-sm-2 col-form-label">Описание объявления</label>\n' +
         '                    <div class="col-sm-6">\n' +
-        '                        <textarea id="description" name="description"   rows="6" maxlength="5000" style="height: 130px;" class="form-control"></textarea>\n' +
-        '                        <p  id="fill_description"></p>\n' +
+        '                        <textarea id="postDescription" name="postDescription" title="Пожалуйста, заполните описание" rows="6" maxlength="5000" style="height: 130px;" class="form-control"></textarea>\n' +
         '                        <p class="text-muted">Не указывайте в описании телефон и e-mail — для этого есть отдельные поля</p>\n' +
         '                    </div>\n' +
         '                </div>\n' +
@@ -117,11 +72,11 @@ function showReadyBusinessForm(fName, ident) {
         '\n' +
         '                <div class="form-group row">\n' +
         '                    <label for="postPhotos" class="col-sm-2 col-form-label">Фотографии</label>\n' +
-        '                    <div class="col-sm-2 d-flex">\n' +
-        '                        <label class="" data-marker="add">\n' +
-        '                            <input id="postPhotos" type="file" value="" multiple style="display: block" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input" >\n' +
+        '\n' +
+        '                    <div id="photoList" class="listOfPhoto col-sm-6 d-flex flex-wrap">\n' +
+        '                        <label for="postPhotos" type="button" class="photo-upload" data-marker="add">\n' +
+        '                            <input id="postPhotos" type="file" value="" multiple class="d-none" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input">\n' +
         '                            <div id="uploadPhotos"></div>' +
-        '                        <p  id="fill_photo"></p>\n' +
         '                        </label>\n' +
         '                    </div>\n' +
         '                </div>\n' +
@@ -135,6 +90,9 @@ function showReadyBusinessForm(fName, ident) {
         '            </form>\n' +
         '        </div>\n' +
         '    </div>'
+
+    choosenFiles = document.getElementById('postPhotos');
+    choosenFiles.addEventListener('change', checkFiles, false);
 }
 
 
@@ -166,18 +124,15 @@ function showEquipmentForBusinessForm(fName, ident) {
         '                <div class="form-group row">\n' +
         '                    <label for="title" class="col-sm-2 col-form-label">Название объявления</label>\n' +
         '                    <div class="col-sm-6">\n' +
-        '                        <input  id="title" maxlength="100" type="text" class="form-control form-control-sm" value="Другое">\n' +
-        '                        <p  id="fill_title"></p>\n' +
-
-        '                        <p class="text-muted" data-toggle="tooltip" data-placement="top">Например, «Комбинезон зимний Reima 104 см» или «Apple Watch 3 стальной ремешок»</p>\n' +
+        '                        <input id="postTitle" name="postTitle" title="Введите название объявления" maxlength="100" type="text" class="form-control form-control-sm">\n' +
+        '                        <p class="text-muted" data-toggle="tooltip" data-placement="top">Например, «Интернет-магазин игрушек» или «Фрезерный станок с ЧПУ»</p>\n' +
         '                    </div>\n' +
         '                </div>\n' +
         '\n' +
         '                <div class="form-group row">\n' +
         '                    <label for="description" class="col-sm-2 col-form-label">Описание объявления</label>\n' +
         '                    <div class="col-sm-6">\n' +
-        '                        <textarea id="description" name="description" rows="6" maxlength="5000" style="height: 130px;" class="form-control"></textarea>\n' +
-        '                        <p  id="fill_description"></p>\n' +
+        '                        <textarea id="postDescription" name="postDescription" title="Пожалуйста, заполните описание" rows="6" maxlength="5000" style="height: 130px;" class="form-control"></textarea>\n' +
         '                        <p class="text-muted">Не указывайте в описании телефон и e-mail — для этого есть отдельные поля</p>\n' +
         '                    </div>\n' +
         '                </div>\n' +
@@ -191,13 +146,14 @@ function showEquipmentForBusinessForm(fName, ident) {
         '\n' +
         '                <div class="form-group row">\n' +
         '                    <label for="postPhotos" class="col-sm-2 col-form-label">Фотографии</label>\n' +
-        '                    <div class="col-sm-2 d-flex">\n' +
-        '                        <label class="" data-marker="add">\n' +
-        '                            <input id="postPhotos" type="file" value="" multiple style="display: block" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input" >\n' +
+        '\n' +
+        '                    <div id="photoList" class="listOfPhoto col-sm-6 d-flex">\n' +
+        '                        <label for="postPhotos" type="button" class="photo-upload" data-marker="add">\n' +
+        '                            <input id="postPhotos" type="file" value="" multiple class="hidden" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input">\n' +
         '                            <div id="uploadPhotos"></div>' +
-        '                        <p  id="fill_photo"></p>\n' +
         '                        </label>\n' +
         '                    </div>\n' +
+        '                     <p id="errorFor-postPhotos" class="hidden error-text" data-toggle="tooltip" data-placement="top">Загрузите хотя бы одну фотографию</p>\n' +
         '                </div>\n' +
         '\n' +
         '                <div class="form-group row">\n' +
@@ -209,5 +165,8 @@ function showEquipmentForBusinessForm(fName, ident) {
         '            </form>\n' +
         '        </div>\n' +
         '    </div>'
+
+    choosenFiles = document.getElementById('postPhotos');
+    choosenFiles.addEventListener('change', checkFiles, false);
 
 }

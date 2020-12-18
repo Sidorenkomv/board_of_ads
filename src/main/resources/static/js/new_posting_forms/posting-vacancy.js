@@ -5,10 +5,10 @@ let saveButtonVac = document.getElementById('saveButton');
 async function sentVacancyPosting(frontName, selectedCategoryId) {
     let url = '/api/posting/new/' + frontName + '/' + selectedCategoryId;
     const formData = new FormData();
-    const fileField = document.querySelector('input[type="file"]');
+    const fileField = fileList;
 
-    for (let i = 0; i < fileField.files.length; i++) {
-        formData.append('photos', fileField.files[i]);
+    for (let i = 0; i < fileField.length; i++) {
+        formData.append('photos', fileField[i]);
     }
 
     formData.append('title', window.postTitle.value);
@@ -26,6 +26,10 @@ async function sentVacancyPosting(frontName, selectedCategoryId) {
     formData.append('contactEmail', window.inputEmail.value);
     formData.append('contact', window.inputPhone.value);
     formData.append('communicationType', document.querySelector('input[name="communication"]:checked').value);
+
+    if (!checkInputFields(formData)) {
+        return false;
+    }
 
     await sendFile(formData, url);
     window.location.href = '/';
@@ -57,7 +61,7 @@ async function getVacancyForm(frontName, selectedCategoryId) {
         '                <div class="form-group row">\n' +
         '                    <label for="postTitle" class="col-sm-2 col-form-label">Название объявления</label>\n' +
         '                    <div class="col-sm-6">\n' +
-        '                        <input  id="postTitle" name="postTitle" maxlength="100" type="text" class="form-control form-control-sm">\n' +
+        '                        <input  id="postTitle" name="postTitle" title="Введите название объявления" maxlength="100" type="text" class="form-control form-control-sm">\n' +
         '                        <p class="text-muted" data-toggle="tooltip" data-placement="top">Например, «Продавец-консультант в магазин одежды» или «Водитель такси».</p>\n' +
         '                    </div>\n' +
         '                </div>\n' +
@@ -65,7 +69,7 @@ async function getVacancyForm(frontName, selectedCategoryId) {
         '                <div class="form-group row">\n' +
         '                    <label for="postSchedule" class="col-sm-2 col-form-label">График работы</label>\n' +
         '                    <div class="col-sm-6">\n' +
-        '                        <select style="width: 220px;" id="postSchedule" name="postSchedule" class="form-control form-control-sm">\n' +
+        '                        <select style="width: 220px;" id="postSchedule" name="postSchedule" title="Укажите график работы" class="form-control form-control-sm">\n' +
         '                           <option value="">—</option>\n' +
         '                           <option value="Вахтовый метод">Вахтовый метод</option>\n' +
         '                           <option value="Неполный день">Неполный день</option>\n' +
@@ -88,7 +92,7 @@ async function getVacancyForm(frontName, selectedCategoryId) {
         '                <div class="form-group row">\n' +
         '                    <label for="postFrequency" class="col-sm-2 col-form-label">Частота выплат</label>\n' +
         '                    <div class="col-sm-6">\n' +
-        '                        <select style="width: 220px;" id="postFrequency" name="postFrequency" class="form-control form-control-sm">\n' +
+        '                        <select style="width: 220px;" id="postFrequency" name="postFrequency" title="Укажите частоту выплат" class="form-control form-control-sm">\n' +
         '                           <option value="">—</option>\n' +
         '                           <option value="почасовая оплата">почасовая оплата</option>\n' +
         '                           <option value="каждый день">каждый день</option>\n' +
@@ -101,7 +105,7 @@ async function getVacancyForm(frontName, selectedCategoryId) {
         '                <div class="form-group row">\n' +
         '                    <label for="postDuties" class="col-sm-2 col-form-label">Обязанности</label>\n' +
         '                    <div class="col-sm-5">\n' +
-        '                        <textarea id="postDuties" name="postDuties" rows="5" maxlength="5000" style="height: 130px;" class="form-control" placeholder="Через запятую, например: помощь покупателям, работа с кассой, контроль сроков годности"></textarea>\n' +
+        '                        <textarea id="postDuties" name="postDuties" title="Укажите обязанности" rows="5" maxlength="5000" style="height: 130px;" class="form-control" placeholder="Через запятую, например: помощь покупателям, работа с кассой, контроль сроков годности"></textarea>\n' +
         '                        <p class="text-muted">Соискатели увидят это на карточке вакансии в поиске — и смогут решить, откликаться или нет.</p>\n' +
         '                    </div>\n' +
         '                </div>\n' +
@@ -146,17 +150,18 @@ async function getVacancyForm(frontName, selectedCategoryId) {
         '                <div class="form-group row">\n' +
         '                    <label for="postDescription" class="col-sm-2 col-form-label">Описание вакансии и компании</label>\n' +
         '                    <div class="col-sm-5">\n' +
-        '                        <textarea id="postDescription" name="postDescription" rows="7" maxlength="6000" style="height: 150px;" class="form-control"></textarea>\n' +
+        '                        <textarea id="postDescription" name="postDescription" title="Заполните описание" rows="7" maxlength="6000" style="height: 150px;" class="form-control"></textarea>\n' +
         '                        <p class="text-muted">Расскажите, что вы предлагаете и каких кандидатов ищете. Убедитесь, что в объявлении нет признаков дискриминации.</p>\n' +
         '                    </div>\n' +
         '                </div>\n' +
         '\n' +
         '                <div class="form-group row">\n' +
-        '                    <label for="postPhoto" class="col-sm-2 col-form-label">Логотип или фотография</label>\n' +
-        '                    <div class="col-sm-6">\n' +
-        '                    <label>\n' +
-        '                       <input id="postPhoto" type="file" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input" value="">\n' +
-        '                    </label>\n' +
+        '                    <label for="postPhotos" class="col-sm-2 col-form-label">Логотип или фотографии</label>\n' +
+        '                    <div id="photoList" class="listOfPhoto col-sm-6 d-flex flex-wrap">\n' +
+        '                        <label for="postPhotos" type="button" class="photo-upload" data-marker="add">\n' +
+        '                            <input id="postPhotos" type="file" value="" multiple class="d-none" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input">\n' +
+        '                            <div id="uploadPhotos"></div>' +
+        '                        </label>\n' +
         '                    </div>\n' +
         '                </div>\n' +
         '            </form>\n' +
@@ -176,7 +181,7 @@ async function getVacancyForm(frontName, selectedCategoryId) {
         '                <div class="form-group row">\n' +
         '                    <label for="postExperienceValue" class="col-sm-2 col-form-label">Опыт работы</label>\n' +
         '                    <div class="col-sm-6">\n' +
-        '                        <select style="width: 220px;" id="postExperienceValue" name="postExperienceValue" class="form-control form-control-sm">\n' +
+        '                        <select style="width: 220px;" id="postExperienceValue" name="postExperienceValue" title="Укажите опыт работы" class="form-control form-control-sm">\n' +
         '                           <option value="">—</option>\n' +
         '                           <option value="Не имеет значения">Не имеет значения</option>\n' +
         '                           <option value="Более 1 года">Более 1 года</option>\n' +
@@ -206,6 +211,9 @@ async function getVacancyForm(frontName, selectedCategoryId) {
         'привлечёте дополнительное внимание кандидатов к вакансии.</p>\n' +
         '                    </div>\n' +
         '                </div>\n';
+
+    choosenFiles = document.getElementById('postPhotos');
+    choosenFiles.addEventListener('change', checkFiles, false);
 
     postingFooterVac.firstElementChild.after(r);
 }

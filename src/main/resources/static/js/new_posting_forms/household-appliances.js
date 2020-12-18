@@ -4,10 +4,10 @@ let saveButton = document.getElementById('saveButton');
 async function sentForHomeAndGardenPosting(frontName, selectedCategoryId) {
     let url = '/api/posting/new/' + frontName + '/' + selectedCategoryId;
     const formData = new FormData();
-    const fileField = document.querySelector('input[type="file"][multiple]');
+    const fileField = fileList;
 
-    for (let i = 0; i < fileField.files.length; i++) {
-        formData.append('photos', fileField.files[i]);
+    for (let i = 0; i < fileField.length; i++) {
+        formData.append('photos', fileField[i]);
     }
     let price = window.postPrice.value;
     formData.append('title', window.postTitle.value);
@@ -20,6 +20,10 @@ async function sentForHomeAndGardenPosting(frontName, selectedCategoryId) {
     formData.append('contactEmail', window.inputEmail.value);
     formData.append('contact', window.inputPhone.value);
     formData.append('communicationType', document.querySelector('input[name="communication"]:checked').value);
+
+    if (!checkInputFields(formData)) {
+        return false;
+    }
 
     await sendFile(formData, url);
     window.location.href = '/';
@@ -51,7 +55,7 @@ async function getHouseholdAppliancesForm(frontName, selectedCategoryId) {
         '                <div class="form-group row">\n' +
         '                    <label for="postTitle" class="col-sm-2 col-form-label">Название объявления</label>\n' +
         '                    <div class="col-sm-6">\n' +
-        '                        <input  id="postTitle" maxlength="100" type="text" class="form-control form-control-sm">\n' +
+        '                        <input id="postTitle" name="postTitle" title="Введите название объявления" maxlength="100" type="text" class="form-control form-control-sm">\n' +
         '                        <p class="text-muted" data-toggle="tooltip" data-placement="top">Например, «Диван-кровать Икеа» или «Холодильник Бирюса 110»</p>\n' +
         '                    </div>\n' +
         '                </div>\n' +
@@ -84,9 +88,9 @@ async function getHouseholdAppliancesForm(frontName, selectedCategoryId) {
         '                <div class="form-group row">\n' +
         '                    <label for="postDescription" class="col-sm-2 col-form-label">Описание объявления</label>\n' +
         '                    <div class="col-sm-6">\n' +
-        '                        <textarea id="postDescription" name="postDescription" rows="6" maxlength="5000" style="height: 130px;" class="form-control"></textarea>\n' +
+        '                        <textarea id="postDescription" name="postDescription" title="Пожалуйста, заполните описание" rows="6" maxlength="5000" style="height: 130px;" class="form-control"></textarea>\n' +
         '                        <p class="text-muted">Не указывайте в описании телефон и e-mail — для этого есть отдельные поля</p>\n' +
-        '                    </div>\n' +
+        '</div>\n' +
         '                </div>\n' +
         '\n' +
         '                <div class="form-group row">\n' +
@@ -99,9 +103,9 @@ async function getHouseholdAppliancesForm(frontName, selectedCategoryId) {
         '                <div class="form-group row">\n' +
         '                    <label for="postPhotos" class="col-sm-2 col-form-label">Фотографии</label>\n' +
         '\n' +
-        '                    <div class="col-sm-2 d-flex">\n' +
-        '                        <label class="" data-marker="add">\n' +
-        '                            <input id="postPhotos" type="file" value="" multiple style="display: block" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input">\n' +
+        '                    <div id="photoList" class="listOfPhoto col-sm-6 d-flex flex-wrap">\n' +
+        '                        <label for="postPhotos" type="button" class="photo-upload" data-marker="add">\n' +
+        '                            <input id="postPhotos" type="file" value="" multiple class="d-none" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input">\n' +
         '                            <div id="uploadPhotos"></div>' +
         '                        </label>\n' +
         '                    </div>\n' +
@@ -116,4 +120,7 @@ async function getHouseholdAppliancesForm(frontName, selectedCategoryId) {
         '            </form>\n' +
         '        </div>\n' +
         '    </div>'
+
+    choosenFiles = document.getElementById('postPhotos');
+    choosenFiles.addEventListener('change', checkFiles, false);
 }
