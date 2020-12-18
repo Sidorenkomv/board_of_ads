@@ -1,40 +1,39 @@
-
 async function sentSellEstatePosting(frontName, categoryId) {
     console.log(frontName + " " + categoryId)
-     let url = '/api/posting/new/' + frontName + '/' + categoryId;
+    let url = '/api/posting/new/' + frontName + '/' + categoryId;
     console.log(url)
-     const formData = new FormData();
-     const fileField = document.querySelector('input[type="file"][multiple]');
+    const formData = new FormData();
+    const fileField = fileList;
 
-     for (let i = 0; i < fileField.files.length; i++) {
-         formData.append('photos', fileField.files[i]);
-     }
-     let price = window.postPrice.value;
-     formData.append('title', window.postTitle.value);
-     formData.append("typeOfHousing", document.querySelector('input[name="estate"]:checked').value)
-     formData.append("ownership", document.querySelector('input[name="ownership"]:checked').value)
-     formData.append("status", document.querySelector('input[name="statusOf"]:checked').value)
-     formData.append("rooms", window.planirovka.value)
-     formData.append("typeOfHouse", window.tip.value)
-     formData.append("floor", window.floor.value)
-     formData.append("floorsInHouse", window.floorIsHome.value)
-     formData.append("totalArea", window.TotalArea.value)
-     formData.append("kitchenArea", window.kitchenArea.value)
-     formData.append("livingArea", window.LivingArea.value)
-     formData.append("loggia", window.loggia.value)
-     formData.append("view", window.view.value)
-     formData.append("contactEmail", window.inputEmail.value)
-     formData.append("linkYouTube", window.postLinkYouTube.value)
-     formData.append("communicationType", document.querySelector('input[name="communication"]:checked').value)
-     formData.append('description', window.postDescription.value);
-     formData.append('price', price === "" ? 0 : price);
-     formData.append('contact', window.inputPhone.value);
+    for (let i = 0; i < fileField.length; i++) {
+        formData.append('photos', fileField[i]);
+    }
+    let price = window.postPrice.value;
+    formData.append('title', window.postTitle.value);
+    formData.append("typeOfHousing", document.querySelector('input[name="estate"]:checked').value)
+    formData.append("ownership", document.querySelector('input[name="ownership"]:checked').value)
+    formData.append("status", document.querySelector('input[name="statusOf"]:checked').value)
+    formData.append("rooms", window.planirovka.value)
+    formData.append("typeOfHouse", window.tip.value)
+    formData.append("floor", window.floor.value)
+    formData.append("floorsInHouse", window.floorIsHome.value)
+    formData.append("totalArea", window.TotalArea.value)
+    formData.append("kitchenArea", window.kitchenArea.value)
+    formData.append("livingArea", window.LivingArea.value)
+    formData.append("loggia", window.loggia.value)
+    formData.append("view", window.view.value)
+    formData.append("contactEmail", window.inputEmail.value)
+    formData.append("linkYouTube", window.postLinkYouTube.value)
+    formData.append("communicationType", document.querySelector('input[name="communication"]:checked').value)
+    formData.append('description', window.postDescription.value);
+    formData.append('price', price === "" ? 0 : price);
+    formData.append('contact', window.inputPhone.value);
 
-     if (!checkInputFields(formData)) {
-         return false;
-     }
+    if (!checkInputFields(formData)) {
+        return false;
+    }
 
-     await sendFile(formData, url);
+    await sendFile(formData, url);
     window.location.href = '/';
 }
 
@@ -55,18 +54,18 @@ async function sentBuyEstatePosting(frontName, categoryId) {
         return false;
     }
 
-   await sendFile(formData, url)
+    await sendFile(formData, url)
 
-  window.location.href = '/';
+    window.location.href = '/';
 }
 
 async function sentRentAnEstatePosting(frontName, categoryId) {
     let url = '/api/posting/new/' + frontName + '/' + categoryId;
     const formData = new FormData();
-    const fileField = document.querySelector('input[type="file"][multiple]');
+    const fileField = fileList;
 
-    for (let i = 0; i < fileField.files.length; i++) {
-        formData.append('photos', fileField.files[i]);
+    for (let i = 0; i < fileField.length; i++) {
+        formData.append('photos', fileField[i]);
     }
     let price = window.postPrice.value;
     formData.append('title', window.postTitle.value);
@@ -117,10 +116,10 @@ async function sentRentAnEstatePosting(frontName, categoryId) {
 async function sentGetAnEstatePosting(frontName, categoryId) {
     let url = '/api/posting/new/' + frontName + '/' + categoryId;
     const formData = new FormData();
-    const fileField = document.querySelector('input[type="file"][multiple]');
+    const fileField = fileList;
 
-    for (let i = 0; i < fileField.files.length; i++) {
-        formData.append('photos', fileField.files[i]);
+    for (let i = 0; i < fileField.length; i++) {
+        formData.append('photos', fileField[i]);
     }
     let price = window.postPrice.value;
     formData.append('title', window.postTitle.value);
@@ -174,7 +173,7 @@ async function sendFile(body, url) {
 
 async function getEstate(frontName, id) {
     console.log(frontName)
-     let saveButton = document.getElementById('saveButton');
+    let saveButton = document.getElementById('saveButton');
     let postingForm2 = document.getElementById('visibleElement2');
 
     if (frontName === "sellEstate") {
@@ -274,7 +273,6 @@ async function getEstate(frontName, id) {
             '\n' +
 
 
-
             '                <div class="form-group row">\n' +
             '                    <label for="floor" class="col-sm-2 col-form-label">Этаж</label>\n' +
             '                    <div class="col-sm-6">\n' +
@@ -347,13 +345,14 @@ async function getEstate(frontName, id) {
             '                        <input id="postPrice" inputmode="numeric" placeholder="₽" type="text" class="form-control form-control-sm" value="">\n' +
             '                    </div>\n' +
             '                </div>\n' +
+
             '\n' +
             '                <div class="form-group row">\n' +
             '                    <label for="postPhotos" class="col-sm-2 col-form-label">Фотографии</label>\n' +
             '\n' +
-            '                    <div class="col-sm-2 d-flex">\n' +
-            '                        <label class="" data-marker="add">\n' +
-            '                            <input id="postPhotos" type="file" value="" multiple style="display: block" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input">\n' +
+            '                    <div id="photoList" class="listOfPhoto col-sm-6 d-flex flex-wrap">\n' +
+            '                        <label for="postPhotos" type="button" class="photo-upload" data-marker="add">\n' +
+            '                            <input id="postPhotos" type="file" value="" multiple class="d-none" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input">\n' +
             '                            <div id="uploadPhotos"></div>' +
             '                        </label>\n' +
             '                    </div>\n' +
@@ -369,23 +368,27 @@ async function getEstate(frontName, id) {
             '        </div>\n' +
             '    </div>'
 
+        choosenFiles = document.getElementById('postPhotos');
+        choosenFiles.addEventListener('change', checkFiles, false);
+
         saveButton.onclick = () => sentSellEstatePosting(frontName, id);
 
-    } else if(frontName === "buyEstate") {
+
+    } else if (frontName === "buyEstate") {
 
         postingForm2.innerHTML = '<div id="parameters" class="main-container">\n' +
-        '        <div class="category-head-container">\n' +
-        '            <div class="category-head-text">Параметры</div>\n' +
-        '        </div>\n' +
-        '        <div>\n' +
-        '            <form id="parametersForm">\n' +
-        '                <div class="form-group row">\n' +
-        '                    <label for="postTitle" class="col-sm-2 col-form-label">Название объявления</label>\n' +
-        '                    <div class="col-sm-6">\n' +
-        '                        <input id="postTitle" name="postTitle" title="Укажите название объявления" maxlength="100" type="text" class="form-control form-control-sm">\n' +
-        '                        <p class="text-muted" data-toggle="tooltip" data-placement="top">Например, «Квартира однушка, Двухкомнатная квартира...»</p>\n' +
-        '                    </div>\n' +
-        '                </div>\n' +
+            '        <div class="category-head-container">\n' +
+            '            <div class="category-head-text">Параметры</div>\n' +
+            '        </div>\n' +
+            '        <div>\n' +
+            '            <form id="parametersForm">\n' +
+            '                <div class="form-group row">\n' +
+            '                    <label for="postTitle" class="col-sm-2 col-form-label">Название объявления</label>\n' +
+            '                    <div class="col-sm-6">\n' +
+            '                        <input id="postTitle" name="postTitle" title="Укажите название объявления" maxlength="100" type="text" class="form-control form-control-sm">\n' +
+            '                        <p class="text-muted" data-toggle="tooltip" data-placement="top">Например, «Квартира однушка, Двухкомнатная квартира...»</p>\n' +
+            '                    </div>\n' +
+            '                </div>\n' +
             '\n' +
 
 
@@ -420,6 +423,9 @@ async function getEstate(frontName, id) {
             '            </form>\n' +
             '        </div>\n' +
             '    </div>'
+
+        choosenFiles = document.getElementById('postPhotos');
+        choosenFiles.addEventListener('change', checkFiles, false);
 
         saveButton.onclick = () => sentBuyEstatePosting(frontName, id);
 
@@ -595,9 +601,9 @@ async function getEstate(frontName, id) {
             '                <div class="form-group row">\n' +
             '                    <label for="postPhotos" class="col-sm-2 col-form-label">Фотографии</label>\n' +
             '\n' +
-            '                    <div class="col-sm-2 d-flex">\n' +
-            '                        <label class="" data-marker="add">\n' +
-            '                            <input id="postPhotos" type="file" value="" multiple style="display: block" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input">\n' +
+            '                    <div id="photoList" class="listOfPhoto col-sm-6 d-flex flex-wrap">\n' +
+            '                        <label for="postPhotos" type="button" class="photo-upload" data-marker="add">\n' +
+            '                            <input id="postPhotos" type="file" value="" multiple class="d-none" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input">\n' +
             '                            <div id="uploadPhotos"></div>' +
             '                        </label>\n' +
             '                    </div>\n' +
@@ -661,95 +667,97 @@ async function getEstate(frontName, id) {
             '                    </div>\n' +
             '                 </div>\n' +
 
-            '                   <span class="multimedia">Мультимедия</span>'+
+            '                   <span class="multimedia">Мультимедия</span>' +
 
             '                   <div>\n' +
             '                       <input type="checkbox" class="wifi" id="wifi">' +
-            '                       <label class="" id="wifi">WI-FI</label>'+
+            '                       <label class="" id="wifi">WI-FI</label>' +
             '                   </div>\n' +
             '                   <div>\n' +
             '                       <input type="checkbox" class="tv" id="tv">' +
-            '                       <label class="" id="tv">Телевизор</label>'+
+            '                       <label class="" id="tv">Телевизор</label>' +
             '                   </div>\n' +
             '                   <div>\n' +
             '                       <input type="checkbox" class="cable" id="cable">' +
-            '                       <label class="" id="cable">Кабельние</label>'+
+            '                       <label class="" id="cable">Кабельние</label>' +
             '                   </div>\n' +
             '                </div>\n' +
 
-            '                   <span class="appliances">Бытовая техника</span>'+
+            '                   <span class="appliances">Бытовая техника</span>' +
             '                   <div>\n' +
             '                       <input type="checkbox" class="cooker" id="cooker">' +
-            '                       <label class="" id="cooker">Плита</label>'+
+            '                       <label class="" id="cooker">Плита</label>' +
             '                   </div>\n' +
             '                   <div>\n' +
             '                       <input type="checkbox" class="microwave" id="microwave">' +
-            '                       <label class="" id="microwave">Микроволновка</label>'+
+            '                       <label class="" id="microwave">Микроволновка</label>' +
             '                   </div>\n' +
             '                   <div>\n' +
             '                       <input type="checkbox" class="fridge" id="fridge">' +
-            '                       <label class="" id="fridge">Холодильник</label>'+
+            '                       <label class="" id="fridge">Холодильник</label>' +
             '                   </div>\n' +
             '                   <div>\n' +
             '                       <input type="checkbox" class="washingMachine" id="washingMachine">' +
-            '                       <label class="" id="washingMachine">Стиральная машинка</label>'+
+            '                       <label class="" id="washingMachine">Стиральная машинка</label>' +
             '                   </div>\n' +
             '                   <div>\n' +
             '                       <input type="checkbox" class="hairdryer" id="hairdryer">' +
-            '                       <label class="" id="hairdryer">Фен</label>'+
+            '                       <label class="" id="hairdryer">Фен</label>' +
             '                   </div>\n' +
             '                   <div>\n' +
             '                       <input type="checkbox" class="flatiron" id="flatiron">' +
-            '                       <label class="" id="flatiron">Утюг</label>'+
+            '                       <label class="" id="flatiron">Утюг</label>' +
             '                   </div>\n' +
 
             '           </div>\n' +
             '        </div>\n' +
 
             '           <div>\n' +
-        '                   <span class="appliances">Бытовая техника</span>'+
+            '                   <span class="appliances">Бытовая техника</span>' +
             '                   <div>\n' +
             '                       <input type="checkbox" class="fridge" id="fridge">' +
-            '                       <label class="" id="fridge">Холодильник</label>'+
+            '                       <label class="" id="fridge">Холодильник</label>' +
             '                   </div>\n' +
             '                   <div>\n' +
             '                       <input type="checkbox" class="washingMachine" id="washingMachine">' +
-            '                       <label class="" id="washingMachine">Стиральная машинка</label>'+
+            '                       <label class="" id="washingMachine">Стиральная машинка</label>' +
             '                   </div>\n' +
             '                   <div>\n' +
             '                       <input type="checkbox" class="hairdryer" id="hairdryer">' +
-            '                       <label class="" id="hairdryer">Фен</label>'+
+            '                       <label class="" id="hairdryer">Фен</label>' +
             '                   </div>\n' +
             '                   <div>\n' +
             '                       <input type="checkbox" class="flatiron" id="flatiron">' +
-            '                       <label class="" id="flatiron">Утюг</label>'+
+            '                       <label class="" id="flatiron">Утюг</label>' +
             '                   </div>\n' +
             '           </div>\n' +
             '           </div>\n' +
 
             '           <div>\n' +
-            '                   <span class="additionally">Дополнительно</span>'+
+            '                   <span class="additionally">Дополнительно</span>' +
             '                   <div>\n' +
             '                       <input type="checkbox" class="nurslings" id="nurslings">' +
-            '                       <label class="" id="nurslings">Можно с питомцами</label>'+
+            '                       <label class="" id="nurslings">Можно с питомцами</label>' +
             '                   </div>\n' +
             '                   <div>\n' +
             '                       <input type="checkbox" class="children" id="children">' +
-            '                       <label class="" id="children">Можно с детьми</label>'+
+            '                       <label class="" id="children">Можно с детьми</label>' +
             '                   </div>\n' +
             '                   <div>\n' +
             '                       <input type="checkbox" class="events" id="events">' +
-            '                       <label class="" id="events">Можно для мероприятий</label>'+
+            '                       <label class="" id="events">Можно для мероприятий</label>' +
             '                   </div>\n' +
             '                   <div>\n' +
             '                       <input type="checkbox" class="smoke" id="smoke">' +
-            '                       <label class="" id="smoke">Можно курить</label>'+
+            '                       <label class="" id="smoke">Можно курить</label>' +
             '                   </div>\n' +
             '           </div>\n' +
             '           </div>\n' +
             '            </form>\n' +
             '        </div>\n' +
             '    </div>'
+        choosenFiles = document.getElementById('postPhotos');
+        choosenFiles.addEventListener('change', checkFiles, false);
 
         saveButton.onclick = () => sentRentAnEstatePosting(frontName, id);
 
@@ -807,19 +815,19 @@ async function getEstate(frontName, id) {
             '                        <input id="postPrice" inputmode="numeric" placeholder="₽" type="text" class="form-control form-control-sm" value="">\n' +
             '                    </div>\n' +
             '                </div>\n' +
+
             '\n' +
             '                <div class="form-group row">\n' +
             '                    <label for="postPhotos" class="col-sm-2 col-form-label">Фотографии</label>\n' +
             '\n' +
-            '                    <div class="col-sm-2 d-flex">\n' +
-            '                        <label class="" data-marker="add">\n' +
-            '                            <input id="postPhotos" type="file" value="" multiple style="display: block" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input">\n' +
+            '                    <div id="photoList" class="listOfPhoto col-sm-6 d-flex flex-wrap">\n' +
+            '                        <label for="postPhotos" type="button" class="photo-upload" data-marker="add">\n' +
+            '                            <input id="postPhotos" type="file" value="" multiple class="d-none" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input">\n' +
             '                            <div id="uploadPhotos"></div>' +
             '                        </label>\n' +
             '                    </div>\n' +
             '                </div>\n' +
-            '            </form>\n' +
-            '        </div>\n' +
+            '\n' +
 
             //===============================
             '<div id="dopParameters" class="main-container">\n' +
@@ -871,46 +879,46 @@ async function getEstate(frontName, id) {
             '                    </div>\n' +
             '                 </div>\n' +
 
-            '                   <span class="multimedia">Мультимедия</span>'+
+            '                   <span class="multimedia">Мультимедия</span>' +
 
             '                   <div>\n' +
             '                       <input type="checkbox" class="wifi" id="wifi">' +
-            '                       <label class="" id="wifi">WI-FI</label>'+
+            '                       <label class="" id="wifi">WI-FI</label>' +
             '                   </div>\n' +
             '                   <div>\n' +
             '                       <input type="checkbox" class="tv" id="tv">' +
-            '                       <label class="" id="tv">Телевизор</label>'+
+            '                       <label class="" id="tv">Телевизор</label>' +
             '                   </div>\n' +
             '                   <div>\n' +
             '                       <input type="checkbox" class="cable" id="cable">' +
-            '                       <label class="" id="cable">Кабельние</label>'+
+            '                       <label class="" id="cable">Кабельние</label>' +
             '                   </div>\n' +
             '                </div>\n' +
             //=====================
-            '                   <span class="appliances">Бытовая техника</span>'+
+            '                   <span class="appliances">Бытовая техника</span>' +
             '                   <div>\n' +
             '                       <input type="checkbox" class="cooker" id="cooker">' +
-            '                       <label class="" id="cooker">Плита</label>'+
+            '                       <label class="" id="cooker">Плита</label>' +
             '                   </div>\n' +
             '                   <div>\n' +
             '                       <input type="checkbox" class="microwave" id="microwave">' +
-            '                       <label class="" id="microwave">Микроволновка</label>'+
+            '                       <label class="" id="microwave">Микроволновка</label>' +
             '                   </div>\n' +
             '                   <div>\n' +
             '                       <input type="checkbox" class="fridge" id="fridge">' +
-            '                       <label class="" id="fridge">Холодильник</label>'+
+            '                       <label class="" id="fridge">Холодильник</label>' +
             '                   </div>\n' +
             '                   <div>\n' +
             '                       <input type="checkbox" class="washingMachine" id="washingMachine">' +
-            '                       <label class="" id="washingMachine">Стиральная машинка</label>'+
+            '                       <label class="" id="washingMachine">Стиральная машинка</label>' +
             '                   </div>\n' +
             '                   <div>\n' +
             '                       <input type="checkbox" class="hairdryer" id="hairdryer">' +
-            '                       <label class="" id="hairdryer">Фен</label>'+
+            '                       <label class="" id="hairdryer">Фен</label>' +
             '                   </div>\n' +
             '                   <div>\n' +
             '                       <input type="checkbox" class="flatiron" id="flatiron">' +
-            '                       <label class="" id="flatiron">Утюг</label>'+
+            '                       <label class="" id="flatiron">Утюг</label>' +
             '                   </div>\n' +
 
             '           </div>\n' +
@@ -918,54 +926,53 @@ async function getEstate(frontName, id) {
 
             //==============
             '           <div>\n' +
-            '                   <span class="appliances">Бытовая техника</span>'+
+            '                   <span class="appliances">Бытовая техника</span>' +
             '                   <div>\n' +
             '                       <input type="checkbox" class="fridge" id="fridge">' +
-            '                       <label class="" id="fridge">Холодильник</label>'+
+            '                       <label class="" id="fridge">Холодильник</label>' +
             '                   </div>\n' +
             '                   <div>\n' +
             '                       <input type="checkbox" class="washingMachine" id="washingMachine">' +
-            '                       <label class="" id="washingMachine">Стиральная машинка</label>'+
+            '                       <label class="" id="washingMachine">Стиральная машинка</label>' +
             '                   </div>\n' +
             '                   <div>\n' +
             '                       <input type="checkbox" class="hairdryer" id="hairdryer">' +
-            '                       <label class="" id="hairdryer">Фен</label>'+
+            '                       <label class="" id="hairdryer">Фен</label>' +
             '                   </div>\n' +
             '                   <div>\n' +
             '                       <input type="checkbox" class="flatiron" id="flatiron">' +
-            '                       <label class="" id="flatiron">Утюг</label>'+
+            '                       <label class="" id="flatiron">Утюг</label>' +
             '                   </div>\n' +
             '           </div>\n' +
             '           </div>\n' +
-
 
 
             '           <div>\n' +
-            '                   <span class="additionally">Дополнительно</span>'+
+            '                   <span class="additionally">Дополнительно</span>' +
             '                   <div>\n' +
             '                       <input type="checkbox" class="nurslings" id="nurslings">' +
-            '                       <label class="" id="nurslings">Можно с питомцами</label>'+
+            '                       <label class="" id="nurslings">Можно с питомцами</label>' +
             '                   </div>\n' +
             '                   <div>\n' +
             '                       <input type="checkbox" class="children" id="children">' +
-            '                       <label class="" id="children">Можно с детьми</label>'+
+            '                       <label class="" id="children">Можно с детьми</label>' +
             '                   </div>\n' +
             '                   <div>\n' +
             '                       <input type="checkbox" class="events" id="events">' +
-            '                       <label class="" id="events">Можно для мероприятий</label>'+
+            '                       <label class="" id="events">Можно для мероприятий</label>' +
             '                   </div>\n' +
             '                   <div>\n' +
             '                       <input type="checkbox" class="smoke" id="smoke">' +
-            '                       <label class="" id="smoke">Можно курить</label>'+
+            '                       <label class="" id="smoke">Можно курить</label>' +
             '                   </div>\n' +
             '           </div>\n' +
             '           </div>\n' +
-
-
-
             '            </form>\n' +
             '        </div>\n' +
             '    </div>'
+
+        choosenFiles = document.getElementById('postPhotos');
+        choosenFiles.addEventListener('change', checkFiles, false);
 
         saveButton.onclick = () => sentGetAnEstatePosting(frontName, id);
     }

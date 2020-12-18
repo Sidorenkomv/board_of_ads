@@ -8,10 +8,10 @@ let btn = document.getElementById("saveButton");
 btn.addEventListener("click", () => {
 
         const formData = new FormData();
-        const fileField = document.querySelector('input[type="file"][multiple]');
+        const fileField = fileList;
 
-        for (let i = 0; i < fileField.files.length; i++) {
-            formData.append('photos', fileField.files[i]);
+        for (let i = 0; i < fileField.length; i++) {
+            formData.append('photos', fileField[i]);
         }
         let price = window.price.value;
         let size;
@@ -126,13 +126,14 @@ function showClothesForm(fName, ident) {
         '\n' +
         '                <div class="form-group row">\n' +
         '                    <label for="postPhotos" class="col-sm-2 col-form-label">Фотографии</label>\n' +
-        '                    <div class="col-sm-2 d-flex">\n' +
-        '                        <label class="" data-marker="add">\n' +
-        '                            <input id="postPhotos" type="file" value="" multiple style="display: block" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input" >\n' +
+        '\n' +
+        '                    <div id="photoList" class="listOfPhoto col-sm-6 d-flex flex-wrap">\n' +
+        '                        <label for="postPhotos" type="button" class="photo-upload" data-marker="add">\n' +
+        '                            <input id="postPhotos" type="file" value="" multiple class="d-none" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input">\n' +
+        '                            <div id="uploadPhotos"></div>' +
         '                        </label>\n' +
         '                    </div>\n' +
         '                </div>\n' +
-
         '\n' +
         '                <div class="form-group row">\n' +
         '                    <label for="linkYouTube" class="col-sm-2 col-form-label">Видео c YouTube</label>\n' +
@@ -143,6 +144,9 @@ function showClothesForm(fName, ident) {
         '            </form>\n' +
         '        </div>\n' +
         '    </div>'
+
+    choosenFiles = document.getElementById('postPhotos');
+    choosenFiles.addEventListener('change', checkFiles, false);
 }
 
 function showShoesForm(fName, ident) {
@@ -226,12 +230,14 @@ function showShoesForm(fName, ident) {
         '                        <input id="price" inputmode="numeric" placeholder="₽" type="text" class="form-control form-control-sm" value="">\n' +
         '                    </div>\n' +
         '                </div>\n' +
+
         '\n' +
         '                <div class="form-group row">\n' +
         '                    <label for="postPhotos" class="col-sm-2 col-form-label">Фотографии</label>\n' +
-        '                    <div class="col-sm-2 d-flex">\n' +
-        '                        <label class="" data-marker="add">\n' +
-        '                            <input id="postPhotos" type="file" value="" multiple style="display: block" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input" >\n' +
+        '\n' +
+        '                    <div id="photoList" class="listOfPhoto col-sm-6 d-flex flex-wrap">\n' +
+        '                        <label for="postPhotos" type="button" class="photo-upload" data-marker="add">\n' +
+        '                            <input id="postPhotos" type="file" value="" multiple class="d-none" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input">\n' +
         '                            <div id="uploadPhotos"></div>' +
         '                        </label>\n' +
         '                    </div>\n' +
@@ -247,6 +253,8 @@ function showShoesForm(fName, ident) {
         '        </div>\n' +
         '    </div>'
 
+    choosenFiles = document.getElementById('postPhotos');
+    choosenFiles.addEventListener('change', checkFiles, false);
 }
 
 function showOtherClothesForm(fName, ident) {
@@ -330,5 +338,8 @@ function showOtherClothesForm(fName, ident) {
         '            </form>\n' +
         '        </div>\n' +
         '    </div>'
+
+    choosenFiles = document.getElementById('postPhotos');
+    choosenFiles.addEventListener('change', checkFiles, false);
 
 }

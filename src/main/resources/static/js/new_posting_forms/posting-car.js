@@ -79,7 +79,7 @@ async function fillNewCarPostingFields(pc) {
 
     let typeOfUsp = document.getElementById('type-of-usp');
     let a = document.getElementById('pathCategory').parentElement.parentElement;
-    if(a.contains(typeOfUsp)) {
+    if (a.contains(typeOfUsp)) {
         a.removeChild(typeOfUsp);
     }
 
@@ -146,7 +146,14 @@ function createDiv1Photo(div1) {
     div1_1.appendChild(label1);
 
     let div1_2 = document.createElement('div');
-    div1_2.setAttribute('class', 'col-5');
+    div1_2.setAttribute('class', 'form-group col-9');
+    div1_2.innerHTML = '' +
+        '   <div id="photoList" class="listOfPhoto col-8 p-0 d-flex flex-wrap"> \n' +
+        '      <label for="postPhotos" type="button" class="photo-upload" data-marker="add"> \n' +
+        '           <input id="postPhotos" type="file" value="" multiple class="d-none" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input"> \n' +
+        '                 <div id="uploadPhotos"></div> \n' +
+        '      </label>\n' +
+        '    </div> \n';
     div.appendChild(div1_2);
     let div1_2_1 = document.createElement('div');
     div1_2_1.setAttribute('class', 'fieldset-field-21qUq');
@@ -161,19 +168,14 @@ function createDiv1Photo(div1) {
     div1_2_1_1_last.setAttribute('class', 'uploader-list');
     div1_2_1_1.appendChild(div1_2_1_1_last);
 
-    let label2 = document.createElement('label');
-    label2.setAttribute('class', 'uploader-item uploader-item_add-_sMoP button-button-2JBTe button-size-s-2RLvz button-default-szBWv');
-    label2.setAttribute('data-marker', 'add');
-    div1_2_1_1_last.appendChild(label2);
-    let input = document.createElement('input');
-    input.setAttribute('class', 'uploader-input-file');
-    input.setAttribute('type', 'file');
-    input.setAttribute('accept', 'image/gif,image/png,image/jpeg');
-    input.setAttribute('multiple', '');
-    input.setAttribute('data-marker', 'add/input');
-    input.setAttribute('value', '');
-    label2.appendChild(input);
     div1.appendChild(div);
+    setOptionsForPhotosHandler();
+}
+
+function setOptionsForPhotosHandler() {
+    maximumPhotoCount = 40;
+    choosenFiles = document.getElementById('postPhotos');
+    choosenFiles.addEventListener('change', checkFiles, false);
 }
 
 function createDiv1Colors(div1) {
@@ -705,7 +707,9 @@ function collectAllFields() {
 
     function getNumberValueFromInputElement(divId) {
         let val = document.getElementById(divId).value;
-        if (val ==="") { val = 0 }
+        if (val === "") {
+            val = 0
+        }
         return val;
     }
 
@@ -747,7 +751,7 @@ function collectAllFields() {
     function getMileageValueByCarType() {
         let value = 0;
         if (isUsedCarPosting) {
-                value = getNumberValueFromInputElement('mileageInput');
+            value = getNumberValueFromInputElement('mileageInput');
         }
         return value;
     }

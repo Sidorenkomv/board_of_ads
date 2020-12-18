@@ -5,10 +5,10 @@ let saveButtonVac = document.getElementById('saveButton');
 async function sentVacancyPosting(frontName, selectedCategoryId) {
     let url = '/api/posting/new/' + frontName + '/' + selectedCategoryId;
     const formData = new FormData();
-    const fileField = document.querySelector('input[type="file"]');
+    const fileField = fileList;
 
-    for (let i = 0; i < fileField.files.length; i++) {
-        formData.append('photos', fileField.files[i]);
+    for (let i = 0; i < fileField.length; i++) {
+        formData.append('photos', fileField[i]);
     }
 
     formData.append('title', window.postTitle.value);
@@ -156,11 +156,12 @@ async function getVacancyForm(frontName, selectedCategoryId) {
         '                </div>\n' +
         '\n' +
         '                <div class="form-group row">\n' +
-        '                    <label for="postPhoto" class="col-sm-2 col-form-label">Логотип или фотография</label>\n' +
-        '                    <div class="col-sm-6">\n' +
-        '                    <label>\n' +
-        '                       <input id="postPhoto" type="file" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input" value="">\n' +
-        '                    </label>\n' +
+        '                    <label for="postPhotos" class="col-sm-2 col-form-label">Логотип или фотографии</label>\n' +
+        '                    <div id="photoList" class="listOfPhoto col-sm-6 d-flex flex-wrap">\n' +
+        '                        <label for="postPhotos" type="button" class="photo-upload" data-marker="add">\n' +
+        '                            <input id="postPhotos" type="file" value="" multiple class="d-none" accept="image/gif,image/png,image/jpeg,image/pjpeg" data-marker="add/input">\n' +
+        '                            <div id="uploadPhotos"></div>' +
+        '                        </label>\n' +
         '                    </div>\n' +
         '                </div>\n' +
         '            </form>\n' +
@@ -210,6 +211,9 @@ async function getVacancyForm(frontName, selectedCategoryId) {
         'привлечёте дополнительное внимание кандидатов к вакансии.</p>\n' +
         '                    </div>\n' +
         '                </div>\n';
+
+    choosenFiles = document.getElementById('postPhotos');
+    choosenFiles.addEventListener('change', checkFiles, false);
 
     postingFooterVac.firstElementChild.after(r);
 }

@@ -74,10 +74,70 @@
 
 .photo-upload {
     width: 100px;
-    height: 75px;
-    margin-right: 0;
+    height: 100px;
     overflow: hidden;
     border: 1px solid #D6D6D6;
     border-radius: 2px;
-    background: url("/images/upload-photo.svg") center no-repeat;
+    background: url(../images/upload-photo.svg) center no-repeat;
+}
+.photo-upload:hover {
+    background-color: #f7f7f7;
+}
+
+
+.delete-image {
+    float: right;
+    display: inline-block;
+    margin: 5px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 1px solid #D6D6D6;
+    overflow: hidden;
+    background: #f7f7f7 url(../images/delete-button.svg) no-repeat center;
+    opacity: 0.3;
+}
+
+.delete-image:hover {
+    opacity: 1;
+
+}
+
+.turn-image {
+    display: inline-block;
+    margin: 5px;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 1px solid #D6D6D6;
+    overflow: hidden;
+    background-size: contain;
+    background: #f7f7f7 url(../images/rotate-button.svg) no-repeat center;
+    opacity: 0.3;
+}
+
+.turn-image:hover {
+    opacity: 1;
+}
+
+.clickable-photo {
+    background-size: 150px 150px;
+    width: 100px;
+    height: 100px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    border: 1px solid #D6D6D6;
+    border-radius: 2px;
+    background-size: contain;
+}
+
+#alert-extension, #alert-size, #alert-count {
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-bottom: 0rem;
+    border: 1px solid transparent;
+    background-color: #FF6163;
+    color: white;
+    padding: 20px 30px;;
 }
