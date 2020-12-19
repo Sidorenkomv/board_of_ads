@@ -35,6 +35,14 @@ public class WebConfig implements WebMvcConfigurer {
     @Value("${server.port}")
     private int portHttps;
 
+    @Value("${yandexMap.api-key}")
+    private String apiKey;
+
+    @Bean
+    public String getYMapApiKey () {
+        return apiKey;
+    }
+
     @Bean
     public ClassLoaderTemplateResolver templateResolver() {
         var templateResolver = new ClassLoaderTemplateResolver();

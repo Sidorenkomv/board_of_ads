@@ -18,6 +18,7 @@
 
     <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=c8207e9a-202c-4b74-9711-12c84ec3771f&lang=ru_RU" type="text/javascript"></script>
 </head>
 <body>
 <div class="main-header">
@@ -73,7 +74,8 @@
             региону или всей России.">
                 Точный адрес поможет привлечь заинтересованных покупателей</p>
             <p>
-                <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A13572270efb0e5508014203403b34bb745cc2fa6e27ff4f6d1946754f8a441d0&amp;width=714&amp;height=342&amp;lang=ru_RU&amp;scroll=true"></script>
+<!--                <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A13572270efb0e5508014203403b34bb745cc2fa6e27ff4f6d1946754f8a441d0&amp;width=714&amp;height=342&amp;lang=ru_RU&amp;scroll=true"></script>-->
+                <div id="default_map" style="width: 714px; height: 342px"></div>
             </p>
         </div>
     </div>
@@ -159,5 +161,6 @@
 <script src="../static/js/checkInputFields.js" th:src="@{/js/checkInputFields.js}"></script>
 <script src="../static/js/jquery.maskedinput.js" th:src="@{/js/jquery.maskedinput.js}"></script>
 <script src="../static/js/photos_handler.js" th:src="@{/js/photos_handler.js}"></script>
+<script src="../static/js/yandexmap_integration.js" th:src="@{/js/yandexmap_integration.js}"></script>
 </body>
 </html>
