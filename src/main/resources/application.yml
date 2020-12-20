@@ -125,5 +125,3 @@ spring:
 jwt:
   secret: boardofads
 
-yandexMap:
-  api-key: c8207e9a-202c-4b74-9711-12c84ec3771f

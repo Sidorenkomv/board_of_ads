@@ -83,8 +83,7 @@ function init() {
     }
 
     function addPointer() {
-        $('.pointer').css("display", "block");
-        $('.ymaps-2-1-77-map').css("top", "-20px");
+        $('.map-pointer').css("display", "block");
         pointerAdded = true;
     }
 }

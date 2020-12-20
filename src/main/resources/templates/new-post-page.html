@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="https://www.thymeleaf.org",   xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="ru" xmlns:th="https://www.thymeleaf.org" , xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
@@ -18,7 +18,7 @@
 
     <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
-    <script src="https://api-maps.yandex.ru/2.1/?apikey=c8207e9a-202c-4b74-9711-12c84ec3771f&lang=ru_RU" type="text/javascript"></script>
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=c8207e9a-202c-4b74-9711-12c84ec3771f&lang=ru_RU"></script>
 </head>
 <body>
 <div class="main-header">
@@ -39,7 +39,8 @@
                 <img class="logo-not-avito" src="images/logo.jpg">
             </a>
             <div sec:authorize="isAuthenticated()" class="text-in-logo-header">Новое объявление</div>
-            <div sec:authorize="!isAuthenticated()" class="text-in-logo-header">Авторизуйтесь, чтобы подать объявление</div>
+            <div sec:authorize="!isAuthenticated()" class="text-in-logo-header">Авторизуйтесь, чтобы подать объявление
+            </div>
         </nav>
     </div>
     <div sec:authorize="isAuthenticated()" class="row category-head-container">
@@ -60,23 +61,28 @@
 <div id="visibleElement3" style="display: none">
 
     <div id="dealAddress" class="main-container">
-        <div class="category-head-container">
-            <div id="meetingPlace" class="category-head-text">Место сделки</div>
-        </div>
-        <div>
-            <p>
-                <input  id="inputAddress" name="dealAddress" title="Укажите место сделки" placeholder="Начните вводить адрес, а потом выберите из списка" maxlength="150"
-                       autocomplete="none" type="text" class="form-control" value="">
-            </p>
-            <p id="preciseAddress" class="text-muted" data-toggle="tooltip" data-placement="top" title="Зачем указывать точный адрес.
+        <div class="col-sm-8">
+            <div class="category-head-container">
+                <div id="meetingPlace" class="category-head-text">Место сделки</div>
+            </div>
+            <div>
+                <p>
+                    <input id="inputAddress" name="dealAddress" title="Укажите место сделки"
+                           placeholder="Начните вводить адрес, а потом выберите из списка" maxlength="150"
+                           autocomplete="none" type="text" class="form-control" value="">
+                </p>
+                <p id="preciseAddress" class="text-muted" data-toggle="tooltip" data-placement="top" title="Зачем указывать точный адрес.
             Объявление смогут найти покупатели, которые ищут товары в конкретном радиусе или районе.
             Точный адрес не помешает вашему предложению появиться в результатах поиска по городу,
             региону или всей России.">
-                Точный адрес поможет привлечь заинтересованных покупателей</p>
-            <p>
-<!--                <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?um=constructor%3A13572270efb0e5508014203403b34bb745cc2fa6e27ff4f6d1946754f8a441d0&amp;width=714&amp;height=342&amp;lang=ru_RU&amp;scroll=true"></script>-->
-                <div id="default_map" style="width: 714px; height: 342px"></div>
-            </p>
+                    Точный адрес поможет привлечь заинтересованных покупателей</p>
+                <p>
+                <div class="map-container">
+                    <div class="map-pointer"></div>
+                    <div id="default_map" style="width: 790px; height: 320px"></div>
+                </div>
+                </p>
+            </div>
         </div>
     </div>
 
@@ -142,13 +148,13 @@
 <script src="../static/js/create_new_user_page.js" th:src="@{/js/create_new_user_page.js}"></script>
 <script src="../static/js/new_post_page.js" th:src="@{/js/new_post_page.js}"></script>
 
-            <!--СКРИПТЫ ОТРИСОВКИ ФОРМ ОБЪЯВЛЕНИЙ-->
+<!--СКРИПТЫ ОТРИСОВКИ ФОРМ ОБЪЯВЛЕНИЙ-->
 <script sec:authorize="isAuthenticated()" src="../static/js/new_posting_forms/test.js" th:src="@{/js/new_posting_forms/test.js}"></script>
 <script src="../static/js/header.js" th:src="@{/js/header.js}"></script>
-<script sec:authorize="isAuthenticated()"  src="../static/js/new_posting_forms/household-appliances.js" th:src="@{/js/new_posting_forms/household-appliances.js}"></script>
+<script sec:authorize="isAuthenticated()" src="../static/js/new_posting_forms/household-appliances.js" th:src="@{/js/new_posting_forms/household-appliances.js}"></script>
 <script sec:authorize="isAuthenticated()" src="../static/js/new_posting_forms/audio-video.js" th:src="@{/js/new_posting_forms/audio-video.js}"></script>
 <script sec:authorize="isAuthenticated()" src="../static/js/new_posting_forms/dogs.js" th:src="@{/js/new_posting_forms/dogs.js}"></script>
-<script sec:authorize="isAuthenticated()"  src="../static/js/new_posting_forms/vacancy.js" th:src="@{/js/new_posting_forms/posting-vacancy.js}"></script>
+<script sec:authorize="isAuthenticated()" src="../static/js/new_posting_forms/vacancy.js" th:src="@{/js/new_posting_forms/posting-vacancy.js}"></script>
 
 <script src="../static/js/new_posting_forms/posting-car.js" th:src="@{/js/new_posting_forms/posting-car.js}"></script>
 <script src="../static/js/new_posting_forms/posting-hobby-and-rest.js" th:src="@{/js/new_posting_forms/posting-hobby-and-rest.js}"></script>
