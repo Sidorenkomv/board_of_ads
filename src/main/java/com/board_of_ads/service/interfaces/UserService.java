@@ -19,7 +19,7 @@ public interface UserService {
 
     void deleteUser(Long id);
 
-    User regUser(User user);
+    void regUser(User user);
 
     boolean checkUserDataBeforeReg(User user, BindingResult bindingResult, Logger logger);
 

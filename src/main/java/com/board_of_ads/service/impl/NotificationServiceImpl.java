@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,17 +38,16 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public boolean sendNotificationToUsers(Notification notification, List<User> users) {
+    public void sendNotificationToUsers(Notification notification, List<User> users) {
         log.debug("In Method send Notification To User");
         for (User thisUser : users) {
             try {
                 userNotificationRepository.save(new UserNotification(notification, thisUser));
             } catch (Exception e) {
                 log.error("Exception occur while save Notification ", e);
-                return false;
+                return;
             }
         }
-        return true;
     }
 
     @Override

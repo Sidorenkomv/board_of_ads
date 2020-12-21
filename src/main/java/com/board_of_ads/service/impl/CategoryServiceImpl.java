@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
@@ -37,8 +36,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category saveCategory(Category category) {
-        return categoryRepository.save(category);
+    public void saveCategory(Category category) {
+        categoryRepository.save(category);
     }
 
     @Override
@@ -126,12 +125,13 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category createCategory(CategoryDto category) {
+    public void createCategory(CategoryDto category) {
         if (category.getParentName().equals("")) {
-            return categoryRepository.save(new Category(category.getName(), null, 1));
+            categoryRepository.save(new Category(category.getName(), null, 1));
+            return;
         }
         var categoryParentFromDB = findParentByName(category.getParentName()).stream().findFirst().get();
-        return categoryRepository.save(new Category(category.getName(), categoryParentFromDB, categoryParentFromDB.getLayer() + 1));
+        categoryRepository.save(new Category(category.getName(), categoryParentFromDB, categoryParentFromDB.getLayer() + 1));
     }
 
     @Override
