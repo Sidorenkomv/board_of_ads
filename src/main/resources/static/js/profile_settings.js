@@ -30,23 +30,23 @@ $('#profileSettings, #profile-settings-from-header').on('click', async function 
     let userResponse = await userService.getUserInfo();
     let user = userResponse.json();
     user.then(
-        principal => {
-            userService.getPostingCount(principal.data.principal.id)
+        user => {
+            userService.getPostingCount(user.data.id)
                 .then(posting => posting.json())
                 .then(post => {
                     $('#postCount').text(post.data != null ? post.data.length : 0);
-                    if (principal.data.principal.phone != null) {
-                        $('#phone-number').text(principal.data.principal.phone);
+                    if (user.data.phone != null) {
+                        $('#phone-number').text(user.data.phone);
                         $('#phoneCountPost').text(post.data != null ? post.data.length + ' объявлений' : '0 объявлений');
                     } else {
                         $('#phoneTd').addClass("d-none");
                     }
                 })
-            $('#userEmail').text(principal.data.principal.email);
-            $('#userId').text(principal.data.principal.id);
-            $('#fld_name').val(principal.data.principal.firstName);
-            $('#selectedCity').text(principal.data.principal.city != null ? principal.data.principal.city.name : '');
-            $('#selectedCity').val(principal.data.principal.city != null ? principal.data.principal.city.id : 0);
+            $('#userEmail').text(user.data.email);
+            $('#userId').text(user.data.id);
+            $('#fld_name').val(user.data.firstName);
+            $('#selectedCity').text(user.data.city != null ? user.data.city.name : '');
+            $('#selectedCity').val(user.data.city != null ? user.data.city.id : 0);
         }
     );
 })

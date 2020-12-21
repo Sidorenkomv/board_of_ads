@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,14 +31,17 @@ public class UserRestController {
     private final AuthorizationService authorizationService;
 
     @GetMapping
-    public Response<Principal> getUser(@AuthenticationPrincipal Principal user) {
+    public Response<User> getUser(@AuthenticationPrincipal User user) {
         log.info("Use this default logger");
+        User us = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long usId = us.getId();
+        user = userService.getUserById(usId);
         return user != null
                 ? Response.ok(user)
                 : Response.error().code(HttpStatus.UNAUTHORIZED).text("No auth user").build();
     }
 
-    @PostMapping ("/modal-reg")
+    @PostMapping("/modal-reg")
     public Response<User> Action(@RequestBody @Valid User user, BindingResult bindingResult) {
         if (userService.checkUserDataBeforeReg(user, bindingResult, log)) {
             authorizationService.login(user);
