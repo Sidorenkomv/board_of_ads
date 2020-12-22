@@ -10,7 +10,7 @@ btn2.addEventListener("click", () => {
         for (let i = 0; i < fileField.length; i++) {
             formData.append('photos', fileField[i]);
         }
-        let price = window.price.value;
+        let price = window.price.value.replace(/\s/g, '');;
         let state;
         if (document.getElementById("state") !== null) {
             state = document.querySelector('input[name="state"]:checked').value;

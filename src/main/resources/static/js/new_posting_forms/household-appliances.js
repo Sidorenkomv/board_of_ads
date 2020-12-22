@@ -9,7 +9,7 @@ async function sentForHomeAndGardenPosting(frontName, selectedCategoryId) {
     for (let i = 0; i < fileField.length; i++) {
         formData.append('photos', fileField[i]);
     }
-    let price = window.postPrice.value;
+    let price = window.postPrice.value.replace(/\s/g, '');;
     formData.append('title', window.postTitle.value);
     formData.append('state', document.querySelector('input[name="state"]:checked').value);
     formData.append('type', window.postType.value);
