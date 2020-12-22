@@ -62,7 +62,7 @@ async function buildVacancyForm(frontName, selectedCategoryId) {
         '            <td>\n' +
         '                <label for="price">Зарплата</label></td>\n' +
         '            <td>\n' +
-        '                <input type="number" id="price" name="price" min="0">\n' +
+        '                <input type="text" id="price" name="price" min="0">\n' +
         '            </td>\n' +
         '        </tr>\n' +
         '        <tr>\n' +

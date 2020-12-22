@@ -342,7 +342,7 @@ async function getEstate(frontName, id) {
             '                <div class="form-group row">\n' +
             '                    <label for="postPrice" class="col-sm-2 col-form-label">Цена</label>\n' +
             '                    <div class="col-sm-2 d-flex">\n' +
-            '                        <input id="postPrice" inputmode="numeric" placeholder="₽" type="text" class="form-control form-control-sm" value="">\n' +
+            '                        <input id="postPrice" placeholder="₽" type="text" class="form-control form-control-sm" value="">\n' +
             '                    </div>\n' +
             '                </div>\n' +
 
