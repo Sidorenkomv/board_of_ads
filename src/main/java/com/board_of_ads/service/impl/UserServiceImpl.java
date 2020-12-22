@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(Long id) {
-        return userRepository.findById(id).orElseThrow(() ->new RuntimeException("User identity " + id + " not found!"));
+        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User identity " + id + " not found!"));
     }
 
     @Override
@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllUsers(){
+    public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
@@ -85,9 +85,9 @@ public class UserServiceImpl implements UserService {
         if (!user.getEmail().equals("")) {
             return changeEmail(principal, user);
         } else if (!user.getFirstName().equals("")) {
-            User userOk = changeFirstNameOrCity(principal, user);
-            return userOk;
-        } else  if (!user.getPhone().equals("")) {
+            return changeFirstNameOrCity(principal, user);
+
+        } else if (!user.getPhone().equals("")) {
             return changePhoneNumber(principal, user);
         } else {
             return changePassword(principal, user);
@@ -119,11 +119,11 @@ public class UserServiceImpl implements UserService {
             if (!userFromDB.getFirstName().equals(user.getFirstName())) {
                 userFromDB.setFirstName(user.getFirstName());
             }
-            if (user.getCityId() > 0) {
+            if ((user.getCityId() != null) && (user.getCityId() > 0)) {
                 var city = cityService.findCityById(user.getCityId());
                 userFromDB.setCity(city.get());
             }
-            User userOk =userRepository.save(userFromDB);
+            User userOk = userRepository.save(userFromDB);
             return userOk;
         } catch (Exception e) {
             throw new Exception("Data not changed");

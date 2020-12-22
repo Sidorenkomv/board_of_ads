@@ -190,6 +190,8 @@ $("#saveCityOrNameButton").on('click', function () {
         .then(userResponse => userResponse.json())
         .then(userResponse => {
             if (userResponse.success === true) {
+                // $('#name').text(userResponse.data.firstName);
+
                 $('#SuccessMessage').removeClass("d-none");
                 $('#SuccessMessage').addClass("bg-success text-dark py-2 d-block");
                 $('#SuccessMessage').text("");
