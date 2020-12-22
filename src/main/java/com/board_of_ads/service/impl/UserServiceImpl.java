@@ -86,8 +86,7 @@ public class UserServiceImpl implements UserService {
             return changeEmail(principal, user);
         } else if (!user.getFirstName().equals("")) {
             return changeFirstNameOrCity(principal, user);
-
-        } else if (!user.getPhone().equals("")) {
+        } else  if (!user.getPhone().equals("")) {
             return changePhoneNumber(principal, user);
         } else {
             return changePassword(principal, user);
@@ -119,12 +118,11 @@ public class UserServiceImpl implements UserService {
             if (!userFromDB.getFirstName().equals(user.getFirstName())) {
                 userFromDB.setFirstName(user.getFirstName());
             }
-            if ((user.getCityId() != null) && (user.getCityId() > 0)) {
+            if (user.getCityId() > 0) {
                 var city = cityService.findCityById(user.getCityId());
                 userFromDB.setCity(city.get());
             }
-            User userOk = userRepository.save(userFromDB);
-            return userOk;
+            return userRepository.save(userFromDB);
         } catch (Exception e) {
             throw new Exception("Data not changed");
         }
