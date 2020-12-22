@@ -1,47 +1,36 @@
 package com.board_of_ads.configs;
 
 import com.board_of_ads.models.Category;
-import com.board_of_ads.models.City;
 import com.board_of_ads.models.Image;
 import com.board_of_ads.models.Message;
 import com.board_of_ads.models.Notification;
-import com.board_of_ads.models.Region;
 import com.board_of_ads.models.Role;
 import com.board_of_ads.models.User;
-import com.board_of_ads.models.dto.PostingDto;
-import com.board_of_ads.models.dto.order.Order;
-import com.board_of_ads.models.dto.order.DeliveryStatus;
-import com.board_of_ads.models.dto.review.Review;
 import com.board_of_ads.models.UserNotification;
+import com.board_of_ads.models.dto.order.DeliveryStatus;
+import com.board_of_ads.models.dto.order.Order;
+import com.board_of_ads.models.dto.review.Review;
 import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.models.posting.autoTransport.cars.car_attributes.AutoColor;
-import com.board_of_ads.models.posting.autoTransport.cars.car_attributes.AutoModel;
-import com.board_of_ads.models.posting.forDogs.DogBreed;
-import com.board_of_ads.service.interfaces.AutoAttributesService;
-import com.board_of_ads.service.interfaces.DogBreedService;
-import com.board_of_ads.service.interfaces.MessageService;
 import com.board_of_ads.repository.CityRepository;
+import com.board_of_ads.service.interfaces.AutoAttributesService;
 import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.service.interfaces.CityService;
+import com.board_of_ads.service.interfaces.DogBreedService;
 import com.board_of_ads.service.interfaces.ImageService;
 import com.board_of_ads.service.interfaces.KladrService;
-import com.board_of_ads.service.interfaces.OrderService;
+import com.board_of_ads.service.interfaces.MessageService;
 import com.board_of_ads.service.interfaces.NotificationService;
+import com.board_of_ads.service.interfaces.OrderService;
 import com.board_of_ads.service.interfaces.PostingService;
 import com.board_of_ads.service.interfaces.ReviewService;
 import com.board_of_ads.service.interfaces.RoleService;
 import com.board_of_ads.service.interfaces.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -67,7 +56,8 @@ public class DataInitializer {
     private final AutoAttributesService autoAttributesService;
     private final MessageService messageService;
     private final DogBreedService dogBreedService;
-    List<Posting> postingList;
+
+    private List<Posting> postingList;
 
     private final CityRepository cityRepository;
 
