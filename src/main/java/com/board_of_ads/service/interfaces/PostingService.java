@@ -17,7 +17,6 @@ import com.board_of_ads.util.Response;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -68,4 +67,7 @@ public interface PostingService {
 
     Response<Void> saveForBusinessPosting(Long id, User user, Map<String,
             String> map, List<MultipartFile> photos);
+
+    Response<Void> saveHouseholdAppliancesPosting(Long id, User user, Map<String,String> map,
+                                                  List<MultipartFile> photos);
 }
