@@ -119,7 +119,7 @@ public class UserServiceImpl implements UserService {
             if (!userFromDB.getFirstName().equals(user.getFirstName())) {
                 userFromDB.setFirstName(user.getFirstName());
             }
-            if (user.getCityId() > 0) {
+            if (user.getCityId()!= null) {
                 var city = cityService.findCityById(user.getCityId());
                 userFromDB.setCity(city.get());
             }

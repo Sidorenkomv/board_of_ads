@@ -195,6 +195,7 @@ $("#saveCityOrNameButton").on('click', function () {
                 $('#SuccessMessage').text("");
                 $('#SuccessMessage').append('Контактная информация успешно сохранена');
                 $('#name').text(userResponse.data.firstName +' ' + userResponse.data.lastName);
+
             }
         });
 })
