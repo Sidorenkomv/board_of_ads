@@ -195,7 +195,7 @@ public class DataInitializer {
         subCategoryList.add(new Category("Книги и журналы", categoryService.getCategoryByName("Хобби и отдых").get(), 2));
         subCategoryList.add(new Category("Коллекционирование", categoryService.getCategoryByName("Хобби и отдых").get(), 2));
         subCategoryList.add(new Category("Музыкальные инструменты", categoryService.getCategoryByName("Хобби и отдых").get(), 2));
-        subCategoryList.add(new Category("Охота и рыбалка", categoryService.getCategoryByName("Хобби и отдых").get(), 2));
+        subCategoryList.add(new Category("Охота и рыбалка", categoryService.getCategoryByName("Хобби и отдых").get(), 2, "hobbyAndRest"));
         subCategoryList.add(new Category("Спорт и отдых", categoryService.getCategoryByName("Хобби и отдых").get(), 2));
 
         subCategoryList.add(new Category("Собаки", categoryService.getCategoryByName("Животные").get(), 2, "dogs"));
