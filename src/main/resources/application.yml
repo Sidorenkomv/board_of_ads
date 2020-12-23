@@ -122,7 +122,6 @@ spring:
     from: kunaev993@gmail.com
     base-url: http://127.0.0.1:5556
 
-
 jwt:
   secret: boardofads
 
