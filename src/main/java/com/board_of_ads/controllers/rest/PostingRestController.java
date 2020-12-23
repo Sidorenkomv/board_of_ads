@@ -454,13 +454,13 @@ public class PostingRestController {
     }
 
 
-//    @PostMapping("/business/{id}")
-//    public Response<Void> createForBusinessPosting(@PathVariable Long id,
-//                                                   @AuthenticationPrincipal User user,
-//                                                   @RequestParam Map<String, String> map,
-//                                                   @RequestParam(value = "photos") List<MultipartFile> photos) {
+    @PostMapping("/business/{id}")
+    public Response<Void> createForBusinessPosting(@PathVariable Long id,
+                                                   @AuthenticationPrincipal User user,
+                                                   @RequestParam Map<String, String> map,
+                                                   @RequestParam(value = "photos") List<MultipartFile> photos) {
 
-//        log.info("Create posting for business");
-//        return postingService.saveForBusinessPosting(id, user, map, photos);
-//    }
+        log.info("Create posting for business");
+        return postingService.saveForBusinessPosting(id, user, map, photos);
+    }
 }
