@@ -23,7 +23,7 @@ public class DogBreedServiceImpl implements DogBreedService {
 
     @Override
     public void saveDogBreed() throws IOException {
-        try(FileInputStream fileInputStream = new FileInputStream("src/main/resources/DogsBreed/DogsBreed.xls");
+        try(FileInputStream fileInputStream = new FileInputStream("src/main/resources/dog_breeds/dog_breeds.xls");
             BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
             Workbook workbook = new HSSFWorkbook(bufferedInputStream)) {
             Sheet sheet = workbook.getSheetAt(0);
