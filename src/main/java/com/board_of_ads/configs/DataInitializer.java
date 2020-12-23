@@ -38,9 +38,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Slf4j
 @Component
 @AllArgsConstructor
-@Slf4j
 public class DataInitializer {
 
     private final UserService userService;

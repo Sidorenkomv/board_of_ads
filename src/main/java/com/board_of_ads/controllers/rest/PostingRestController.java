@@ -1,6 +1,5 @@
 package com.board_of_ads.controllers.rest;
 
-import com.board_of_ads.models.City;
 import com.board_of_ads.models.Image;
 import com.board_of_ads.models.User;
 import com.board_of_ads.models.dto.PostingCarDto;
@@ -9,11 +8,10 @@ import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.models.posting.autoTransport.cars.PostingCar;
 import com.board_of_ads.models.posting.forAudioVideo.AudioVideoPosting;
-import com.board_of_ads.models.posting.forHobbyAndRestAndTickets.HobbyAndRestPosting;
-import com.board_of_ads.models.posting.forHobbyAndRestAndTickets.TicketsPosting;
 import com.board_of_ads.models.posting.forDogs.DogBreed;
 import com.board_of_ads.models.posting.forDogs.dogsPosting;
-import com.board_of_ads.models.posting.forHomeAndGarden.HouseholdAppliancesPosting;
+import com.board_of_ads.models.posting.forHobbyAndRestAndTickets.HobbyAndRestPosting;
+import com.board_of_ads.models.posting.forHobbyAndRestAndTickets.TicketsPosting;
 import com.board_of_ads.models.posting.job.Vacancy;
 import com.board_of_ads.models.posting.realty.estate.BuyEstatePosting;
 import com.board_of_ads.models.posting.realty.estate.GetAnEstatePosting;
@@ -31,10 +29,8 @@ import com.board_of_ads.util.ErrorResponse;
 import com.board_of_ads.util.Response;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,24 +40,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+@Slf4j
+@AllArgsConstructor
 @RestController
 @RequestMapping("/api/posting")
-@AllArgsConstructor
-@Slf4j
 public class PostingRestController {
     private final CityService cityService;
     private final PostingService postingService;
-    @Autowired
     private final AutoAttributesService autoAttributesService;
     private final CategoryService categoryService;
     private final UserService userService;
