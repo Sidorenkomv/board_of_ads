@@ -123,7 +123,7 @@ public class UserServiceImpl implements UserService {
                 var city = cityService.findCityById(user.getCityId());
                 userFromDB.setCity(city.get());
             }
-            User userOk =userRepository.save(userFromDB);
+            var userOk =userRepository.save(userFromDB);
             return userOk;
         } catch (Exception e) {
             throw new Exception("Data not changed");

@@ -8,11 +8,8 @@ import com.board_of_ads.util.Response;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,9 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
 
 @AllArgsConstructor
 @RestController
@@ -38,10 +32,6 @@ public class UserRestController {
     @GetMapping
     public Response<User> getUser(@AuthenticationPrincipal User user) {
         log.info("Use this default logger");
-        User us = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        Long usId = us.getId();
-        user = userService.getUserById(usId);
         return user != null
                 ? Response.ok(user)
                 : Response.error().code(HttpStatus.UNAUTHORIZED).text("No auth user").build();
@@ -62,7 +52,7 @@ public class UserRestController {
             log.info("In changeUserData get user: {}", user);
             var result = userService.update(principal, user);
             log.info("For the user with id: {} parameters has been successfully changed", principal.getId());
-            authorizationService.updatePrincipalInAuthToken(result);
+            authorizationService.updatePrincipalInAuthToken(userService.getUserById(result.getId()));
             return Response.ok(result);
         } catch (Exception e) {
             log.error("Parameters not changed: user: {}", user);
