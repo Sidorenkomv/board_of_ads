@@ -9,7 +9,7 @@ async function sentForHomeAndGardenPosting(frontName, selectedCategoryId) {
     for (let i = 0; i < fileField.length; i++) {
         formData.append('photos', fileField[i]);
     }
-    let price = window.postPrice.value;
+    let price = window.postPrice.value.replace(/\s/g, '');;
     formData.append('title', window.postTitle.value);
     formData.append('state', document.querySelector('input[name="state"]:checked').value);
     formData.append('type', window.postType.value);
@@ -96,7 +96,7 @@ async function getHouseholdAppliancesForm(frontName, selectedCategoryId) {
         '                <div class="form-group row">\n' +
         '                    <label for="postPrice" class="col-sm-2 col-form-label">Цена</label>\n' +
         '                    <div class="col-sm-2 d-flex">\n' +
-        '                        <input id="postPrice" inputmode="numeric" placeholder="₽" type="number" class="form-control form-control-sm" value="">\n' +
+        '                        <input id="postPrice" inputmode="numeric" placeholder="₽" type="text" class="form-control form-control-sm" value="">\n' +
         '                    </div>\n' +
         '                </div>\n' +
         '\n' +

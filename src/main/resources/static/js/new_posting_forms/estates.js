@@ -8,7 +8,7 @@ async function sentSellEstatePosting(frontName, categoryId) {
     for (let i = 0; i < fileField.length; i++) {
         formData.append('photos', fileField[i]);
     }
-    let price = window.postPrice.value;
+    let price = window.postPrice.value.replace(/\s/g, '');;
     formData.append('title', window.postTitle.value);
     formData.append("typeOfHousing", document.querySelector('input[name="estate"]:checked').value)
     formData.append("ownership", document.querySelector('input[name="ownership"]:checked').value)
@@ -67,7 +67,7 @@ async function sentRentAnEstatePosting(frontName, categoryId) {
     for (let i = 0; i < fileField.length; i++) {
         formData.append('photos', fileField[i]);
     }
-    let price = window.postPrice.value;
+    let price = window.postPrice.value.replace(/\s/g, '');;
     formData.append('title', window.postTitle.value);
     formData.append("typeOfHousing", document.querySelector('input[name="estate"]:checked').value)
     formData.append("ownership", document.querySelector('input[name="ownership"]:checked').value)
@@ -121,7 +121,7 @@ async function sentGetAnEstatePosting(frontName, categoryId) {
     for (let i = 0; i < fileField.length; i++) {
         formData.append('photos', fileField[i]);
     }
-    let price = window.postPrice.value;
+    let price = window.postPrice.value.replace(/\s/g, '');;
     formData.append('title', window.postTitle.value);
     formData.append("rooms", window.planirovka.value)
     formData.append("contactEmail", window.inputEmail.value)
@@ -810,7 +810,7 @@ async function getEstate(frontName, id) {
             '                </div>\n' +
             '\n' +
             '                <div class="form-group row">\n' +
-            '                    <label for="postPrice" class="col-sm-2 col-form-label">Цена</label>\n' +
+            '                    <label for="postPrice"  class="col-sm-2 col-form-label">Цена</label>\n' +
             '                    <div class="col-sm-2 d-flex">\n' +
             '                        <input id="postPrice" inputmode="numeric" placeholder="₽" type="text" class="form-control form-control-sm" value="">\n' +
             '                    </div>\n' +
