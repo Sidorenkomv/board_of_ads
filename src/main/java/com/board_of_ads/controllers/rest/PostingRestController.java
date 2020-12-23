@@ -443,15 +443,16 @@ public class PostingRestController {
         return Response.ok(dogBreedService.findAll());
     }
 
-//    @PostMapping("/clothes/{id}")
-//    public Response<Void> createPersonalClothesPosting(@PathVariable Long id,
-//                                                       @AuthenticationPrincipal User user,
-//                                                       @RequestParam Map<String, String> map,
-//                                                       @RequestParam(value = "photos") List<MultipartFile> photos) {
+    @PostMapping("/clothes/{id}")
+    public Response<Void> createPersonalClothesPosting(@PathVariable Long id,
+                                                       @AuthenticationPrincipal User user,
+                                                       @RequestParam Map<String, String> map,
+                                                       @RequestParam(value = "photos") List<MultipartFile> photos) {
 
-//        log.info("Create posting clothes");
-//        return postingService.savePersonalClothesPosting(id, user, map, photos);
-//    }
+        log.info("Create posting clothes");
+        return postingService.savePersonalClothesPosting(id, user, map, photos);
+    }
+
 
 //    @PostMapping("/business/{id}")
 //    public Response<Void> createForBusinessPosting(@PathVariable Long id,

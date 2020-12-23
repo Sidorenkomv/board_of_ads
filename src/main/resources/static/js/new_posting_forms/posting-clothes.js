@@ -120,7 +120,7 @@ function showClothesForm(fName, ident) {
         '                <div class="form-group row">\n' +
         '                    <label for="price" class="col-sm-2 col-form-label">Цена</label>\n' +
         '                    <div class="col-sm-2 d-flex">\n' +
-        '                        <input id="price" inputmode="numeric" placeholder="₽" type="text" class="form-control form-control-sm" value="">\n' +
+        '                        <input id="price" inputmode="numeric" placeholder="₽" type="number" class="form-control form-control-sm" value="">\n' +
         '                    </div>\n' +
         '                </div>\n' +
         '\n' +
@@ -223,7 +223,7 @@ function showShoesForm(fName, ident) {
         '                <div class="form-group row">\n' +
         '                    <label for="price" class="col-sm-2 col-form-label">Цена</label>\n' +
         '                    <div class="col-sm-2 d-flex">\n' +
-        '                        <input id="price" inputmode="numeric" placeholder="₽" type="text" class="form-control form-control-sm" value="">\n' +
+        '                        <input id="price" inputmode="numeric" placeholder="₽" type="number" class="form-control form-control-sm" value="">\n' +
         '                    </div>\n' +
         '                </div>\n' +
         '\n' +
@@ -306,7 +306,7 @@ function showOtherClothesForm(fName, ident) {
         '                <div class="form-group row">\n' +
         '                    <label for="price" class="col-sm-2 col-form-label">Цена</label>\n' +
         '                    <div class="col-sm-2 d-flex">\n' +
-        '                        <input id="price" inputmode="numeric" placeholder="₽" type="text" class="form-control form-control-sm" value="">\n' +
+        '                        <input id="price" inputmode="numeric" placeholder="₽" type="number" class="form-control form-control-sm" value="">\n' +
         '                    </div>\n' +
         '                </div>\n' +
         '\n' +
