@@ -618,7 +618,7 @@ function createDiv7PriceFields(div7) {
     row.appendChild(col8);
     let input = document.createElement('input');
     input.setAttribute('id', 'carPrice');
-    input.setAttribute('type', 'number');
+    input.setAttribute('type', 'text');
 
     col4.appendChild(input);
     div7.appendChild(row);

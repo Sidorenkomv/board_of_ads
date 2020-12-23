@@ -1,47 +1,36 @@
 package com.board_of_ads.configs;
 
 import com.board_of_ads.models.Category;
-import com.board_of_ads.models.City;
 import com.board_of_ads.models.Image;
 import com.board_of_ads.models.Message;
 import com.board_of_ads.models.Notification;
-import com.board_of_ads.models.Region;
 import com.board_of_ads.models.Role;
 import com.board_of_ads.models.User;
-import com.board_of_ads.models.dto.PostingDto;
-import com.board_of_ads.models.dto.order.Order;
-import com.board_of_ads.models.dto.order.DeliveryStatus;
-import com.board_of_ads.models.dto.review.Review;
 import com.board_of_ads.models.UserNotification;
+import com.board_of_ads.models.dto.order.DeliveryStatus;
+import com.board_of_ads.models.dto.order.Order;
+import com.board_of_ads.models.dto.review.Review;
 import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.models.posting.autoTransport.cars.car_attributes.AutoColor;
-import com.board_of_ads.models.posting.autoTransport.cars.car_attributes.AutoModel;
-import com.board_of_ads.models.posting.forDogs.DogBreed;
-import com.board_of_ads.service.interfaces.AutoAttributesService;
-import com.board_of_ads.service.interfaces.DogBreedService;
-import com.board_of_ads.service.interfaces.MessageService;
 import com.board_of_ads.repository.CityRepository;
+import com.board_of_ads.service.interfaces.AutoAttributesService;
 import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.service.interfaces.CityService;
+import com.board_of_ads.service.interfaces.DogBreedService;
 import com.board_of_ads.service.interfaces.ImageService;
 import com.board_of_ads.service.interfaces.KladrService;
-import com.board_of_ads.service.interfaces.OrderService;
+import com.board_of_ads.service.interfaces.MessageService;
 import com.board_of_ads.service.interfaces.NotificationService;
+import com.board_of_ads.service.interfaces.OrderService;
 import com.board_of_ads.service.interfaces.PostingService;
 import com.board_of_ads.service.interfaces.ReviewService;
 import com.board_of_ads.service.interfaces.RoleService;
 import com.board_of_ads.service.interfaces.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,9 +38,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Slf4j
 @Component
 @AllArgsConstructor
-@Slf4j
 public class DataInitializer {
 
     private final UserService userService;
@@ -67,7 +56,8 @@ public class DataInitializer {
     private final AutoAttributesService autoAttributesService;
     private final MessageService messageService;
     private final DogBreedService dogBreedService;
-    List<Posting> postingList;
+
+    private List<Posting> postingList;
 
     private final CityRepository cityRepository;
 
@@ -195,7 +185,7 @@ public class DataInitializer {
         subCategoryList.add(new Category("Книги и журналы", categoryService.getCategoryByName("Хобби и отдых").get(), 2));
         subCategoryList.add(new Category("Коллекционирование", categoryService.getCategoryByName("Хобби и отдых").get(), 2));
         subCategoryList.add(new Category("Музыкальные инструменты", categoryService.getCategoryByName("Хобби и отдых").get(), 2));
-        subCategoryList.add(new Category("Охота и рыбалка", categoryService.getCategoryByName("Хобби и отдых").get(), 2));
+        subCategoryList.add(new Category("Охота и рыбалка", categoryService.getCategoryByName("Хобби и отдых").get(), 2, "hobbyAndRest"));
         subCategoryList.add(new Category("Спорт и отдых", categoryService.getCategoryByName("Хобби и отдых").get(), 2));
 
         subCategoryList.add(new Category("Собаки", categoryService.getCategoryByName("Животные").get(), 2, "dogs"));
@@ -627,31 +617,31 @@ public class DataInitializer {
         postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Бытовые услуги").get()
                 , "Схожу в кино", "За компанию", 1_000L, "+79998887766", cityService.findCityByName("Ростов-на-Дону").get(), true, 0));
         postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Бытовые услуги").get()
-                , "Сдамся в рабство", "ненадолго", 50_000L, "+79998887766", true));
+                , "Сдамся в рабство", "ненадолго", 50_000L, "+79998887766",  cityService.findCityByName("Братск").get(), true, 0));
         postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Бытовые услуги").get()
-                , "Уведу у Вас девушку", "Вдруг она вам надоела", 3_000L, "+79998887766", false));
+                , "Уведу у Вас девушку", "Вдруг она вам надоела", 3_000L, "+79998887766",  cityService.findCityByName("Братск").get(),  true, 0));
         postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Бытовые услуги").get()
-                , "Обижу обидчиков", "Не старше 18 лет", 5_000L, "+79896661488", true));
+                , "Обижу обидчиков", "Не старше 18 лет", 5_000L, "+79896661488", cityService.findCityByName("Москва").get(),true, 0));
         postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Бытовые услуги").get()
-                , "Отмажу от ментов", "У меня папка начальник", 10_000L, "+79896661488", false));
+                , "Отмажу от ментов", "У меня папка начальник", 10_000L, "+79896661488", cityService.findCityByName("Москва").get(), false, 0));
         postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Бытовые услуги").get()
-                , "Вынесу мусор", "Небольшой", 400L, "+79896661488", true));
+                , "Вынесу мусор", "Небольшой", 400L, "+79896661488", cityService.findCityByName("Иркутск").get(), true, 0));
         postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Бытовые услуги").get()
-                , "Научу играть на гитаре", "Учил самого Цоя", 10_000L, "+79896661488", false));
+                , "Научу играть на гитаре", "Учил самого Цоя", 10_000L, "+79896661488", cityService.findCityByName("Москва").get(), false, 0));
         postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Бытовые услуги").get()
-                , "Научу играть в Warcraft", "PvP или зассал?", 10_000L, "+79896661488", false));
+                , "Научу играть в Warcraft", "PvP или зассал?", 10_000L, "+79896661488", cityService.findCityByName("Москва").get(), false, 0));
         postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Бытовые услуги").get()
-                , "Продам средство для похудения", "Результат уже через 3 дня. Нужно всего лишь 1 ложка...", 10_000L, "+79896661488", true));
+                , "Продам средство для похудения", "Результат уже через 3 дня. Нужно всего лишь 1 ложка...", 10_000L, "+79896661488", cityService.findCityByName("Иркутск").get(), true, 0));
         postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Бытовые услуги").get()
-                , "Продам ядерный реактор", "Самовывоз с Припяти", 500_000L, "+79896661488", true));
+                , "Продам ядерный реактор", "Самовывоз с Припяти", 500_000L, "+79896661488", cityService.findCityByName("Москва").get(), true, 0));
         postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Бытовые услуги").get()
-                , "Стань программистом за 1 урок", "Урок №1: перезагрузка роутера", 20_000L, "+79896661488", true));
+                , "Стань программистом за 1 урок", "Урок №1: перезагрузка роутера", 20_000L, "+79896661488",  cityService.findCityByName("Новосибирск").get(), true, 0));
         postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Бытовые услуги").get()
-                , "Свадебный фотограф", "Фоткаю на iPhone 7", 10_000L, "+79896661488", true));
+                , "Свадебный фотограф", "Фоткаю на iPhone 7", 10_000L, "+79896661488",  cityService.findCityByName("Красноярск").get(), true, 0));
         postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Бытовые услуги").get()
-                , "Компьютерный мастер на дом", "Перезагружу ваш компьютер быстро и качественно", 4_000L, "+79896661488", true));
+                , "Компьютерный мастер на дом", "Перезагружу ваш компьютер быстро и качественно", 4_000L, "+79896661488",  cityService.findCityByName("Хабаровск").get(), true, 0));
         postingList.add(new Posting(userService.getUserByEmail("user@mail.ru"), categoryService.getCategoryByName("Бытовые услуги").get()
-                , "Сесть на пенёк", "...Почему тут так мало?", 1_000L, "+79896661488", true));
+                , "Сесть на пенёк", "...Почему тут так мало?", 1_000L, "+79896661488",  cityService.findCityByName("Владивосток").get(), true, 0));
 
         Image one = new Image(null, "/images/numbers/0.jpg");
         Image two = new Image(null, "/images/numbers/1.jpg");

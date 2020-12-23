@@ -159,6 +159,10 @@ async function changeVisible(frontName, id) {
             break;
     }
 
+    if ($('#postPrice').length) {
+        $('#postPrice').mask("?999 999 999 999",{placeholder:" ", autoclear: false});
+    }
+
 }
 
 $('#pathCategoryButton').on('click', function () {

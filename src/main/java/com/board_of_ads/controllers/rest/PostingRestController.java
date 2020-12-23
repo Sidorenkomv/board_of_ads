@@ -8,10 +8,10 @@ import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.models.posting.autoTransport.cars.PostingCar;
 import com.board_of_ads.models.posting.forAudioVideo.AudioVideoPosting;
-import com.board_of_ads.models.posting.forHobbyAndRestAndTickets.HobbyAndRestPosting;
-import com.board_of_ads.models.posting.forHobbyAndRestAndTickets.TicketsPosting;
 import com.board_of_ads.models.posting.forDogs.DogBreed;
 import com.board_of_ads.models.posting.forDogs.dogsPosting;
+import com.board_of_ads.models.posting.forHobbyAndRestAndTickets.HobbyAndRestPosting;
+import com.board_of_ads.models.posting.forHobbyAndRestAndTickets.TicketsPosting;
 import com.board_of_ads.models.posting.job.Vacancy;
 import com.board_of_ads.models.posting.realty.estate.BuyEstatePosting;
 import com.board_of_ads.models.posting.realty.estate.GetAnEstatePosting;
@@ -29,7 +29,6 @@ import com.board_of_ads.util.ErrorResponse;
 import com.board_of_ads.util.Response;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,14 +43,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+@Slf4j
+@AllArgsConstructor
 @RestController
 @RequestMapping("/api/posting")
-@AllArgsConstructor
-@Slf4j
 public class PostingRestController {
     private final CityService cityService;
     private final PostingService postingService;
-    @Autowired
     private final AutoAttributesService autoAttributesService;
     private final CategoryService categoryService;
     private final UserService userService;
