@@ -10,6 +10,7 @@ $(document).ready(function () {
 })
 
 
+
 function sendMillionRequest(method, url, body = null) {
     return fetch(url).then(response => {
         return response.json()
@@ -234,6 +235,20 @@ async function showChooseCityModal() {
             cid++;
         }
     }).catch(() => console.log(" "));
+
+    let  selectRegion = document.getElementById("selectRegionInModal");
+    sendRequest('GET', '/api/region/').then(data => data.data).then(regions => {
+        for (let reg in regions){
+        let option = document.createElement("option");
+            option.setAttribute("value", regions[reg].id);
+            option.setAttribute("text", regions[reg].name +' '+ regions[reg].formSubject);
+            option.innerHTML=regions[reg].name +' '+ regions[reg].formSubject;
+            selectRegion.appendChild(option);
+
+        }
+
+    }).catch(err => console.log(err));
+
     $('#chooseCityModal').modal('show');
 }
 
