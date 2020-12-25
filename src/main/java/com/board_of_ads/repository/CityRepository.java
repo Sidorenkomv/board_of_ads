@@ -21,6 +21,7 @@ import java.util.Set;
 
 public interface CityRepository extends JpaRepository<City, Long> {
 
+    Set<City> findCitiesByRegion(Region region);
 
     boolean existsCityByNameAndRegion(String cityName, Region region);
 

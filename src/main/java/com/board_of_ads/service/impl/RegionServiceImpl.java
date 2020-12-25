@@ -4,16 +4,15 @@ package com.board_of_ads.service.impl;
 import com.board_of_ads.models.Region;
 import com.board_of_ads.models.dto.analytics.ReportRegionPostingDto;
 import com.board_of_ads.repository.RegionRepository;
-import com.board_of_ads.service.interfaces.CityService;
 import com.board_of_ads.service.interfaces.RegionService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -22,7 +21,6 @@ import java.util.stream.Collectors;
 public class RegionServiceImpl implements RegionService {
 
     private final RegionRepository regionRepository;
-    private final CityService cityService;
 
     @Override
     public Optional<Region> findRegionByNameAndFormSubject(String name) {
@@ -35,7 +33,7 @@ public class RegionServiceImpl implements RegionService {
 
     @Override
     public List<Region> findAll() {
-        return regionRepository.findAll();
+        return regionRepository.findAll(Sort.by(Sort.Direction.ASC,"name"));
     }
 
     @Override
