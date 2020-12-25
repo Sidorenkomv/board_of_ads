@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ru" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <title>Board of ads</title>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/main_page.css" th:href="@{/css/main_page.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/fragment-navigate-panel-style.css"
+          th:href="@{/css/fragment-navigate-panel-style.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/header-fragment-style.css"
+          th:href="@{/css/header-fragment-style.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/search-fragment-style.css"
+          th:href="@{/css/search-fragment-style.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/auth-style.css" th:href="@{/css/auth-style.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/user-info-menu.css"
+          th:href="@{/css/user-info-menu.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/main_page_posting.css"
+          th:href="@{/css/main_page_posting.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/recovery-pswd.css" th:href="@{/css/recovery-pswd.css}"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/b-404.css" th:href="@{/css/b-404.css}"/>
+
+    <!-- script -->
+    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+<!--header-->
+<div class="main-header">
+    <header th:insert="fragments/header::main-header"></header>
+
+    <div>
+        <h1>Ой! Такой страницы на нашем сайте нет :(</h1>
+        <br>
+        <p><img src="https://static.avito.ru/s/cc/resources/088626b67ad2.png"
+                align="left" vspace="15" hspace="15" width="62" height="62">Наверное, вы ошиблись при наборе адреса или перешли по неверной ссылке.</p>
+        <p>Не расстраивайтесь, выход есть!
+            Перейдите <a href="/">на главную страницу</a>.</p>
+    </div>
+</div>
+</body>
+</html>
