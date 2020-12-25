@@ -8,6 +8,7 @@ import com.board_of_ads.util.Response;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.security.Principal;
 
 @AllArgsConstructor
 @RestController
@@ -30,14 +30,14 @@ public class UserRestController {
     private final AuthorizationService authorizationService;
 
     @GetMapping
-    public Response<Principal> getUser(@AuthenticationPrincipal Principal user) {
+    public Response<User> getUser(@AuthenticationPrincipal User user) {
         log.info("Use this default logger");
         return user != null
                 ? Response.ok(user)
                 : Response.error().code(HttpStatus.UNAUTHORIZED).text("No auth user").build();
     }
 
-    @PostMapping ("/modal-reg")
+    @PostMapping("/modal-reg")
     public Response<User> Action(@RequestBody @Valid User user, BindingResult bindingResult) {
         if (userService.checkUserDataBeforeReg(user, bindingResult, log)) {
             authorizationService.login(user);
@@ -52,10 +52,13 @@ public class UserRestController {
             log.info("In changeUserData get user: {}", user);
             var result = userService.update(principal, user);
             log.info("For the user with id: {} parameters has been successfully changed", principal.getId());
+            authorizationService.updatePrincipalInAuthToken(userService.getUserById(result.getId()));
             return Response.ok(result);
         } catch (Exception e) {
             log.error("Parameters not changed: user: {}", user);
             return Response.error().code(HttpStatus.NOT_MODIFIED).text(e.getMessage()).build();
         }
     }
+
+
 }

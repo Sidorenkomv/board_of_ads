@@ -7,4 +7,5 @@ public interface AuthorizationService {
     String isValid(User user);
 
     void login(User user);
+    void updatePrincipalInAuthToken(User user);
 }

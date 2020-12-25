@@ -57,10 +57,12 @@ public class CityRestController {
         Long idc = userRepository.findCityByUser(usId);
         Optional<City> city = cityRepository.findCityById(idc);
         log.info("Use this default logger");
-        var cities = cityService.getCitiesList();
+            return Response.ok(city);
+
+            /*  var cities = cityService.getCitiesList();
         return  (cities.size() > 0)
                 ? Response.ok(city)
-                : new ErrorResponse<>(new Error(204, "No found cities"));
+                : new ErrorResponse<>(new Error(204, "No found cities")); */
     }
 
     @PostMapping("/date")

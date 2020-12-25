@@ -22,6 +22,7 @@ public class MainPageController {
     @GetMapping("/")
     public String getMainPage(@AuthenticationPrincipal() User user, Model model, HttpSession session) {
         log.info("Use this default logger");
+
         if (user == null) {
             String sessionId = session.getId();
             user = userService.getUserByEmail(sessionId);
@@ -29,6 +30,9 @@ public class MainPageController {
                 user = new User(sessionId);
                 userService.saveUser(user);
             }
+
+        } else {
+
         }
         model.addAttribute("user", user != null ? user : new User());
         return "main-page";
@@ -49,7 +53,7 @@ public class MainPageController {
     @GetMapping("/{id}")
     public String postingPage(@AuthenticationPrincipal User user, Model model, @PathVariable Long id) {
         model.addAttribute("user", user != null ? user : new User());
-        model.addAttribute("DtoId",id);
+        model.addAttribute("DtoId", id);
         return "posting-page";
     }
 
@@ -63,6 +67,7 @@ public class MainPageController {
         model.addAttribute("user", user != null ? user : new User());
         return "favorite";
     }
+
     @GetMapping("/messenger")
     public String messenger(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute(user);
