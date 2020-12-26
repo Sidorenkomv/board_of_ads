@@ -29,7 +29,7 @@ public interface CityRepository extends JpaRepository<City, Long> {
 
     Optional<City> findCityById(Long id);
 
-    @Query("SELECT  u from City u where u.region=?1 order by u.name")
+    @Query("SELECT  u from City u where u.region.id=?1  order by u.name")
     List<City> getCitiesByRegionId(Long regionId);
 
 
