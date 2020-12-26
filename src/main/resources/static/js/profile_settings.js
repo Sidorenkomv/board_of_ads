@@ -262,7 +262,13 @@ function fillSelectRegionInModal() {
 
 function fillSelectCityInModal(regionId) {
     let selectCity = document.getElementById("selectCityInModal");
-         sendRequest('GET', '/api/city/region/'+regionId).then(data => data.data).then(cities => {
+    let option = document.createElement("option");
+    option.setAttribute("value", 'выбрать');
+    option.setAttribute("text", 'Выбрать город');
+    option.innerHTML = 'Выбрать город';
+    selectCity.appendChild(option);
+
+    sendRequest('GET', '/api/city/region/' + regionId).then(data => data.data).then(cities => {
 
         for (let num in cities) {
             let option = document.createElement("option");
@@ -271,18 +277,38 @@ function fillSelectCityInModal(regionId) {
             option.innerHTML = cities[num].name;
             selectCity.appendChild(option);
         }
-             $('#selectCityInModal')[0].disabled = false;
+        $('#selectCityInModal')[0].disabled = false;
     }).catch(err => console.log(err));
 
 
 }
 
 $('#cityFromRegionButton').on('click', function () {
-    alert('click');
+    alert('click on ' + idOfSelectedCity);
+    let nameCity = $('#selectCityInModal option:selected').text();
+    let option = document.getElementById("selectedCity");
+    option.textContent = nameCity;
+    document.getElementById("selectCity").selectedIndex = 0;
+    //idOfSelectedCity = $('#selectCityInModal').val();
+    $('#chooseCityModal').modal('hide');
+
+})
+$('#selectCityInModal').on('change', function () {
+    if ($('#selectCityInModal').val() === "выбрать") {
+        $('#cityFromRegionButton')[0].disabled=true;
+        return
+    } else {
+idOfSelectedCity= $('#selectCityInModal').val();
+$('#cityFromRegionButton')[0].disabled=false;
+
+    }
+
+
 })
 $('#selectRegionInModal').on('change', function () {
 
     if ($('#selectRegionInModal').val() === "выбрать") {
+        $('#selectCityInModal').empty();
         $('#selectCityInModal')[0].disabled = true;
         return
     }
