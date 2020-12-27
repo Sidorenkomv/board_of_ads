@@ -9,6 +9,7 @@ import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.models.posting.autoTransport.cars.PostingCar;
 import com.board_of_ads.models.posting.forBusiness.Business;
+import com.board_of_ads.models.posting.forCats.catsPosting;
 import com.board_of_ads.models.posting.forHomeAndGarden.HouseholdAppliancesPosting;
 import com.board_of_ads.models.posting.job.Vacancy;
 import com.board_of_ads.models.posting.personalBelongings.Clothes;
@@ -547,5 +548,26 @@ public class PostingServiceImpl implements PostingService {
         }
 
 
+    }
+
+    @Override
+    public Response<Void> saveCatsPosting(Long id, User user, Map<String, String> obj, List<MultipartFile> photos) {
+        catsPosting posting;
+
+        try {
+            posting = new catsPosting(userService.getUserById(user.getId()), categoryService.getCategoryById(id),
+                    obj.get("title"), obj.get("description"), Long.parseLong(obj.get("price")), obj.get("contact"),
+                    true, obj.get("contactEmail"), obj.get("linkYouTube"), obj.get("communicationType"), obj.get("breed"));
+
+            List<Image> images = imageService.savePhotos(user, photos);
+            posting.setImages(images);
+            posting.setCity(user.getCity());
+            postingRepository.save(posting);
+            log.info("Объявление успешно создано пользователем " + user.getEmail());
+            return Response.ok().build();
+        } catch (Exception ex) {
+            log.info("Не удалось создать объявление => " + ex.getMessage());
+            return new ErrorResponse<>(new Error(400, "Posting is not created"));
+        }
     }
 }
