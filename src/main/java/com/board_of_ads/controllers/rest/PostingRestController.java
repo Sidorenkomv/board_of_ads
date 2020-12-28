@@ -12,7 +12,6 @@ import com.board_of_ads.models.posting.autoTransport.cars.PostingCar;
 import com.board_of_ads.models.posting.forAudioVideo.AudioVideoPosting;
 import com.board_of_ads.models.posting.forDogs.DogBreed;
 import com.board_of_ads.models.posting.forDogs.dogsPosting;
-import com.board_of_ads.models.posting.forHomeAndGarden.HouseholdAppliancesPosting;
 import com.board_of_ads.models.posting.job.Resume;
 import com.board_of_ads.models.posting.forHobbyAndRestAndTickets.HobbyAndRestPosting;
 import com.board_of_ads.models.posting.forHobbyAndRestAndTickets.TicketsPosting;
@@ -46,7 +45,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -337,7 +335,7 @@ public class PostingRestController {
                     true, obj.get("contactEmail"), obj.get("linkYouTube"), obj.get("communicationType"), obj.get("state"));
             List<Image> images = imageService.savePhotos(user, photos);
             posting.setImages(images);
-            posting.setCity(cityService.findCityByName("Ростов-на-Дону").get());
+            posting.setCity(user.getCity());
             postingService.save(posting);
             log.info("Объявление успешно создано пользователем " + user.getEmail());
             return Response.ok().build();
@@ -361,7 +359,7 @@ public class PostingRestController {
 
             List<Image> images = imageService.savePhotos(user, photos);
             posting.setImages(images);
-            posting.setCity(cityService.findCityByName("Ростов-на-Дону").get());
+            posting.setCity(user.getCity());
             postingService.save(posting);
             log.info("Объявление успешно создано пользователем " + user.getEmail());
             return Response.ok().build();
@@ -385,7 +383,7 @@ public class PostingRestController {
 
             List<Image> images = imageService.savePhotos(user, photos);
             posting.setImages(images);
-            posting.setCity(cityService.findCityByName("Ростов-на-Дону").get());
+            posting.setCity(user.getCity());
             postingService.save(posting);
             log.info("Объявление успешно создано пользователем " + user.getEmail());
             return Response.ok().build();
@@ -408,7 +406,7 @@ public class PostingRestController {
                     true, obj.get("contactEmail"), obj.get("linkYouTube"), obj.get("communicationType"));
             List<Image> images = imageService.savePhotos(user, photos);
             posting.setImages(images);
-            posting.setCity(cityService.findCityByName("Ростов-на-Дону").get());
+            posting.setCity(user.getCity());
             postingService.save(posting);
             log.info("Объявление успешно создано пользователем " + user.getEmail());
             return Response.ok().build();
@@ -454,6 +452,4 @@ public class PostingRestController {
         log.info("Create posting for business");
         return postingService.saveForBusinessPosting(id, user, map, photos);
     }
-
-
 }

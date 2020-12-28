@@ -1,3 +1,5 @@
+let idOfSelectedCity;
+let idOfSelectedRegion;
 $(document).ready(function () {
     let selcity = document.getElementById("selectedCity");
 
@@ -138,11 +140,9 @@ $('#selectCity').on('change', function () {
     $('#chooseCityModal').modal('show');
 })
 
-let idOfSelectedCity;
-
 
 $("#cityListM a").on('click', function () {
-    let value = $(this).html( );
+    let value = $(this).html();
     let option = document.getElementById("selectedCity");
     option.textContent = value;
     document.getElementById("selectCity").selectedIndex = 0;
@@ -215,29 +215,114 @@ $('#selectCity').on('change', function () {
 
 
 async function showChooseCityModal() {
+    fillCityInModal();
+    fillSelectRegionInModal();
+
+    $('#chooseCityModal').modal('show');
+}
+
+function fillCityInModal() {
     sendMillionRequest('GET', '/api/city/millionCities').then(data => {
         let cid = 5001;
         for (let i = 0; i < 30; i++) {
             let millionCity = data.data[i];
             if (millionCity.name == 'Москва') {
-                document.getElementById("msk5000").style.fontWeight ="bold"
+                document.getElementById("msk5000").style.fontWeight = "bold"
                 document.getElementById("msk5000").innerHTML = millionCity.name;
                 document.getElementById("msk5000").id = millionCity.id;
                 continue;
             } else if (millionCity.name == 'Санкт-Петербург') {
-                document.getElementById("spb5000").style.fontWeight ="bold"
+                document.getElementById("spb5000").style.fontWeight = "bold"
                 document.getElementById("spb5000").innerHTML = millionCity.name;
                 document.getElementById("spb5000").id = millionCity.id;
                 continue;
-            };
+            }
+            ;
             document.getElementById(cid.toString()).style.fontSize = '12px';
             document.getElementById(cid.toString()).innerHTML = millionCity.name;
             document.getElementById(cid.toString()).id = millionCity.id;
             cid++;
         }
     }).catch(() => console.log(" "));
-    $('#chooseCityModal').modal('show');
+
 }
+
+function fillSelectRegionInModal() {
+    let selectRegion = document.getElementById("selectRegionInModal");
+    sendRequest('GET', '/api/region/').then(data => data.data).then(regions => {
+        for (let reg in regions) {
+            let option = document.createElement("option");
+            option.setAttribute("value", regions[reg].id);
+            option.setAttribute("text", regions[reg].name + ' ' + regions[reg].formSubject);
+            option.innerHTML = regions[reg].name + ' ' + regions[reg].formSubject;
+            selectRegion.appendChild(option);
+
+        }
+
+    }).catch(err => console.log(err));
+}
+
+function fillSelectCityInModal(regionId) {
+    let selectCity = document.getElementById("selectCityInModal");
+    let option = document.createElement("option");
+    option.setAttribute("value", 'выбрать');
+    option.setAttribute("text", 'Выбрать город');
+    option.innerHTML = 'Выбрать город';
+    selectCity.appendChild(option);
+
+    sendRequest('GET', '/api/city/region/' + regionId).then(data => data.data).then(cities => {
+
+        for (let num in cities) {
+            let option = document.createElement("option");
+            option.setAttribute("value", cities[num].id);
+            option.setAttribute("text", cities[num].name);
+            option.innerHTML = cities[num].name;
+            selectCity.appendChild(option);
+        }
+        $('#selectCityInModal')[0].disabled = false;
+    }).catch(err => console.log(err));
+
+
+}
+
+$('#cityFromRegionButton').on('click', function () {
+
+    let nameCity = $('#selectCityInModal option:selected').text();
+    let option = document.getElementById("selectedCity");
+    option.textContent = nameCity;
+    document.getElementById("selectCity").selectedIndex = 0;
+    //idOfSelectedCity = $('#selectCityInModal').val();
+    $('#chooseCityModal').modal('hide');
+
+})
+$('#selectCityInModal').on('change', function () {
+    if ($('#selectCityInModal').val() === "выбрать") {
+        $('#cityFromRegionButton')[0].disabled=true;
+        return
+    } else {
+idOfSelectedCity= $('#selectCityInModal').val();
+$('#cityFromRegionButton')[0].disabled=false;
+
+    }
+
+
+})
+$('#selectRegionInModal').on('change', function () {
+
+    if ($('#selectRegionInModal').val() === "выбрать") {
+        $('#selectCityInModal').empty();
+        $('#selectCityInModal')[0].disabled = true;
+        return
+    }
+    idOfSelectedRegion = $('#selectRegionInModal').val();
+    if (idOfSelectedRegion != "выбрать") {
+        $('#selectCityInModal')[0].disabled = true;
+        $('#selectCityInModal').empty();
+        fillSelectCityInModal(idOfSelectedRegion);
+    }
+
+
+})
 
 
 $('#tooltip').tooltip();

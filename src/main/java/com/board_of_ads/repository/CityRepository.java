@@ -29,9 +29,12 @@ public interface CityRepository extends JpaRepository<City, Long> {
 
     Optional<City> findCityById(Long id);
 
+    @Query("SELECT  u from City u where u.region.id=?1  order by u.name")
+    List<City> getCitiesByRegionId(Long regionId);
+
+
     @Query("SELECT u FROM City u WHERE u.millionCity = true order by u.name")
     Set<City> getCitiesByPopulation();
-
 
     @Query("select new com.board_of_ads.models.dto.analytics.ReportCityPostingDto(" +
             "c.name, count (c.name), sum (case when p.isActive = true then 1 else 0 end), sum (case when p.isActive = true then 0 else 1 end)" +
