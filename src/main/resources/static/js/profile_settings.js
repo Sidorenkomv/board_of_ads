@@ -284,7 +284,7 @@ function fillSelectCityInModal(regionId) {
 }
 
 $('#cityFromRegionButton').on('click', function () {
-    alert('click on ' + idOfSelectedCity);
+
     let nameCity = $('#selectCityInModal option:selected').text();
     let option = document.getElementById("selectedCity");
     option.textContent = nameCity;
