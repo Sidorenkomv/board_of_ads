@@ -290,7 +290,7 @@ public class PostingRestController {
             posting.setImages(images);
             posting.setUser(userService.getUserById(user.getId()));
             posting.setCategory(categoryService.getCategoryById(id));
-            posting.setCity(cityService.findCityByName("Одинцово").get());
+            posting.setCity(user.getCity());
             posting.setIsActive(true);
             postingService.save(posting);
             log.info("Объявление успешно создано пользователем " + user.getEmail());
@@ -313,7 +313,7 @@ public class PostingRestController {
             posting.setImages(images);
             posting.setUser(userService.getUserById(user.getId()));
             posting.setCategory(categoryService.getCategoryById(id));
-            posting.setCity(cityService.findCityByName("Одинцово").get());
+            posting.setCity(user.getCity());
             posting.setIsActive(true);
             postingService.save(posting);
             log.info("Объявление успешно создано пользователем " + user.getEmail());
