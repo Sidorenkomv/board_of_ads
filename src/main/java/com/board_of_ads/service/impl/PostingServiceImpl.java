@@ -545,7 +545,5 @@ public class PostingServiceImpl implements PostingService {
             log.info("Не удалось создать объявление в категории Для дома и дачи => " + ex.getMessage());
             return new ErrorResponse<>(new Error(400, "Posting is not created"));
         }
-
-
     }
 }
