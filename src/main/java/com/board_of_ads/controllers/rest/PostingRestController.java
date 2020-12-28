@@ -285,7 +285,7 @@ public class PostingRestController {
                     Boolean.parseBoolean(obj.get("isForHandicapped")));
             List<Image> images = imageService.savePhotos(user, photos);
             posting.setImages(images);
-            posting.setCity(cityService.findCityByName("Одинцово").get());
+            posting.setCity(user.getCity());
             postingService.save(posting);
             log.info("Объявление успешно создано пользователем " + user.getEmail());
             return Response.ok().build();
@@ -308,7 +308,7 @@ public class PostingRestController {
                     true, obj.get("contactEmail"), obj.get("linkYouTube"), obj.get("communicationType"), obj.get("state"));
             List<Image> images = imageService.savePhotos(user, photos);
             posting.setImages(images);
-            posting.setCity(cityService.findCityByName("Ростов-на-Дону").get());
+            posting.setCity(user.getCity());
             postingService.save(posting);
             log.info("Объявление успешно создано пользователем " + user.getEmail());
             return Response.ok().build();
@@ -332,7 +332,7 @@ public class PostingRestController {
 
             List<Image> images = imageService.savePhotos(user, photos);
             posting.setImages(images);
-            posting.setCity(cityService.findCityByName("Ростов-на-Дону").get());
+            posting.setCity(user.getCity());
             postingService.save(posting);
             log.info("Объявление успешно создано пользователем " + user.getEmail());
             return Response.ok().build();
@@ -356,7 +356,7 @@ public class PostingRestController {
 
             List<Image> images = imageService.savePhotos(user, photos);
             posting.setImages(images);
-            posting.setCity(cityService.findCityByName("Ростов-на-Дону").get());
+            posting.setCity(user.getCity());
             postingService.save(posting);
             log.info("Объявление успешно создано пользователем " + user.getEmail());
             return Response.ok().build();
@@ -379,7 +379,7 @@ public class PostingRestController {
                     true, obj.get("contactEmail"), obj.get("linkYouTube"), obj.get("communicationType"));
             List<Image> images = imageService.savePhotos(user, photos);
             posting.setImages(images);
-            posting.setCity(cityService.findCityByName("Ростов-на-Дону").get());
+            posting.setCity(user.getCity());
             postingService.save(posting);
             log.info("Объявление успешно создано пользователем " + user.getEmail());
             return Response.ok().build();

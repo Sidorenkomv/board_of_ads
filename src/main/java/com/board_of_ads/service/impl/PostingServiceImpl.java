@@ -470,7 +470,7 @@ public class PostingServiceImpl implements PostingService {
 
             List<Image> images = imageService.savePhotos(user, photos);
             posting.setImages(images);
-            posting.setCity(cityService.findCityByName("Ростов-на-Дону").get());
+            posting.setCity(user.getCity());
             postingRepository.save(posting);
             log.info("Объявление успешно создано пользователем " + user.getEmail());
             return Response.ok().build();
@@ -515,7 +515,7 @@ public class PostingServiceImpl implements PostingService {
 
             List<Image> images = imageService.savePhotos(user, photos);
             posting.setImages(images);
-            posting.setCity(cityService.findCityByName("Ростов-на-Дону").get());
+            posting.setCity(user.getCity());
             postingRepository.save(posting);
             log.info("Объявление успешно создано пользователем " + user.getEmail());
             return Response.ok().build();
