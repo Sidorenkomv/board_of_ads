@@ -1,6 +1,7 @@
 package com.board_of_ads.service.interfaces;
 
 import com.board_of_ads.models.City;
+import com.board_of_ads.models.Region;
 import com.board_of_ads.models.dto.analytics.ReportCityPostingDto;
 
 import java.util.List;
@@ -16,6 +17,7 @@ public interface CityService {
     Optional<City> findCityById(Long id);
 
     List<ReportCityPostingDto> getNumberOfPostings(String date);
+    List<City> getCitiesListByRegionId(Long regionId);
 
     Optional<City> findCityByNameContainName(String name);
 }

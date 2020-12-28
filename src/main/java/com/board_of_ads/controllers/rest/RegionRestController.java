@@ -1,5 +1,6 @@
 package com.board_of_ads.controllers.rest;
 
+import com.board_of_ads.models.Region;
 import com.board_of_ads.models.dto.analytics.ReportRegionPostingDto;
 import com.board_of_ads.service.interfaces.RegionService;
 import com.board_of_ads.util.Error;
@@ -7,6 +8,7 @@ import com.board_of_ads.util.ErrorResponse;
 import com.board_of_ads.util.Response;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +23,14 @@ import java.util.Map;
 @Slf4j
 public class RegionRestController {
     private RegionService regionService;
+
+    @GetMapping
+    public Response<List <Region>> getAllRegions(){
+         var listRegions = regionService.findAll();
+        return (listRegions.size() > 0)
+                ? Response.ok(listRegions)
+                : new ErrorResponse<>(new Error(204, "No found regions"));
+    }
 
     @PostMapping("/date")
     public Response<List<ReportRegionPostingDto>> findByDate(@RequestBody String date) {

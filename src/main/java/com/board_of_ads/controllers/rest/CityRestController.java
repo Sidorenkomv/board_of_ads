@@ -2,6 +2,7 @@ package com.board_of_ads.controllers.rest;
 
 import com.board_of_ads.models.City;
 import com.board_of_ads.models.User;
+import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportCityPostingDto;
 import com.board_of_ads.repository.CityRepository;
 import com.board_of_ads.repository.UserRepository;
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,7 +51,14 @@ public class CityRestController {
                 ? Response.ok(cities)
                 : new ErrorResponse<>(new Error(204, "No found cities"));
     }
+    @GetMapping("/region/{id}")
+    public Response<List<City>> getCitiesByRegionId(@PathVariable Long id) {
+        var cities = cityService.getCitiesListByRegionId(id);;
 
+        return (cities.size() > 0)
+                ? Response.ok(cities)
+                : new ErrorResponse<>(new Error(204, "No found cities by region " + id ));
+    }
     @GetMapping("/userCity")
     public Response<Optional <City>> getUserCity () {
         User us = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
