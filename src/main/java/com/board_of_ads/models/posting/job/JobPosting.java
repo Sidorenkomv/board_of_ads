@@ -22,21 +22,15 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "posting_job")
 public class JobPosting extends Posting {
+    @Column
+    private String contactEmail;
+
+    @Column
+    private String communicationType;
 
     @Column
     private String schedule;
 
     @Column
     private String experienceValue;
-
-    @Column
-    private String placeOfWork;
-
-    public JobPosting (User user, Category category, String title, String description, Long price, String contact, Boolean isActive,
-                    String schedule, String experienceValue, String placeOfWork) {
-        super(user, category, title, description, price, contact, isActive);
-        this.schedule = schedule;
-        this.experienceValue = experienceValue;
-        this.placeOfWork = placeOfWork;
-    }
 }

@@ -16,7 +16,7 @@ public class PostingVacancyDto {
     private CategoryDto category;
     private String schedule;
     private String frequency;
-    private String placeOfWork;
+    private String location;
     private String experienceValue;
     private Boolean isFor45;
     private Boolean isFor14;

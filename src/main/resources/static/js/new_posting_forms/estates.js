@@ -156,8 +156,6 @@ async function sentGetAnEstatePosting(frontName, categoryId) {
 }
 
 async function sendFile(body, url) {
-    console.log(body)
-    console.log(body)
     try {
         const response = await fetch(url, {
             method: 'POST',

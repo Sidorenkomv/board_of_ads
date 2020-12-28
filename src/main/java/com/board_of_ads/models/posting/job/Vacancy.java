@@ -17,20 +17,18 @@ import javax.persistence.Table;
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
+@Inheritance(strategy = InheritanceType.JOINED)
 @Entity
 @Table(name = "posting_job_vacancies")
 public class Vacancy extends JobPosting {
     @Column
-    private String contactEmail;
-
-    @Column
-    private String communicationType;
-
-    @Column
-    private String frequency;
+    private String paymentsFrequency;
 
     @Column
     private String duties;
+
+    @Column
+    private String location;
 
     @Column
     private Boolean isFor45;
@@ -40,19 +38,4 @@ public class Vacancy extends JobPosting {
 
     @Column
     private Boolean isForHandicapped;
-
-
-    public Vacancy (User user, Category category, String title, String description, Long price, String contact, Boolean isActive,
-                    String schedule, String experienceValue, String placeOfWork,
-                    String contactEmail, String communicationType, String frequency, String duties,
-                    Boolean isFor45, Boolean isFor14, Boolean isForHandicapped) {
-        super(user, category, title, description, price, contact, isActive, schedule, experienceValue, placeOfWork);
-        this.contactEmail = contactEmail;
-        this.communicationType = communicationType;
-        this.frequency = frequency;
-        this.duties = duties;
-        this.isFor45 = isFor45;
-        this.isFor14 = isFor14;
-        this.isForHandicapped = isForHandicapped;
-    }
 }
