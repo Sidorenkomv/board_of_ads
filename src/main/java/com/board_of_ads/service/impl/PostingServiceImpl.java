@@ -3,6 +3,7 @@ package com.board_of_ads.service.impl;
 import com.board_of_ads.models.City;
 import com.board_of_ads.models.Image;
 import com.board_of_ads.models.User;
+import com.board_of_ads.models.dto.CategoryDto;
 import com.board_of_ads.models.dto.PostingCarDto;
 import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
@@ -148,11 +149,36 @@ public class PostingServiceImpl implements PostingService {
             boolean photoFlag = false;
             boolean textFlag = false;
 
+            CategoryDto postCategoryDto = postingDto.getCategory();
             if (categorySelect.equals("Любая категория")) {
                 categoryFlag = true;
-            } else if (postingDto.getCategory().equals(categorySelect)) {
-                categoryFlag = true;
+            } else {                                                                        // может работать быстрее если структурировать ID категорий, чтобы проще было находить родителей, вместо поиску по имени
+                switch (postCategoryDto.getLayer()){                                        // и по-хорошему надо добавить отображение того, что по поиску не нашлось объявлений
+                    case 1: // есть объявления с категорией первого уровня, это странно
+                        if (postCategoryDto.getName().equalsIgnoreCase(categorySelect))
+                            categoryFlag = true;
+                        break;
+                    case 2: // проверяем совпадение на имя категории или на имя общей категории если выбрали таковую на фронте
+                        if (postCategoryDto.getName().equals(categorySelect) || postCategoryDto.getParentName().equalsIgnoreCase(categorySelect))
+                            categoryFlag = true;
+                        break;
+                    case 3: // ищем родителя категории и кейс2
+                        postCategoryDto = categoryService.getCategoryDtoByName(postCategoryDto.getParentName()).orElse(null);
+                        if (postCategoryDto.getName().equals(categorySelect) || postCategoryDto.getParentName().equalsIgnoreCase(categorySelect))
+                            categoryFlag = true;
+                        break;
+                    case 4: // ищем прародителя категории и кейс2
+                        postCategoryDto = categoryService.getCategoryDtoByName(postCategoryDto.getParentName()).orElse(null);
+                        postCategoryDto = categoryService.getCategoryDtoByName(postCategoryDto.getParentName()).orElse(null);
+                        if (postCategoryDto.getName().equals(categorySelect) || postCategoryDto.getParentName().equalsIgnoreCase(categorySelect))
+                            categoryFlag = true;
+                        break;
+                    default: // это означает что с категорией поста есть проблемы
+                        log.warn("Something wrong with posting " + postingDto.getId());
+                        break;
+                }
             }
+
             if(photoOption != null) {
                 if(photoOption.equals("пункт2")) {
                     if(postingDto.getImages().size() > 0) {
