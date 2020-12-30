@@ -140,10 +140,13 @@ async function changeVisible(frontName, id) {
         case 'vacancy':
             await getVacancyForm(frontName, id);
             break;
+        case 'resume':
+            await getResumeForm(frontName, id);
+            break;
         case 'ready-business':
             showReadyBusinessForm(frontName, id);
             break;
-        case 'equpment-for-business':
+        case 'equipment-for-business':
             showEquipmentForBusinessForm(frontName, id);
             break;
         case 'sellEstate' : await getEstate(frontName, id)
@@ -159,9 +162,9 @@ async function changeVisible(frontName, id) {
             break;
     }
 
-    if ($('#postPrice').length) {
-        $('#postPrice').mask("?999 999 999 999",{placeholder:" ", autoclear: false});
-    }
+//    if ($('#postPrice').length) {
+//        $('#postPrice').mask("?999 999 999 999",{placeholder:" ", autoclear: false});
+//    }
 
 }
 
