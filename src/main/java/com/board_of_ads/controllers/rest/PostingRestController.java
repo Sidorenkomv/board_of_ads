@@ -196,6 +196,7 @@ public class PostingRestController {
             posting.setCategory(categoryService.getCategoryById(id).getCategory());
             posting.setCity(user.getCity());
             posting.setImages(images);
+            posting.setMeetingAddress(obj.get("meetingAddress"));
             postingService.save(posting);
             log.info("Объявление успешно создано пользователем " + user.getEmail());
             return Response.ok().build();
@@ -216,6 +217,7 @@ public class PostingRestController {
             posting.setUser(user);
             posting.setCategory(categoryService.getCategoryById(id).getCategory());
             posting.setCity(user.getCity());
+            posting.setMeetingAddress(obj.get("meetingAddress"));
             postingService.save(posting);
 
             log.info("Объявление успешно создано пользователем " + user.getEmail());
@@ -240,6 +242,7 @@ public class PostingRestController {
             posting.setCategory(categoryService.getCategoryById(id).getCategory());
             posting.setCity(user.getCity());
             posting.setImages(images);
+            posting.setMeetingAddress(obj.get("meetingAddress"));
             postingService.save(posting);
 
             log.info("Объявление успешно создано пользователем " + user.getEmail());
@@ -265,6 +268,7 @@ public class PostingRestController {
             posting.setCategory(categoryService.getCategoryById(id).getCategory());
             posting.setCity(user.getCity());
             posting.setImages(images);
+            posting.setMeetingAddress(obj.get("meetingAddress"));
             postingService.save(posting);
 
             log.info("Объявление успешно создано пользователем " + user.getEmail());
@@ -336,6 +340,7 @@ public class PostingRestController {
             List<Image> images = imageService.savePhotos(user, photos);
             posting.setImages(images);
             posting.setCity(user.getCity());
+            posting.setMeetingAddress(obj.get("meetingAddress"));
             postingService.save(posting);
             log.info("Объявление успешно создано пользователем " + user.getEmail());
             return Response.ok().build();
@@ -360,6 +365,7 @@ public class PostingRestController {
             List<Image> images = imageService.savePhotos(user, photos);
             posting.setImages(images);
             posting.setCity(user.getCity());
+            posting.setMeetingAddress(obj.get("meetingAddress"));
             postingService.save(posting);
             log.info("Объявление успешно создано пользователем " + user.getEmail());
             return Response.ok().build();
@@ -384,6 +390,7 @@ public class PostingRestController {
             List<Image> images = imageService.savePhotos(user, photos);
             posting.setImages(images);
             posting.setCity(user.getCity());
+            posting.setMeetingAddress(obj.get("meetingAddress"));
             postingService.save(posting);
             log.info("Объявление успешно создано пользователем " + user.getEmail());
             return Response.ok().build();
@@ -407,6 +414,7 @@ public class PostingRestController {
             List<Image> images = imageService.savePhotos(user, photos);
             posting.setImages(images);
             posting.setCity(user.getCity());
+            posting.setMeetingAddress(obj.get("meetingAddress"));
             postingService.save(posting);
             log.info("Объявление успешно создано пользователем " + user.getEmail());
             return Response.ok().build();

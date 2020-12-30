@@ -382,6 +382,7 @@ public class PostingServiceImpl implements PostingService {
         posting.setRooms(obj.get("rooms"));
         posting.setContactEmail(obj.get("contactEmail"));
         posting.setCommunicationType(obj.get("communicationType"));
+        posting.setMeetingAddress(obj.get("meetingAddress"));
         return posting;
     }
 
@@ -412,13 +413,14 @@ public class PostingServiceImpl implements PostingService {
         posting.setChildren(Boolean.getBoolean(obj.get("children")));
         posting.setEvents(Boolean.getBoolean(obj.get("events")));
         posting.setSmoke(Boolean.getBoolean(obj.get("smoke")));
+        posting.setMeetingAddress(obj.get("meetingAddress"));
         return posting;
     }
 
     @Override
     public RentAnEstatePosting addRentAnEstatePosting(Map<String,String> obj) throws Exception {
 
-        RentAnEstatePosting posting = new RentAnEstatePosting();;
+        RentAnEstatePosting posting = new RentAnEstatePosting();
         posting.setTitle(obj.get("title"));
         posting.setDescription(obj.get("description"));
         posting.setPrice(Long.parseLong(obj.get("price")));
@@ -454,6 +456,7 @@ public class PostingServiceImpl implements PostingService {
         posting.setChildren(Boolean.getBoolean(obj.get("children")));
         posting.setEvents(Boolean.getBoolean(obj.get("events")));
         posting.setSmoke(Boolean.getBoolean(obj.get("smoke")));
+        posting.setMeetingAddress(obj.get("meetingAddress"));
         return posting;
     }
 
@@ -481,6 +484,7 @@ public class PostingServiceImpl implements PostingService {
         posting.setContactEmail(obj.get("contactEmail"));
         posting.setLinkYouTube(obj.get("linkYouTube"));
         posting.setCommunicationType(obj.get("communicationType"));
+        posting.setMeetingAddress(obj.get("meetingAddress"));
         return posting;
     }
 
@@ -493,7 +497,7 @@ public class PostingServiceImpl implements PostingService {
             posting = new Clothes(userService.getUserById(user.getId()), categoryService.getCategoryById(id),
                     map.get("title"), map.get("description"), Long.parseLong(map.get("price")), map.get("contact"),
                     true, map.get("contactEmail"), map.get("linkYouTube"), map.get("communicationType"), map.get("state"), map.get("typeAd"), map.get("size"));
-
+            posting.setMeetingAddress(map.get("meetingAddress"));
             List<Image> images = imageService.savePhotos(user, photos);
             posting.setImages(images);
             posting.setCity(user.getCity());
@@ -516,7 +520,7 @@ public class PostingServiceImpl implements PostingService {
             posting = new Business(userService.getUserById(user.getId()), categoryService.getCategoryById(id),
                     map.get("title"), map.get("description"), Long.parseLong(map.get("price")), map.get("contact"),
                     true, map.get("contactEmail"), map.get("linkYouTube"), map.get("communicationType"), map.get("state"));
-
+            posting.setMeetingAddress(map.get("meetingAddress"));
             List<Image> images = imageService.savePhotos(user, photos);
             posting.setImages(images);
             posting.setCity(user.getCity());
@@ -538,7 +542,7 @@ public class PostingServiceImpl implements PostingService {
             posting = new HouseholdAppliancesPosting(userService.getUserById(user.getId()), categoryService.getCategoryById(id),
                     obj.get("title"), obj.get("description"), Long.parseLong(obj.get("price")), obj.get("contact"),
                     true, obj.get("contactEmail"), obj.get("linkYouTube"), obj.get("communicationType"), obj.get("state"));
-
+            posting.setMeetingAddress(obj.get("meetingAddress"));
             List<Image> images = imageService.savePhotos(user, photos);
             posting.setImages(images);
             posting.setCity(user.getCity());
