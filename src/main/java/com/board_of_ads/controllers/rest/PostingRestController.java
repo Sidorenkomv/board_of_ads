@@ -163,6 +163,7 @@ public class PostingRestController {
         try {
             PostingCar postingCar = postingService.convertJsonToPostingCar(json);
             postingCar.setUser(user);
+            postingCar.setCity(user.getCity());
             postingCar.setSellerId(user.getId());
             postingService.save(postingCar);
             log.info("Posting  Saved!");

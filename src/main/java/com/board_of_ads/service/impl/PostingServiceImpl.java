@@ -255,6 +255,7 @@ public class PostingServiceImpl implements PostingService {
         PostingCar pc = new PostingCar();
         pc.setUser(user);
         pc.setSellerId(userId);
+        pc.setCity(user.getCity());
         pc.setCarIsNew(!isCarNew.equals("used-car"));
 
         return new PostingCarDto(pc);
@@ -363,7 +364,8 @@ public class PostingServiceImpl implements PostingService {
         pc.setContactEmail(json.getString("contactEmail"));
         //  pc.setMessage(json.getString("message"));
         pc.setPrice(json.getLong("price"));
-        pc.setIsActive(json.getBoolean("isActive"));
+//        pc.setIsActive(json.getBoolean("isActive"));
+        pc.setIsActive(true);
         // pc.setViewNumber(json.getInt("viewNumber"));
         pc.setViewNumber(1);
         long catId =  json.getInt("categoryId");
