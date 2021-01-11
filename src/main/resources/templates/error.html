@@ -31,12 +31,17 @@
     <header th:insert="fragments/header::main-header"></header>
 
     <div>
-        <h1>Ой! Такой страницы на нашем сайте нет :(</h1>
+        <h1>Ой! Что-то явно пошло не так :(</h1>
         <br>
         <p><img src="https://static.avito.ru/s/cc/resources/088626b67ad2.png"
                 align="left" vspace="15" hspace="15" width="62" height="62">Наверное, вы ошиблись при наборе адреса или перешли по неверной ссылке.</p>
         <p>Не расстраивайтесь, выход есть!
             Перейдите <a href="/">на главную страницу</a>.</p>
+        <br>
+        <p>Мы поймали исключение:</p>
+        <p th:text="${exception}"></p>
+        <p>При переходе по следующей ссылке:</p>
+        <p th:text="${url}"></p>
     </div>
 </div>
 </body>
