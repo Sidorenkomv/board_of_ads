@@ -3,6 +3,7 @@ package com.board_of_ads.service.impl;
 import com.board_of_ads.models.City;
 import com.board_of_ads.models.Image;
 import com.board_of_ads.models.User;
+import com.board_of_ads.models.dto.CategoryDto;
 import com.board_of_ads.models.dto.PostingCarDto;
 import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
@@ -148,11 +149,36 @@ public class PostingServiceImpl implements PostingService {
             boolean photoFlag = false;
             boolean textFlag = false;
 
+            CategoryDto postCategoryDto = postingDto.getCategory();
             if (categorySelect.equals("Любая категория")) {
                 categoryFlag = true;
-            } else if (postingDto.getCategory().equals(categorySelect)) {
-                categoryFlag = true;
+            } else {                                                                        // может работать быстрее если структурировать ID категорий, чтобы проще было находить родителей, вместо поиску по имени
+                switch (postCategoryDto.getLayer()){                                        // и по-хорошему надо добавить отображение того, что по поиску не нашлось объявлений
+                    case 1: // есть объявления с категорией первого уровня, это странно
+                        if (postCategoryDto.getName().equalsIgnoreCase(categorySelect))
+                            categoryFlag = true;
+                        break;
+                    case 2: // проверяем совпадение на имя категории или на имя общей категории если выбрали таковую на фронте
+                        if (postCategoryDto.getName().equals(categorySelect) || postCategoryDto.getParentName().equalsIgnoreCase(categorySelect))
+                            categoryFlag = true;
+                        break;
+                    case 3: // ищем родителя категории и кейс2
+                        postCategoryDto = categoryService.getCategoryDtoByName(postCategoryDto.getParentName()).orElse(null);
+                        if (postCategoryDto.getName().equals(categorySelect) || postCategoryDto.getParentName().equalsIgnoreCase(categorySelect))
+                            categoryFlag = true;
+                        break;
+                    case 4: // ищем прародителя категории и кейс2
+                        postCategoryDto = categoryService.getCategoryDtoByName(postCategoryDto.getParentName()).orElse(null);
+                        postCategoryDto = categoryService.getCategoryDtoByName(postCategoryDto.getParentName()).orElse(null);
+                        if (postCategoryDto.getName().equals(categorySelect) || postCategoryDto.getParentName().equalsIgnoreCase(categorySelect))
+                            categoryFlag = true;
+                        break;
+                    default: // это означает что с категорией поста есть проблемы
+                        log.warn("Something wrong with posting " + postingDto.getId());
+                        break;
+                }
             }
+
             if(photoOption != null) {
                 if(photoOption.equals("пункт2")) {
                     if(postingDto.getImages().size() > 0) {
@@ -229,6 +255,7 @@ public class PostingServiceImpl implements PostingService {
         PostingCar pc = new PostingCar();
         pc.setUser(user);
         pc.setSellerId(userId);
+        pc.setCity(user.getCity());
         pc.setCarIsNew(!isCarNew.equals("used-car"));
 
         return new PostingCarDto(pc);
@@ -337,7 +364,8 @@ public class PostingServiceImpl implements PostingService {
         pc.setContactEmail(json.getString("contactEmail"));
         //  pc.setMessage(json.getString("message"));
         pc.setPrice(json.getLong("price"));
-        pc.setIsActive(json.getBoolean("isActive"));
+//        pc.setIsActive(json.getBoolean("isActive"));
+        pc.setIsActive(true);
         // pc.setViewNumber(json.getInt("viewNumber"));
         pc.setViewNumber(1);
         long catId =  json.getInt("categoryId");
@@ -356,6 +384,7 @@ public class PostingServiceImpl implements PostingService {
         posting.setRooms(obj.get("rooms"));
         posting.setContactEmail(obj.get("contactEmail"));
         posting.setCommunicationType(obj.get("communicationType"));
+        posting.setMeetingAddress(obj.get("meetingAddress"));
         return posting;
     }
 
@@ -386,13 +415,14 @@ public class PostingServiceImpl implements PostingService {
         posting.setChildren(Boolean.getBoolean(obj.get("children")));
         posting.setEvents(Boolean.getBoolean(obj.get("events")));
         posting.setSmoke(Boolean.getBoolean(obj.get("smoke")));
+        posting.setMeetingAddress(obj.get("meetingAddress"));
         return posting;
     }
 
     @Override
     public RentAnEstatePosting addRentAnEstatePosting(Map<String,String> obj) throws Exception {
 
-        RentAnEstatePosting posting = new RentAnEstatePosting();;
+        RentAnEstatePosting posting = new RentAnEstatePosting();
         posting.setTitle(obj.get("title"));
         posting.setDescription(obj.get("description"));
         posting.setPrice(Long.parseLong(obj.get("price")));
@@ -428,6 +458,7 @@ public class PostingServiceImpl implements PostingService {
         posting.setChildren(Boolean.getBoolean(obj.get("children")));
         posting.setEvents(Boolean.getBoolean(obj.get("events")));
         posting.setSmoke(Boolean.getBoolean(obj.get("smoke")));
+        posting.setMeetingAddress(obj.get("meetingAddress"));
         return posting;
     }
 
@@ -455,6 +486,7 @@ public class PostingServiceImpl implements PostingService {
         posting.setContactEmail(obj.get("contactEmail"));
         posting.setLinkYouTube(obj.get("linkYouTube"));
         posting.setCommunicationType(obj.get("communicationType"));
+        posting.setMeetingAddress(obj.get("meetingAddress"));
         return posting;
     }
 
@@ -467,7 +499,7 @@ public class PostingServiceImpl implements PostingService {
             posting = new Clothes(userService.getUserById(user.getId()), categoryService.getCategoryById(id),
                     map.get("title"), map.get("description"), Long.parseLong(map.get("price")), map.get("contact"),
                     true, map.get("contactEmail"), map.get("linkYouTube"), map.get("communicationType"), map.get("state"), map.get("typeAd"), map.get("size"));
-
+            posting.setMeetingAddress(map.get("meetingAddress"));
             List<Image> images = imageService.savePhotos(user, photos);
             posting.setImages(images);
             posting.setCity(user.getCity());
@@ -490,7 +522,7 @@ public class PostingServiceImpl implements PostingService {
             posting = new Business(userService.getUserById(user.getId()), categoryService.getCategoryById(id),
                     map.get("title"), map.get("description"), Long.parseLong(map.get("price")), map.get("contact"),
                     true, map.get("contactEmail"), map.get("linkYouTube"), map.get("communicationType"), map.get("state"));
-
+            posting.setMeetingAddress(map.get("meetingAddress"));
             List<Image> images = imageService.savePhotos(user, photos);
             posting.setImages(images);
             posting.setCity(user.getCity());
@@ -512,7 +544,7 @@ public class PostingServiceImpl implements PostingService {
             posting = new HouseholdAppliancesPosting(userService.getUserById(user.getId()), categoryService.getCategoryById(id),
                     obj.get("title"), obj.get("description"), Long.parseLong(obj.get("price")), obj.get("contact"),
                     true, obj.get("contactEmail"), obj.get("linkYouTube"), obj.get("communicationType"), obj.get("state"));
-
+            posting.setMeetingAddress(obj.get("meetingAddress"));
             List<Image> images = imageService.savePhotos(user, photos);
             posting.setImages(images);
             posting.setCity(user.getCity());
