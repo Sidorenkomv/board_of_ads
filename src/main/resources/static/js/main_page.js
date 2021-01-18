@@ -20,7 +20,6 @@ async function addCategories() {
 
         for (let i = 0; i < childCategories.length; i++) {
             let childCat = childCategories[i];
-
             categorySelect.append(`<option id="categoryId${childCat.id}">${childCat.name}</option>`);
         }
     }

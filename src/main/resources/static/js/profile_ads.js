@@ -52,7 +52,7 @@ function getAllUserPosts() {
                 td.setAttribute('class', "first");
                 td.setAttribute('width', '210');
                 tdTitleHref.setAttribute('class', 'text-primary');
-                tdTitleHref.setAttribute('href', '#');
+                tdTitleHref.setAttribute('href', '/'+post.id);
                 tdTitleHref.appendChild(title);
 
                 divSlider.appendChild(divInnerSlider);
