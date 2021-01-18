@@ -100,8 +100,18 @@ public class PostingServiceImpl implements PostingService {
 
     @Override
     public List<PostingDto> getAllPostings() {
-        List<PostingDto> postingDtos = postingRepository.findAllPostings();
-        return getPostingDtos(postingDtos);
+        List<Posting> allPostings = postingRepository.findAll();
+        List<PostingDto> postingDtoList = new ArrayList<>();
+        for (Posting posting :
+                allPostings) {
+            PostingDto consistentPostingDto = new PostingDto(posting);
+            consistentPostingDto.setImages(posting.getImages());
+            consistentPostingDto.setCategory(categoryService.getCategoryDtoById(posting.getCategory().getId()).get());
+            consistentPostingDto.setCity(posting.getCity().getName());
+            consistentPostingDto.setViewNumber(posting.getViewNumber());
+            postingDtoList.add(consistentPostingDto);
+        }
+        return postingDtoList;
     }
 
     @Override
@@ -110,7 +120,7 @@ public class PostingServiceImpl implements PostingService {
         return getPostingDtos(userPosts);
     }
 
-    private List<PostingDto> getPostingDtos(List<PostingDto> postingDtos) {
+    private List<PostingDto> getPostingDtos(List<PostingDto> postingDtos) {     //TODO переделать метод, работает долго
         for(PostingDto dto : postingDtos) {
             dto.setImages(getPostingById(dto.getId()).getImages());
             dto.setCategory(categoryService.getCategoryDtoById(
@@ -140,7 +150,9 @@ public class PostingServiceImpl implements PostingService {
         } else {
             postingDtos = getAllPostings();
         }
-
+        if (categorySelect.equals("Любая категория") && (photoOption == null || photoOption.equals("пункт1")) && (searchText == null || (searchText.equals("")) || (searchText.equals("undefined")))) {
+            return postingDtos;
+        }
         List<PostingDto> resultList = new ArrayList<>();
 
         for (PostingDto postingDto : postingDtos) {

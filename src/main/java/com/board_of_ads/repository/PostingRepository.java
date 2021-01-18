@@ -25,7 +25,7 @@ public interface PostingRepository extends JpaRepository<Posting, Long> {
     List<PostingDto> findPostingByCity(@Param("city") City city);
 
     @Query("select new com.board_of_ads.models.dto.PostingDto(p.id, p.title, p.description, p.price, p.contact, p.datePosting,p.city.name, p.viewNumber) from Posting p ")
-    List<PostingDto> findAllPostings();
+    List<PostingDto> findAllPostings();     //Абсолюбно бесполезный метод
 
     @Query("select new com.board_of_ads.models.dto.PostingDto(p.id, p.title, p.description, p.price, p.contact, p.datePosting,p.city.name, p.isActive, p.viewNumber) from Posting p where p.user.id = :user_id")
     List<PostingDto> findAllUserPostings(@Param("user_id") Long id);
