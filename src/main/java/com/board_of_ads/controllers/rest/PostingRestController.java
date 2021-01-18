@@ -11,6 +11,7 @@ import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.models.posting.autoTransport.cars.PostingCar;
 import com.board_of_ads.models.posting.forAudioVideo.AudioVideoPosting;
 import com.board_of_ads.models.posting.forDogs.DogBreed;
+import com.board_of_ads.models.posting.forCats.CatBreed;
 import com.board_of_ads.models.posting.forDogs.dogsPosting;
 import com.board_of_ads.models.posting.job.Resume;
 import com.board_of_ads.models.posting.forHobbyAndRestAndTickets.HobbyAndRestPosting;
@@ -25,6 +26,7 @@ import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.service.interfaces.CityService;
 import com.board_of_ads.service.interfaces.CountryService;
 import com.board_of_ads.service.interfaces.DogBreedService;
+import com.board_of_ads.service.interfaces.CatBreedService;
 import com.board_of_ads.service.interfaces.LanguageService;
 import com.board_of_ads.service.interfaces.ImageService;
 import com.board_of_ads.service.interfaces.PostingService;
@@ -61,6 +63,7 @@ public class PostingRestController {
     private final UserService userService;
     private final ImageService imageService;
     private final DogBreedService dogBreedService;
+    private final CatBreedService catBreedService;
     private final CountryService countryService;
     private final LanguageService languageService;
 
@@ -401,6 +404,15 @@ public class PostingRestController {
         }
     }
 
+    @PostMapping("/new/cats/{id}")
+    public Response<Void> createCatsPosting(@PathVariable Long id,
+                                            @AuthenticationPrincipal User user,
+                                            @RequestParam Map<String, String> obj,
+                                            @RequestParam(value = "photos") List<MultipartFile> photos) {
+
+        return postingService.saveCatsPosting(id, user, obj, photos);
+    }
+
     @PostMapping("/new/tickets/{id}")
     public Response<Void> createTicketsPosting(@PathVariable Long id,
                                                @AuthenticationPrincipal User user,
@@ -429,6 +441,12 @@ public class PostingRestController {
     public Response<List<DogBreed>> getDogBreeds() {
         log.info("getDogsBreed Controller");
         return Response.ok(dogBreedService.findAll());
+    }
+
+    @GetMapping("/getcatbreeds")
+    public Response<List<CatBreed>> getCatBreeds() {
+        log.info("getCatsBreed Controller");
+        return Response.ok(catBreedService.findAll());
     }
 
     @PostMapping("/clothes/{id}")

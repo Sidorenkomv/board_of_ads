@@ -13,6 +13,7 @@ import com.board_of_ads.models.dto.review.Review;
 import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.models.posting.autoTransport.cars.car_attributes.AutoColor;
 import com.board_of_ads.service.interfaces.AutoAttributesService;
+import com.board_of_ads.service.interfaces.CatBreedService;
 import com.board_of_ads.service.interfaces.CountryService;
 import com.board_of_ads.service.interfaces.DogBreedService;
 import com.board_of_ads.service.interfaces.LanguageService;
@@ -58,6 +59,8 @@ public class DataInitializer {
     private final AutoAttributesService autoAttributesService;
     private final MessageService messageService;
     private final DogBreedService dogBreedService;
+    private final CatBreedService catBreedService;
+    private List<Posting> postingList;
     private final CountryService countryService;
     private final LanguageService languageService;
     List<Posting> postingList;
@@ -78,6 +81,7 @@ public class DataInitializer {
         initCarAttributes();
         initMessages();
         initDogBreed();
+        initCatBreed();
         initCountries();
         initLanguages();
     }
@@ -194,7 +198,7 @@ public class DataInitializer {
         subCategoryList.add(new Category("Спорт и отдых", categoryService.getCategoryByName("Хобби и отдых").get(), 2));
 
         subCategoryList.add(new Category("Собаки", categoryService.getCategoryByName("Животные").get(), 2, "dogs"));
-        subCategoryList.add(new Category("Кошки", categoryService.getCategoryByName("Животные").get(), 2));
+        subCategoryList.add(new Category("Кошки", categoryService.getCategoryByName("Животные").get(), 2, "cats"));
         subCategoryList.add(new Category("Птицы", categoryService.getCategoryByName("Животные").get(), 2));
         subCategoryList.add(new Category("Аквариум", categoryService.getCategoryByName("Животные").get(), 2));
         subCategoryList.add(new Category("Другие животные", categoryService.getCategoryByName("Животные").get(), 2));
@@ -835,6 +839,9 @@ public class DataInitializer {
         dogBreedService.saveDogBreed();
     }
 
+    private void initCatBreed() throws IOException {
+        catBreedService.saveCatBreed();
+    }
     private void initCountries() throws IOException {
         countryService.saveCountry();
     }
@@ -842,5 +849,4 @@ public class DataInitializer {
     private void initLanguages() throws IOException {
         languageService.saveLanguage();
     }
-
 }
