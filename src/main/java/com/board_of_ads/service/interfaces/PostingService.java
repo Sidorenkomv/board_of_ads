@@ -8,6 +8,7 @@ import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
 import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.models.posting.autoTransport.cars.PostingCar;
+import com.board_of_ads.models.posting.job.Resume;
 import com.board_of_ads.models.posting.job.Vacancy;
 import com.board_of_ads.models.posting.realty.estate.BuyEstatePosting;
 import com.board_of_ads.models.posting.realty.estate.GetAnEstatePosting;
@@ -17,7 +18,6 @@ import com.board_of_ads.util.Response;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -63,9 +63,6 @@ public interface PostingService {
     Response<Void> savePersonalClothesPosting(Long id, User user, Map<String,
             String> map, List<MultipartFile> photos);
 
-    void setVacancyCondition(Map<String, String> form, List<String> preferences, User userById,
-                             Vacancy posting, City city, List<Image> images);
-
     Response<Void> saveForBusinessPosting(Long id, User user, Map<String,
             String> map, List<MultipartFile> photos);
 
@@ -75,3 +72,4 @@ public interface PostingService {
     Response<Void> saveCatsPosting(Long id, User user, Map<String,String> map,
                                    List<MultipartFile> photos);
 }
+

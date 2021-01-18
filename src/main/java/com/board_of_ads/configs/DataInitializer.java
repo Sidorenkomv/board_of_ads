@@ -12,15 +12,17 @@ import com.board_of_ads.models.dto.order.Order;
 import com.board_of_ads.models.dto.review.Review;
 import com.board_of_ads.models.posting.Posting;
 import com.board_of_ads.models.posting.autoTransport.cars.car_attributes.AutoColor;
-import com.board_of_ads.repository.CityRepository;
 import com.board_of_ads.service.interfaces.AutoAttributesService;
 import com.board_of_ads.service.interfaces.CatBreedService;
+import com.board_of_ads.service.interfaces.CountryService;
+import com.board_of_ads.service.interfaces.DogBreedService;
+import com.board_of_ads.service.interfaces.LanguageService;
+import com.board_of_ads.service.interfaces.MessageService;
+import com.board_of_ads.repository.CityRepository;
 import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.service.interfaces.CityService;
-import com.board_of_ads.service.interfaces.DogBreedService;
 import com.board_of_ads.service.interfaces.ImageService;
 import com.board_of_ads.service.interfaces.KladrService;
-import com.board_of_ads.service.interfaces.MessageService;
 import com.board_of_ads.service.interfaces.NotificationService;
 import com.board_of_ads.service.interfaces.OrderService;
 import com.board_of_ads.service.interfaces.PostingService;
@@ -58,8 +60,10 @@ public class DataInitializer {
     private final MessageService messageService;
     private final DogBreedService dogBreedService;
     private final CatBreedService catBreedService;
-
     private List<Posting> postingList;
+    private final CountryService countryService;
+    private final LanguageService languageService;
+    List<Posting> postingList;
 
     private final CityRepository cityRepository;
 
@@ -78,6 +82,8 @@ public class DataInitializer {
         initMessages();
         initDogBreed();
         initCatBreed();
+        initCountries();
+        initLanguages();
     }
 
     private void initUsers() {
@@ -152,8 +158,8 @@ public class DataInitializer {
         subCategoryList.add(new Category("Коммерческая недвижимость", categoryService.getCategoryByName("Недвижимость").get(), 2));
         subCategoryList.add(new Category("Недвижимость за рубежом", categoryService.getCategoryByName("Недвижимость").get(), 2));
 
-        subCategoryList.add(new Category("Вакансии", categoryService.getCategoryByName("Работа").get(), 2, "vacancy"));
-        subCategoryList.add(new Category("Резюме", categoryService.getCategoryByName("Работа").get(), 2));
+        subCategoryList.add(new Category("Вакансии", categoryService.getCategoryByName("Работа").get(), 2));
+        subCategoryList.add(new Category("Резюме", categoryService.getCategoryByName("Работа").get(), 2, "resume"));
 
         subCategoryList.add(new Category("IT, интернет, телеком", categoryService.getCategoryByName("Услуги").get(), 2));
         subCategoryList.add(new Category("Бытовые услуги", categoryService.getCategoryByName("Услуги").get(), 2));
@@ -321,31 +327,31 @@ public class DataInitializer {
         secondSubCategory.add(new Category("Фитнес, салоны красоты", categoryService.getCategoryByName("Вакансии").get(), 3, "vacancy"));
         secondSubCategory.add(new Category("Юриспруденция", categoryService.getCategoryByName("Вакансии").get(), 3, "vacancy"));
 
-        secondSubCategory.add(new Category("IT, интернет, телеком", categoryService.getCategoryByName("Резюме").get(), 3));
-        secondSubCategory.add(new Category("Автомобильный бизнес", categoryService.getCategoryByName("Резюме").get(), 3));
-        secondSubCategory.add(new Category("Административная работа", categoryService.getCategoryByName("Резюме").get(), 3));
-        secondSubCategory.add(new Category("Банки, инвестиции", categoryService.getCategoryByName("Резюме").get(), 3));
-        secondSubCategory.add(new Category("Без опыта, студенты", categoryService.getCategoryByName("Резюме").get(), 3));
-        secondSubCategory.add(new Category("Бухгалтерия, финансы", categoryService.getCategoryByName("Резюме").get(), 3));
-        secondSubCategory.add(new Category("Высший менеджмент", categoryService.getCategoryByName("Резюме").get(), 3));
-        secondSubCategory.add(new Category("Госслужба, НКО", categoryService.getCategoryByName("Резюме").get(), 3));
-        secondSubCategory.add(new Category("Домашний персонал", categoryService.getCategoryByName("Резюме").get(), 3));
-        secondSubCategory.add(new Category("ЖКХ, эксплуатация", categoryService.getCategoryByName("Резюме").get(), 3));
-        secondSubCategory.add(new Category("Исскуство, развлечения", categoryService.getCategoryByName("Резюме").get(), 3));
-        secondSubCategory.add(new Category("Консультирование", categoryService.getCategoryByName("Резюме").get(), 3));
-        secondSubCategory.add(new Category("Маркетинг, реклама, PR", categoryService.getCategoryByName("Резюме").get(), 3));
-        secondSubCategory.add(new Category("Медицина, фармацевтика", categoryService.getCategoryByName("Резюме").get(), 3));
-        secondSubCategory.add(new Category("Образование, наука", categoryService.getCategoryByName("Резюме").get(), 3));
-        secondSubCategory.add(new Category("Охрана, безопасность", categoryService.getCategoryByName("Резюме").get(), 3));
-        secondSubCategory.add(new Category("Продажи", categoryService.getCategoryByName("Резюме").get(), 3));
-        secondSubCategory.add(new Category("Производство, сырьё, с/х", categoryService.getCategoryByName("Резюме").get(), 3));
-        secondSubCategory.add(new Category("Страхование", categoryService.getCategoryByName("Резюме").get(), 3));
-        secondSubCategory.add(new Category("Строительство", categoryService.getCategoryByName("Резюме").get(), 3));
-        secondSubCategory.add(new Category("Транспорт, логистика", categoryService.getCategoryByName("Резюме").get(), 3));
-        secondSubCategory.add(new Category("Туризм, рестораны", categoryService.getCategoryByName("Резюме").get(), 3));
-        secondSubCategory.add(new Category("Управление персоналом", categoryService.getCategoryByName("Резюме").get(), 3));
-        secondSubCategory.add(new Category("Фитнес, салоны красоты", categoryService.getCategoryByName("Резюме").get(), 3));
-        secondSubCategory.add(new Category("Юриспруденция", categoryService.getCategoryByName("Резюме").get(), 3));
+        secondSubCategory.add(new Category("IT, интернет, телеком", categoryService.getCategoryByName("Резюме").get(), 3, "resume"));
+        secondSubCategory.add(new Category("Автомобильный бизнес", categoryService.getCategoryByName("Резюме").get(), 3, "resume"));
+        secondSubCategory.add(new Category("Административная работа", categoryService.getCategoryByName("Резюме").get(), 3, "resume"));
+        secondSubCategory.add(new Category("Банки, инвестиции", categoryService.getCategoryByName("Резюме").get(), 3, "resume"));
+        secondSubCategory.add(new Category("Без опыта, студенты", categoryService.getCategoryByName("Резюме").get(), 3, "resume"));
+        secondSubCategory.add(new Category("Бухгалтерия, финансы", categoryService.getCategoryByName("Резюме").get(), 3, "resume"));
+        secondSubCategory.add(new Category("Высший менеджмент", categoryService.getCategoryByName("Резюме").get(), 3, "resume"));
+        secondSubCategory.add(new Category("Госслужба, НКО", categoryService.getCategoryByName("Резюме").get(), 3, "resume"));
+        secondSubCategory.add(new Category("Домашний персонал", categoryService.getCategoryByName("Резюме").get(), 3, "resume"));
+        secondSubCategory.add(new Category("ЖКХ, эксплуатация", categoryService.getCategoryByName("Резюме").get(), 3, "resume"));
+        secondSubCategory.add(new Category("Исскуство, развлечения", categoryService.getCategoryByName("Резюме").get(), 3, "resume"));
+        secondSubCategory.add(new Category("Консультирование", categoryService.getCategoryByName("Резюме").get(), 3, "resume"));
+        secondSubCategory.add(new Category("Маркетинг, реклама, PR", categoryService.getCategoryByName("Резюме").get(), 3, "resume"));
+        secondSubCategory.add(new Category("Медицина, фармацевтика", categoryService.getCategoryByName("Резюме").get(), 3, "resume"));
+        secondSubCategory.add(new Category("Образование, наука", categoryService.getCategoryByName("Резюме").get(), 3, "resume"));
+        secondSubCategory.add(new Category("Охрана, безопасность", categoryService.getCategoryByName("Резюме").get(), 3, "resume"));
+        secondSubCategory.add(new Category("Продажи", categoryService.getCategoryByName("Резюме").get(), 3, "resume"));
+        secondSubCategory.add(new Category("Производство, сырьё, с/х", categoryService.getCategoryByName("Резюме").get(), 3, "resume"));
+        secondSubCategory.add(new Category("Страхование", categoryService.getCategoryByName("Резюме").get(), 3, "resume"));
+        secondSubCategory.add(new Category("Строительство", categoryService.getCategoryByName("Резюме").get(), 3, "resume"));
+        secondSubCategory.add(new Category("Транспорт, логистика", categoryService.getCategoryByName("Резюме").get(), 3, "resume"));
+        secondSubCategory.add(new Category("Туризм, рестораны", categoryService.getCategoryByName("Резюме").get(), 3, "resume"));
+        secondSubCategory.add(new Category("Управление персоналом", categoryService.getCategoryByName("Резюме").get(), 3, "resume"));
+        secondSubCategory.add(new Category("Фитнес, салоны красоты", categoryService.getCategoryByName("Резюме").get(), 3, "resume"));
+        secondSubCategory.add(new Category("Юриспруденция", categoryService.getCategoryByName("Резюме").get(), 3, "resume"));
 
 
         secondSubCategory.add(new Category("Женская одежда", categoryService.getCategoryByName("Одежда, обувь, аксессуары").get(), 3));
@@ -535,12 +541,12 @@ public class DataInitializer {
         secondSubCategory.add(new Category("Торговля", categoryService.getCategoryByName("Готовый бизнес").get(), 3,"ready-business"));
         secondSubCategory.add(new Category("Другое", categoryService.getCategoryByName("Готовый бизнес").get(), 3,"ready-business"));
 
-        secondSubCategory.add(new Category("Для магазина", categoryService.getCategoryByName("Оборудование для бизнеса").get(), 3,"equpment-for-business"));
-        secondSubCategory.add(new Category("Для офиса", categoryService.getCategoryByName("Оборудование для бизнеса").get(), 3,"equpment-for-business"));
-        secondSubCategory.add(new Category("Для ресторана", categoryService.getCategoryByName("Оборудование для бизнеса").get(), 3,"equpment-for-business"));
-        secondSubCategory.add(new Category("Для салона красоты", categoryService.getCategoryByName("Оборудование для бизнеса").get(), 3,"equpment-for-business"));
-        secondSubCategory.add(new Category("Промышленное", categoryService.getCategoryByName("Оборудование для бизнеса").get(), 3,"equpment-for-business"));
-        secondSubCategory.add(new Category("Другое", categoryService.getCategoryByName("Оборудование для бизнеса").get(), 3,"equpment-for-business"));
+        secondSubCategory.add(new Category("Для магазина", categoryService.getCategoryByName("Оборудование для бизнеса").get(), 3,"equipment-for-business"));
+        secondSubCategory.add(new Category("Для офиса", categoryService.getCategoryByName("Оборудование для бизнеса").get(), 3,"equipment-for-business"));
+        secondSubCategory.add(new Category("Для ресторана", categoryService.getCategoryByName("Оборудование для бизнеса").get(), 3,"equipment-for-business"));
+        secondSubCategory.add(new Category("Для салона красоты", categoryService.getCategoryByName("Оборудование для бизнеса").get(), 3,"equipment-for-business"));
+        secondSubCategory.add(new Category("Промышленное", categoryService.getCategoryByName("Оборудование для бизнеса").get(), 3,"equipment-for-business"));
+        secondSubCategory.add(new Category("Другое", categoryService.getCategoryByName("Оборудование для бизнеса").get(), 3,"equipment-for-business"));
 
         for (Category category : secondSubCategory) {
             if (categoryService.getCategoryByName(category.getName()).isEmpty()) {
@@ -835,5 +841,12 @@ public class DataInitializer {
 
     private void initCatBreed() throws IOException {
         catBreedService.saveCatBreed();
+    }
+    private void initCountries() throws IOException {
+        countryService.saveCountry();
+    }
+
+    private void initLanguages() throws IOException {
+        languageService.saveLanguage();
     }
 }

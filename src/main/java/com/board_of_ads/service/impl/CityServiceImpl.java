@@ -22,10 +22,15 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 @Transactional
-public class CityServiceImpl implements CityService {
+ public class CityServiceImpl implements CityService {
 
     private final CityRepository cityRepository;
     private final RegionService regionService;
+
+    @Override
+    public List<City> getCitiesListByRegionId( Long regionId) {
+        return cityRepository.getCitiesByRegionId(regionId);
+    }
 
     @Override
     public Set<City> getCitiesList() {

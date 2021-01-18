@@ -672,10 +672,6 @@ function addPostingType() {
     return div;
 }
 
-savedSuccess = function () {
-    alert("Saved!");
-}
-
 function collectAllFields() {
     function getValueFromSelectElement(divId) {
         let e = document.getElementById(divId);
@@ -735,6 +731,12 @@ function collectAllFields() {
             plate = getValueFromInputElement('statePlateNumber');
         }
         return plate;
+    }
+
+    function getMeetingAddress() {
+        var address = "";
+        address = address + getValueFromInputElement("inputAddress");
+        return address;
     }
 
     function getValueByCarType(elementId) {
@@ -857,7 +859,7 @@ function collectAllFields() {
         title: 'Тачки титул',
         description: getValueFromInputElement('description'),
         contact: getValueFromInputElement('inputPhone'),
-        meetingAddress: '',
+        meetingAddress: getMeetingAddress(),
         datePosting: '',
         condition: getConditionValueByCarType(),
         videoURL: 'https://youtube.com/',
@@ -882,7 +884,7 @@ function saveFunction() {
     console.log(json_posting);
     const requestURL = '/api/posting/car/new-save';
     sendRequest('POST', requestURL, json_posting).then(() => {
-        savedSuccess();
+        window.location.href = "/";
     }).catch(err => console.log(err))
 
     async function sendRequest(method, url, body) {
@@ -892,6 +894,6 @@ function saveFunction() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(body)
-        }).then()
+        })
     }
 }

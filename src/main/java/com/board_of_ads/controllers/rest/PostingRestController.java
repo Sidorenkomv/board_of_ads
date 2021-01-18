@@ -1,7 +1,9 @@
 package com.board_of_ads.controllers.rest;
 
+import com.board_of_ads.models.Country;
 import com.board_of_ads.models.Image;
 import com.board_of_ads.models.User;
+import com.board_of_ads.models.dto.LanguageDto;
 import com.board_of_ads.models.dto.PostingCarDto;
 import com.board_of_ads.models.dto.PostingDto;
 import com.board_of_ads.models.dto.analytics.ReportUserPostingDto;
@@ -11,6 +13,7 @@ import com.board_of_ads.models.posting.forAudioVideo.AudioVideoPosting;
 import com.board_of_ads.models.posting.forDogs.DogBreed;
 import com.board_of_ads.models.posting.forCats.CatBreed;
 import com.board_of_ads.models.posting.forDogs.dogsPosting;
+import com.board_of_ads.models.posting.job.Resume;
 import com.board_of_ads.models.posting.forHobbyAndRestAndTickets.HobbyAndRestPosting;
 import com.board_of_ads.models.posting.forHobbyAndRestAndTickets.TicketsPosting;
 import com.board_of_ads.models.posting.job.Vacancy;
@@ -21,8 +24,10 @@ import com.board_of_ads.models.posting.realty.estate.SellEstatePosting;
 import com.board_of_ads.service.interfaces.AutoAttributesService;
 import com.board_of_ads.service.interfaces.CategoryService;
 import com.board_of_ads.service.interfaces.CityService;
+import com.board_of_ads.service.interfaces.CountryService;
 import com.board_of_ads.service.interfaces.DogBreedService;
 import com.board_of_ads.service.interfaces.CatBreedService;
+import com.board_of_ads.service.interfaces.LanguageService;
 import com.board_of_ads.service.interfaces.ImageService;
 import com.board_of_ads.service.interfaces.PostingService;
 import com.board_of_ads.service.interfaces.UserService;
@@ -39,9 +44,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -59,6 +64,8 @@ public class PostingRestController {
     private final ImageService imageService;
     private final DogBreedService dogBreedService;
     private final CatBreedService catBreedService;
+    private final CountryService countryService;
+    private final LanguageService languageService;
 
     @GetMapping
     public Response<List<PostingDto>> findAllPosts() {
@@ -159,6 +166,7 @@ public class PostingRestController {
         try {
             PostingCar postingCar = postingService.convertJsonToPostingCar(json);
             postingCar.setUser(user);
+            postingCar.setCity(user.getCity());
             postingCar.setSellerId(user.getId());
             postingService.save(postingCar);
             log.info("Posting  Saved!");
@@ -192,6 +200,7 @@ public class PostingRestController {
             posting.setCategory(categoryService.getCategoryById(id).getCategory());
             posting.setCity(user.getCity());
             posting.setImages(images);
+            posting.setMeetingAddress(obj.get("meetingAddress"));
             postingService.save(posting);
             log.info("Объявление успешно создано пользователем " + user.getEmail());
             return Response.ok().build();
@@ -212,6 +221,7 @@ public class PostingRestController {
             posting.setUser(user);
             posting.setCategory(categoryService.getCategoryById(id).getCategory());
             posting.setCity(user.getCity());
+            posting.setMeetingAddress(obj.get("meetingAddress"));
             postingService.save(posting);
 
             log.info("Объявление успешно создано пользователем " + user.getEmail());
@@ -236,6 +246,7 @@ public class PostingRestController {
             posting.setCategory(categoryService.getCategoryById(id).getCategory());
             posting.setCity(user.getCity());
             posting.setImages(images);
+            posting.setMeetingAddress(obj.get("meetingAddress"));
             postingService.save(posting);
 
             log.info("Объявление успешно создано пользователем " + user.getEmail());
@@ -261,6 +272,7 @@ public class PostingRestController {
             posting.setCategory(categoryService.getCategoryById(id).getCategory());
             posting.setCity(user.getCity());
             posting.setImages(images);
+            posting.setMeetingAddress(obj.get("meetingAddress"));
             postingService.save(posting);
 
             log.info("Объявление успешно создано пользователем " + user.getEmail());
@@ -272,29 +284,49 @@ public class PostingRestController {
         }
     }
 
-    @PostMapping("/new/vacancy/{id}")
+    @PostMapping(value = "/new/vacancy/{id}", consumes = { "multipart/mixed", "multipart/form-data" })
     public Response<Void> createVacancyPosting(@PathVariable Long id,
                                                @AuthenticationPrincipal User user,
-                                               @RequestParam Map<String,String> obj,
-                                               @RequestParam(value = "photos") List<MultipartFile> photos) {
-        Vacancy posting;
+                                               @RequestPart("vacancy") Vacancy posting,
+                                               @RequestPart("photos") List<MultipartFile> photos) {
 
+        log.info("In POST createVacancyPosting Controller");
         try {
-            posting = new Vacancy(userService.getUserById(user.getId()), categoryService.getCategoryById(id),
-                    obj.get("title"), obj.get("description"), Long.parseLong(obj.get("price")), obj.get("contact"),
-                    true, obj.get("schedule"), obj.get("experienceValue"), obj.get("placeOfWork"),
-                    obj.get("contactEmail"), obj.get("communicationType"), obj.get("frequency"), obj.get("duties"),
-                    Boolean.parseBoolean(obj.get("isFor45")), Boolean.parseBoolean(obj.get("isFor14")),
-                    Boolean.parseBoolean(obj.get("isForHandicapped")));
             List<Image> images = imageService.savePhotos(user, photos);
             posting.setImages(images);
-            posting.setCity(cityService.findCityByName("Одинцово").get());
+            posting.setUser(userService.getUserById(user.getId()));
+            posting.setCategory(categoryService.getCategoryById(id));
+            posting.setCity(user.getCity());
+            posting.setIsActive(true);
             postingService.save(posting);
             log.info("Объявление успешно создано пользователем " + user.getEmail());
             return Response.ok().build();
         } catch (Exception ex) {
             log.info("Не удалось создать объявление => " + ex.getMessage());
             return new ErrorResponse<>(new Error(400, "Posting is not created"));
+        }
+    }
+
+    @PostMapping(value = "/new/resume/{id}", consumes = { "multipart/mixed", "multipart/form-data" })
+    public Response<Void> createResumePosting(@PathVariable Long id,
+                                               @AuthenticationPrincipal User user,
+                                               @RequestPart("resume") Resume posting,
+                                               @RequestPart("photos") List<MultipartFile> photos){
+
+        log.info("In POST createResumePosting Controller");
+        try {
+            List<Image> images = imageService.savePhotos(user, photos);
+            posting.setImages(images);
+            posting.setUser(userService.getUserById(user.getId()));
+            posting.setCategory(categoryService.getCategoryById(id));
+            posting.setCity(user.getCity());
+            posting.setIsActive(true);
+            postingService.save(posting);
+            log.info("Объявление успешно создано пользователем " + user.getEmail());
+            return Response.ok().build();
+        } catch (Exception e) {
+            log.info("Unable to save Posting : " + e.getMessage());
+            return new ErrorResponse<>(new Error(204, "Error of saving post"));
         }
     }
 
@@ -311,7 +343,8 @@ public class PostingRestController {
                     true, obj.get("contactEmail"), obj.get("linkYouTube"), obj.get("communicationType"), obj.get("state"));
             List<Image> images = imageService.savePhotos(user, photos);
             posting.setImages(images);
-            posting.setCity(cityService.findCityByName("Ростов-на-Дону").get());
+            posting.setCity(user.getCity());
+            posting.setMeetingAddress(obj.get("meetingAddress"));
             postingService.save(posting);
             log.info("Объявление успешно создано пользователем " + user.getEmail());
             return Response.ok().build();
@@ -335,7 +368,8 @@ public class PostingRestController {
 
             List<Image> images = imageService.savePhotos(user, photos);
             posting.setImages(images);
-            posting.setCity(cityService.findCityByName("Ростов-на-Дону").get());
+            posting.setCity(user.getCity());
+            posting.setMeetingAddress(obj.get("meetingAddress"));
             postingService.save(posting);
             log.info("Объявление успешно создано пользователем " + user.getEmail());
             return Response.ok().build();
@@ -359,7 +393,8 @@ public class PostingRestController {
 
             List<Image> images = imageService.savePhotos(user, photos);
             posting.setImages(images);
-            posting.setCity(cityService.findCityByName("Ростов-на-Дону").get());
+            posting.setCity(user.getCity());
+            posting.setMeetingAddress(obj.get("meetingAddress"));
             postingService.save(posting);
             log.info("Объявление успешно создано пользователем " + user.getEmail());
             return Response.ok().build();
@@ -391,7 +426,8 @@ public class PostingRestController {
                     true, obj.get("contactEmail"), obj.get("linkYouTube"), obj.get("communicationType"));
             List<Image> images = imageService.savePhotos(user, photos);
             posting.setImages(images);
-            posting.setCity(cityService.findCityByName("Ростов-на-Дону").get());
+            posting.setCity(user.getCity());
+            posting.setMeetingAddress(obj.get("meetingAddress"));
             postingService.save(posting);
             log.info("Объявление успешно создано пользователем " + user.getEmail());
             return Response.ok().build();
@@ -422,6 +458,17 @@ public class PostingRestController {
         log.info("Create posting clothes");
         return postingService.savePersonalClothesPosting(id, user, map, photos);
     }
+    @GetMapping("/getcountries")
+    public Response<List<Country>> getCountries() {
+        log.info("getCountries Controller");
+        return Response.ok(countryService.findAll());
+    }
+
+    @GetMapping("/getlanguages")
+    public Response<List<LanguageDto>> getLanguages() {
+        log.info("getLanguages Controller");
+        return Response.ok(languageService.findAllLanguages());
+    }
 
     @PostMapping("/business/{id}")
     public Response<Void> createForBusinessPosting(@PathVariable Long id,
@@ -432,6 +479,4 @@ public class PostingRestController {
         log.info("Create posting for business");
         return postingService.saveForBusinessPosting(id, user, map, photos);
     }
-
-
 }

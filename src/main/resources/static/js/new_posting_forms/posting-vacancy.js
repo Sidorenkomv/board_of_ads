@@ -4,38 +4,25 @@ let saveButtonVac = document.getElementById('saveButton');
 
 async function sentVacancyPosting(frontName, selectedCategoryId) {
     let url = '/api/posting/new/' + frontName + '/' + selectedCategoryId;
-    const formData = new FormData();
+    const formDataVacancy = new FormData();
     const fileField = fileList;
 
     for (let i = 0; i < fileField.length; i++) {
-        formData.append('photos', fileField[i]);
+        formDataVacancy.append('photos', fileField[i]);
     }
+    formDataVacancy.append('vacancy', new Blob([...getJsonObjectVacancy()], {
+        type: "application/json"
+    }));
 
-    formData.append('title', window.postTitle.value);
-    formData.append('description', window.postDescription.value);
-    formData.append('price', window.postPrice.value);
-    formData.append('schedule', window.postSchedule.value);
-    formData.append('frequency', window.postFrequency.value);
-    formData.append('experienceValue', window.postExperienceValue.value);
-    formData.append('isFor45', window.isFor45.checked);
-    formData.append('isFor14', window.isFor14.checked);
-    formData.append('isForHandicapped', window.isForHandicapped.checked);
-    formData.append('duties', window.postDuties.value);
-    formData.append('placeOfWork', window.postPlace.value);
-    formData.append('meetingAddress', window.inputAddress.value);
-    formData.append('contactEmail', window.inputEmail.value);
-    formData.append('contact', window.inputPhone.value);
-    formData.append('communicationType', document.querySelector('input[name="communication"]:checked').value);
-
-    if (!checkInputFields(formData)) {
+    if (!checkInputFields(formDataVacancy)) {
         return false;
     }
 
-    await sendFile(formData, url);
+    await sendVacancyFile(formDataVacancy, url);
     window.location.href = '/';
 }
 
-async function sendFile(body, url) {
+async function sendVacancyFile(body, url) {
 
     try {
         const response = await fetch(url, {
@@ -49,9 +36,30 @@ async function sendFile(body, url) {
     }
 }
 
+function getJsonObjectVacancy() {
+    let dataVacancy = {};
+    dataVacancy["title"] = $('#postTitle').val();
+    dataVacancy["description"] = $('#postDescription').val();
+    dataVacancy["price"] = $('#postPrice').val();
+    dataVacancy["contact"] = $('#inputPhone').val();
+    dataVacancy["meetingAddress"] = $('#inputAddress').val();
+    dataVacancy["contactEmail"] = $('#inputEmail').val();
+    dataVacancy["communicationType"] = $('#wayOfCommunication :checked').val();
+    dataVacancy["schedule"] = $('#postSchedule').val();
+    dataVacancy["experienceValue"] = $('#postExperienceValue').val();
+    dataVacancy["paymentsFrequency"] = $('#postFrequency').val();
+    dataVacancy["duties"] = $('#postDuties').val();
+    dataVacancy["location"] = $('#postPlace').val();
+    dataVacancy["isFor45"] = $('#isFor45').prop('checked');
+    dataVacancy["isFor14"] = $('#isFor14').prop('checked');
+    dataVacancy["isForHandicapped"] = $('#isForHandicapped').prop('checked');
+    return JSON.stringify(dataVacancy);
+}
+
 async function getVacancyForm(frontName, selectedCategoryId) {
     saveButtonVac.onclick = () => sentVacancyPosting(frontName, selectedCategoryId);
 
+    postingFormVac.innerHTML = '';
     postingFormVac.innerHTML = '<div id="parameters" class="main-container">\n' +
         '        <div class="category-head-container">\n' +
         '            <div class="category-head-text">Параметры</div>\n' +
@@ -172,7 +180,7 @@ async function getVacancyForm(frontName, selectedCategoryId) {
     document.getElementById('preciseAddress').innerText = 'Точный адрес поможет привлечь заинтересованных cоискателей';
 
     let r = document.createElement("div");
-    r.id = "requirements";
+    r.id = "experienceAndPreferences";
     r.className = "main-container";
     r.innerHTML = '<div class="category-head-container">\n' +
         '            <div id="requirementsToCandidate" class="category-head-text">Требования к кандидату</div>\n' +

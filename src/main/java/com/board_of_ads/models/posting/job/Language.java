@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -28,13 +29,8 @@ public class Language {
     private Long id;
 
     @Column
-    private String name;
+    private String language;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "levels_languages",
-            joinColumns = { @JoinColumn(name = "language_id") },
-            inverseJoinColumns = { @JoinColumn(name = "id") }
-    )
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY, mappedBy = "language")
     private List<LevelLanguage> levelLanguages;
 }

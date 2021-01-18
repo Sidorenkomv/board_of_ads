@@ -9,9 +9,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import java.time.YearMonth;
 import java.util.Date;
 
 @Data
@@ -20,7 +23,6 @@ import java.util.Date;
 @Entity
 @Table(name = "posting_job_experiences")
 public class Experience {
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
@@ -34,9 +36,9 @@ public class Experience {
     @Column
     private String responsibility;
 
-    @Temporal(TemporalType.DATE)
-    private Date startWork;
+    @Column
+    private YearMonth startWork;
 
-    @Temporal(TemporalType.DATE)
-    private Date endWork;
+    @Column
+    private YearMonth endWork;
 }
