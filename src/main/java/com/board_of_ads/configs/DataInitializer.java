@@ -60,10 +60,9 @@ public class DataInitializer {
     private final MessageService messageService;
     private final DogBreedService dogBreedService;
     private final CatBreedService catBreedService;
-    private List<Posting> postingList;
     private final CountryService countryService;
     private final LanguageService languageService;
-    List<Posting> postingList;
+    private final List<Posting> postingList = new ArrayList<>();
 
     private final CityRepository cityRepository;
 
@@ -590,7 +589,7 @@ public class DataInitializer {
     }
 
     private void initPosting() {
-        postingList = new ArrayList<>();
+
         postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Бытовые услуги").get()
                 , "Поглажу кота", "Очень качественно", 100L, "+79998887766", cityService.findCityByName("Ростов").get(), true, 0));
         postingList.add(new Posting(userService.getUserByEmail("admin@mail.ru"), categoryService.getCategoryByName("Новые").get()
